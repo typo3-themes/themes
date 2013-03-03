@@ -1,0 +1,70 @@
+<link href="{f:uri.resource(path:'Stylesheet/Skinselector.css', extensionName:'themes')}" rel="stylesheet" />
+
+
+<f:form.hidden name="data[{formField.table}][{formField.row.uid}][tx_themes_skin]" value="{formField.row.tx_themes_skin}" id="tx_themes_skin"/>
+
+
+
+<div class="tx_themes_skinselector">
+	<h2>
+		<f:count subject="{selectableSkins}" />
+		Selectable Skins
+	</h2>
+	<f:if condition="{selectedSkin}">
+		<f:then>
+			<h3>
+				Currently selected skin is
+				<span title="{formField.row.tx_themes_skin}">&quot;{selectedSkin.title}&quot;</span>
+				<span class="t3-icon t3-icon-actions t3-icon-actions-selection t3-icon-selection-delete" onclick="$('tx_themes_skin').value = ''; TBE_EDITOR.submitForm();">unlink</span>
+
+			</h3>
+			<div>
+				<ul>
+					<li class="previewTheme selectedTheme">
+						<div class="previewDescription">
+							<p>
+								{selectedSkin.description}
+							</p>
+						</div>
+						<div class="previewImage">
+							<img src="{selectedSkin.previewImage}">
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="fixfloat"></div>
+			<h3>
+				other available skins
+			</h3>
+		</f:then>
+	</f:if>
+
+
+	<ul class="tx_skinselector_availableThemes">
+		<f:for each="{selectableSkins}" as="skin" key="skinNumber">
+			<f:if condition="{selectedSkin} == {skin}">
+				<f:then>
+
+				</f:then>
+				<f:else>
+					<li class="previewTheme">
+						<div class="previewImage" onclick="$('tx_themes_skin').value = '{skin.extensionName}'; TBE_EDITOR.submitForm();">
+							<img src="{skin.previewImage}">
+						</div>
+						<div class="previewTitle">
+							<b>{skin.title}</b>
+						</div>
+						<div class="previewOverlay">
+							<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-select" onclick="$('tx_themes_skin').value = '{skin.extensionName}'; TBE_EDITOR.submitForm();">&nbsp;</span>
+							<span class="t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-documentation">&nbsp;</span>
+							<span class="t3-icon t3-icon-apps t3-icon-apps-clipboard t3-icon-clipboard-images">&nbsp;</span>
+							<p>
+								{skin.description}
+							</p>
+						</div>
+					</li>
+				</f:else>
+			</f:if>
+		</f:for>
+	</ul>
+</div>
