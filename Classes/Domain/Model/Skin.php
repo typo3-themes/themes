@@ -58,7 +58,7 @@ class Tx_Themes_Domain_Model_Skin extends Tx_Extbase_DomainObject_AbstractEntity
 		/**
 		 * set needed path variables
 		 */
-		$path                          = t3lib_extMgm::extPath($this->getExtensionName()) . 'Configuration/Skin/';
+		$path                          = t3lib_extMgm::extPath($this->getExtensionName()) . 'Configuration/Theme/';
 		$this->pathTyposcript          = $path . 'setup.ts';
 		$this->pathTyposcriptConstants = $path . 'constants.ts';
 		$this->pathTSConfig            = $path . 'tsconfig.ts';
