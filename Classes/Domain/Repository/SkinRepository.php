@@ -49,7 +49,7 @@ class Tx_Themes_Domain_Repository_SkinRepository implements Tx_Extbase_Persisten
 		// check extensions, which are worth to check
 		foreach($extensionsToCheck as $extensionName) {
 			$extPath = t3lib_extMgm::extPath($extensionName);
-			if(file_exists($extPath . 'Configuration/Theme') && file_exists($extPath . 'Configuration/Skin/setup.ts')) {
+			if(file_exists($extPath . 'Configuration/Theme') && file_exists($extPath . 'Configuration/Theme/setup.ts')) {
 				$this->add(new Tx_Themes_Domain_Model_Skin($extensionName));
 			}
 		}
