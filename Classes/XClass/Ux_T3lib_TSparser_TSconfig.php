@@ -15,7 +15,7 @@ class ux_t3lib_TSparser_TSconfig extends t3lib_TSparser_TSconfig{
 	public function parseTSconfig($TStext, $type, $id = 0, array $rootLine = array()) {
 		// @todo add caching here!
 		/**
-		 * @var Tx_Themes_Domain_Repository_SkinRepository
+		 * @var Tx_Themes_Domain_Repository_ThemeRepository
 		 */
 		$themeRepository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
 		$theme = $themeRepository->findByPageOrRootline($id);

@@ -5,35 +5,34 @@
 
 <f:if condition="{selectedTheme}">
 	<f:then>
-				<tr>
-					<td>
-						<strong>
-							<span class="t3-icon t3-icon-status t3-icon-status-dialog t3-icon-dialog-information">&nbsp;</span>
-							Info:
-						</strong>
-					</td>
-					<td width="80%" class="bgColor4">
-						<img src="../../../{selectedTheme.previewImage}" style="float:right" width="130">
-						<div style="margin-right: 150px">
-							<strong>
-								{selectedTheme.title}
-							</strong>
-							- (EXT:{selectedTheme.extensionName})
-							<br />
-							<br />
-							<p>
-								{selectedTheme.description} <br />
-							</p>
-							<small>
-								by
-								<a href="mailto:{selectedTheme.author.email}">
-									{selectedTheme.author.name}
-								</a>
-								({selectedTheme.author.company})
-							</small>
-						</div>
-					</td>
-				</tr>
-
+		<tr>
+			<td>
+				<strong>
+					<span class="t3-icon t3-icon-status t3-icon-status-dialog t3-icon-dialog-information">&nbsp;</span>
+					Info:
+				</strong>
+			</td>
+			<td width="80%" class="bgColor4">
+				<f:image src="{selectedTheme.previewImage}" style="float:right" width="130" alt="themepreview" />
+				<div style="margin-right: 150px">
+					<strong>
+						{selectedTheme.title}
+					</strong>
+					- (EXT:{selectedTheme.extensionName})
+					<br />
+					<br />
+					<p>
+						{selectedTheme.description} <br />
+					</p>
+					<small>
+						by
+						<a href="mailto:{selectedTheme.author.email}">
+							{selectedTheme.author.name}
+						</a>
+						({selectedTheme.author.company})
+					</small>
+				</div>
+			</td>
+		</tr>
 	</f:then>
 </f:if>

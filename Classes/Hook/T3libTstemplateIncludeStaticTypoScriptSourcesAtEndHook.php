@@ -25,12 +25,12 @@ class Tx_Themes_T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 		}
 
 		/**
-		 * @var $skinRepository Tx_Skinselector_Domain_Repository_SkinRepository
+		 * @var $themeRepository Tx_Skinselector_Domain_Repository_SkinRepository
 		 */
-		$skinRepository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_SkinRepository');
-		$skin = $skinRepository->findByUid($row['tx_themes_skin']);
-		if($skin !== NULL) {
-			$skin->addTypoScriptForFe($params, $pObj);
+		$themeRepository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
+		$theme = $themeRepository->findByUid($row['tx_themes_skin']);
+		if($theme !== NULL) {
+			$theme->addTypoScriptForFe($params, $pObj);
 		}
 	}
 }
