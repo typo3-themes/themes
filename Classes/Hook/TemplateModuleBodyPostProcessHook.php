@@ -16,18 +16,18 @@ class Tx_Themes_TemplateModuleBodyPostProcessHook {
 	 */
 	function main(&$params, &$pObj) {
 		/**
-		 * @var $repository Tx_Themes_Domain_Repository_SkinRepository
+		 * @var $repository Tx_Themes_Domain_Repository_ThemeRepository
 		 * @var $view       Tx_Fluid_View_StandaloneView
 		 */
 		if(($_GET['SET']['function'] === 'tx_tstemplateinfo' || !$_GET['SET']['function'])
 			&& ($params['moduleTemplateFilename'] === 'templates/tstemplate.html')) {
 
-			$repository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_SkinRepository');
+			$repository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
 
 			$view = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
 
 			$view->setFormat('html');
-			$view->setTemplatePathAndFilename(t3lib_div::getFileAbsFileName('EXT:themes/Resources/Private/Templates/TsTemplateSkinData.html'));
+			$view->setTemplatePathAndFilename(t3lib_div::getFileAbsFileName('EXT:themes/Resources/Private/Templates/TsTemplateThemeData.html'));
 			$view->assignMultiple(array(
 				'selectedTheme' => $repository->findByPageId(t3lib_div::_GP('id')),
 				'selectableThemes' => $repository->findAll(),

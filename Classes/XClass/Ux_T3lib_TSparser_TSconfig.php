@@ -17,10 +17,10 @@ class ux_t3lib_TSparser_TSconfig extends t3lib_TSparser_TSconfig{
 		/**
 		 * @var Tx_Themes_Domain_Repository_SkinRepository
 		 */
-		$skinRepository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_SkinRepository');
-		$skin = $skinRepository->findByPageOrRootline($id);
-		if($skin !== NULL) {
-			$buffer = $skin->getTSConfig() . "\n\n[GLOBAL]\n\n" . $TStext;
+		$themeRepository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
+		$theme = $themeRepository->findByPageOrRootline($id);
+		if($theme !== NULL) {
+			$buffer = $theme->getTSConfig() . "\n\n[GLOBAL]\n\n" . $TStext;
 			return parent::parseTSconfig($buffer, $type, $id, $rootLine);
 		} else {
 			return parent::parseTSconfig($TStext, $type, $id, $rootLine);

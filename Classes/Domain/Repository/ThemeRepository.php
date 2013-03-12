@@ -1,6 +1,6 @@
 <?php
 
-class Tx_Themes_Domain_Repository_SkinRepository implements Tx_Extbase_Persistence_RepositoryInterface, t3lib_Singleton {
+class Tx_Themes_Domain_Repository_ThemeRepository implements Tx_Extbase_Persistence_RepositoryInterface, t3lib_Singleton {
 	protected $ignoredExtensions = array(
 		'themes',
 		'skinselector_content',
@@ -50,15 +50,15 @@ class Tx_Themes_Domain_Repository_SkinRepository implements Tx_Extbase_Persisten
 		foreach($extensionsToCheck as $extensionName) {
 			$extPath = t3lib_extMgm::extPath($extensionName);
 			if(file_exists($extPath . 'Configuration/Theme') && file_exists($extPath . 'Configuration/Theme/setup.ts')) {
-				$this->add(new Tx_Themes_Domain_Model_Skin($extensionName));
+				$this->add(new Tx_Themes_Domain_Model_Theme($extensionName));
 			}
 		}
 
-		// hook to include skins, which do not follow the convention
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_SkinRepository']['init']))	{
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_SkinRepository']['init'])) {
+		// hook to include themes, which do not follow the convention
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init']))	{
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'])) {
 				$hookParameters = array();
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_SkinRepository']['init'] as $hookFunction)	{
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'] as $hookFunction)	{
 					t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
 				}
 			}
@@ -68,7 +68,7 @@ class Tx_Themes_Domain_Repository_SkinRepository implements Tx_Extbase_Persisten
 	/**
 	 * Adds an object to this repository.
 	 *
-	 * @param Tx_Themes_Domain_Model_Skin $object The object to add
+	 * @param Tx_Themes_Domain_Model_Theme $object The object to add
 	 * @return void
 	 * @api
 	 */
@@ -173,7 +173,7 @@ class Tx_Themes_Domain_Repository_SkinRepository implements Tx_Extbase_Persisten
 	 * Finds an object matching the given identifier.
 	 *
 	 * @param int $uid The identifier of the object to find
-	 * @return Tx_Themes_Domain_Model_Skin The matching object if found, otherwise NULL
+	 * @return Tx_Themes_Domain_Model_Theme The matching object if found, otherwise NULL
 	 * @api
 	 */
 	public function findByUid($uid)
@@ -184,9 +184,9 @@ class Tx_Themes_Domain_Repository_SkinRepository implements Tx_Extbase_Persisten
 			return NULL;
 		}
 		/*
-		foreach($this->addedObjects as $skin) {
-			if($skin->getExtensionName() === $uid) {
-				return $skin;
+		foreach($this->addedObjects as $theme) {
+			if($theme->getExtensionName() === $uid) {
+				return $theme;
 			}
 		}
 		return NULL;*/
@@ -207,9 +207,9 @@ class Tx_Themes_Domain_Repository_SkinRepository implements Tx_Extbase_Persisten
 	public function findByPageOrRootline($pid) {
 		$rootline = t3lib_BEfunc::BEgetRootLine($pid);
 		foreach($rootline as $page) {
-			$skin = $this->findByPageId($page['uid']);
-			if($skin !== NULL) {
-				return $skin;
+			$theme = $this->findByPageId($page['uid']);
+			if($theme !== NULL) {
+				return $theme;
 			}
 		}
 		return NULL;

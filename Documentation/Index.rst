@@ -15,16 +15,17 @@ possible to allow multiple updateable website themes in a single TYPO3 instance.
 As all the themes are packaged as TYPO3 extensions updates can be easily deployed.
 
 
-Technical Background of Skinselector in EXT:Themes
+Technical Background of Themeselector in EXT:Themes
 --------------------------------------------------
 
 Technically this is solved with some hooks, extbase repositories and one XClass to include the modified TSConfig.
 
 
-Make your own skin
+Make your own theme
 ------------------
 
-To make your own skin you have to choose a templating engine.
+To make your own theme you have to choose a templating engine.
+Additionally you may use ext:themes_builder.
 
 
 Compatibility

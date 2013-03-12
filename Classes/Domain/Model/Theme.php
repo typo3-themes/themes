@@ -1,6 +1,6 @@
 <?php
 
-class Tx_Themes_Domain_Model_Skin extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_Themes_Domain_Model_Theme extends Tx_Extbase_DomainObject_AbstractEntity {
 	/**
 	 * @var string
 	 */
@@ -47,7 +47,7 @@ class Tx_Themes_Domain_Model_Skin extends Tx_Extbase_DomainObject_AbstractEntity
 	protected $pathTSConfig;
 
 	/**
-	 * Constructs a new Skin
+	 * Constructs a new Theme
 	 *
 	 * @api
 	 */
@@ -179,7 +179,7 @@ class Tx_Themes_Domain_Model_Skin extends Tx_Extbase_DomainObject_AbstractEntity
 	 * @return	void
 	 */
 	public function addTypoScriptForFe(&$params, &$pObj) {
-		$skinItem = array(
+		$themeItem = array(
 			'constants'=>	@is_file($this->getTypoScriptConstantsAbsPath()) ? t3lib_div::getUrl($this->getTypoScriptConstantsAbsPath()) : '',
 			'config'=>		@is_file($this->getTypoScriptAbsPath())          ? t3lib_div::getUrl($this->getTypoScriptAbsPath()) : '',
 			'editorcfg'=>	'',
@@ -189,12 +189,12 @@ class Tx_Themes_Domain_Model_Skin extends Tx_Extbase_DomainObject_AbstractEntity
 			'uid' => md5($this->getExtensionName())
 		);
 
-		$skinItem['constants'] .= chr(10) . 'plugin.tx_themes.relPath     = ' . t3lib_extMgm::siteRelPath($this->getExtensionName());
-		$skinItem['constants'] .= chr(10) . 'plugin.tx_themes.name        = ' . $this->getExtensionName();
-		$skinItem['constants'] .= chr(10) . 'plugin.tx_themes.templatePid = ' . $params['pid'];
+		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.relPath     = ' . t3lib_extMgm::siteRelPath($this->getExtensionName());
+		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.name        = ' . $this->getExtensionName();
+		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.templatePid = ' . $params['pid'];
 
 		$pObj->processTemplate(
-			$skinItem,
+			$themeItem,
 			$params['idList'] . ',themes_' . $this->getExtensionName(),
 			$params['pid'],
 			'themes_' . $this->getExtensionName(),

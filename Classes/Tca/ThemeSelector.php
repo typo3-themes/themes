@@ -4,10 +4,10 @@
  *
  */
 
-class Tx_Themes_Tca_Skinselector {
+class Tx_Themes_Tca_ThemeSelector {
 
 	/**
-	 * Displays the skin selector as a TCEForm's userfunc. Handles display of
+	 * Displays the Theme selector as a TCEForm's userfunc. Handles display of
 	 * skins and copying skins but leaves the saving to TCEmain.
 	 *
 	 * @param	array	$PA
@@ -15,12 +15,12 @@ class Tx_Themes_Tca_Skinselector {
 	 * @return	string
 	 */
 	public function display($PA, $pObj) {
-		$repository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_SkinRepository');
+		$repository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
 
 		$view = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
 
 		$view->setFormat('html');
-		$view->setTemplatePathAndFilename(t3lib_div::getFileAbsFileName('EXT:themes/Resources/Private/Templates/Skinselector.html'));
+		$view->setTemplatePathAndFilename(t3lib_div::getFileAbsFileName('EXT:themes/Resources/Private/Templates/ThemeSelector.html'));
 		$view->assignMultiple(array(
 			'formField' => array(
 				'table' => $PA['table'],
@@ -34,8 +34,8 @@ class Tx_Themes_Tca_Skinselector {
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['EXT:themes/Classes/Tca/Skinselector.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['EXT:themes/Classes/Tca/Skinselector.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['EXT:themes/Classes/Tca/ThemeSelector.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['EXT:themes/Classes/Tca/ThemeSelector.php']);
 }
 
 ?>

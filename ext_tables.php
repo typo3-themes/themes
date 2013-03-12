@@ -9,7 +9,7 @@ $tempColumn = array(
 		'displayCond' => 'FIELD:root:REQ:true',
 		'config' => array(
 			'type' => 'user',
-			'userFunc' => 'tx_Themes_Tca_Skinselector->display',
+			'userFunc' => 'tx_Themes_Tca_ThemeSelector->display',
 		)
 	),
 );
