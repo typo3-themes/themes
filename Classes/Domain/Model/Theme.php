@@ -55,36 +55,36 @@ class Tx_Themes_Domain_Model_Theme extends Tx_Extbase_DomainObject_AbstractEntit
 
 		$this->extensionName = $extensionName;
 
-		/**
-		 * set needed path variables
-		 */
-		$path                          = t3lib_extMgm::extPath($this->getExtensionName()) . 'Configuration/Theme/';
-		$this->pathTyposcript          = $path . 'setup.ts';
-		$this->pathTyposcriptConstants = $path . 'constants.ts';
-		$this->pathTSConfig            = $path . 'tsconfig.ts';
+		if(t3lib_extMgm::isLoaded($extensionName)) {
+			/**
+			 * set needed path variables
+			 */
+			$path                          = t3lib_extMgm::extPath($this->getExtensionName()) . 'Configuration/Theme/';
+			$this->pathTyposcript          = $path . 'setup.ts';
+			$this->pathTyposcriptConstants = $path . 'constants.ts';
+			$this->pathTSConfig            = $path . 'tsconfig.ts';
 
-		/**
-		 * @var $EM_CONF array
-		 * @var $_EXTKEY string
-		 */
-		$_EXTKEY                 = $extensionName;
-		include(t3lib_extMgm::extPath($this->getExtensionName()) . 'ext_emconf.php');
-		$this->title             = $EM_CONF[$this->getExtensionName()]['title'];
-		$this->description       = $EM_CONF[$this->getExtensionName()]['description'];
+			/**
+			 * @var $EM_CONF array
+			 * @var $_EXTKEY string
+			 */
+			$_EXTKEY                 = $extensionName;
+			include(t3lib_extMgm::extPath($this->getExtensionName()) . 'ext_emconf.php');
+			$this->title             = $EM_CONF[$this->getExtensionName()]['title'];
+			$this->description       = $EM_CONF[$this->getExtensionName()]['description'];
 
-		$this->version           = $EM_CONF[$this->getExtensionName()]['version'];
+			$this->version           = $EM_CONF[$this->getExtensionName()]['version'];
 
-		$this->author['name']    = $EM_CONF[$this->getExtensionName()]['author'];
-		$this->author['email']   = $EM_CONF[$this->getExtensionName()]['author_email'];
-		$this->author['company'] = $EM_CONF[$this->getExtensionName()]['author_company'];
+			$this->author['name']    = $EM_CONF[$this->getExtensionName()]['author'];
+			$this->author['email']   = $EM_CONF[$this->getExtensionName()]['author_email'];
+			$this->author['company'] = $EM_CONF[$this->getExtensionName()]['author_company'];
 
-		if(is_file($path . 'screenshot.png')) {
-			$this->previewImage      = t3lib_extMgm::extPath($this->getExtensionName()) . 'Resources/Public/Images/screenshot.png';
-		} else {
-			$this->previewImage      = t3lib_extMgm::extRelPath('themes')               . 'Resources/Public/Images/screenshot.gif';
+			if(is_file($path . 'screenshot.png')) {
+				$this->previewImage      = t3lib_extMgm::extPath($this->getExtensionName()) . 'Resources/Public/Images/screenshot.png';
+			} else {
+				$this->previewImage      = t3lib_extMgm::extRelPath('themes')               . 'Resources/Public/Images/screenshot.gif';
+			}
 		}
-
-		// @todo insert default image from a specified location!
 	}
 
 	/**
@@ -185,7 +185,7 @@ class Tx_Themes_Domain_Model_Theme extends Tx_Extbase_DomainObject_AbstractEntit
 			'editorcfg'=>	'',
 			'include_static'=>	'',
 			'include_static_file'=>	'',
-			'title' =>	'themes: EXT:' . $this->getExtensionName(),
+			'title' =>	'themes:' . $this->getExtensionName(),
 			'uid' => md5($this->getExtensionName())
 		);
 
