@@ -81,7 +81,7 @@ class Tx_Themes_Domain_Model_Theme extends Tx_Extbase_DomainObject_AbstractEntit
 
 			if(t3lib_extMgm::extPath($this->getExtensionName()) . 'Resources/Public/Images/screenshot.png') {
 				$this->previewImage      = t3lib_extMgm::extRelPath($this->getExtensionName()) . 'Resources/Public/Images/screenshot.png';
-			} elseif(t3lib_extMgm::extPath('themes') . 'Resources/Public/Images/screenshot.gif') {
+			} elseif(t3lib_extMgm::extPath($this->getExtensionName()) . 'Resources/Public/Images/screenshot.gif') {
 				$this->previewImage      = t3lib_extMgm::extRelPath($this->getExtensionName()) . 'Resources/Public/Images/screenshot.gif';
 			} else {
 				$this->previewImage      = t3lib_extMgm::extRelPath('themes')                  . 'Resources/Public/Images/screenshot.gif';
