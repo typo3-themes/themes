@@ -1,7 +1,7 @@
 .fixfloat {
 	clear: both;
 }
-.tx_themes_themeselector .t3-icon {
+.tx_themes_themeselector .t3-icon, .tx_themes_themeselector .previewImage {
 	cursor: pointer;
 }
 
