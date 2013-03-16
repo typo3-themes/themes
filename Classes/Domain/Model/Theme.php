@@ -79,7 +79,7 @@ class Tx_Themes_Domain_Model_Theme extends Tx_Extbase_DomainObject_AbstractEntit
 			$this->author['email']   = $EM_CONF[$this->getExtensionName()]['author_email'];
 			$this->author['company'] = $EM_CONF[$this->getExtensionName()]['author_company'];
 
-			if(t3lib_extMgm::extPath('themes') . 'Resources/Public/Images/screenshot.png') {
+			if(t3lib_extMgm::extPath($this->getExtensionName()) . 'Resources/Public/Images/screenshot.png') {
 				$this->previewImage      = t3lib_extMgm::extRelPath($this->getExtensionName()) . 'Resources/Public/Images/screenshot.png';
 			} elseif(t3lib_extMgm::extPath('themes') . 'Resources/Public/Images/screenshot.gif') {
 				$this->previewImage      = t3lib_extMgm::extRelPath($this->getExtensionName()) . 'Resources/Public/Images/screenshot.gif';
