@@ -22,6 +22,8 @@
 .tx_themes_themeselector .previewDescription {
 	float: right;
 	width: 340px;
+	height: 120px;
+	overflow: auto;
 }
 .tx_themes_themeselector .previewImage {
 	background-color: #B7B7B7;
