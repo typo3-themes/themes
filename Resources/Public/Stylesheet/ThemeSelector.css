@@ -1,13 +1,13 @@
 .fixfloat {
 	clear: both;
 }
-.tx_themes_themeselector .t3-icon, .tx_themes_themeselector .previewImage {
+.tx_themes_themeselector .t3-icon, .tx_themes_themeselector .tx_skinselector_availableThemes .previewImage {
 	cursor: pointer;
 }
 
 .tx_themes_themeselector ul li {
 	width: 130px;
-	height: 110px;
+	height: 120px;
 	float: left;
 	display: inline-block;
 	clear: none;
@@ -32,14 +32,17 @@
 	overflow: hidden;
 }
 
-
+.tx_themes_themeselector .previewImage img {
+	width: 130px;
+}
+	
 .tx_themes_themeselector .previewTheme .previewOverlay {
 	display: none;
 }
 
 .tx_themes_themeselector .previewTheme:hover .previewOverlay {
 	position: absolute;
-	top: 125px;
+	top: 140px;
 	left: -1px;
 	width: 130px;
 	height: 80px;
