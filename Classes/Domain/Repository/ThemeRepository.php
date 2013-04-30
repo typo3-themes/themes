@@ -192,6 +192,10 @@ class Tx_Themes_Domain_Repository_ThemeRepository implements Tx_Extbase_Persiste
 		return NULL;*/
 	}
 
+	public function findByIdentifier($uid) {
+		$this->findByUid($uid);
+	}
+
 	/**
 	 * @param $pid id of the Page
 	 * @return mixed
