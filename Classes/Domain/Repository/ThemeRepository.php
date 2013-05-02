@@ -1,6 +1,6 @@
 <?php
 
-class Tx_Themes_Domain_Repository_ThemeRepository implements Tx_Extbase_Persistence_RepositoryInterface, t3lib_Singleton {
+class Tx_Themes_Domain_Repository_ThemeRepository extends Tx_Extbase_Persistence_Repository implements t3lib_Singleton {
 	protected $ignoredExtensions = array(
 		'themes',
 		'skinselector_content',
