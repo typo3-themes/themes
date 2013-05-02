@@ -55,7 +55,7 @@ class Tx_Themes_Domain_Model_Theme extends Tx_Extbase_DomainObject_AbstractEntit
 
 		$this->extensionName = $extensionName;
 
-		if(t3lib_extMgm::isLoaded($extensionName)) {
+		if(t3lib_extMgm::isLoaded($extensionName, FALSE)) {
 			/**
 			 * set needed path variables
 			 */
@@ -139,14 +139,14 @@ class Tx_Themes_Domain_Model_Theme extends Tx_Extbase_DomainObject_AbstractEntit
 	 * @api
 	 */
 	public function getManualUrl() {
-
+		return '';
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getTSConfig() {
-		if(file_exists($this->getTSConfigAbsPath())) {
+		if(file_exists($this->getTSConfigAbsPath()) && is_file($this->getTSConfigAbsPath())) {
 			return file_get_contents($this->getTSConfigAbsPath());
 		} else {
 			return '';
@@ -173,6 +173,15 @@ class Tx_Themes_Domain_Model_Theme extends Tx_Extbase_DomainObject_AbstractEntit
 	public function getTypoScriptConstantsAbsPath() {
 		return $this->pathTyposcriptConstants;
 	}
+
+	public function getRelativePath() {
+		if(t3lib_extMgm::isLoaded($this->getExtensionName())) {
+			return t3lib_extMgm::siteRelPath($this->getExtensionName());
+		} else {
+			return '';
+		}
+	}
+
 	/**
 	 * Includes static template records (from static_template table) and static template files (from extensions) for the input template record row.
 	 *
@@ -191,7 +200,7 @@ class Tx_Themes_Domain_Model_Theme extends Tx_Extbase_DomainObject_AbstractEntit
 			'uid' => md5($this->getExtensionName())
 		);
 
-		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.relPath     = ' . t3lib_extMgm::siteRelPath($this->getExtensionName());
+		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.relPath     = ' . $this->getRelativePath();
 		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.name        = ' . $this->getExtensionName();
 		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.templatePid = ' . $params['pid'];
 
