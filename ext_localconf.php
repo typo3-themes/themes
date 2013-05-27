@@ -2,10 +2,17 @@
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 /**
+ * Register a page not found handler, overwrites the one in the install tool
+ */
+
+
+$GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'] = 'USER_FUNCTION:Tx_Themes_Hook_PageNotFoundHandlingHook->main';
+
+/**
  * register used hooks
  */
 
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'][]
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'][]
 	= 'Tx_Themes_T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook->main';
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['moduleBodyPostProcess'][]
