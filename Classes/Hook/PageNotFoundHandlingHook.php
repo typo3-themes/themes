@@ -18,6 +18,6 @@ class Tx_Themes_Hook_PageNotFoundHandlingHook {
 	 */
 	function main(&$params, &$pObj) {
 		print_r($params);
-		die('dada');
+		die();
 	}
 }
