@@ -77,9 +77,15 @@ Minimal TYPOScript of a theme
 -----------------------------
 
 If you want to make a theme with less TYPOScript as possible, you may use fluidcontent and fluidpages to make the
-progress easier using this libraries you just need to configure where to find the definitions of pagelayout and elements.
+progress easier.
+Using this libraries you just need to configure where to find the definitions of pagelayout and elements.
 
 This way you can built layouts with nearly no TYPOScript.
+
+Additionally you may use EXT:themes_fces_fluidcontent_basic to use a big and growing library of usefull content
+elements, which can be easily adjusted.
+
+You may find an example in EXT:themes_fces_fluidcontent_basic.
 
 Suggested Extensions and libraries
 ----------------------------------
