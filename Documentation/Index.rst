@@ -61,10 +61,44 @@ Additionally there are some files, which are use the achieve some higher goals.
 Make your own theme
 ===================
 
-To make your own theme you have to choose a templating engine.
+To make your own theme you have to choose a templating engine. You can choose between:
+
+- pure TYPOScript
+- fluidcontent and fluidpages
+- gridelements
+- automaketemplate (not test, but should work)
+- any other templating engine which is controllable with TYPOScript (even with userfunctions)
+
 Additionally you may use ext:themes_builder to generate the structure with just a bunch of clicks
+
+Suggested Extensions and libraries
+----------------------------------
+
+.. table:: Suggested extensions and libraries
+
+   ====================================  ======================================================================
+    extension key                         use case
+   ====================================  ======================================================================
+   themes_builder                         helper to kickstart a new theme
+   themes_fces_fluidcontent_basic         provides some additional and usefall standard fces and pagestructures
+   themes adapter_templavoilaframework    provides an adapter to use tv framework skins with themes
+   themes_adapter_wordpress               provides an adapter to use wordpress themes with EXT:themes
+   themes_settings                        provides an easy to use interface to adjust a theme
+   theme_bootstrap                        an example theme
+   theme_bootstrap_flatly                 an example theme, which depends on EXT:theme_bootstrap
+   ====================================  ======================================================================
 
 
 Compatibility
 =============
 
+Add your own theme model to the repository
+-------------------------------------------
+
+You may create your own model for handling special usecases of themes. This way is possible to e.g. use
+templavoila_framework skins or similar stuff with themes by simulating the needed libs.
+
+You may find examples in the extension EXT:themes_adapter_templavoilaframework or in EXT:themes_adapter_wordpress.
+
+- https://github.com/typo3-themes/themes_adapter_templavoilaframework
+- https://github.com/typo3-themes/themes_adapter_wordpress
