@@ -3,7 +3,11 @@ Documentation for Themes
 ========================================================================================================================
 
 :Author: Kay Strobach
-:Mail: typo3@kay-strobach.de
+:Mail:   typo3@kay-strobach.de
+
+
+.. contents:: Table of Contents
+
 
 
 Understanding Themes
