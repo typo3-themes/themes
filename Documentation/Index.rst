@@ -44,7 +44,7 @@ A theme is basicly a set of TYPOScript files stored in an extension with some ad
 
 Additionally there are some files, which are use the achieve some higher goals.
 
-.. table:: Other needed files
+.. table:: Other usefull files
 
    =================================  ======================================================================
      File                              Function of the file
