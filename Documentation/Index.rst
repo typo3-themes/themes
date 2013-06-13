@@ -85,8 +85,6 @@ This way you can built layouts with nearly no TYPOScript.
 Additionally you may use EXT:themes_fces_fluidcontent_basic to use a big and growing library of usefull content
 elements, which can be easily adjusted.
 
-You may find an example in EXT:themes_fces_fluidcontent_basic.
-
 Suggested Extensions and libraries
 ----------------------------------
 
