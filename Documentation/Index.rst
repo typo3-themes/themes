@@ -18,12 +18,21 @@ possible to allow multiple updateable website themes in a single TYPO3 instance.
 
 As all the themes are packaged as TYPO3 extensions updates can be easily deployed.
 
-
-Technical Background of Themeselector in EXT:Themes
-===================================================
-
 Technically this is solved with some hooks, extbase repositories and one XClass to include the modified TSConfig.
 
+Make your own theme
+===================
+
+Templating strategy
+-------------------
+
+To make your own theme you have to choose a templating engine. You can choose atleast between:
+
+- pure TYPOScript
+- fluidcontent and fluidpages
+- gridelements
+- automaketemplate (not test, but should work)
+- any other templating engine which is controllable with TYPOScript (even with userfunctions)
 
 Structure of a theme
 --------------------
@@ -57,19 +66,20 @@ Additionally there are some files, which are use the achieve some higher goals.
    Configuration/TypoScript            used for compatibility with ext_tables.php
    =================================  ======================================================================
 
+Kickstarting a theme
+--------------------
 
-Make your own theme
-===================
+You may use ext:themes_builder to generate the structure with just a bunch of clicks.
 
-To make your own theme you have to choose a templating engine. You can choose between:
+@todo insert more information about the themes_builder here.
 
-- pure TYPOScript
-- fluidcontent and fluidpages
-- gridelements
-- automaketemplate (not test, but should work)
-- any other templating engine which is controllable with TYPOScript (even with userfunctions)
+Minimal TYPOScript of a theme
+-----------------------------
 
-Additionally you may use ext:themes_builder to generate the structure with just a bunch of clicks
+If you want to make a theme with less TYPOScript as possible, you may use fluidcontent and fluidpages to make the
+progress easier using this libraries you just need to configure where to find the definitions of pagelayout and elements.
+
+This way you can built layouts with nearly no TYPOScript.
 
 Suggested Extensions and libraries
 ----------------------------------
@@ -79,6 +89,7 @@ Suggested Extensions and libraries
    ====================================  ======================================================================
     extension key                         use case
    ====================================  ======================================================================
+   basictemplate                          an ultra lightweight theme, which is based on pure TYPOScript
    themes_builder                         helper to kickstart a new theme
    themes_fces_fluidcontent_basic         provides some additional and usefall standard fces and pagestructures
    themes adapter_templavoilaframework    provides an adapter to use tv framework skins with themes
