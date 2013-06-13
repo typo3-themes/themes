@@ -51,7 +51,7 @@ A theme is basicly a set of TYPOScript files stored in an extension with some ad
    Configuration/Theme/tsconfig.ts     contains the PageTS to configure the pagebranch of a selected theme
    =================================  ======================================================================
 
-Additionally there are some files, which are use the achieve some higher goals.
+Additionally there are some files, which are usefull to achieve some higher goals.
 
 .. table:: Other usefull files
 
