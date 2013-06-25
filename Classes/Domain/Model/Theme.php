@@ -86,6 +86,12 @@ class Tx_Themes_Domain_Model_Theme extends Tx_Extbase_DomainObject_AbstractEntit
 			} else {
 				$this->previewImage      = t3lib_extMgm::extRelPath('themes') . 'Resources/Public/Images/screenshot.gif';
 			}
+
+			if(is_file(t3lib_extMgm::extPath($this->getExtensionName()) . 'Meta/theme.yaml')) {
+				if(class_exists('\Symfony\Component\Yaml\Yaml')) {
+					$this->information = \Symfony\Component\Yaml\Yaml::parse(t3lib_extMgm::extPath($this->getExtensionName()) . 'Meta/theme.yaml');
+				}
+			}
 		}
 	}
 
