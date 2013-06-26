@@ -37,6 +37,9 @@ To make your own theme you have to choose a templating engine. You can choose at
 Structure of a theme
 --------------------
 
+Extensions containing Themes
+............................
+
 A theme is basicly a set of TYPOScript files stored in an extension with some additional meta data.
 
 .. table:: Minimum set of files for a theme
@@ -65,6 +68,10 @@ Additionally there are some files, which are usefull to achieve some higher goal
    ext_tables.php                      usually contains backwards compat stuff to use a theme standalone
    Configuration/TypoScript            used for compatibility with ext_tables.php
    =================================  ======================================================================
+
+Themes - the alternative way of shipping
+........................................
+
 
 Kickstarting a theme
 --------------------
