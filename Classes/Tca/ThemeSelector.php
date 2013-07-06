@@ -34,8 +34,3 @@ class Tx_Themes_Tca_ThemeSelector {
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['EXT:themes/Classes/Tca/ThemeSelector.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['EXT:themes/Classes/Tca/ThemeSelector.php']);
-}
-
-?>
