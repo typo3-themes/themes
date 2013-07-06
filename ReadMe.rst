@@ -9,3 +9,67 @@ Please take a look into Documentation/Index.rst if there is no documentation abo
 This is a current github limitation :(
 
 https://github.com/github/markup/issues/172
+
+
+Notes
+=====
+
+EXT:gridelements (Notes)
+------------------------
+
+EXT:gridelements/Classes/Backend/LayoutSetup.php
+
+#denied elements
+tx_gridelements.setup.<id>.excludeLayoutIds
+
+#TSConfig winning
+tx_gridelements.setup.<id>.overruleRecords
+
+tx_gridelements.setup.tabs4 {
+	# nur toplevel
+	topLevelLayout = 1
+	# xml des flexforms!
+	flexformDS = FILE:EXT: ...
+
+	icon =
+
+	title = Tabs4 Title
+
+	description = ich bin die tolle beschreibung
+
+	frame = 12352345
+
+	config {
+		backend_layout {
+			colCount = 2
+			rowCount = 2
+			rows {
+				1 {
+					columns {
+						1 {
+							name = 0x0
+							colspan = 2
+							colPos = 0
+						}
+					}
+				}
+				2 {
+					columns {
+						1 {
+							name = 0x1
+							colPos = 2
+						}
+						2 {
+							name = 1x1
+							colPos = 1
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+Backendlayouts
+--------------
+
