@@ -1,7 +1,7 @@
 <link href="{f:uri.resource(path:'Stylesheet/ThemeSelector.css', extensionName:'themes')}" rel="stylesheet" />
 
 
-<f:form.hidden name="data[{formField.table}][{formField.row.uid}][tx_themes_skin]" value="{formField.row.tx_themes_skin}" id="tx_themes_skin"/>
+<f:form.hidden name="data[{formField.table}][{formField.row.uid}][tx_themes_selected_theme]" value="{formField.row.tx_themes_selected_theme}" id="tx_themes_selected_theme"/>
 
 
 
@@ -15,7 +15,7 @@
 			<h3>
 				Currently selected skin is
 				<span title="{formField.row.tx_themes_skin}">&quot;{selectedSkin.title}&quot;</span>
-				<span class="t3-icon t3-icon-actions t3-icon-actions-selection t3-icon-selection-delete" onclick="$('tx_themes_skin').value = ''; TBE_EDITOR.submitForm();"> </span>
+				<span class="t3-icon t3-icon-actions t3-icon-actions-selection t3-icon-selection-delete" onclick="$('tx_themes_selected_theme').value = ''; TBE_EDITOR.submitForm();"> </span>
 
 			</h3>
 			<div>
@@ -61,7 +61,7 @@
 				</f:then>
 				<f:else>
 					<li class="previewTheme">
-						<div class="previewImage" onclick="$('tx_themes_skin').value = '{skin.extensionName}'; TBE_EDITOR.submitForm();">
+						<div class="previewImage" onclick="$('tx_themes_selected_theme').value = '{skin.extensionName}'; TBE_EDITOR.submitForm();">
 							<img src="{skin.previewImage}">
 						</div>
 						<div class="previewTitle">

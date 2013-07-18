@@ -26,7 +26,7 @@ class Tx_Themes_Tca_ThemeSelector {
 				'table' => $PA['table'],
 				'row'   => $PA['row'],
 			),
-			'selectedSkin' => $repository->findByUid($PA['row']['tx_themes_skin']),
+			'selectedSkin' => $repository->findByUid($PA['row']['tx_themes_selected_theme']),
 			'selectableSkins' => $repository->findAll(),
 		));
 		return $view->render();

@@ -160,7 +160,7 @@ class Tx_Themes_Domain_Repository_ThemeRepository extends Tx_Extbase_Persistence
 		$template->tt_track = 0;
 		$template->init();
 		$templateRow = $template->ext_getFirstTemplate($pid);
-		return $this->findByUid($templateRow['tx_themes_skin']);
+		return $this->findByUid($templateRow['tx_themes_selected_theme']);
 	}
 
 	public function findByPageOrRootline($pid) {

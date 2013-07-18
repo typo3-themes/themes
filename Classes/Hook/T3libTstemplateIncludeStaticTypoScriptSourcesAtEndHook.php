@@ -20,25 +20,25 @@ class Tx_Themes_T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 		// @todo should be removed once theme_preview is stable ...
 		// it's deprecated to use this hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/templavoila_framework/class.tx_templavoilaframework_lib.php']['assignSkinKey'])) {
-			$_params = array('skinKey' => &$row['tx_themes_skin']);
+			$_params = array('skinKey' => &$row['tx_themes_selected_theme']);
 			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/templavoila_framework/class.tx_templavoilaframework_lib.php']['assignSkinKey'] as $userFunc) {
-				$row['tx_themes_skin'] = t3lib_div::callUserFunction($userFunc, $_params, $ref = NULL);
+				$row['tx_themes_selected_theme'] = t3lib_div::callUserFunction($userFunc, $_params, $ref = NULL);
 			}
 		}
 
 		// Call hook for possible manipulation of current skin.
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'])) {
-			$_params = array('theme' => &$row['tx_themes_skin']);
-			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'] as $userFunc) {
-				$row['tx_themes_skin'] = t3lib_div::callUserFunction($userFunc, $_params, $ref = NULL);
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/theme/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'])) {
+			$_params = array('theme' => &$row['tx_themes_selected_theme']);
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/theme/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'] as $userFunc) {
+				$row['tx_themes_selected_theme'] = t3lib_div::callUserFunction($userFunc, $_params, $ref = NULL);
 			}
 		}
 
 		/**
-		 * @var $themeRepository Tx_Skinselector_Domain_Repository_SkinRepository
+		 * @var $themeRepository Tx_Theme_Domain_Repository_ThemeRepository
 		 */
-		$themeRepository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
-		$theme = $themeRepository->findByUid($row['tx_themes_skin']);
+		$themeRepository = t3lib_div::makeInstance('Tx_Theme_Domain_Repository_ThemeRepository');
+		$theme = $themeRepository->findByUid($row['tx_themes_selected_theme']);
 		if($theme !== NULL) {
 			$theme->addTypoScriptForFe($params, $pObj);
 		}
