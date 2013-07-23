@@ -35,9 +35,9 @@ class Tx_Themes_T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 		}
 
 		/**
-		 * @var $themeRepository Tx_Theme_Domain_Repository_ThemeRepository
+		 * @var $themeRepository Tx_Themes_Domain_Repository_ThemeRepository
 		 */
-		$themeRepository = t3lib_div::makeInstance('Tx_Theme_Domain_Repository_ThemeRepository');
+		$themeRepository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
 		$theme = $themeRepository->findByUid($row['tx_themes_selected_theme']);
 		if($theme !== NULL) {
 			$theme->addTypoScriptForFe($params, $pObj);
