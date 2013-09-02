@@ -91,7 +91,7 @@ You may use ext:themes_builder to generate the structure with just a bunch of cl
 @todo insert more information about the themes_builder here.
 
 Suggested Extensions and libraries
-----------------------------------
+==================================
 
 Urgent hint: the first framework around themes was build with fluidpages / fluidcontent.
 Since the Developer Days in 2013 gridelements is the recommendation due to common sense.
@@ -102,12 +102,26 @@ Since the Developer Days in 2013 gridelements is the recommendation due to commo
    ====================================  ======================================================================
     extension key                         use case
    ====================================  ======================================================================
-   basictemplate                          an ultra lightweight theme, which is based on pure TYPOScript
    themes_builder                         helper to kickstart a new theme
+   themes_settings                        provides an easy to use interface to adjust the TSsettings of a theme
+   gridelements                           structured content elements
+   themes_fces_gridelements_basic         provides some additional and usefall standard fces and pagestructures
+   fluidcontent                           structured content elements in fluid
+   fluidpages                             structured pages in fluid
    themes_fces_fluidcontent_basic         provides some additional and usefall standard fces and pagestructures
-   themes adapter_templavoilaframework    provides an adapter to use tv framework skins with themes
-   themes_adapter_wordpress               provides an adapter to use wordpress themes with EXT:themes
-   themes_settings                        provides an easy to use interface to adjust a theme
+   t3jquery                               centralized JS handling, please ensure, that you just suggest it
+   ====================================  ======================================================================
+
+
+Examples
+========
+
+.. table:: Example themes
+
+   ====================================  ======================================================================
+    extension key                         use case
+   ====================================  ======================================================================
+   basictemplate                          an ultra lightweight theme, which is based on pure TYPOScript
    theme_bootstrap                        an example theme
    theme_bootstrap_flatly                 an example theme, which depends on EXT:theme_bootstrap
    ====================================  ======================================================================
@@ -124,6 +138,15 @@ You may create your own model for handling special usecases of themes. This way 
 templavoila_framework skins or similar stuff with themes by simulating the needed libs.
 
 You may find examples in the extension EXT:themes_adapter_templavoilaframework or in EXT:themes_adapter_wordpress.
+
+.. table:: Adapters to other template structures
+
+   ====================================  ======================================================================
+    extension key                         use case
+   ====================================  ======================================================================
+   themes adapter_templavoilaframework    provides an adapter to use tv framework skins with themes
+   themes_adapter_wordpress               provides an adapter to use wordpress themes with EXT:themes
+   ====================================  ======================================================================
 
 - https://github.com/typo3-themes/themes_adapter_templavoilaframework
 - https://github.com/typo3-themes/themes_adapter_wordpress
