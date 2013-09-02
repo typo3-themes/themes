@@ -95,6 +95,10 @@ elements, which can be easily adjusted.
 Suggested Extensions and libraries
 ----------------------------------
 
+Urgent hint: the first framework around themes was build with fluidpages / fluidcontent.
+Since the Developer Days in 2013 gridelements is the recommendation due to common sense.
+
+
 .. table:: Suggested extensions and libraries
 
    ====================================  ======================================================================
@@ -109,6 +113,7 @@ Suggested Extensions and libraries
    theme_bootstrap                        an example theme
    theme_bootstrap_flatly                 an example theme, which depends on EXT:theme_bootstrap
    ====================================  ======================================================================
+
 
 
 Compatibility
