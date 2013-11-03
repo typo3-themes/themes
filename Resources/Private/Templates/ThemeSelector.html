@@ -1,21 +1,21 @@
 <link href="{f:uri.resource(path:'Stylesheet/ThemeSelector.css', extensionName:'themes')}" rel="stylesheet" />
 
 
-<f:form.hidden name="data[{formField.table}][{formField.row.uid}][tx_themes_selected_theme]" value="{formField.row.tx_themes_selected_theme}" id="tx_themes_selected_theme"/>
+<f:form.hidden name="data[{formField.table}][{formField.row.uid}][tx_themes_skin]" value="{formField.row.tx_themes_skin}" id="tx_themes_skin"/>
 
 
 
 <div class="tx_themes_themeselector">
 	<h2>
-		<f:count subject="{selectableSkins}" />
+		<f:count subject="{selectableThemes}" />
 		Selectable Skins
 	</h2>
-	<f:if condition="{selectedSkin}">
+	<f:if condition="{selectedTheme}">
 		<f:then>
 			<h3>
 				Currently selected skin is
-				<span title="{formField.row.tx_themes_skin}">&quot;{selectedSkin.title}&quot;</span>
-				<span class="t3-icon t3-icon-actions t3-icon-actions-selection t3-icon-selection-delete" onclick="$('tx_themes_selected_theme').value = ''; TBE_EDITOR.submitForm();"> </span>
+				<span title="{formField.row.tx_themes_skin}">&quot;{selectedTheme.title}&quot;</span>
+				<span class="t3-icon t3-icon-actions t3-icon-actions-selection t3-icon-selection-delete" onclick="$('tx_themes_skin').value = ''; TBE_EDITOR.submitForm();"> </span>
 
 			</h3>
 			<div>
@@ -24,23 +24,23 @@
 						<div class="previewDescription">
 							<p>
 								<strong>
-									{selectedSkin.title}
+									{selectedTheme.title}
 								</strong>
-								- (EXT:{selectedSkin.extensionName})
+								- (EXT:{selectedTheme.extensionName})
 							</p>
 							<small>
 								by
 								<a href="mailto:{selectedSkin.author.email}">
-									{selectedSkin.author.name}
+									{selectedTheme.author.name}
 								</a>
-								({selectedSkin.author.company})
+								({selectedTheme.author.company})
 							</small>
 							<p>
-								{selectedSkin.description}
+								{selectedTheme.description}
 							</p>
 						</div>
 						<div class="previewImage">
-							<img src="{selectedSkin.previewImage}">
+							<img src="{selectedTheme.previewImage}">
 						</div>
 					</li>
 				</ul>
@@ -54,25 +54,25 @@
 
 
 	<ul class="tx_skinselector_availableThemes">
-		<f:for each="{selectableSkins}" as="skin" key="skinNumber">
-			<f:if condition="{selectedSkin} == {skin}">
+		<f:for each="{selectableThemes}" as="theme" key="themeNumber">
+			<f:if condition="{selectedTheme} == {theme}">
 				<f:then>
 
 				</f:then>
 				<f:else>
 					<li class="previewTheme">
-						<div class="previewImage" onclick="$('tx_themes_selected_theme').value = '{skin.extensionName}'; TBE_EDITOR.submitForm();">
-							<img src="{skin.previewImage}">
+						<div class="previewImage" onclick="$('tx_themes_skin').value = '{theme.extensionName}'; TBE_EDITOR.submitForm();">
+							<img src="{theme.previewImage}">
 						</div>
 						<div class="previewTitle">
-							<b>{skin.title}</b>
+							<b>{theme.title}</b>
 						</div>
 						<div class="previewOverlay">
-							<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-select" onclick="$('tx_themes_skin').value = '{skin.extensionName}'; TBE_EDITOR.submitForm();">&nbsp;</span>
+							<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-select" onclick="$('tx_themes_skin').value = '{theme.extensionName}'; TBE_EDITOR.submitForm();">&nbsp;</span>
 							<span class="t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-documentation">&nbsp;</span>
 							<span class="t3-icon t3-icon-apps t3-icon-apps-clipboard t3-icon-clipboard-images">&nbsp;</span>
 							<p>
-								{skin.description}
+								{theme.description}
 							</p>
 						</div>
 					</li>

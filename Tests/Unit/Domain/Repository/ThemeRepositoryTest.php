@@ -1,13 +1,22 @@
 <?php
 
-class Tx_Themes_Domain_Repository_ThemeRepositoryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+namespace KayStrobach\Tests\Unit\Domain\Repository;
+
+use KayStrobach\Themes\Domain\Repository\ThemeRepository;
+use TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase;
+
+/**
+ * Class ThemeRepositoryTest
+ * @package KayStrobach\Tests\Unit\Domain\Repository
+ */
+class ThemeRepositoryTest extends BaseTestCase {
 	/**
-	 * @var Tx_Themes_Domain_Repository_ThemeRepository
+	 * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository
 	 */
 	protected $fixture;
 
 	public function setUp() {
-		$this->fixture = new Tx_Themes_Domain_Repository_ThemeRepository();
+		$this->fixture = new ThemeRepository();
 	}
 
 	public function tearDown() {
@@ -31,6 +40,28 @@ class Tx_Themes_Domain_Repository_ThemeRepositoryTest extends Tx_Extbase_Tests_U
 			'array',
 			gettype($this->fixture->findAll()),
 			'themes does not contain an array of themes'
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkForOldHookUsage() {
+		$this->assertSame(
+			FALSE,
+			is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init']),
+			'One of your extensions is still using the old hook, please repair that'
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkForNewHookUsage() {
+		$this->assertSame(
+			TRUE,
+			is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init']),
+			'You have no theme provider registered, themes itself should register one!'
 		);
 	}
 }

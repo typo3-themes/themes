@@ -1,11 +1,16 @@
 <?php
 
+namespace KayStrobach\Themes\Hook;
+
 /**
  * @Todo implement a default page not found handler, which allows the user to init the page easily !
  *
+ * check wether the page is initialized, of not allow login and get started up easily,
+ * if configured show the theme error page.
+ *
  */
 
-class Tx_Themes_Hook_PageNotFoundHandlingHook {
+class PageNotFoundHandlingHook {
 	/**
 	 * params consists of the following keys!
 	 *

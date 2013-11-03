@@ -1,6 +1,15 @@
 <?php
 
-class ux_t3lib_TSparser_TSconfig extends t3lib_TSparser_TSconfig{
+namespace KayStrobach\Themes\XClass;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+/**
+ * Class ux_t3lib_TSparser_TSconfig
+ *
+ * @todo check if it's working
+ */
+
+class TsConfigParser extends \TYPO3\CMS\Backend\Configuration\TsConfigParser {
 
 	/**
 	 * Parses the passed TS-Config using conditions and caching
@@ -15,9 +24,9 @@ class ux_t3lib_TSparser_TSconfig extends t3lib_TSparser_TSconfig{
 	public function parseTSconfig($TStext, $type, $id = 0, array $rootLine = array()) {
 		// @todo add caching here!
 		/**
-		 * @var Tx_Themes_Domain_Repository_ThemeRepository
+		 * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository
 		 */
-		$themeRepository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
+		$themeRepository = GeneralUtility::makeInstance('KayStrobach\Themes\\Domain\\Repository\\ThemeRepository');
 		$theme = $themeRepository->findByPageOrRootline($id);
 		if($theme !== NULL) {
 			$buffer = $theme->getTSConfig() . "\n\n[GLOBAL]\n\n" . $TStext;

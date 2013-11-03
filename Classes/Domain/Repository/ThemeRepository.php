@@ -1,6 +1,17 @@
 <?php
 
-class Tx_Themes_Domain_Repository_ThemeRepository extends Tx_Extbase_Persistence_Repository implements t3lib_Singleton {
+namespace KayStrobach\Themes\Domain\Repository;
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\Exception;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
+use TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme;
+
+class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	/**
 	 * Objects of this repository
 	 *
@@ -9,12 +20,28 @@ class Tx_Themes_Domain_Repository_ThemeRepository extends Tx_Extbase_Persistence
 	protected $addedObjects;
 
 	function __construct() {
+		/**
+		 * @var \TYPO3\CMS\Core\Log\LogManager $logger
+		 */
+		$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
+
 		// hook to recognize themes, this is the magic point, why it's possible to support so many theme formats and types :D
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init']))	{
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'])) {
 				$hookParameters = array();
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'] as $hookFunction)	{
-					t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
+					$logger->getLogger()->warning('Theme loader found ' . $hookFunction . ' - sadly this loader uses the old hook, please fix this, should be KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository nowThem');
+					GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
+				}
+			}
+		}
+
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init']))	{
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'])) {
+				$hookParameters = array();
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'] as $hookFunction)	{
+					$logger->getLogger()->warning('Theme loader found ' . $hookFunction);
+					GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
 				}
 			}
 		}
@@ -23,7 +50,7 @@ class Tx_Themes_Domain_Repository_ThemeRepository extends Tx_Extbase_Persistence
 	/**
 	 * Adds an object to this repository.
 	 *
-	 * @param Tx_Themes_Domain_Model_Theme $object The object to add
+	 * @param \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme $object The object to add
 	 * @return void
 	 * @api
 	 */
@@ -35,37 +62,40 @@ class Tx_Themes_Domain_Repository_ThemeRepository extends Tx_Extbase_Persistence
 	/**
 	 * Removes an object from this repository.
 	 *
-	 * @param object $object The object to remove
+	 * @param \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme $object The object to remove
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception
 	 * @return void
 	 * @api
 	 */
 	public function remove($object)
 	{
-		// TODO: Implement remove() method.
+		throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
 	}
 
 	/**
 	 * Replaces an object by another.
 	 *
-	 * @param object $existingObject The existing object
-	 * @param object $newObject The new object
+	 * @param \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme $existingObject The existing object
+	 * @param \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme $newObject The new object
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception
 	 * @return void
 	 * @api
 	 */
 	public function replace($existingObject, $newObject)
 	{
-		// TODO: Implement replace() method.
+		throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
 	}
 
 	/**
 	 * Replaces an existing object with the same identifier by the given object
 	 *
-	 * @param object $modifiedObject The modified object
+	 * @param \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme $modifiedObject The modified object
 	 * @api
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception
 	 */
 	public function update($modifiedObject)
 	{
-		// TODO: Implement update() method.
+		throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
 	}
 
 	/**
@@ -83,11 +113,12 @@ class Tx_Themes_Domain_Repository_ThemeRepository extends Tx_Extbase_Persistence
 	 * Returns an array with objects remove()d from the repository that
 	 * had been persisted to the storage layer before.
 	 *
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception
 	 * @return array
 	 */
 	public function getRemovedObjects()
 	{
-		// TODO: Implement getRemovedObjects() method.
+		throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
 	}
 
 	/**
@@ -128,7 +159,7 @@ class Tx_Themes_Domain_Repository_ThemeRepository extends Tx_Extbase_Persistence
 	 * Finds an object matching the given identifier.
 	 *
 	 * @param int $uid The identifier of the object to find
-	 * @return Tx_Themes_Domain_Model_Theme The matching object if found, otherwise NULL
+	 * @return \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme The matching object if found, otherwise NULL
 	 * @api
 	 */
 	public function findByUid($uid)
@@ -156,15 +187,15 @@ class Tx_Themes_Domain_Repository_ThemeRepository extends Tx_Extbase_Persistence
 	 * @return mixed
 	 */
 	public function findByPageId($pid) {
-		$template = t3lib_div::makeInstance("t3lib_tsparser_ext");
+		$template = GeneralUtility::makeInstance("t3lib_tsparser_ext");
 		$template->tt_track = 0;
 		$template->init();
 		$templateRow = $template->ext_getFirstTemplate($pid);
-		return $this->findByUid($templateRow['tx_themes_selected_theme']);
+		return $this->findByUid($templateRow['tx_themes_skin']);
 	}
 
 	public function findByPageOrRootline($pid) {
-		$rootline = t3lib_BEfunc::BEgetRootLine($pid);
+		$rootline = BackendUtility::BEgetRootLine($pid);
 		foreach($rootline as $page) {
 			$theme = $this->findByPageId($page['uid']);
 			if($theme !== NULL) {
@@ -183,34 +214,37 @@ class Tx_Themes_Domain_Repository_ThemeRepository extends Tx_Extbase_Persistence
 	 * )
 	 *
 	 * @param array $defaultOrderings The property names to order by
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception
 	 * @return void
 	 * @api
 	 */
 	public function setDefaultOrderings(array $defaultOrderings)
 	{
-		// TODO: Implement setDefaultOrderings() method.
+		throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
 	}
 
 	/**
 	 * Sets the default query settings to be used in this repository
 	 *
-	 * @param Tx_Extbase_Persistence_QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception
 	 * @return void
 	 * @api
 	 */
-	public function setDefaultQuerySettings(Tx_Extbase_Persistence_QuerySettingsInterface $defaultQuerySettings)
+	public function setDefaultQuerySettings(QuerySettingsInterface $defaultQuerySettings)
 	{
-		// TODO: Implement setDefaultQuerySettings() method.
+		throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
 	}
 
 	/**
 	 * Returns a query for objects of this repository
 	 *
-	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 * @api
 	 */
 	public function createQuery()
 	{
-		// TODO: Implement createQuery() method.
+		throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
 	}
 }

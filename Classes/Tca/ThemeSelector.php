@@ -1,10 +1,12 @@
 <?php
 
+namespace KayStrobach\Themes\Tca;
+
 /**
  *
  */
 
-class Tx_Themes_Tca_ThemeSelector {
+class ThemeSelector {
 
 	/**
 	 * Displays the Theme selector as a TCEForm's userfunc. Handles display of
@@ -15,19 +17,22 @@ class Tx_Themes_Tca_ThemeSelector {
 	 * @return	string
 	 */
 	public function display($PA, $pObj) {
-		$repository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
+		/**
+		 * @var Tx_Themes_Domain_Repository_ThemeRepository $repository
+		 */
+		$repository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
 
-		$view = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
+		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Fluid_View_StandaloneView');
 
 		$view->setFormat('html');
-		$view->setTemplatePathAndFilename(t3lib_div::getFileAbsFileName('EXT:themes/Resources/Private/Templates/ThemeSelector.html'));
+		$view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:themes/Resources/Private/Templates/ThemeSelector.html'));
 		$view->assignMultiple(array(
 			'formField' => array(
 				'table' => $PA['table'],
 				'row'   => $PA['row'],
 			),
-			'selectedSkin' => $repository->findByUid($PA['row']['tx_themes_selected_theme']),
-			'selectableSkins' => $repository->findAll(),
+			'selectedTheme' => $repository->findByUid($PA['row']['tx_themes_skin']),
+			'selectableThemes' => $repository->findAll(),
 		));
 		return $view->render();
 	}

@@ -1,6 +1,10 @@
 <?php
 
-class Tx_Themes_TemplateModuleBodyPostProcessHook {
+namespace KayStrobach\Themes\Hook;
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+class TemplateModuleBodyPostProcessHook {
 	/**
 	 * $params = array(
 	 *     'moduleTemplateFilename' => &$this->moduleTemplateFilename,
@@ -22,14 +26,15 @@ class Tx_Themes_TemplateModuleBodyPostProcessHook {
 		if(($_GET['SET']['function'] === 'tx_tstemplateinfo' || !$_GET['SET']['function'])
 			&& ($params['moduleTemplateFilename'] === 'templates/tstemplate.html')) {
 
-			$repository = t3lib_div::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
+			$repository = GeneralUtility::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
 
-			$view = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
+			//@todo namespace?!
+			$view = GeneralUtility::makeInstance('Tx_Fluid_View_StandaloneView');
 
 			$view->setFormat('html');
-			$view->setTemplatePathAndFilename(t3lib_div::getFileAbsFileName('EXT:themes/Resources/Private/Templates/TsTemplateThemeData.html'));
+			$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:themes/Resources/Private/Templates/TsTemplateThemeData.html'));
 			$view->assignMultiple(array(
-				'selectedTheme' => $repository->findByPageId(t3lib_div::_GP('id')),
+				'selectedTheme' => $repository->findByPageId(GeneralUtility::_GP('id')),
 				'selectableThemes' => $repository->findAll(),
 			));
 

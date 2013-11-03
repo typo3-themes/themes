@@ -1,8 +1,17 @@
 <?php
 
-class Tx_Themes_Domain_Model_ThemeTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+namespace KayStrobach\Tests\Unit\Domain\Model;
+
+use KayStrobach\Themes\Domain\Model\Theme;
+use TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase;
+
+/**
+ * Class ThemeTest
+ * @package KayStrobach\Tests\Unit\Domain\Model
+ */
+class ThemeTest extends BaseTestCase {
 	/**
-	 * @var Tx_Themes_Domain_Model_Theme
+	 * @var \KayStrobach\Themes\Domain\Model\Theme
 	 */
 	protected $fixture;
 
