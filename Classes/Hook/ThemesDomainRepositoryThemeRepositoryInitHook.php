@@ -38,8 +38,8 @@ class ThemesDomainRepositoryThemeRepositoryInitHook {
 	function init(&$params, $pObj) {
 		// exclude extensions, which are not worth to check them
 		$extensionsToCheck = array_diff(
-			explode(',', ExtensionManagementUtility::getEnabledExtensionList()),
-			explode(',', ExtensionManagementUtility::getRequiredExtensionList()),
+			ExtensionManagementUtility::getLoadedExtensionListArray(),
+			ExtensionManagementUtility::getRequiredExtensionListArray(),
 			$this->ignoredExtensions,
 			scandir(PATH_typo3 . 'sysext')
 		);
