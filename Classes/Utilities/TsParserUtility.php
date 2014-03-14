@@ -157,8 +157,8 @@ class TsParserUtility implements SingletonInterface{
 			$this->tsParser->tt_track = 0; // Do not log time-performance information
 			$this->tsParser->init();
 
-			$this->tsParser->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate_ceditor');
-			$this->tsParser->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'] . ExtensionManagementUtility::extRelPath('tstemplate_ceditor');
+			$this->tsParser->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate');
+			$this->tsParser->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'] . ExtensionManagementUtility::extRelPath('tstemplate');
 
 			$this->tsParserTplRow = $this->tsParser->ext_getFirstTemplate($pageId, $template_uid);
 
