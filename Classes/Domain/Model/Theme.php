@@ -98,8 +98,8 @@ class Theme extends AbstractTheme {
 		);
 
 		// @todo resources Path / private Path
-		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.resourcesPrivatePath = ' . $this->getRelativePath();
-		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.resourcesPublicPath  = ' . $this->getRelativePath();
+		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.resourcesPrivatePath = ' . $this->getRelativePath() . 'Resources/Private/';
+		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.resourcesPublicPath  = ' . $this->getRelativePath() . 'Resources/Public/';
 		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.relativePath         = ' . $this->getRelativePath();
 		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.name                 = ' . $this->getExtensionName();
 		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.templatePageId       = ' . $params['pid'];
