@@ -3,13 +3,6 @@
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 /**
- * Allow legacy code, will be removed lateron
- */
-
-	class_alias('\\KayStrobach\\Themes\\Domain\\Model\\Theme',                'Tx_Themes_Domain_Model_Theme');
-	class_alias('\\KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository', 'Tx_Themes_Domain_Repository_ThemeRepository');
-
-/**
  * Register hook to inject themes
  */
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'][]
