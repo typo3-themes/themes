@@ -7,4 +7,7 @@ jQuery(document).ready(function() {
 		jQuery(this).parents('tr').addClass('defaultValueIsSelected');
 		jQuery(this).parents('tr').find('input[type="checkbox"]').removeAttr('checked');
 	});
+	jQuery('#saveIcon').click(function() {
+		jQuery('#saveableForm').submit();
+	});
 });
