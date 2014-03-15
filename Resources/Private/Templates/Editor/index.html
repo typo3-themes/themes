@@ -11,39 +11,41 @@
 
 
 
-		<div class="tx_themes_themeselector" style="border:1px solid black;">
+		<div class="tx_themes_themeselector">
 			<f:if condition="{selectedTheme}">
 				<f:then>
 					<h3>
 						Currently selected skin is
-						<span title="{formField.row.tx_themes_skin}">&quot;{selectedSkin.title}&quot;</span>
+						<span title="{formField.row.tx_themes_skin}">&quot;{selectedTheme.title}&quot;</span>
 						<span class="t3-icon t3-icon-actions t3-icon-actions-selection t3-icon-selection-delete" onclick="$('tx_themes_skin').value = ''; TBE_EDITOR.submitForm();"> </span>
 
 					</h3>
 					<div>
 						<ul>
 							<li class="previewTheme selectedTheme">
-								<div class="previewDescription">
-									<p>
-										<strong>
-											{selectedTheme.title}
-										</strong>
-										- (EXT:{selectedTheme.extensionName})
-									</p>
-									<small>
-										by
-										<a href="mailto:{selectedSkin.author.email}">
-											{selectedTheme.author.name}
-										</a>
-										({selectedTheme.author.company})
-									</small>
-									<p>
-										{selectedTheme.description}
-									</p>
-								</div>
-								<div class="previewImage">
-									<img src="{selectedTheme.previewImage}">
-								</div>
+								<f:link.action action="">
+									<div class="previewDescription">
+										<p>
+											<strong>
+												{selectedTheme.title}
+											</strong>
+											- (EXT:{selectedTheme.extensionName})
+										</p>
+										<small>
+											by
+											<a href="mailto:{selectedSkin.author.email}">
+												{selectedTheme.author.name}
+											</a>
+											({selectedTheme.author.company})
+										</small>
+										<p>
+											{selectedTheme.description}
+										</p>
+									</div>
+									<div class="previewImage">
+										<img src="{selectedTheme.previewImage}">
+									</div>
+								</f:link.action>
 							</li>
 						</ul>
 					</div>
