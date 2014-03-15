@@ -19,17 +19,15 @@ class Theme extends AbstractTheme {
 			/**
 			 * set needed path variables
 			 */
-			$path                          = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Configuration/Theme/';
-			$this->pathTyposcript          = $path . 'setup.ts';
-			$this->pathTyposcriptConstants = $path . 'constants.ts';
-			$this->pathTSConfig            = $path . 'tsconfig.ts';
+			$path                          = ExtensionManagementUtility::extPath($this->getExtensionName());
+			$this->pathTyposcript          = $path . 'Configuration/TypoScript/setup.ts';
+			$this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.ts';
+			$this->pathTSConfig            = $path . 'Configuration/PageTS/tsconfig.ts';
 
 			$this->importExtEmConf();
 
-			if(is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Resources/Public/Images/screenshot.png')) {
-				$this->previewImage      = ExtensionManagementUtility::extRelPath($this->getExtensionName()) . 'Resources/Public/Images/screenshot.png';
-			} elseif (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Resources/Public/Images/screenshot.gif')) {
-				$this->previewImage      = ExtensionManagementUtility::extRelPath($this->getExtensionName()) . 'Resources/Public/Images/screenshot.gif';
+			if(is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screens/screenshot.png')) {
+				$this->previewImage      = ExtensionManagementUtility::extRelPath($this->getExtensionName()) . 'Meta/Screens/screenshot.png';
 			} else {
 				$this->previewImage      = ExtensionManagementUtility::extRelPath('themes') . 'Resources/Public/Images/screenshot.gif';
 			}
