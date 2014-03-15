@@ -13,4 +13,13 @@ jQuery(document).ready(function() {
 	jQuery('#saveIcon').click(function() {
 		jQuery('#saveableForm').submit();
 	});
+	jQuery('input.colorselector').ColorPicker({
+		onSubmit: function(hsb, hex, rgb, el) {
+			$(el).val(hex);
+			$(el).ColorPickerHide();
+		},
+		onBeforeShow: function () {
+			$(this).ColorPickerSetColor(this.value);
+		}
+	});
 });
