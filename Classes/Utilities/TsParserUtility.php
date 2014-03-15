@@ -129,6 +129,9 @@ class TsParserUtility implements SingletonInterface{
 			$recData = array();
 			$recData['sys_template'][$saveId]['constants'] = implode($this->tsParser->raw, chr(10));
 			// Create new  tce-object
+			/**
+			 * @var \TYPO3\CMS\Core\DataHandling\DataHandler $tce
+			 */
 			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->stripslashes_values = 0;
 
@@ -140,7 +143,7 @@ class TsParserUtility implements SingletonInterface{
 			// Saved the stuff
 			$tce->process_datamap();
 			// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
-			$tce->clear_cacheCmd('all');
+			$tce->clear_cacheCmd('pages');
 			unset($user);
 		}
 	}
