@@ -41,10 +41,9 @@ class EditorController extends ActionController {
 	}
 
 	public function indexAction() {
-
 		$this->view->assignMultiple(
 			array(
-				'selectedTheme'    => '',
+				'selectedTheme'    => $this->themeRepository->findByPageId($this->id),
 				'selectableThemes' => $this->themeRepository->findAll(),
 				'categories'       => $this->renderFields($this->tsParser, $this->id),
 				'pid'              => $this->id
@@ -54,9 +53,10 @@ class EditorController extends ActionController {
 
 	/**
 	 * @param \KayStrobach\Themes\Domain\Model\Theme $theme
+	 * @param integer $pid
 	 */
-	public function changeTheme(Theme $theme) {
-
+	public function changeTheme(Theme $theme, $pid) {
+		
 	}
 
 	/**
