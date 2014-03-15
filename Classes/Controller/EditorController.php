@@ -19,6 +19,12 @@ class EditorController extends ActionController {
 	protected $id = 0;
 
 	/**
+	 * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository
+	 * @inject
+	 */
+	protected $themeRepository;
+
+	/**
 	 * @var TsParserUtility
 	 */
 	protected $tsParser = NULL;
@@ -35,16 +41,13 @@ class EditorController extends ActionController {
 	}
 
 	public function indexAction() {
-		/**
-		 * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository $repository
-		 */
-		$repository = GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
 
 		$this->view->assignMultiple(
 			array(
 				'selectedTheme'    => '',
-				'selectableThemes' => $repository->findAll(),
+				'selectableThemes' => $this->themeRepository->findAll(),
 				'categories'       => $this->renderFields($this->tsParser, $this->id),
+				'pid'              => $this->id
 			)
 		);
 	}
@@ -57,10 +60,16 @@ class EditorController extends ActionController {
 	}
 
 	/**
-	 * @param array $properties
+	 * @param array $data
+	 * @param array $check
+	 * @param integer $pid
 	 */
-	public function updateAction(array $properties) {
-
+	public function updateAction(array $data, array $check, $pid) {
+		/**
+		 * @todo check wether user has access to page BEFORE SAVE!
+		 */
+		$this->tsParser->applyToPid($pid, $data, $check);
+		$this->redirect('index');
 	}
 
 	/**
@@ -76,7 +85,7 @@ class EditorController extends ActionController {
 			asort($categorie);
 			//@todo add dynamic filter
 			if(is_array($categorie)) {
-				$title = $GLOBALS['LANG']->sL('LLL:EXT:sitemgr_template/Resources/Private/Language/Constants/locallang.xml:cat_' . $categorieName);
+				$title = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/Constants/locallang.xml:cat_' . $categorieName);
 				if(strlen($title) === 0) {
 					$title = $categorieName;
 				}

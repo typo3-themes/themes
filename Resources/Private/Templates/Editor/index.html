@@ -89,6 +89,7 @@
 	<hr style="clear:both;">
 
 	<f:form action="update" enctype="multipart/form-data" id="saveableForm">
+		<f:form.hidden name="pid" value="{pid}" />
 		<f:for each="{categories}" as="category">
 			<f:if condition="{category.items}">
 
@@ -112,7 +113,7 @@
 						</td>
 					</tr>
 					<f:for each="{category.items}" as="item">
-						<tr  title="{item.name}" class="constantLine db_list_normal {f:if(condition:'{0:item.default_value} == {0:item.value}', then:'defaultValueIsSelected')}">
+						<tr  title="{item.name}" class="constantLine db_list_normal {f:if(condition:'{item.isDefault}', then:'defaultValueIsSelected')}">
 							<td nowrap="nowrap">
 								<div class="showOnDefault">
 									<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open">&nbsp;</span>
@@ -120,7 +121,7 @@
 								<div class="hideOnDefault">
 									<span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-delete">&nbsp;</span>
 								</div>
-								<f:form.checkbox name="check[{item.name}]" value="" class="hidden"/>
+								<f:form.hidden name="check[{item.name}]" value="{f:if(condition:'{item.isDefault}', then:'', else:'checked')}" class="hidden"/>
 							</td>
 							<td>
 								<f:render partial="FormFields/{item.typeCleaned}" arguments="{field: item}"/>

@@ -1,6 +1,13 @@
 <div class="showOnDefault">
-	<span class="field_default">{field.default_value}</span>
+	<f:if condition="{field.value}">
+		<f:then>
+			<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-granted">&nbsp;</span>
+		</f:then>
+		<f:else>
+			<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-denied">&nbsp;</span>
+		</f:else>
+	</f:if>
 </div>
 <div class="hideOnDefault">
-	<f:form.textfield name="data[{field.name}]" value="{field.value}" />
+	<f:form.checkbox name="data[{field.name}]" value="1" checked="{field.value}" />
 </div>

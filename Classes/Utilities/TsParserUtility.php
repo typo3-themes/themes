@@ -36,16 +36,26 @@ class TsParserUtility implements SingletonInterface{
 		$return = $this->tsParserConstants;
 		foreach($return as $key => $field) {
 
-			$return[$key]['isDefault'] = ($field['default_value'] === $field['default_value']);
+			$return[$key]['isDefault'] = ($field['value'] === $field['default_value']);
 
-			if($field['type'] === 'int') {
+			if($field['type'] === 'int+') {
 				$return[$key]['typeCleaned'] = 'Int';
-			} elseif($field['type'] === 'int+') {
+			} elseif(substr($field['type'],0,3) === 'int') {
 				$return[$key]['typeCleaned'] = 'Int';
+				$return[$key]['range'] = substr($field['type'], 3);
 			} elseif($field['type'] === 'small') {
 				$return[$key]['typeCleaned'] = 'Text';
 			} elseif($field['type'] === 'color') {
 				$return[$key]['typeCleaned'] = 'Color';
+			} elseif($field['type'] === 'boolean') {
+				$return[$key]['typeCleaned'] = 'Boolean';
+			} elseif($field['type'] === 'string') {
+				$return[$key]['typeCleaned'] = 'String';
+			} elseif(substr($field['type'], 0,7) === 'options') {
+				$return[$key]['typeCleaned'] = 'Options';
+				$return[$key]['options'] = explode(',', substr($field['type'], 8,-1));
+			} elseif($field['type'] === '') {
+				$return[$key]['typeCleaned'] = 'String';
 			} else {
 				$return[$key]['typeCleaned'] = 'Fallback';
 			}
