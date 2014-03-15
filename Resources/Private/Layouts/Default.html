@@ -1,11 +1,31 @@
-<f:be.container>
-	<div id="typo3-docheader">
-		<div class="typo3-docheader-functions">&nbsp;</div>
-		<div class="typo3-docheader-buttons">&nbsp;</div>
+<f:be.container
+		pageTitle="plimm"
+		loadJQuery="1"
+		includeCssFiles="{
+			0: '../typo3conf/ext/themes/Resources/Public/Stylesheet/BackendModule.css'
+		}"
+		includeJsFiles="{
+			0: '../typo3conf/ext/themes/Resources/Public/JavaScript/BackendModule.js'
+		}"
+		>
+	<div class="typo3-fullDoc">
+		<div id="typo3-docheader">
+			<div class="typo3-docheader-functions">
+				<div class="left">
+					&nbsp;
+				</div>
+				<div class="right">
+					<f:be.pagePath /><f:be.pageInfo />
+				</div>
+			</div>
+			<div class="typo3-docheader-buttons">
+
+			</div>
+		</div>
 	</div>
 
 	<div id="typo3-docbody">
-		<div id="typo3-inner-docbody" class="typo3-aboutmodules-inner-docbody">
+		<div id="typo3-inner-docbody">
 			<f:render section="Content" />
 		</div>
 	</div>

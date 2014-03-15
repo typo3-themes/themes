@@ -91,18 +91,46 @@
 	<f:form action="update" enctype="multipart/form-data">
 		<f:for each="{categories}" as="category">
 			<f:if condition="{category.items}">
-				<h2>{category.title}</h2>
-				<f:for each="{category.items}" as="item">
-					<hr>
-					<label for="{item.name}">{item.label}</label>
-					<div class="formfield-wrapper {f:if(condition: '{item.isDefault}', then:'showDefault')}">
-						<div class="formfield-field">
-							<f:form.checkbox name="{item.name}" value="" />
-							<f:render partial="FormFields/{item.typeCleaned}" arguments="{field: item}"/>
-							<span>{item.default_value}</span>
-						</div>
-					</div>
-				</f:for>
+
+				<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist" style="max-width: 100%;">
+					<col style="width:5%" />
+					<col style="width:50%" />
+					<col style="width:45%" />
+					<tr class="c-table-row-spacer"><td nowrap="nowrap" class="col-icon"><a href="#">&nbsp;</a></td>
+						<td nowrap="nowrap" class="col-icon">
+							<img src="clear.gif" width="1" height="8" alt="">
+						</td>
+						<td nowrap="nowrap" class="">
+							<img src="clear.gif" width="230" height="1" alt="">
+						</td>
+						<td nowrap="nowrap" class="" colspan="10"></td>
+					</tr>
+					<tr class="t3-row-header">
+						<td nowrap="nowrap" class="col-icon"></td>
+						<td nowrap="nowrap" class="" colspan="2">
+							{category.title}
+						</td>
+					</tr>
+					<f:for each="{category.items}" as="item">
+						<tr  title="{item.name}" class="constantLine db_list_normal {f:if(condition:'{0:item.default_value} == {0:item.value}', then:'defaultValueIsSelected')}">
+							<td nowrap="nowrap">
+								<div class="showOnDefault">
+									<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open">&nbsp;</span>
+								</div>
+								<div class="hideOnDefault">
+									<span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-delete">&nbsp;</span>
+								</div>
+								<f:form.checkbox name="check[{item.name}]" value="" class="hidden"/>
+							</td>
+							<td>
+								<f:render partial="FormFields/{item.typeCleaned}" arguments="{field: item}"/>
+							</td>
+							<td class="">
+								<label for="{item.name}">{item.label}</label>
+							</td>
+						</tr>
+					</f:for>
+				</table>
 			</f:if>
 		</f:for>
 	</f:form>

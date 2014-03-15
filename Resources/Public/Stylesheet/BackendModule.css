@@ -1,0 +1,19 @@
+.showOnDefault {
+	display: none;
+}
+.hideOnDefault {
+	display: inline-block;
+}
+
+.defaultValueIsSelected .showOnDefault {
+	display: inline-block;
+}
+.defaultValueIsSelected .hideOnDefault {
+	display: none;
+}
+.hidden {
+	display: none;
+}
+tr.constantLine {
+	height: 40px;
+}
