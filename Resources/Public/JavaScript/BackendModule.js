@@ -13,13 +13,17 @@ jQuery(document).ready(function() {
 	jQuery('#saveIcon').click(function() {
 		jQuery('#saveableForm').submit();
 	});
-	jQuery('input.colorselector').ColorPicker({
-		onSubmit: function(hsb, hex, rgb, el) {
-			$(el).val(hex);
-			$(el).ColorPickerHide();
-		},
-		onBeforeShow: function () {
-			$(this).ColorPickerSetColor(this.value);
-		}
-	});
+	jQuery('input.colorselector').each(function() {
+		var inputElement = jQuery(this);
+		jQuery(this).ColorPicker({
+			onChange: function(hsb, hex, rgb, el) {
+				jQuery(inputElement ).attr('value', '#' + hex);
+				jQuery(inputElement).parent().find('.typo3-tstemplate-ceditor-colorblock').css('background-color', '#' + hex);
+				jQuery(el).ColorPickerHide();
+			},
+			onBeforeShow: function () {
+				jQuery(this).ColorPickerSetColor(this.value);
+			}
+		});
+	})
 });
