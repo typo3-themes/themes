@@ -30,6 +30,11 @@ class EditorController extends ActionController {
 	protected $tsParser = NULL;
 
 	/**
+	 * external config
+	 */
+	protected $externalConfig = array();
+
+	/**
 	 * Initializes the controller before invoking an action method.
 	 *
 	 * @return void
@@ -38,6 +43,15 @@ class EditorController extends ActionController {
 		#$this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xml');
 		$this->id = intval(GeneralUtility::_GET('id'));
 		$this->tsParser = new TsParserUtility();
+
+		$this->externalConfig['constantCategoriesToShow'] = $GLOBALS["BE_USER"]->getTSConfig(
+			'mod.tx_themes.constantCategoriesToShow',
+			t3lib_BEfunc::getPagesTSconfig($this->id)
+		);
+		$this->externalConfig['constantsToHide'] = $GLOBALS["BE_USER"]->getTSConfig(
+			'mod.tx_themes.constantsToHide',
+			t3lib_BEfunc::getPagesTSconfig($this->id)
+		);
 	}
 
 	public function indexAction() {
@@ -56,7 +70,7 @@ class EditorController extends ActionController {
 	 * @param integer $pid
 	 */
 	public function changeTheme(Theme $theme, $pid) {
-		
+
 	}
 
 	/**
