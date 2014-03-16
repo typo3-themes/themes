@@ -41,7 +41,7 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 		/**
 		 * @var $themeRepository Tx_Skinselector_Domain_Repository_SkinRepository
 		 */
-		$themeRepository = GeneralUtility::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
+		$themeRepository = GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
 		$theme = $themeRepository->findByUid($row['tx_themes_skin']);
 		if($theme !== NULL) {
 			$theme->addTypoScriptForFe($params, $pObj);

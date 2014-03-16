@@ -20,13 +20,13 @@ class TemplateModuleBodyPostProcessHook {
 	 */
 	function main(&$params, &$pObj) {
 		/**
-		 * @var $repository Tx_Themes_Domain_Repository_ThemeRepository
+		 * @var $repository \KayStrobach\Themes\Domain\Repository\ThemeRepository
 		 * @var $view       Tx_Fluid_View_StandaloneView
 		 */
 		if(($_GET['SET']['function'] === 'tx_tstemplateinfo' || !$_GET['SET']['function'])
 			&& ($params['moduleTemplateFilename'] === 'templates/tstemplate.html')) {
 
-			$repository = GeneralUtility::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
+			$repository = GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
 
 			//@todo namespace?!
 			$view = GeneralUtility::makeInstance('Tx_Fluid_View_StandaloneView');

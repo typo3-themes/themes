@@ -20,7 +20,7 @@ class ThemeSelector {
 		/**
 		 * @var Tx_Themes_Domain_Repository_ThemeRepository $repository
 		 */
-		$repository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Themes_Domain_Repository_ThemeRepository');
+		$repository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Model\\ThemeRepository');
 
 		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Fluid_View_StandaloneView');
 
