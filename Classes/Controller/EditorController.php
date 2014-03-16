@@ -6,6 +6,7 @@ use KayStrobach\Themes\Domain\Model\Theme;
 use KayStrobach\Themes\Utilities\TsParserUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 class EditorController extends ActionController {
 	/**
@@ -40,17 +41,16 @@ class EditorController extends ActionController {
 	 * @return void
 	 */
 	protected function initializeAction() {
-		#$this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xml');
 		$this->id = intval(GeneralUtility::_GET('id'));
 		$this->tsParser = new TsParserUtility();
 
 		$this->externalConfig['constantCategoriesToShow'] = $GLOBALS["BE_USER"]->getTSConfig(
 			'mod.tx_themes.constantCategoriesToShow',
-			t3lib_BEfunc::getPagesTSconfig($this->id)
+			BackendUtility::getPagesTSconfig($this->id)
 		);
 		$this->externalConfig['constantsToHide'] = $GLOBALS["BE_USER"]->getTSConfig(
 			'mod.tx_themes.constantsToHide',
-			t3lib_BEfunc::getPagesTSconfig($this->id)
+			BackendUtility::getPagesTSconfig($this->id)
 		);
 	}
 
