@@ -17,7 +17,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	 *
 	 * @var array
 	 */
-	protected $addedObjects;
+	protected $addedObjects = array();
 
 	function __construct() {
 		/**
@@ -162,20 +162,11 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	 * @return \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme The matching object if found, otherwise NULL
 	 * @api
 	 */
-	public function findByUid($uid)
-	{
-		if(array_key_exists($uid, $this->addedObjects)) {
+	public function findByUid($uid) {
+		if((is_array($this->addedObjects)) && (array_key_exists($uid, $this->addedObjects))) {
 			return $this->addedObjects[$uid];
-		} else {
-			return NULL;
 		}
-		/*
-		foreach($this->addedObjects as $theme) {
-			if($theme->getExtensionName() === $uid) {
-				return $theme;
-			}
-		}
-		return NULL;*/
+		return NULL;
 	}
 
 	public function findByIdentifier($uid) {
