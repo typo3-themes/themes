@@ -1,4 +1,5 @@
 jQuery(document).ready(function() {
+	// toggle constant editor
 	jQuery('.t3-icon-document-open').click(function() {
 		jQuery(this).parents('tr').removeClass('defaultValueIsSelected');
 		jQuery(this).parents('tr').find('input[type="hidden"]').attr('value', 'checked');
@@ -10,9 +11,13 @@ jQuery(document).ready(function() {
 		jQuery(this).parents('tr').find('input[type="hidden"]').attr('disabled','disabled');
 
 	});
+
+	// make for submittable
 	jQuery('#saveIcon').click(function() {
 		jQuery('#saveableForm').submit();
 	});
+
+	// initialize Colorpicker
 	jQuery('input.colorselector').each(function() {
 		var inputElement = jQuery(this);
 		jQuery(this).ColorPicker({
@@ -26,4 +31,10 @@ jQuery(document).ready(function() {
 			}
 		});
 	})
+
+	// init slider
+	jQuery('.slider').unslider({
+		keys: true,               //  Enable keyboard (left, right) arrow shortcuts
+		dots: true               //  Display dot navigation
+	});
 });
