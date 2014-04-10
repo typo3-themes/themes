@@ -29,15 +29,9 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
  * Register XClasses to be a bit compatible to older versions
  */
 
-	if(version_compare(TYPO3_version, '6.2.0', '<')) {
-		/**
-		 * Register Xclasses the new way from 6.0
-		 * @todo test
-		 */
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Backend\\Configuration\\TsConfigParser'] = array(
-			'className' => 'KayStrobach\\Themes\\XClass\\TsConfigParser',
-		);
-	}
+	$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Backend\\Configuration\\TsConfigParser'] = array(
+		'className' => 'KayStrobach\\Themes\\XClass\\TsConfigParser',
+	);
 
 /**
  *
