@@ -60,3 +60,33 @@ tx_gridelements.setup.tabs4 {
 Backendlayouts
 --------------
 
+hide some layouts:
+options.backendLayout.exclude = default_1, my_extension__headerLayout 
+
+Dataprovider interface
+TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface 
+
+registrierung
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']
+[$_EXTKEY] = 'Classname';
+
+
+Header Hook für PageModule
+--------------------------
+\TYPO3\CMS\Backend\Controller\PageLayoutController
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']
+['drawHeaderHook'];
+callUserFunction
+
+extbase templateRootPaths
+-------------------------
+plugin.tx_simpleblog { 
+	view { 
+		templateRootPath = EXT:simpleblog/Resources/Private/Templates/ 
+		templateRootPath >  templateRootPaths { 
+			10 = fileadmin/simpleblog/templates 
+			20 = fileadmin/special/simpleblog/templates
+		} 
+	}
+}
+ 
