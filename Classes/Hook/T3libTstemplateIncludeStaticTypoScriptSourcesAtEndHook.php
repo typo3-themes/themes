@@ -10,15 +10,21 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 	/**
 	 * Includes static template records (from static_template table) and static template files (from extensions) for the input template record row.
 	 *
-	 * @param	array		Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
-	 * @param	object		Reference back to parent object, t3lib_tstemplate or one of its subclasses.
+	 * @param	array                                       Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
+	 * @param	\TYPO3\CMS\Core\TypoScript\TemplateService  Reference back to parent object, t3lib_tstemplate or one of its subclasses.
 	 * @return	void
 	 */
-	public static function main(&$params, &$pObj) {
+	public static function main(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj) {
+		/** @var  \TYPO3\CMS\Core\Database\DatabaseConnection $TYPO3_DB */
+
+		global $TYPO3_DB;
+
 		$idList = $params['idList'];
 		$templateID = $params['templateId'];
 		$pid = $params['pid'];
 		$row = $params['row'];
+		$tRow = $TYPO3_DB->exec_SELECTgetSingleRow('*', 'sys_template', 'pid=' . (int)$pid);
+		$row['tx_themes_skin'] = $tRow['tx_themes_skin'];
 
 		// Call hook for possible manipulation of current skin - oldstyle for compatibility for ext:skin_preview :D
 		// @todo should be removed once theme_preview is stable ...
@@ -39,14 +45,16 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 		}
 
 		/**
-		 * @var $themeRepository Tx_Skinselector_Domain_Repository_SkinRepository
+		 * @var $themeRepository \KayStrobach\Themes\Domain\Repository\ThemeRepository
 		 */
 		$themeRepository = GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
 		$theme = $themeRepository->findByUid($row['tx_themes_skin']);
 		if($theme !== NULL) {
 			$theme->addTypoScriptForFe($params, $pObj);
 		}
-
+		// @todo
+		#die(var_export(array_keys($row), TRUE) . var_export($row['tx_themes_skin'], TRUE) . $params['pid']);
+		return;
 		// @todo add hook to inject template overlays, e.g. for previewed constants before save ...
 		// Call hook for possible manipulation of current skin. constants
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['modifyTS'])) {
