@@ -159,7 +159,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	 * Finds an object matching the given identifier.
 	 *
 	 * @param int $uid The identifier of the object to find
-	 * @return \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme The matching object if found, otherwise NULL
+	 * @return \KayStrobach\Themes\Domain\Model\AbstractTheme The matching object if found, otherwise NULL
 	 * @api
 	 */
 	public function findByUid($uid) {
