@@ -164,10 +164,10 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Includes static template records (from static_template table) and static template files (from extensions) for the input template record row.
 	 *
 	 * @param	array		Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
-	 * @param	object		Reference back to parent object, t3lib_tstemplate or one of its subclasses.
+	 * @param	\TYPO3\CMS\Core\TypoScript\TemplateService		Reference back to parent object, t3lib_tstemplate or one of its subclasses.
 	 * @return	void
 	 */
-	public function addTypoScriptForFe(&$params, &$pObj) {
+	public function addTypoScriptForFe(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj) {
 		$themeItem = array(
 			'constants'=>	@is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptConstantsAbsPath()) : '',
 			'config'=>		@is_file($this->getTypoScriptAbsPath())          ? GeneralUtility::getUrl($this->getTypoScriptAbsPath()) : '',
