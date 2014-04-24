@@ -49,7 +49,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $pathTyposcript;
 
 	/**
-	 * @var $string
+	 * @var string
 	 */
 	protected $pathTyposcriptConstants;
 
