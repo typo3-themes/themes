@@ -54,7 +54,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $pathTyposcriptConstants;
 
 	/**
-	 * @var $string
+	 * @var string
 	 */
 	protected $pathTSConfig;
 
