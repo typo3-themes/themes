@@ -50,11 +50,11 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 		$themeRepository = GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
 		$theme = $themeRepository->findByUid($row['tx_themes_skin']);
 		if($theme !== NULL) {
-			$theme->addTypoScriptForFe($params, $pObj);
+			#$theme->addTypoScriptForFe($params, $pObj);
 		}
 		// @todo
-		#die(var_export(array_keys($row), TRUE) . var_export($row['tx_themes_skin'], TRUE) . $params['pid']);
-		return;
+
+		debug($theme);
 		// @todo add hook to inject template overlays, e.g. for previewed constants before save ...
 		// Call hook for possible manipulation of current skin. constants
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['modifyTS'])) {
