@@ -54,6 +54,9 @@ class EditorController extends ActionController {
 		);
 	}
 
+	/**
+	 * show available constants
+	 */
 	public function indexAction() {
 		$this->view->assignMultiple(
 			array(
@@ -66,14 +69,8 @@ class EditorController extends ActionController {
 	}
 
 	/**
-	 * @param \KayStrobach\Themes\Domain\Model\Theme $theme
-	 * @param integer $pid
-	 */
-	public function changeTheme(Theme $theme, $pid) {
-
-	}
-
-	/**
+	 * save changed constants
+	 *
 	 * @param array $data
 	 * @param array $check
 	 * @param integer $pid
@@ -85,6 +82,26 @@ class EditorController extends ActionController {
 		$this->tsParser->applyToPid($pid, $data, $check);
 		$this->redirect('index');
 	}
+
+	public function showThemeAction() {
+		$this->view->assignMultiple(
+			array(
+				'selectedTheme'    => $this->themeRepository->findByPageId($this->id),
+				'selectableThemes' => $this->themeRepository->findAll(),
+				'pid'              => $this->id
+			)
+		);
+	}
+
+	/**
+	 * @param \KayStrobach\Themes\Domain\Model\Theme $theme
+	 * @param integer $pid
+	 */
+	public function setThemeAction(Theme $theme=NULL, $pid=0) {
+
+	}
+
+
 
 	/**
 	 * @param \KayStrobach\Themes\Utilities\TsParserUtility $tsParserWrapper

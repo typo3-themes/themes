@@ -25,7 +25,7 @@ if (TYPO3_MODE === 'BE') {
 		'mod1',         // Name of the module
 		'',             // Position of the module
 		array(          // Allowed controller action combinations
-			'Editor' => 'index,show,new,create,delete,deleteAll,edit,update,populate',
+			'Editor' => 'index,update,showTheme,setTheme',
 		),
 		array(          // Additional configuration
 			'access'    => 'user,group',
