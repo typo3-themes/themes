@@ -171,7 +171,6 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$themeItem = array(
 			'constants'=>	@is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptConstantsAbsPath()) : '',
 			'config'=>		@is_file($this->getTypoScriptAbsPath())          ? GeneralUtility::getUrl($this->getTypoScriptAbsPath()) : '',
-			'editorcfg'=>	'',
 			'include_static'=>	'',
 			'include_static_file'=>	'',
 			'title' =>	'themes:' . $this->getExtensionName(),
