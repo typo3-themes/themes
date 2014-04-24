@@ -15,7 +15,10 @@
 		<div id="typo3-docheader">
 			<div class="typo3-docheader-functions">
 				<div class="left">
-					&nbsp;
+					<f:be.menus.actionMenu>
+						<f:be.menus.actionMenuItem label="{f:translate(key:'setConstants')}" controller="Editor" action="index" />
+						<f:be.menus.actionMenuItem label="{f:translate(key:'setTheme')}" controller="Editor" action="showTheme" />
+					</f:be.menus.actionMenu>
 				</div>
 				<div class="right">
 					<f:be.pagePath /><f:be.pageInfo />
