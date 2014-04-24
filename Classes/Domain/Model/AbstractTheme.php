@@ -180,13 +180,41 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.relPath     = ' . $this->getRelativePath();
 		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.name        = ' . $this->getExtensionName();
 		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.templatePid = ' . $params['pid'];
+		$themeItem['constants'] .= chr(10) . $this->getTypoScriptForLanguage($params, $pObj);
 
-		$pObj->processTemplate(
+			$pObj->processTemplate(
 			$themeItem,
 			$params['idList'] . ',themes_' . $this->getExtensionName(),
 			$params['pid'],
 			'themes_' . $this->getExtensionName(),
 			$params['templateId']
 		);
+	}
+
+	public function getTypoScriptForLanguage(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj) {
+		/**
+		 * @var \TYPO3\CMS\Core\Database\DatabaseConnection $TYPO3_DB
+		 * @var \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository $languageRepository
+		 */
+		global $TYPO3_DB;
+
+		$languages = $TYPO3_DB->exec_SELECTgetRows(
+			'*',
+			'sys_language',
+			'hidden=0'
+		);
+		$buffer = 'plugin.tx_themes.languages {' . chr(10);
+
+		foreach($languages as $language) {
+			$buffer .= $language['uid'] . '. {' . chr(10);
+			$buffer .= 'label = '  . $language['title'] . chr(10);
+			$buffer .= 'locale = ' . $language['flag'] . chr(10);
+			$buffer .= 'flag = ' . $language['flag'] . chr(10);
+			$buffer .= '}' . chr(10);
+		}
+
+		/** @var \TYPO3\CMS\Lang\Domain\Model\Language $language */
+
+		return $buffer . '}';
 	}
 }

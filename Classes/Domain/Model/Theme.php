@@ -100,6 +100,7 @@ class Theme extends AbstractTheme {
 		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.relativePath         = ' . $this->getRelativePath();
 		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.name                 = ' . $this->getExtensionName();
 		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.templatePageId       = ' . $params['pid'];
+		$themeItem['constants'] .= chr(10) . $this->getTypoScriptForLanguage($params, $pObj);
 
 		$pObj->processTemplate(
 			$themeItem,
