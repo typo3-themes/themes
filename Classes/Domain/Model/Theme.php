@@ -88,7 +88,6 @@ class Theme extends AbstractTheme {
 		$themeItem = array(
 			'constants'          => @is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptConstantsAbsPath()) : '',
 			'config'             => @is_file($this->getTypoScriptAbsPath())          ? GeneralUtility::getUrl($this->getTypoScriptAbsPath()) : '',
-			'editorcfg'          => '',
 			'include_static'     => '',
 			'include_static_file'=>	'',
 			'title' =>	'themes:' . $this->getExtensionName(),
@@ -104,9 +103,9 @@ class Theme extends AbstractTheme {
 
 		$pObj->processTemplate(
 			$themeItem,
-			$params['idList'] . ',themes_' . $this->getExtensionName(),
+			$params['idList'] . ',ext_theme_' . $this->getExtensionName(),
 			$params['pid'],
-			'themes_' . $this->getExtensionName(),
+			'ext_theme_' . $this->getExtensionName(),
 			$params['templateId']
 		);
 	}
