@@ -177,9 +177,9 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			'uid' => md5($this->getExtensionName())
 		);
 
-		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.relPath     = ' . $this->getRelativePath();
-		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.name        = ' . $this->getExtensionName();
-		$themeItem['constants'] .= chr(10) . 'plugin.tx_themes.templatePid = ' . $params['pid'];
+		$themeItem['constants'] .= chr(10) . 'themes.relPath     = ' . $this->getRelativePath();
+		$themeItem['constants'] .= chr(10) . 'themes.name        = ' . $this->getExtensionName();
+		$themeItem['constants'] .= chr(10) . 'themes.templatePid = ' . $params['pid'];
 		$themeItem['constants'] .= chr(10) . $this->getTypoScriptForLanguage($params, $pObj);
 
 			$pObj->processTemplate(
@@ -203,7 +203,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			'sys_language',
 			'hidden=0'
 		);
-		$buffer = 'plugin.tx_themes.languages {' . chr(10);
+		$buffer = 'themes.languages {' . chr(10);
 
 		foreach($languages as $language) {
 			$buffer .= $language['uid'] . '. {' . chr(10);
