@@ -36,6 +36,16 @@ class EditorController extends ActionController {
 	protected $externalConfig = array();
 
 	/**
+	 * @var array
+	 */
+	protected $deniedFields = array();
+
+	/**
+	 * @var array
+	 */
+	protected $allowedCategories = array();
+
+	/**
 	 * Initializes the controller before invoking an action method.
 	 *
 	 * @return void
@@ -52,6 +62,11 @@ class EditorController extends ActionController {
 			'mod.tx_themes.constantsToHide',
 			BackendUtility::getPagesTSconfig($this->id)
 		);
+
+		// @todo add userTS / pageTS override
+		$t = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
+		$this->allowedCategories = $t['categoriesToShow'];
+		$this->deniedFields      = $t['constantsToHide'];
 	}
 
 	/**
@@ -62,7 +77,7 @@ class EditorController extends ActionController {
 			array(
 				'selectedTheme'    => $this->themeRepository->findByPageId($this->id),
 				'selectableThemes' => $this->themeRepository->findAll(),
-				'categories'       => $this->renderFields($this->tsParser, $this->id),
+				'categories'       => $this->renderFields($this->tsParser, $this->id, $this->allowedCategories, $this->deniedFields),
 				'pid'              => $this->id
 			)
 		);
@@ -102,20 +117,20 @@ class EditorController extends ActionController {
 	}
 
 
-
 	/**
 	 * @param \KayStrobach\Themes\Utilities\TsParserUtility $tsParserWrapper
 	 * @param $pid
+	 * @param null|array $allowedCategories
+	 * @param null|array $deniedFields
 	 * @return array
 	 */
-	protected function renderFields(TsParserUtility $tsParserWrapper, $pid) {
+	protected function renderFields(TsParserUtility $tsParserWrapper, $pid, $allowedCategories = NULL, $deniedFields = NULL) {
 		$definition = array();
 		$categories = $tsParserWrapper->getCategories($pid);
 		$constants  = $tsParserWrapper->getConstants($pid);
 		foreach($categories as $categorieName => $categorie) {
 			asort($categorie);
-			//@todo add dynamic filter
-			if(is_array($categorie)) {
+			if(is_array($categorie) && (($allowedCategories===NULL) || (in_array($categorieName, $allowedCategories)))) {
 				$title = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/Constants/locallang.xml:cat_' . $categorieName);
 				if(strlen($title) === 0) {
 					$title = $categorieName;
@@ -126,7 +141,9 @@ class EditorController extends ActionController {
 					'items'  => array(),
 				);
 				foreach($categorie as $constantName => $type) {
-					$definition[$categorieName]['items'][] = $constants[$constantName];
+					if(($deniedFields === NULL) || (!in_array($constantName, $deniedFields))) {
+						$definition[$categorieName]['items'][] = $constants[$constantName];
+					}
 				}
 			}
 		}
