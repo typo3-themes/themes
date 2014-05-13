@@ -54,3 +54,7 @@ tr.constantLine {
 	background: #fff;
 	opacity: 1;
 }
+
+.colorpicker {
+	z-index: 99999;
+}

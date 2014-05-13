@@ -65,8 +65,8 @@ class EditorController extends ActionController {
 
 		// @todo add userTS / pageTS override
 		$t = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
-		$this->allowedCategories = $t['categoriesToShow'];
-		$this->deniedFields      = $t['constantsToHide'];
+		$this->allowedCategories = explode(',', $t['categoriesToShow']);
+		$this->deniedFields      = explode(',', $t['constantsToHide']);
 	}
 
 	/**
