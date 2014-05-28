@@ -8,55 +8,24 @@
 			<f:form.hidden name="data[{formField.table}][{formField.row.uid}][tx_themes_skin]" value="{formField.row.tx_themes_skin}" id="tx_themes_skin"/>
 		</f:comment>
 
-		<table style="width: 100%;">
-			<col style="width: 50%" />
-			<col style="width: 50%" />
-			<tr>
-				<td>
-					<f:if condition="{selectedTheme}">
-						<f:then>
-							<h3>
-								Options for
-								<span title="{formField.row.tx_themes_skin}">&quot;{selectedTheme.title}&quot;</span>
-							</h3>
-							<small>
-								EXT:{selectedTheme.extensionName} - by
-								<a href="mailto:{selectedSkin.author.email}">
-									{selectedTheme.author.name}
-								</a>
-							</small>
-							<p>
-								{selectedTheme.description}
-							</p>
-							<div class="previewImage">
-								<f:image src="{selectedTheme.previewImage}" maxHeight="200" maxWidth="300"/>
-							</div>
-							<div class="fixfloat"></div>
+		<div class="tx_themes_themeselector">
 
-						</f:then>
+			<ul>
+				<f:if condition="{selectedTheme}">
+					<f:then>
+						<f:render partial="Themes/Theme" arguments="{theme:selectedTheme, additionalClass:'highlightTheme'}"/>
+					</f:then>
+				</f:if>
+
+				<f:for each="{selectableThemes}" as="theme" key="themeNumber">
+					<f:if condition="{selectedTheme} == {theme}">
+						<f:else>
+							<f:render partial="Themes/Theme" arguments="{theme:theme}"/>
+						</f:else>
 					</f:if>
-				</td>
-				<td>
-					<h3>
-						other available skins
-					</h3>
-					<div class="slider">
-						<ul>
-							<f:for each="{selectableThemes}" as="theme" key="themeNumber">
-								<f:if condition="{selectedTheme} == {theme}">
-									<f:else>
-										<li style="height: 200px;">
-											<b>{theme.title}</b>
-											<f:image src="{theme.previewImage}" maxHeight="200" maxWidth="400"/>
-										</li>
-									</f:else>
-								</f:if>
-							</f:for>
-						</ul>
-					</div>
-				</td>
-			</tr>
-		</table>
+				</f:for>
+			</ul>
+		</div>
 
 
 

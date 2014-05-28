@@ -19,6 +19,11 @@
 .tx_themes_themeselector .selectedTheme {
 	width: 495px;
 }
+
+.tx_themes_themeselector .highlightTheme {
+	background-color:#F9EDE0;
+}
+
 .tx_themes_themeselector .previewDescription {
 	float: right;
 	width: 340px;
@@ -68,3 +73,4 @@
 .colorpicker {
 	z-index: 9999;
 }
+
