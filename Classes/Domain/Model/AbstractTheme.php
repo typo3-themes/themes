@@ -184,9 +184,9 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 			$pObj->processTemplate(
 			$themeItem,
-			$params['idList'] . ',themes_' . $this->getExtensionName(),
+			$params['idList'] . ',ext_themes' . str_replace('_', '', $this->getExtensionName()),
 			$params['pid'],
-			'themes_' . $this->getExtensionName(),
+			'ext_themes' . str_replace('_', '', $this->getExtensionName()),
 			$params['templateId']
 		);
 	}

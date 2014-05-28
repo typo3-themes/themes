@@ -104,9 +104,9 @@ class Theme extends AbstractTheme {
 
 		$pObj->processTemplate(
 			$themeItem,
-			$params['idList'] . ',ext_theme_' . $this->getExtensionName(),
+			$params['idList'] . ',ext_theme' . str_replace('_', '', $this->getExtensionName()),
 			$params['pid'],
-			'ext_theme_' . $this->getExtensionName(),
+			'ext_theme' . str_replace('_', '', $this->getExtensionName()),
 			$params['templateId']
 		);
 	}
