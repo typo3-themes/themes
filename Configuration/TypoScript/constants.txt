@@ -1,0 +1,13 @@
+
+themes.languages {
+	# cat=language; type=string; label=Languages available for Language Switcher
+	available =
+	default {
+		 # cat=language; type=string; label=Default language label
+		label   = English
+		# cat=language; type=string; label=Default language iso code
+		isoCode = en_GB
+		# cat=language; type=string; label=Default language flag
+		flag    = gb
+	}
+}
