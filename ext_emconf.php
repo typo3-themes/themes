@@ -11,7 +11,7 @@
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Themes - The theme selector',
+	'title' => 'THEMES - The theme engine',
 	'description' => '',
 	'category' => 'fe',
 	'shy' => 0,
