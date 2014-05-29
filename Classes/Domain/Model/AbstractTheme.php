@@ -198,23 +198,31 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		 */
 		global $TYPO3_DB;
 
+		$currentLanguage = GeneralUtility::_GP('L');
+
 		$languages = $TYPO3_DB->exec_SELECTgetRows(
 			'*',
 			'sys_language',
 			'hidden=0'
 		);
-		$buffer = 'themes.languages {' . chr(10);
+		$outputBuffer = 'themes.languages {' . chr(10);
 
 		foreach($languages as $language) {
-			$buffer .= $language['uid'] . '. {' . chr(10);
+			$buffer = '{' . chr(10);
 			$buffer .= 'label = '  . $language['title'] . chr(10);
 			$buffer .= 'locale = ' . $language['flag'] . chr(10);
 			$buffer .= 'flag = ' . $language['flag'] . chr(10);
 			$buffer .= '}' . chr(10);
+
+			$outputBuffer.= 'available.' . $language['uid'] . '.' .  $buffer;
+
+			if($language['uid'] == $currentLanguage) {
+				$outputBuffer .= 'current' . $buffer;
+			}
 		}
 
 		/** @var \TYPO3\CMS\Lang\Domain\Model\Language $language */
 
-		return $buffer . '}';
+		return $outputBuffer . '}';
 	}
 }
