@@ -40,3 +40,5 @@ if (TYPO3_MODE === 'BE') {
 GeneralUtility::loadTCA('sys_template');
 ExtensionManagementUtility::addTCAcolumns('sys_template', $tempColumn);
 ExtensionManagementUtility::addToAllTCAtypes('sys_template', '--div--;Themes,tx_themes_skin');
+
+ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'themes');
