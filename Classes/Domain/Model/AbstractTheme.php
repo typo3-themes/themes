@@ -226,6 +226,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		}
 
 		$outputBuffer .= 'available=' . implode(',', $languageUids) . chr(10);
+		$outputBuffer .= 'default {' . chr(10) . '}' . chr(10);
 
 		/** @var \TYPO3\CMS\Lang\Domain\Model\Language $language */
 
