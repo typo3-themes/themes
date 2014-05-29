@@ -182,7 +182,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$themeItem['constants'] .= chr(10) . 'themes.templatePid = ' . $params['pid'];
 		$themeItem['constants'] .= chr(10) . $this->getTypoScriptForLanguage($params, $pObj);
 
-			$pObj->processTemplate(
+		$pObj->processTemplate(
 			$themeItem,
 			$params['idList'] . ',ext_themes' . str_replace('_', '', $this->getExtensionName()),
 			$params['pid'],
