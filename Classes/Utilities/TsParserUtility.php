@@ -53,7 +53,16 @@ class TsParserUtility implements SingletonInterface{
 				$return[$key]['typeCleaned'] = 'String';
 			} elseif(substr($field['type'], 0,7) === 'options') {
 				$return[$key]['typeCleaned'] = 'Options';
-				$return[$key]['options'] = explode(',', substr($field['type'], 8,-1));
+				$options = explode(',', substr($field['type'], 8,-1));
+				$return[$key]['options'] = array();
+				foreach($options as $option) {
+					$t = explode('=', $option);
+					if(count($t) === 2) {
+						$return[$key]['options'][$t[1]] = $t[0];
+					} else {
+						$return[$key]['options'][$t[0]] = $t[0];
+					}
+				}
 			} elseif($field['type'] === '') {
 				$return[$key]['typeCleaned'] = 'String';
 			} else {
