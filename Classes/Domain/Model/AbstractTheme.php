@@ -193,18 +193,17 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	public function getTypoScriptForLanguage(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj) {
 		/**
-		 * @var \TYPO3\CMS\Core\Database\DatabaseConnection $TYPO3_DB
-		 * @var \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository $languageRepository
+		 * @var \TYPO3\CMS\Core\Database\DatabaseConnection                 $TYPO3_DB
+		 * @var \TYPO3\CMS\Extbase\Object\ObjectManager                     $objectManager
 		 */
 		global $TYPO3_DB;
 
-		$currentLanguage = GeneralUtility::_GP('L');
-
 		$languages = $TYPO3_DB->exec_SELECTgetRows(
-			'*',
-			'sys_language',
-			'hidden=0'
+			'sys.uid as uid, sys.title as title, sys.flag as flag,static.lg_name_local as lg_name_local, static.lg_name_en as lg_name_en, static.lg_collate_locale as lg_collate_locale',
+			'sys_language sys,static_languages static',
+			'sys.static_lang_isocode = static.uid AND sys.hidden=0'
 		);
+
 		$outputBuffer = '';
 		$languageUids = array();
 		$key          = 'themes.languages';
@@ -214,9 +213,12 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 			$buffer = '[globalVar = GP:L=' . $language['uid'] . ']' . chr(10);
 			$buffer .= $key . '.current {' . chr(10);
-			$buffer .= '  label = '  . $language['title'] . chr(10);
-			$buffer .= '  flag = ' . $language['flag'] . chr(10);
-			$buffer .= '  isoCode = ' . $language['flag'] . chr(10);
+			$buffer .= '  label = '          . $language['title'] . chr(10);
+			$buffer .= '  labelLocalized = ' . $language['lg_name_local'] . chr(10);
+			$buffer .= '  label = '          . $language['lg_name_en'] . chr(10);
+			$buffer .= '  flag = '           . $language['flag'] . chr(10);
+			$buffer .= '  isoCode = '        . $language['lg_collate_locale'] . chr(10);
+			$buffer .= '  isoCodeHtml = '    . str_replace('_', '-', $language['lg_collate_locale']) . chr(10);
 			$buffer .= '}  ' . chr(10);
 			$buffer .= '[global]' . chr(10);
 

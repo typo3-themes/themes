@@ -1,0 +1,13 @@
+config {
+	linkVars         = L
+	uniqueLinkVars   = 1
+	sys_language_uid = {$themes.languages.current.uid}
+	language         = {$themes.languages.current.flag}
+	locale_all       = {$themes.languages.current.isoCode}.UTF-8
+	htmlTag_langKey  = {$themes.languages.current.isoCodeHtml}
+}
+
+page.20 = TEXT
+page.20.value = {$themes.languages.current.isoCodeHtml}
+page.20.wrap = <h1>|</h1>
+
