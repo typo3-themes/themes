@@ -213,8 +213,8 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 			$buffer = '{' . chr(10);
 			$buffer .= 'label = '  . $language['title'] . chr(10);
-			$buffer .= 'locale = ' . $language['flag'] . chr(10);
 			$buffer .= 'flag = ' . $language['flag'] . chr(10);
+			$buffer .= 'isoCode = ' . $language['flag'] . chr(10);
 			$buffer .= '}';
 
 			$outputBuffer.= 'system.' . $language['uid'] . '.' .  $buffer . chr(10);
@@ -226,7 +226,6 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		}
 
 		$outputBuffer .= 'available=' . implode(',', $languageUids) . chr(10);
-		$outputBuffer .= 'default {' . chr(10) . '}' . chr(10);
 
 		/** @var \TYPO3\CMS\Lang\Domain\Model\Language $language */
 
