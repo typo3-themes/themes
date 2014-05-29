@@ -205,30 +205,29 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			'sys_language',
 			'hidden=0'
 		);
-		$outputBuffer = 'themes.languages {' . chr(10);
+		$outputBuffer = '';
 		$languageUids = array();
+		$key          = 'themes.languages';
 
 		foreach($languages as $language) {
 			$languageUids[] = $language['uid'];
 
-			$buffer = '{' . chr(10);
-			$buffer .= 'label = '  . $language['title'] . chr(10);
-			$buffer .= 'flag = ' . $language['flag'] . chr(10);
-			$buffer .= 'isoCode = ' . $language['flag'] . chr(10);
-			$buffer .= '}';
+			$buffer = '[globalVar = GP:L=' . $language['uid'] . ']' . chr(10);
+			$buffer .= $key . '.current {' . chr(10);
+			$buffer .= '  label = '  . $language['title'] . chr(10);
+			$buffer .= '  flag = ' . $language['flag'] . chr(10);
+			$buffer .= '  isoCode = ' . $language['flag'] . chr(10);
+			$buffer .= '}  ' . chr(10);
+			$buffer .= '[global]' . chr(10);
 
-			$outputBuffer.= 'system.' . $language['uid'] . '.' .  $buffer . chr(10);
-
-			if($language['uid'] == $currentLanguage) {
-				$outputBuffer .= 'current' . $buffer . chr(10);
-			}
+			$outputBuffer.= $buffer;
 
 		}
 
-		$outputBuffer .= 'available=' . implode(',', $languageUids) . chr(10);
+		$outputBuffer .= $key . '.available=' . implode(',', $languageUids) . chr(10);
 
 		/** @var \TYPO3\CMS\Lang\Domain\Model\Language $language */
 
-		return $outputBuffer . '}';
+		return $outputBuffer;
 	}
 }

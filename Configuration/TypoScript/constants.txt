@@ -10,4 +10,9 @@ themes.languages {
 		# cat=language; type=string; label=Default language flag
 		flag    = gb
 	}
+	current {
+		label   = {$themes.languages.default.label}
+		isoCode = {$themes.languages.default.isoCode}
+		flag    = {$themes.languages.default.flag}
+	}
 }
