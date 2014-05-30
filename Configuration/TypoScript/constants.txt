@@ -15,6 +15,7 @@ themes.languages {
 		flag         = gb
 	}
 	current {
+		uid          = 0
 		label        = {$themes.languages.default.label}
 		isoCode      = {$themes.languages.default.isoCode}
 		isoCodeShort = {$themes.languages.default.flag}

@@ -213,6 +213,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 			$buffer = '[globalVar = GP:L=' . $language['uid'] . ']' . chr(10);
 			$buffer .= $key . '.current {' . chr(10);
+			$buffer .= '  uid = '            . $language['uid'] . chr(10);
 			$buffer .= '  label = '          . $language['title'] . chr(10);
 			$buffer .= '  labelLocalized = ' . $language['lg_name_local'] . chr(10);
 			$buffer .= '  labelEnglish = '   . $language['lg_name_en'] . chr(10);
