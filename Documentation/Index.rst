@@ -115,7 +115,7 @@ Compatibility
 =============
 
 Add your own theme model to the repository
--------------------------------------------
+------------------------------------------
 
 You may create your own model for handling special usecases of themes. This way is possible to e.g. use
 templavoila_framework skins or similar stuff with themes by simulating the needed libs.
