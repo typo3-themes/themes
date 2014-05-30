@@ -6,7 +6,7 @@ themes.languages {
 		 # cat=language; type=string; label=Default language label
 		label        = English
 		# cat=language; type=string; label=Default language iso code
-		isoCode      = en_GB
+		isoCode      = en_EN
 		# cat=language; type=string; label=Default iso code short
         isoCodeShort = en
         # cat=language; type=string; label=lang attribute for html tag, can be as it is most time
