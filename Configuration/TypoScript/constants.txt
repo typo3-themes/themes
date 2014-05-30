@@ -9,6 +9,8 @@ themes.languages {
 		isoCode      = en_GB
 		# cat=language; type=string; label=Default iso code short
         isoCodeShort = en
+        # cat=language; type=string; label=lang attribute for html tag, can be as it is most time
+        isoCodeHtml  = {$themes.languages.default.isoCodeShort}
 		# cat=language; type=string; label=Default language flag
 		flag         = gb
 	}
@@ -16,6 +18,7 @@ themes.languages {
 		label        = {$themes.languages.default.label}
 		isoCode      = {$themes.languages.default.isoCode}
 		isoCodeShort = {$themes.languages.default.flag}
+		isoCodeHtml  = {$themes.languages.default.isoCodeHtml}
 		flag         = {$themes.languages.default.flag}
 	}
 }
