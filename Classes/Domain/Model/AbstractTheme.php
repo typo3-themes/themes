@@ -218,6 +218,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$buffer .= '  label = '          . $language['lg_name_en'] . chr(10);
 			$buffer .= '  flag = '           . $language['flag'] . chr(10);
 			$buffer .= '  isoCode = '        . $language['lg_collate_locale'] . chr(10);
+			$buffer .= '  isoCodeShort = '   . array_shift(explode('_', $language['lg_collate_locale'])) . chr(10);
 			$buffer .= '  isoCodeHtml = '    . str_replace('_', '-', $language['lg_collate_locale']) . chr(10);
 			$buffer .= '}  ' . chr(10);
 			$buffer .= '[global]' . chr(10);

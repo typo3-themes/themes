@@ -4,15 +4,18 @@ themes.languages {
 	available =
 	default {
 		 # cat=language; type=string; label=Default language label
-		label   = English
+		label        = English
 		# cat=language; type=string; label=Default language iso code
-		isoCode = en_GB
+		isoCode      = en_GB
+		# cat=language; type=string; label=Default iso code short
+        isoCodeShort = en
 		# cat=language; type=string; label=Default language flag
-		flag    = gb
+		flag         = gb
 	}
 	current {
-		label   = {$themes.languages.default.label}
-		isoCode = {$themes.languages.default.isoCode}
-		flag    = {$themes.languages.default.flag}
+		label        = {$themes.languages.default.label}
+		isoCode      = {$themes.languages.default.isoCode}
+		isoCodeShort = {$themes.languages.default.flag}
+		flag         = {$themes.languages.default.flag}
 	}
 }
