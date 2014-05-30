@@ -1,0 +1,16 @@
+<ul id="menuLanguage">
+    <f:for each="{menu}" as="entry" iteration="itemIteration">
+        <f:if condition="{entry.active}">
+            <f:then>
+                <li class="{entry.class} active">
+                    <a href="{entry.uri}" class="{entry.class}" title="{entry.label}">{entry.label}</a>
+                </li>
+            </f:then>
+            <f:else>
+                <li class="{entry.class}">
+                    <a href="{entry.uri}" class="{entry.class}" title="{entry.label}">{entry.label}</a>
+                </li>
+            </f:else>
+        </f:if>
+    </f:for>
+</ul>
