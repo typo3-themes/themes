@@ -41,4 +41,9 @@ GeneralUtility::loadTCA('sys_template');
 ExtensionManagementUtility::addTCAcolumns('sys_template', $tempColumn);
 ExtensionManagementUtility::addToAllTCAtypes('sys_template', '--div--;Themes,tx_themes_skin');
 
+
+// @todo respect independent switch
 ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'themes');
+
+ExtensionManagementUtility::addTypoScriptSetup('');
+ExtensionManagementUtility::addTypoScriptConstants('');
