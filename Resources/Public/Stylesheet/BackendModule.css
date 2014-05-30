@@ -7,7 +7,7 @@
 }
 
 .hideOnDefault input[type=text] {
-	width: 100%;
+	width: 80%;
 }
 
 .defaultValueIsSelected .showOnDefault {
