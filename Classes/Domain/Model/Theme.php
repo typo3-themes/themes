@@ -95,12 +95,12 @@ class Theme extends AbstractTheme {
 		);
 
 		// @todo resources Path / private Path
-		$themeItem['constants'] .= chr(10) . 'themes.resourcesPrivatePath = ' . $this->getRelativePath() . 'Resources/Private/';
-		$themeItem['constants'] .= chr(10) . 'themes.resourcesPublicPath  = ' . $this->getRelativePath() . 'Resources/Public/';
-		$themeItem['constants'] .= chr(10) . 'themes.relativePath         = ' . $this->getRelativePath();
-		$themeItem['constants'] .= chr(10) . 'themes.name                 = ' . $this->getExtensionName();
-		$themeItem['constants'] .= chr(10) . 'themes.templatePageId       = ' . $params['pid'];
-		$themeItem['constants'] .= chr(10) . $this->getTypoScriptForLanguage($params, $pObj);
+		$themeItem['constants'] .= LF . 'themes.resourcesPrivatePath = ' . $this->getRelativePath() . 'Resources/Private/';
+		$themeItem['constants'] .= LF . 'themes.resourcesPublicPath  = ' . $this->getRelativePath() . 'Resources/Public/';
+		$themeItem['constants'] .= LF . 'themes.relativePath         = ' . $this->getRelativePath();
+		$themeItem['constants'] .= LF . 'themes.name                 = ' . $this->getExtensionName();
+		$themeItem['constants'] .= LF . 'themes.templatePageId       = ' . $params['pid'];
+		$themeItem['constants'] .= LF . $this->getTypoScriptForLanguage($params, $pObj);
 
 		$pObj->processTemplate(
 			$themeItem,

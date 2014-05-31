@@ -177,10 +177,10 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			'uid' => md5($this->getExtensionName())
 		);
 
-		$themeItem['constants'] .= chr(10) . 'themes.relPath     = ' . $this->getRelativePath();
-		$themeItem['constants'] .= chr(10) . 'themes.name        = ' . $this->getExtensionName();
-		$themeItem['constants'] .= chr(10) . 'themes.templatePid = ' . $params['pid'];
-		$themeItem['constants'] .= chr(10) . $this->getTypoScriptForLanguage($params, $pObj);
+		$themeItem['constants'] .= LF . 'themes.relPath     = ' . $this->getRelativePath();
+		$themeItem['constants'] .= LF . 'themes.name        = ' . $this->getExtensionName();
+		$themeItem['constants'] .= LF . 'themes.templatePid = ' . $params['pid'];
+		$themeItem['constants'] .= LF . $this->getTypoScriptForLanguage($params, $pObj);
 
 		$pObj->processTemplate(
 			$themeItem,
@@ -208,27 +208,29 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$languageUids = array();
 		$key          = 'themes.languages';
 
-		foreach($languages as $language) {
-			$languageUids[] = $language['uid'];
-
-			$buffer = '[globalVar = GP:L=' . $language['uid'] . ']' . chr(10);
-			$buffer .= $key . '.current {' . chr(10);
-			$buffer .= '  uid = '            . $language['uid'] . chr(10);
-			$buffer .= '  label = '          . $language['title'] . chr(10);
-			$buffer .= '  labelLocalized = ' . $language['lg_name_local'] . chr(10);
-			$buffer .= '  labelEnglish = '   . $language['lg_name_en'] . chr(10);
-			$buffer .= '  flag = '           . $language['flag'] . chr(10);
-			$buffer .= '  isoCode = '        . $language['lg_collate_locale'] . chr(10);
-			$buffer .= '  isoCodeShort = '   . array_shift(explode('_', $language['lg_collate_locale'])) . chr(10);
-			$buffer .= '  isoCodeHtml = '    . str_replace('_', '-', $language['lg_collate_locale']) . chr(10);
-			$buffer .= '}  ' . chr(10);
-			$buffer .= '[global]' . chr(10);
-
-			$outputBuffer.= $buffer;
-
+		if(is_array($languages)) {
+			foreach($languages as $language) {
+				$languageUids[] = $language['uid'];
+				$buffer = '[globalVar = GP:L=' . $language['uid'] . ']' . LF;
+				$buffer .= $key . '.current {' . LF;
+				$buffer .= '  uid = '            . $language['uid'] . LF;
+				$buffer .= '  label = '          . $language['title'] . LF;
+				$buffer .= '  labelLocalized = ' . $language['lg_name_local'] . LF;
+				$buffer .= '  labelEnglish = '   . $language['lg_name_en'] . LF;
+				$buffer .= '  flag = '           . $language['flag'] . LF;
+				$buffer .= '  isoCode = '        . $language['lg_collate_locale'] . LF;
+				$buffer .= '  isoCodeShort = '   . array_shift(explode('_', $language['lg_collate_locale'])) . LF;
+				$buffer .= '  isoCodeHtml = '    . str_replace('_', '-', $language['lg_collate_locale']) . LF;
+				$buffer .= '}  ' . LF;
+				$buffer .= '[global]' . LF;
+				$outputBuffer.= $buffer;
+			}
+			$outputBuffer .= $key . '.available=' . implode(',', $languageUids) . LF;
+		} else {
+			$outputBuffer .= $key . '.available=' . LF;
 		}
 
-		$outputBuffer .= $key . '.available=' . implode(',', $languageUids) . chr(10);
+
 
 		/** @var \TYPO3\CMS\Lang\Domain\Model\Language $language */
 
