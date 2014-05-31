@@ -41,11 +41,11 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
         $defaultLanguageLabel = $this->widgetConfiguration['defaultLanguageLabel'];
 
         if(!empty($availableLanguages)) {
-            $uriBuilder = $this->controllerContext->getUriBuilder();
             foreach($availableLanguages as $languageUid) {
 
                 $menuEntry = array();
-                $menuEntry['uid']   = $languageUid;
+                $menuEntry['L']       = $languageUid;
+                $menuEntry['pageUid'] = $GLOBALS['TSFE']->id;
                 $class = 'unknown';
                 $label = 'unknown';
 
@@ -67,9 +67,7 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
                         $label = $languageObject->getNameEn();
                     }
                 }
-                $uri = $uriBuilder->setArguments(array('L'=>$languageUid))->build();
 
-                $menuEntry['uri']   = $uri;
                 $menuEntry['label'] = $label;
                 $menuEntry['class'] = strtolower($class);
                 $menu[] = $menuEntry;

@@ -3,12 +3,22 @@
         <f:if condition="{entry.active}">
             <f:then>
                 <li class="{entry.class} active">
-                    <a href="{entry.uri}" class="{entry.class}" title="{entry.label}">{entry.label}</a>
+                    <f:link.page pageUid="{entry.pageUid}"
+                                 addQueryString="1"
+                                 additionalParams="{L: entry.L}"
+                                 title="{entry.label}">
+                        <span>{entry.label}</span>
+                    </f:link.page>
                 </li>
             </f:then>
             <f:else>
                 <li class="{entry.class}">
-                    <a href="{entry.uri}" class="{entry.class}" title="{entry.label}">{entry.label}</a>
+                    <f:link.page pageUid="{entry.pageUid}"
+                                 addQueryString="1"
+                                 additionalParams="{L: entry.L}"
+                                 title="{entry.label}">
+                        <span>{entry.label}</span>
+                    </f:link.page>
                 </li>
             </f:else>
         </f:if>
