@@ -3,6 +3,7 @@
 namespace KayStrobach\Themes\Controller;
 
 use KayStrobach\Themes\Domain\Model\Theme;
+use KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility;
 use KayStrobach\Themes\Utilities\TsParserUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -67,18 +68,30 @@ class EditorController extends ActionController {
 		$t = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
 		$this->allowedCategories = GeneralUtility::trimExplode(',', $t['categoriesToShow']);
 		$this->deniedFields      = GeneralUtility::trimExplode(',', $t['constantsToHide']);
+
+		// initialize normally used values
 	}
 
 	/**
 	 * show available constants
 	 */
 	public function indexAction() {
+		$this->view->assign('selectableThemes', $this->themeRepository->findAll());
+		$selectedTheme        = $this->themeRepository->findByPageId($this->id);
+		if ($selectedTheme !== NULL) {
+			$nearestPageWithTheme = $this->id;
+			$this->view->assign('selectedTheme', $selectedTheme);
+			$this->view->assign('categories',    $this->renderFields($this->tsParser, $this->id, $this->allowedCategories, $this->deniedFields));
+		} elseif($this->id !== 0) {
+			$nearestPageWithTheme = FindParentPageWithThemeUtility::find($this->id);
+		} else {
+			$nearestPageWithTheme = 0;
+		}
+
 		$this->view->assignMultiple(
 			array(
-				'selectedTheme'    => $this->themeRepository->findByPageId($this->id),
-				'selectableThemes' => $this->themeRepository->findAll(),
-				'categories'       => $this->renderFields($this->tsParser, $this->id, $this->allowedCategories, $this->deniedFields),
-				'pid'              => $this->id
+				'pid'                  => $this->id,
+				'nearestPageWithTheme' => $nearestPageWithTheme,
 			)
 		);
 	}
