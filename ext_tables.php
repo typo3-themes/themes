@@ -47,3 +47,24 @@ ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 
 
 ExtensionManagementUtility::addTypoScriptSetup('');
 ExtensionManagementUtility::addTypoScriptConstants('');
+
+/**
+ * add themes overlay
+ */
+
+array_push($GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'], 'themefound');
+$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['themefound'] = 'extensions-themes-overlay-theme';
+
+/**
+ * add sprites
+ */
+
+\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
+	array(
+		'switch-off'     => ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_orange.png',
+		'switch-disable' => ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_grey.png',
+		'switch-on'      => ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_green.png',
+		'overlay-theme'  => ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/overlay_theme.png',
+	),
+	$_EXTKEY
+);
