@@ -26,14 +26,14 @@ class Theme extends AbstractTheme {
 
 			$this->importExtEmConf();
 
-			if(is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screens/screenshot.png')) {
+			if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screens/screenshot.png')) {
 				$this->previewImage      = ExtensionManagementUtility::extRelPath($this->getExtensionName()) . 'Meta/Screens/screenshot.png';
 			} else {
 				$this->previewImage      = ExtensionManagementUtility::extRelPath('themes') . 'Resources/Public/Images/screenshot.gif';
 			}
 
-			if(is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml')) {
-				if(class_exists('\Symfony\Component\Yaml\Yaml')) {
+			if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml')) {
+				if (class_exists('\Symfony\Component\Yaml\Yaml')) {
 					$this->information = \Symfony\Component\Yaml\Yaml::parse(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml');
 				}
 			}
@@ -62,7 +62,7 @@ class Theme extends AbstractTheme {
 	 * @return string
 	 */
 	public function getTSConfig() {
-		if(file_exists($this->getTSConfigAbsPath()) && is_file($this->getTSConfigAbsPath())) {
+		if (file_exists($this->getTSConfigAbsPath()) && is_file($this->getTSConfigAbsPath())) {
 			return file_get_contents($this->getTSConfigAbsPath());
 		} else {
 			return '';
@@ -70,7 +70,7 @@ class Theme extends AbstractTheme {
 	}
 
 	public function getRelativePath() {
-		if(ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
+		if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
 			return ExtensionManagementUtility::siteRelPath($this->getExtensionName());
 		} else {
 			return '';
