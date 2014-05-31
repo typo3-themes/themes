@@ -1,31 +1,39 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2013-03-04T08:46:06Z" product-name="themes">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2013-03-04T08:46:06Z" product-name="themes">
 		<header/>
 		<body>
 			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
 				<source>Themes</source>
+				<target>Themes</target>
 			</trans-unit>
 			<trans-unit id="setConstants" xml:space="preserve">
 				<source>Configure Theme</source>
+				<target>Theme anpassen</target>
 			</trans-unit>
 			<trans-unit id="setTheme" xml:space="preserve">
 				<source>Choose Theme</source>
+				<target>Theme wählen</target>
 			</trans-unit>
 			<trans-unit id="optionsFor" xml:space="preserve">
 				<source>Options for</source>
+				<target>Einstellungen für</target>
 			</trans-unit>
 			<trans-unit id="noThemeSelected" xml:space="preserve">
 				<source>Currently there is no theme choosing for this page.</source>
+				<target>Derzeit ist kein Theme gewählt.</target>
 			</trans-unit>
 			<trans-unit id="selectTheme" xml:space="preserve">
 				<source>Choose a theme.</source>
+				<target>Wählen Sie ein Theme aus.</target>
 			</trans-unit>
 			<trans-unit id="by" xml:space="preserve">
 				<source>by</source>
+				<target>von</target>
 			</trans-unit>
 			<trans-unit id="category.language" xml:space="preserve">
 				<source>Language</source>
+				<source>Spracheinstellungen</source>
 			</trans-unit>
 		</body>
 	</file>
