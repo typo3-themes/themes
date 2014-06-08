@@ -20,9 +20,9 @@ class Theme extends AbstractTheme {
 			 * set needed path variables
 			 */
 			$path                          = ExtensionManagementUtility::extPath($this->getExtensionName());
-			$this->pathTyposcript          = $path . 'Configuration/TypoScript/setup.ts';
-			$this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.ts';
-			$this->pathTSConfig            = $path . 'Configuration/PageTS/tsconfig.ts';
+			$this->pathTyposcript          = $path . 'Configuration/TypoScript/setup.txt';
+			$this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.txt';
+			$this->pathTSConfig            = $path . 'Configuration/PageTS/tsconfig.txt';
 
 			$this->importExtEmConf();
 
