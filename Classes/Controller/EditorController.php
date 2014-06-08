@@ -5,6 +5,7 @@ namespace KayStrobach\Themes\Controller;
 use KayStrobach\Themes\Domain\Model\Theme;
 use KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility;
 use KayStrobach\Themes\Utilities\TsParserUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -55,19 +56,37 @@ class EditorController extends ActionController {
 		$this->id = intval(GeneralUtility::_GET('id'));
 		$this->tsParser = new TsParserUtility();
 
-		$this->externalConfig['constantCategoriesToShow'] = $GLOBALS["BE_USER"]->getTSConfig(
+        // extension configuration
+        $t = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
+        $t['categoriesToShow'] = GeneralUtility::trimExplode(',', $t['categoriesToShow']);
+        $t['constantsToHide'] = GeneralUtility::trimExplode(',', $t['constantsToHide']);
+
+        // mod.tx_themes.constantCategoriesToShow.value
+		$externalConstantCategoriesToShow = $GLOBALS["BE_USER"]->getTSConfig(
 			'mod.tx_themes.constantCategoriesToShow',
 			BackendUtility::getPagesTSconfig($this->id)
 		);
-		$this->externalConfig['constantsToHide'] = $GLOBALS["BE_USER"]->getTSConfig(
+        if($externalConstantCategoriesToShow['value']){
+            $this->externalConfig['constantCategoriesToShow'] = GeneralUtility::trimExplode(',',$externalConstantCategoriesToShow['value']);
+            ArrayUtility::mergeRecursiveWithOverrule($t['categoriesToShow'], $this->externalConfig['constantCategoriesToShow']);
+        }else{
+            $this->externalConfig['constantCategoriesToShow'] = array();
+        }
+
+        // mod.tx_themes.constantsToHide.value
+		$externalConstantsToHide = $GLOBALS["BE_USER"]->getTSConfig(
 			'mod.tx_themes.constantsToHide',
 			BackendUtility::getPagesTSconfig($this->id)
 		);
+        if($externalConstantsToHide['value']){
+            $this->externalConfig['constantsToHide'] = GeneralUtility::trimExplode(',',$externalConstantsToHide['value']);
+            ArrayUtility::mergeRecursiveWithOverrule($t['constantsToHide'], $this->externalConfig['constantsToHide']);
+        }else{
+            $this->externalConfig['constantsToHide'] = array();
+        }
 
-		// @todo add userTS / pageTS override
-		$t = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
-		$this->allowedCategories = GeneralUtility::trimExplode(',', $t['categoriesToShow']);
-		$this->deniedFields      = GeneralUtility::trimExplode(',', $t['constantsToHide']);
+		$this->allowedCategories = $t['categoriesToShow'];
+		$this->deniedFields      = $t['constantsToHide'];
 
 		// initialize normally used values
 	}
