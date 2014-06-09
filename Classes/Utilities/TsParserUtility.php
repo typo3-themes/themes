@@ -107,6 +107,15 @@ class TsParserUtility implements SingletonInterface{
 		return $this->tsParser->categories;
 	}
 
+    /**
+	 * @param $pid
+	 * @return array
+	 */
+    public function getSubCategories($pid){
+        $this->initializeTSParser($pid);
+        return $this->tsParser->subCategories;
+    }
+
 	/**
 	 * @param $pid
 	 * @return \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService

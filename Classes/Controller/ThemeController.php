@@ -1,0 +1,72 @@
+<?php
+
+namespace KayStrobach\Themes\Controller;
+
+use KayStrobach\Themes\Domain\Model\Theme;
+use KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility;
+use KayStrobach\Themes\Utilities\TsParserUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
+class ThemeController extends ActionController {
+	/**
+	 * @var array
+	 */
+	protected $typoScriptSetup;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+		$this->typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+	}
+
+	public function indexAction() {
+		$this->templateName = $this->evaluateTypoScript('plugin.tx_themes.settings.templateName');
+		$templateFile = $this->getTemplateFile();
+		if($templateFile !== NULL) {
+			$this->view->setTemplatePathAndFilename($templateFile);
+		}
+		$this->view->assign('templateName', $this->templateName);
+	}
+
+	protected function evaluateTypoScript($path) {
+		/** @var \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper $vh */
+		$vh = $this->objectManager->get('TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper');
+		$vh->setRenderChildrenClosure(function() {return '';});
+		return $vh->render($path);
+	}
+
+	protected function getTsArrayByPath($typoscriptObjectPath) {
+		$pathSegments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $typoscriptObjectPath);
+		$setup = $this->typoScriptSetup;
+		foreach ($pathSegments as $segment) {
+			if (!array_key_exists(($segment . '.'), $setup)) {
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist', 1253191023);
+			}
+			$setup = $setup[$segment . '.'];
+		}
+		return $setup;
+	}
+
+	protected function getTemplateFile() {
+		$templatePaths = $this->getTsArrayByPath('plugin.tx_themes.view.templateRootPaths');
+		ksort($templatePaths);
+		foreach($templatePaths as $templatePath) {
+			$cleanedPath = GeneralUtility::getFileAbsFileName($templatePath) . 'Theme/' .$this->templateName . '.html';
+			if(is_file($cleanedPath)) {
+				return $cleanedPath;
+			}
+		}
+		return NULL;
+	}
+
+}

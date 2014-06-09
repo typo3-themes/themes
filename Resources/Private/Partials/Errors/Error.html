@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="{f:uri.resource(extensionName:'t3skin', path:'Css/structure/element_message.css')}">
+<link rel="stylesheet" href="{f:uri.resource(extensionName:'t3skin', path:'Css/visual/element_message.css')}">
+
+<div class="typo3-message message-error">
+	<div class="message-body">
+		<f:if condition="{message}">
+			<p>
+				{message}
+			</p>
+		</f:if>
+		<f:if condition="{preparedMessage}">
+			<f:render partial="Errors/{preparedMessage}" />
+		</f:if>
+	</div>
+</div>
