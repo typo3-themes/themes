@@ -11,6 +11,11 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 class ThemeController extends ActionController {
 	/**
+	 * @var string
+	 */
+	protected $templateName = '';
+
+	/**
 	 * @var array
 	 */
 	protected $typoScriptSetup;
@@ -21,6 +26,12 @@ class ThemeController extends ActionController {
 	protected $configurationManager;
 
 	/**
+	 * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository
+	 * @inject
+	 */
+	protected $themeRepository;
+
+	/**
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
@@ -29,6 +40,9 @@ class ThemeController extends ActionController {
 		$this->typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 	}
 
+	public function initializeAction() {
+		$this->themeRepository = new \KayStrobach\Themes\Domain\Repository\ThemeRepository();
+	}
 	/**
 	 * renders the given theme
 	 */
@@ -39,6 +53,7 @@ class ThemeController extends ActionController {
 			$this->view->setTemplatePathAndFilename($templateFile);
 		}
 		$this->view->assign('templateName', $this->templateName);
+		$this->view->assign('theme',        $this->themeRepository->findByPageOrRootline($GLOBALS['TSFE']->id));
 	}
 
 	/**
