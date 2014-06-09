@@ -3,8 +3,7 @@
         <f:if condition="{entry.active}">
             <f:then>
                 <li class="{entry.class} active">
-                    <f:link.page pageUid="{entry.pageUid}"
-                                 addQueryString="1"
+                    <f:link.page addQueryString="1"
                                  additionalParams="{L: entry.L}"
                                  title="{entry.label}">
                         <span>{entry.label}</span>
@@ -13,8 +12,7 @@
             </f:then>
             <f:else>
                 <li class="{entry.class}">
-                    <f:link.page pageUid="{entry.pageUid}"
-                                 addQueryString="1"
+                    <f:link.page addQueryString="1"
                                  additionalParams="{L: entry.L}"
                                  title="{entry.label}">
                         <span>{entry.label}</span>

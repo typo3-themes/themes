@@ -44,6 +44,7 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
         $currentLanguageUid = (int)$this->widgetConfiguration['currentLanguageUid'];
         $defaultLanguageIsoCodeShort = $this->widgetConfiguration['defaultLanguageIsoCodeShort'];
         $defaultLanguageLabel = $this->widgetConfiguration['defaultLanguageLabel'];
+        $defaultLanguageFlag  = $this->widgetConfiguration['defaultLanguageFlag'];
         $flagIconPath = $this->widgetConfiguration['flagIconPath'];
         $flagIconFileExtension = $this->widgetConfiguration['flagIconFileExtension'];
 
@@ -55,6 +56,7 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
                 $menuEntry['pageUid'] = $GLOBALS['TSFE']->id;
                 $class = 'unknown';
                 $label = 'unknown';
+                $flag  = 'unknown';
 
                 // Is active language
                 $menuEntry['active'] = ((int)$currentLanguageUid===(int)$languageUid);
@@ -63,8 +65,10 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
                 if((int)$languageUid===0) {
                     $class = $defaultLanguageIsoCodeShort!='' ? $defaultLanguageIsoCodeShort : 'en';
                     $label = $defaultLanguageLabel!='' ? $defaultLanguageLabel : 'English';
+                    $flag  = $defaultLanguageFlag!='' ? $defaultLanguageFlag : 'gb';
                 }
                 else if($sysLanguage = $this->getSysLanguage($languageUid)) {
+
                     if(!($this->languageRepository instanceof \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository)) {
                         $this->languageRepository = GeneralUtility::makeInstance('SJBR\\StaticInfoTables\\Domain\\Repository\\LanguageRepository');
                     }
@@ -73,10 +77,12 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
                         $class = $languageObject->getIsoCodeA2();
                         $label = $languageObject->getNameEn();
                     }
+                    $flag = $sysLanguage['flag'];
                 }
 
                 $menuEntry['label'] = $label;
                 $menuEntry['class'] = strtolower($class);
+                $menuEntry['flag']  = $flag;
                 $menu[] = $menuEntry;
             }
         }
