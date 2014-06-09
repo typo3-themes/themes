@@ -45,8 +45,8 @@ ExtensionManagementUtility::addToAllTCAtypes('sys_template', '--div--;Themes,tx_
 // @todo respect independent switch
 ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'themes');
 
-ExtensionManagementUtility::addTypoScriptSetup('');
-ExtensionManagementUtility::addTypoScriptConstants('');
+ExtensionManagementUtility::addTypoScriptSetup('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:themes/Configuration/TypoScript/setup.txt">');
+ExtensionManagementUtility::addTypoScriptConstants('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:themes/Configuration/TypoScript/constants.txt">');
 
 /**
  * add themes overlay
