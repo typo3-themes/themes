@@ -13,6 +13,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
 
     /**
+     * @var array
+     */
+    protected $configuration = array();
+
+    /**
      * Language Repository
      *
      * @var \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository
@@ -39,6 +44,8 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
         $currentLanguageUid = (int)$this->widgetConfiguration['currentLanguageUid'];
         $defaultLanguageIsoCodeShort = $this->widgetConfiguration['defaultLanguageIsoCodeShort'];
         $defaultLanguageLabel = $this->widgetConfiguration['defaultLanguageLabel'];
+        $flagIconPath = $this->widgetConfiguration['flagIconPath'];
+        $flagIconFileExtension = $this->widgetConfiguration['flagIconFileExtension'];
 
         if(!empty($availableLanguages)) {
             foreach($availableLanguages as $languageUid) {
@@ -75,6 +82,8 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
         }
 
         $this->view->assign('menu', $menu);
+        $this->view->assign('flagIconPath', $flagIconPath);
+        $this->view->assign('flagIconFileExtension', $flagIconFileExtension);
     }
 
     protected function getSysLanguage($uid=0) {
