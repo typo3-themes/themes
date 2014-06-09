@@ -106,6 +106,15 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		return $this->extensionName;
 	}
 
+    /**
+	 * Returns the version
+	 *
+	 * @return string
+	 */
+	public function getVersion() {
+		return $this->version;
+	}
+
 	public function getAuthor() {
 		return $this->author;
 	}

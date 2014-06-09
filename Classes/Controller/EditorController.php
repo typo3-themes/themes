@@ -159,6 +159,7 @@ class EditorController extends ActionController {
 	protected function renderFields(TsParserUtility $tsParserWrapper, $pid, $allowedCategories = NULL, $deniedFields = NULL) {
 		$definition = array();
 		$categories = $tsParserWrapper->getCategories($pid);
+        $subcategories = $tsParserWrapper->getSubCategories($pid);
 		$constants  = $tsParserWrapper->getConstants($pid);
 		foreach($categories as $categorieName => $categorie) {
 			asort($categorie);
@@ -174,6 +175,9 @@ class EditorController extends ActionController {
 				);
 				foreach($categorie as $constantName => $type) {
 					if(($deniedFields === NULL) || (!in_array($constantName, $deniedFields))) {
+                        if(isset($subcategories[$constants[$constantName]['subcat_name']][0])){
+                            $constants[$constantName]['subcat_name'] = $subcategories[$constants[$constantName]['subcat_name']][0];
+                        }
 						$definition[$categorieName]['items'][] = $constants[$constantName];
 					}
 				}
