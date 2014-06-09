@@ -7,27 +7,87 @@
 <f:section name="Content">
 	<f:if condition="{selectedTheme}">
 		<f:then>
-			<div class="previewImage" style="float: right; border:1px solid gray; margin-bottom: 10px;">
-				<f:image src="{selectedTheme.previewImage}" maxHeight="200" maxWidth="300"/>
-			</div>
+            <div class="theme-detail-info theme-clearfix">
+                <div class="theme-detail-info-preview">
+                    <f:image src="{selectedTheme.previewImage}" width="300" />
+                </div>
+                <div class="theme-detail-header">
+                    <h1>{f:translate(key:'optionsFor')} &quot;{selectedTheme.title}&quot;</h1>
+                    <p>
+                        {selectedTheme.description}
+                    </p>
+                </div>
 
-			<h1>
-				{f:translate(key:'optionsFor')}
-				&quot;{selectedTheme.title}&quot;
-				<br>
-				<small>
-					EXT:{selectedTheme.extensionName}
-					-
-					{f:translate(key:'by')}
-					<a href="mailto:{selectedSkin.author.email}">
-						{selectedTheme.author.name}
-					</a>
-				</small>
-			</h1>
+                <dl class="theme-detail-summary">
+                    <dt>Title:</dt>
+                    <dd>{selectedTheme.title}</dd>
+                    <dt>Key:</dt>
+                    <dd>{selectedTheme.extensionName}</dd>
+                    <dt>Version:</dt>
+                    <dd>{selectedTheme.version}</dd>
+                    <dt>Author:</dt>
+                    <dd><a href="mailto:{selectedTheme.author.email}">{selectedTheme.author.name}</a> <f:if condition="{selectedTheme.author.company}">({selectedTheme.author.company})</f:if></dd>
+                </dl>
 
-			<p>
-				{selectedTheme.description}
-			</p>
+            </div>
+            <div class="theme-detail-options theme-clearfix">
+                <f:form action="update" enctype="multipart/form-data" id="saveableForm">
+                    <f:form.hidden name="pid" value="{pid}" />
+                    <f:for each="{categories}" as="category">
+                        <f:if condition="{category.items}">
+                            <h2>{category.title}</h2>
+                        </f:if>
+                        <f:groupedFor each="{category.items}" as="subcategory" groupBy="subcat_name" groupKey="subcat_name">
+                            <table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist" style="max-width: 100%;">
+                                <col style="width:5%" />
+                                <col style="width:50%" />
+                                <col style="width:45%" />
+                                <tr class="c-table-row-spacer"><td nowrap="nowrap" class="col-icon"><a href="#">&nbsp;</a></td>
+                                    <td nowrap="nowrap" class="col-icon">
+                                        <img src="clear.gif" width="1" height="8" alt="">
+                                    </td>
+                                    <td nowrap="nowrap" class="">
+                                        <img src="clear.gif" width="230" height="1" alt="">
+                                    </td>
+                                    <td nowrap="nowrap" class="" colspan="10"></td>
+                                </tr>
+                                <tr class="t3-row-header">
+                                    <td nowrap="nowrap" class="col-icon"></td>
+                                    <td nowrap="nowrap" class="" colspan="2">
+                                        <f:if condition="{subcat_name}">
+                                            <f:then>
+                                                {subcat_name}
+                                            </f:then>
+                                            <f:else>
+                                                {category.title}
+                                            </f:else>
+                                        </f:if>
+                                    </td>
+                                </tr>
+                                <f:for each="{subcategory}" as="item">
+                                    <tr  title="{item.name}" class="constantLine db_list_normal {f:if(condition:'{item.isDefault}', then:'defaultValueIsSelected')}">
+                                        <td nowrap="nowrap">
+                                            <div class="showOnDefault">
+                                                <span class="showEditForm"><f:image src="EXT:themes/Resources/Public/Icons/power_grey.png" alt="alt text" /></span>
+                                            </div>
+                                            <div class="hideOnDefault">
+                                                <span class="hideEditForm"><f:image src="EXT:themes/Resources/Public/Icons/power_green.png" alt="alt text" /></span>
+                                            </div>
+                                            <f:form.hidden name="check[{item.name}]" value="{f:if(condition:'{item.isDefault}', then:'', else:'checked')}" class="hidden"/>
+                                        </td>
+                                        <td>
+                                            <f:render partial="FormFields/{item.typeCleaned}" arguments="{field: item}"/>
+                                        </td>
+                                        <td class="">
+                                            <label for="{item.name}">{item.label}</label>
+                                        </td>
+                                    </tr>
+                                </f:for>
+                            </table>
+                        </f:groupedFor>
+                    </f:for>
+                </f:form>
+            </div>
 		</f:then>
 		<f:else>
 			<h3>
@@ -38,62 +98,5 @@
 				{f:translate(key:'selectTheme')}
 			</f:link.action>
 		</f:else>
-	</f:if>
-
-	<f:if condition="{selectedTheme}">
-		<f:form action="update" enctype="multipart/form-data" id="saveableForm">
-			<f:form.hidden name="pid" value="{pid}" />
-			<f:for each="{categories}" as="category">
-				<f:if condition="{category.items}">
-
-					<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist" style="max-width: 100%;">
-						<col style="width:5%" />
-						<col style="width:50%" />
-						<col style="width:45%" />
-						<tr class="c-table-row-spacer"><td nowrap="nowrap" class="col-icon"><a href="#">&nbsp;</a></td>
-							<td nowrap="nowrap" class="col-icon">
-								<img src="clear.gif" width="1" height="8" alt="">
-							</td>
-							<td nowrap="nowrap" class="">
-								<img src="clear.gif" width="230" height="1" alt="">
-							</td>
-							<td nowrap="nowrap" class="" colspan="10"></td>
-						</tr>
-						<tr class="t3-row-header">
-							<td nowrap="nowrap" class="col-icon"></td>
-							<td nowrap="nowrap" class="" colspan="2">
-								<f:if condition="{f:translate(key:'category.{category.title}')}">
-									<f:then>
-										{f:translate(key:'category.{category.title}')}
-									</f:then>
-									<f:else>
-										{category.title}
-									</f:else>
-								</f:if>
-							</td>
-						</tr>
-						<f:for each="{category.items}" as="item">
-							<tr  title="{item.name}" class="constantLine db_list_normal {f:if(condition:'{item.isDefault}', then:'defaultValueIsSelected')}">
-								<td nowrap="nowrap">
-									<div class="showOnDefault">
-										<span class="showEditForm"><f:image src="EXT:themes/Resources/Public/Icons/power_grey.png" alt="alt text" /></span>
-									</div>
-									<div class="hideOnDefault">
-										<span class="hideEditForm"><f:image src="EXT:themes/Resources/Public/Icons/power_green.png" alt="alt text" /></span>
-									</div>
-									<f:form.hidden name="check[{item.name}]" value="{f:if(condition:'{item.isDefault}', then:'', else:'checked')}" class="hidden"/>
-								</td>
-								<td>
-									<f:render partial="FormFields/{item.typeCleaned}" arguments="{field: item}"/>
-								</td>
-								<td class="">
-									<label for="{item.name}">{item.label}</label>
-								</td>
-							</tr>
-						</f:for>
-					</table>
-				</f:if>
-			</f:for>
-		</f:form>
 	</f:if>
 </f:section>
