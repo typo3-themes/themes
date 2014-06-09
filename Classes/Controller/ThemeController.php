@@ -59,7 +59,7 @@ class ThemeController extends ActionController {
 
 	protected function getTemplateFile() {
 		$templatePaths = $this->getTsArrayByPath('plugin.tx_themes.view.templateRootPaths');
-		ksort($templatePaths);
+		krsort($templatePaths);
 		foreach($templatePaths as $templatePath) {
 			$cleanedPath = GeneralUtility::getFileAbsFileName($templatePath) . 'Theme/' .$this->templateName . '.html';
 			if(is_file($cleanedPath)) {
