@@ -30,7 +30,7 @@ plugin.tx_themes {
 	}
 	view {
 		templateRootPaths {
-			#100 = {$plugin.tx_themes.view.templateRootPath}
+			100 = {$themes.resourcesPrivatePath}Templates/
 			500 = EXT:themes/Resources/Private/Templates/
 		}
 		partialRootPaths {
