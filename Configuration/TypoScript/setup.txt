@@ -6,3 +6,62 @@ config {
 	locale_all       = {$themes.languages.current.isoCode}.UTF-8
 	htmlTag_langKey  = {$themes.languages.current.isoCodeHtml}
 }
+
+# Plugin configuration
+plugin.tx_themes {
+	settings {
+		templateName = TEXT
+		templateName {
+			stdWrap.cObject = TEXT
+			stdWrap.cObject {
+				data = levelfield:-1, backend_layout_next_level, slide
+				override.field = backend_layout
+				split {
+					token     = pagets__
+					1.current = 1
+					1.wrap    = |
+				}
+			}
+			stdWrap.ifEmpty.cObject = TEXT
+			stdWrap.ifEmpty.cObject {
+				value   = Error
+			}
+		}
+	}
+	view {
+		templateRootPaths {
+			#100 = {$plugin.tx_themes.view.templateRootPath}
+			500 = EXT:themes/Resources/Private/Templates/
+		}
+		partialRootPaths {
+			100 = {$themes.resourcesPrivatePath}Partials/
+			500 = EXT:themes/Resources/Private/Partials/
+		}
+		layoutRootPaths {
+			100 = {$themes.resourcesPrivatePath}Layouts/
+			500 = EXT:themes/Resources/Private/Layouts/
+		}
+	}
+	# This is an example how to modify the translation
+	_LOCAL_LANG {
+		default {
+			someUnusedKey = foo
+		}
+	}
+}
+
+page {
+	typeNum = 0
+    100 = USER
+    100 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = Themes
+        vendorName = KayStrobach
+        pluginName = Theme
+        controller = Theme
+	    action  = MenuContent
+        settings    =< plugin.tx_themes.settings
+        persistence =< plugin.tx_themes.persistence
+        view        =< plugin.tx_themes.view
+    }
+}

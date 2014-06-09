@@ -1,6 +1,7 @@
 <?php
 
 use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use \TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
@@ -39,3 +40,13 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 		= 'KayStrobach\\Themes\\Hook\\IconUtilityHook';
 
 
+ExtensionUtility::configurePlugin(
+	'KayStrobach.' . $_EXTKEY,
+	'Theme',
+	array(
+		'Theme' => 'index'
+	),
+	array(
+
+	)
+);
