@@ -26,9 +26,6 @@ tr.constantLine {
 }
 
 
-//
-// Theme Global
-// --------------------------------------------------
 .theme-clearfix:before,
 .theme-clearfix:after {
     content: " ";
@@ -38,10 +35,6 @@ tr.constantLine {
     clear: both;
 }
 
-
-//
-// Theme Detail
-// --------------------------------------------------
 .theme-detail-header h1 {
     margin-bottom: 0.5em;
 }

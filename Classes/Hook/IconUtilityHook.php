@@ -10,8 +10,10 @@ use KayStrobach\Themes\Utilities\CheckPageUtility;
 
 class IconUtilityHook {
 	public function overrideIconOverlay($table, &$row, &$status) {
-		if(CheckPageUtility::hasTheme($row['uid']) > 0) {
-			$status['themefound'] = TRUE;
+		if($table === 'pages') {
+			if(CheckPageUtility::hasTheme($row['uid']) > 0) {
+				$status['themefound'] = TRUE;
+			}
 		}
 	}
 }

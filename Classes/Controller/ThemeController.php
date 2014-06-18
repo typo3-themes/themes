@@ -11,6 +11,11 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 class ThemeController extends ActionController {
 	/**
+	 * @var string
+	 */
+	protected $templateName = '';
+
+	/**
 	 * @var array
 	 */
 	protected $typoScriptSetup;
@@ -21,6 +26,12 @@ class ThemeController extends ActionController {
 	protected $configurationManager;
 
 	/**
+	 * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository
+	 * @inject
+	 */
+	protected $themeRepository;
+
+	/**
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
@@ -29,6 +40,12 @@ class ThemeController extends ActionController {
 		$this->typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 	}
 
+	public function initializeAction() {
+		$this->themeRepository = new \KayStrobach\Themes\Domain\Repository\ThemeRepository();
+	}
+	/**
+	 * renders the given theme
+	 */
 	public function indexAction() {
 		$this->templateName = $this->evaluateTypoScript('plugin.tx_themes.settings.templateName');
 		$templateFile = $this->getTemplateFile();
@@ -36,8 +53,15 @@ class ThemeController extends ActionController {
 			$this->view->setTemplatePathAndFilename($templateFile);
 		}
 		$this->view->assign('templateName', $this->templateName);
+		$this->view->assign('theme',        $this->themeRepository->findByPageOrRootline($GLOBALS['TSFE']->id));
 	}
 
+	/**
+	 * renders a given TypoScript Path
+	 *
+	 * @param $path
+	 * @return string
+	 */
 	protected function evaluateTypoScript($path) {
 		/** @var \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper $vh */
 		$vh = $this->objectManager->get('TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper');
@@ -45,6 +69,13 @@ class ThemeController extends ActionController {
 		return $vh->render($path);
 	}
 
+	/**
+	 * gets a TS Array by path
+	 *
+	 * @param $typoscriptObjectPath
+	 * @return array
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 */
 	protected function getTsArrayByPath($typoscriptObjectPath) {
 		$pathSegments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $typoscriptObjectPath);
 		$setup = $this->typoScriptSetup;
@@ -57,9 +88,14 @@ class ThemeController extends ActionController {
 		return $setup;
 	}
 
+	/**
+	 * get the needed templateFile from TS
+	 *
+	 * @return null|string
+	 */
 	protected function getTemplateFile() {
 		$templatePaths = $this->getTsArrayByPath('plugin.tx_themes.view.templateRootPaths');
-		ksort($templatePaths);
+		krsort($templatePaths);
 		foreach($templatePaths as $templatePath) {
 			$cleanedPath = GeneralUtility::getFileAbsFileName($templatePath) . 'Theme/' .$this->templateName . '.html';
 			if(is_file($cleanedPath)) {
