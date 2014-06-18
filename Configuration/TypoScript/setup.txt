@@ -30,16 +30,16 @@ plugin.tx_themes {
 	}
 	view {
 		templateRootPaths {
-			100 = {$themes.resourcesPrivatePath}Templates/
-			500 = EXT:themes/Resources/Private/Templates/
-		}
-		partialRootPaths {
-			100 = {$themes.resourcesPrivatePath}Partials/
-			500 = EXT:themes/Resources/Private/Partials/
-		}
-		layoutRootPaths {
-			100 = {$themes.resourcesPrivatePath}Layouts/
-			500 = EXT:themes/Resources/Private/Layouts/
+			100 = EXT:themes/Resources/Private/Templates/
+            500 = {$themes.resourcesPrivatePath}Templates/
+        }
+        partialRootPaths {
+            100 = EXT:themes/Resources/Private/Partials/
+            500 = {$themes.resourcesPrivatePath}Partials/
+        }
+        layoutRootPaths {
+            100 = EXT:themes/Resources/Private/Layouts/
+            500 = {$themes.resourcesPrivatePath}Layouts/
 		}
 	}
 	# This is an example how to modify the translation
