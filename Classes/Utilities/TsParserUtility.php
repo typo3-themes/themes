@@ -6,7 +6,11 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class TsParserUtility implements SingletonInterface{
+/**
+ * @todo missing docblock
+ */
+class TsParserUtility implements SingletonInterface {
+
 	/**
 	 * @var \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
 	 */
@@ -20,7 +24,7 @@ class TsParserUtility implements SingletonInterface{
 	 * @param array $constants
 	 * @param array $isSetConstants
 	 */
-	function applyToPid($pid,array $constants, $isSetConstants = array()) {
+	function applyToPid($pid, array $constants, $isSetConstants = array()) {
 		$this->initializeTSParser($pid);
 		$this->setConstants($pid, $constants, $isSetConstants);
 		//@todo add hook to apply additional options
@@ -34,49 +38,46 @@ class TsParserUtility implements SingletonInterface{
 		$this->initializeTSParser($pid);
 
 		$return = $this->tsParserConstants;
-		if(is_array($return)) {
-			foreach($return as $key => $field) {
+		if (is_array($return)) {
+			foreach ($return as $key => $field) {
 
 				$return[$key]['isDefault'] = ($field['value'] === $field['default_value']);
 
-				if($field['type'] === 'int+') {
+				if ($field['type'] === 'int+') {
 					$return[$key]['typeCleaned'] = 'Int';
-				} elseif(substr($field['type'],0,3) === 'int') {
+				} elseif (substr($field['type'], 0, 3) === 'int') {
 					$return[$key]['typeCleaned'] = 'Int';
 					$return[$key]['range'] = substr($field['type'], 3);
-				} elseif($field['type'] === 'small') {
+				} elseif ($field['type'] === 'small') {
 					$return[$key]['typeCleaned'] = 'Text';
-				} elseif($field['type'] === 'color') {
+				} elseif ($field['type'] === 'color') {
 					$return[$key]['typeCleaned'] = 'Color';
-				} elseif($field['type'] === 'boolean') {
+				} elseif ($field['type'] === 'boolean') {
 					$return[$key]['typeCleaned'] = 'Boolean';
-				} elseif($field['type'] === 'string') {
+				} elseif ($field['type'] === 'string') {
 					$return[$key]['typeCleaned'] = 'String';
-				} elseif(substr($field['type'], 0,7) === 'options') {
+				} elseif (substr($field['type'], 0, 7) === 'options') {
 					$return[$key]['typeCleaned'] = 'Options';
-					$options = explode(',', substr($field['type'], 8,-1));
+					$options = explode(',', substr($field['type'], 8, -1));
 					$return[$key]['options'] = array();
-					foreach($options as $option) {
+					foreach ($options as $option) {
 						$t = explode('=', $option);
-						if(count($t) === 2) {
+						if (count($t) === 2) {
 							$return[$key]['options'][$t[1]] = $t[0];
 						} else {
 							$return[$key]['options'][$t[0]] = $t[0];
 						}
 					}
-				} elseif($field['type'] === '') {
+				} elseif ($field['type'] === '') {
 					$return[$key]['typeCleaned'] = 'String';
 				} else {
 					$return[$key]['typeCleaned'] = 'Fallback';
 				}
-
 			}
 			return $return;
 		} else {
 			return NULL;
 		}
-
-
 	}
 
 	/**
@@ -91,30 +92,29 @@ class TsParserUtility implements SingletonInterface{
 		#print_r($this->tsParser->subCategories);
 		#die();
 
-		foreach($this->tsParser->categories as $categorieName => $categorie) {
-			if((count($categoriesToShow) === 0) || (in_array($categorieName, $categoriesToShow))) {
-				foreach($categorie as $constantName => $type) {
-					if(in_array($constantName, $deniedFields)) {
+		foreach ($this->tsParser->categories as $categorieName => $categorie) {
+			if ((count($categoriesToShow) === 0) || (in_array($categorieName, $categoriesToShow))) {
+				foreach ($categorie as $constantName => $type) {
+					if (in_array($constantName, $deniedFields)) {
 						unset($this->tsParser->categories[$categorieName][$constantName]);
 					}
 				}
 			} else {
 				unset($this->tsParser->categories[$categorieName]);
 			}
-
 		}
 
 		return $this->tsParser->categories;
 	}
 
-    /**
+	/**
 	 * @param $pid
 	 * @return array
 	 */
-    public function getSubCategories($pid){
-        $this->initializeTSParser($pid);
-        return $this->tsParser->subCategories;
-    }
+	public function getSubCategories($pid) {
+		$this->initializeTSParser($pid);
+		return $this->tsParser->subCategories;
+	}
 
 	/**
 	 * @param $pid
@@ -137,19 +137,19 @@ class TsParserUtility implements SingletonInterface{
 		$this->getConstants($pid);
 
 		$filteredConstants = array();
-		/*foreach($constants as $constant) {
-			foreach($this->tsParserConstants as $allowedConstants) {
-				if($constant['name'] == $allowedConstants['name']) {
-					$filteredConstants[] = $constant;
-					break;
-				}
-			}
-		}*/
+		/* foreach($constants as $constant) {
+		 foreach($this->tsParserConstants as $allowedConstants) {
+		 if($constant['name'] == $allowedConstants['name']) {
+		 $filteredConstants[] = $constant;
+		 break;
+		 }
+		 }
+		 } */
 		$filteredConstants = $constants;
 
 		$postData = array(
 			'data' => $constants,
-			'check'=> $isSetConstants,
+			'check' => $isSetConstants,
 		);
 
 		$this->tsParser->changed = 0;
@@ -187,7 +187,7 @@ class TsParserUtility implements SingletonInterface{
 	 * @return bool
 	 */
 	protected function initializeTSParser($pageId, $template_uid = 0) {
-		if(!$this->tsParserInitialized) {
+		if (!$this->tsParserInitialized) {
 			$this->tsParserInitialized = TRUE;
 			$this->tsParser = GeneralUtility::makeInstance('TYPO3\\CMS\Core\\TypoScript\\ExtendedTemplateService');
 			$this->tsParser->tt_track = 0; // Do not log time-performance information
@@ -217,4 +217,5 @@ class TsParserUtility implements SingletonInterface{
 			return TRUE;
 		}
 	}
+
 }

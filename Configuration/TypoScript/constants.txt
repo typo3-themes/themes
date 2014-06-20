@@ -1,25 +1,24 @@
-
 themes.languages {
 	# cat=languages; type=string; label=Languages available for Language Switcher
 	available =
 	default {
 		 # cat=languages; type=string; label=Default language label
-		label        = English
+		label = English
 		# cat=languages; type=string; label=Default language iso code
-		isoCode      = en_EN
+		isoCode = en_EN
 		# cat=languages; type=string; label=Default iso code short
-        isoCodeShort = en
-        # cat=languages; type=string; label=lang attribute for html tag, can be as it is most time
-        isoCodeHtml  = {$themes.languages.default.isoCodeShort}
+		isoCodeShort = en
+		# cat=languages; type=string; label=lang attribute for html tag, can be as it is most time
+		isoCodeHtml = {$themes.languages.default.isoCodeShort}
 		# cat=languages; type=string; label=Default language flag
-		flag         = gb
+		flag = gb
 	}
 	current {
-		uid          = 0
-		label        = {$themes.languages.default.label}
-		isoCode      = {$themes.languages.default.isoCode}
+		uid = 0
+		label = {$themes.languages.default.label}
+		isoCode = {$themes.languages.default.isoCode}
 		isoCodeShort = {$themes.languages.default.flag}
-		isoCodeHtml  = {$themes.languages.default.isoCodeHtml}
-		flag         = {$themes.languages.default.flag}
+		isoCodeHtml = {$themes.languages.default.isoCodeHtml}
+		flag = {$themes.languages.default.flag}
 	}
 }

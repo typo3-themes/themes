@@ -4,7 +4,11 @@ namespace KayStrobach\Themes\Hook;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * @todo missing docblock
+ */
 class TemplateModuleBodyPostProcessHook {
+
 	/**
 	 * $params = array(
 	 *     'moduleTemplateFilename' => &$this->moduleTemplateFilename,
@@ -21,10 +25,9 @@ class TemplateModuleBodyPostProcessHook {
 	function main(&$params, &$pObj) {
 		/**
 		 * @var $repository \KayStrobach\Themes\Domain\Repository\ThemeRepository
-		 * @var $view       Tx_Fluid_View_StandaloneView
+		 * @var $view Tx_Fluid_View_StandaloneView
 		 */
-		if(($_GET['SET']['function'] === 'tx_tstemplateinfo' || !$_GET['SET']['function'])
-			&& ($params['moduleTemplateFilename'] === 'templates/tstemplate.html')) {
+		if (($_GET['SET']['function'] === 'tx_tstemplateinfo' || !$_GET['SET']['function']) && ($params['moduleTemplateFilename'] === 'templates/tstemplate.html')) {
 
 			$repository = GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
 
@@ -43,13 +46,14 @@ class TemplateModuleBodyPostProcessHook {
 
 			$headerEnd = strpos($params['markers']['CONTENT'], '</h2>');
 
-			if($headerEnd) {
+			if ($headerEnd) {
 				$params['markers']['CONTENT'] = substr($params['markers']['CONTENT'], 0, $headerEnd + 5)
-					. $view->render()
-					. substr($params['markers']['CONTENT'], $headerEnd + 6);
+						. $view->render()
+						. substr($params['markers']['CONTENT'], $headerEnd + 6);
 			} else {
 				$params['markers']['CONTENT'] = $view->render() . $params['markers']['CONTENT'];
 			}
 		}
 	}
+
 }

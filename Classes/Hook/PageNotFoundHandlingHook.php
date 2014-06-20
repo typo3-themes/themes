@@ -9,8 +9,8 @@ namespace KayStrobach\Themes\Hook;
  * if configured show the theme error page.
  *
  */
-
 class PageNotFoundHandlingHook {
+
 	/**
 	 * params consists of the following keys!
 	 *
@@ -25,4 +25,5 @@ class PageNotFoundHandlingHook {
 		print_r($params);
 		die();
 	}
+
 }
