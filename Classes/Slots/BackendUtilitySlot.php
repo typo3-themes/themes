@@ -12,12 +12,16 @@ class BackendUtilitySlot extends \TYPO3\CMS\Backend\Configuration\TsConfigParser
 	/**
 	 * Retrieves the theme TSConfig for the given page.
 	 *
+	 * @param $TSdataArray
 	 * @param int $pageUid
+	 * @param $rootLine
+	 * @param $returnPartArray
 	 * @return string The found TSConfig or an empty string.
 	 */
-	protected function getPagesTSconfigPreInclude($pageUid) {
+	public function getPagesTSconfigPreInclude(&$TSdataArray, &$pageUid, &$rootLine, &$returnPartArray) {
 
 		$pageUid = (int)$pageUid;
+
 		if ($pageUid === 0) {
 			return '';
 		}
@@ -30,6 +34,6 @@ class BackendUtilitySlot extends \TYPO3\CMS\Backend\Configuration\TsConfigParser
 			return '';
 		}
 
-		return $theme->getTSConfig();
+		$TSdataArray[] = $theme->getTSConfig();
 	}
 }

@@ -26,7 +26,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['moduleBodyPostP
 // Requires signal slot call from http://forge.typo3.org/issues/59703
 /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
 $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
-$signalSlotDispatcher->connect('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', 'getPagesTSconfigPreInclude', 'KayStrobach\\Themes\\XClass\\TsConfigParser', 'modifyTsDataArray');
+$signalSlotDispatcher->connect('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', 'getPagesTSconfigPreInclude', 'KayStrobach\\Themes\\Slots\\BackendUtilitySlot', 'getPagesTSconfigPreInclude');
 unset($signalSlotDispatcher);
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][] = 'KayStrobach\\Themes\\Hook\\IconUtilityHook';
