@@ -50,6 +50,7 @@ plugin.tx_themes {
 	}
 }
 
+page = PAGE
 page {
 	typeNum = 0
 	100 = USER
