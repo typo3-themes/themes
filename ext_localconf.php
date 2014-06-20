@@ -28,13 +28,18 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['moduleBodyPostProcess'][]
 		= 'KayStrobach\\Themes\\Hook\\TemplateModuleBodyPostProcessHook->main';
 
-/**
- * Register XClasses to be a bit compatible to older versions
- */
-
-	$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Backend\\Configuration\\TsConfigParser'] = array(
-		'className' => 'KayStrobach\\Themes\\XClass\\TsConfigParser',
-	);
+	if (version_compare(\TYPO3\CMS\Core\Utility\VersionNumberUtility::getNumericTypo3Version(), '6.2.4', '<')) {
+		// Register XClasses to be a bit compatible to older versions
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Backend\\Configuration\\TsConfigParser'] = array(
+			'className' => 'KayStrobach\\Themes\\XClass\\TsConfigParser',
+		);
+	} else {
+		// Requires signal slot call from http://forge.typo3.org/issues/59703
+		/** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
+		$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		$signalSlotDispatcher->connect('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', 'getPagesTSconfigPreInclude', 'KayStrobach\\Themes\\XClass\\TsConfigParser', 'modifyTsDataArray');
+		unset($signalSlotDispatcher);
+	}
 
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][]
 		= 'KayStrobach\\Themes\\Hook\\IconUtilityHook';

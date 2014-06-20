@@ -185,6 +185,10 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 		return $this->findByUid($templateRow['tx_themes_skin']);
 	}
 
+	/**
+	 * @param int $pid
+	 * @return \KayStrobach\Themes\Domain\Model\Theme
+	 */
 	public function findByPageOrRootline($pid) {
 		$rootline = BackendUtility::BEgetRootLine($pid);
 		foreach($rootline as $page) {
