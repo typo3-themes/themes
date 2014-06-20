@@ -187,7 +187,8 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	}
 
 	/**
-	 * @todo missing docblock
+	 * @param int $pid
+	 * @return \KayStrobach\Themes\Domain\Model\Theme
 	 */
 	public function findByPageOrRootline($pid) {
 		$rootline = BackendUtility::BEgetRootLine($pid);
