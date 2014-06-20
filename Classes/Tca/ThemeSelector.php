@@ -6,6 +6,9 @@ namespace KayStrobach\Themes\Tca;
  *
  */
 
+/**
+ * @todo missing docblock
+ */
 class ThemeSelector {
 
 	/**
@@ -29,7 +32,7 @@ class ThemeSelector {
 		$view->assignMultiple(array(
 			'formField' => array(
 				'table' => $PA['table'],
-				'row'   => $PA['row'],
+				'row' => $PA['row'],
 			),
 			'selectedTheme' => $repository->findByUid($PA['row']['tx_themes_skin']),
 			'selectableThemes' => $repository->findAll(),
@@ -38,4 +41,3 @@ class ThemeSelector {
 	}
 
 }
-

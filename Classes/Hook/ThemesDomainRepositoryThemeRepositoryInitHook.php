@@ -5,7 +5,11 @@ namespace KayStrobach\Themes\Hook;
 use KayStrobach\Themes\Domain\Model\Theme;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
+/**
+ * @todo missing docblock
+ */
 class ThemesDomainRepositoryThemeRepositoryInitHook {
+
 	protected $ignoredExtensions = array(
 		'themes',
 		'skinselector_content',
@@ -35,21 +39,22 @@ class ThemesDomainRepositoryThemeRepositoryInitHook {
 		'realurl',
 	);
 
+	/**
+	 * @todo missing docblock
+	 */
 	function init(&$params, $pObj) {
 		// exclude extensions, which are not worth to check them
 		$extensionsToCheck = array_diff(
-			ExtensionManagementUtility::getLoadedExtensionListArray(),
-			ExtensionManagementUtility::getRequiredExtensionListArray(),
-			$this->ignoredExtensions,
-			scandir(PATH_typo3 . 'sysext')
+			ExtensionManagementUtility::getLoadedExtensionListArray(), ExtensionManagementUtility::getRequiredExtensionListArray(), $this->ignoredExtensions, scandir(PATH_typo3 . 'sysext')
 		);
 
 		// check extensions, which are worth to check
-		foreach($extensionsToCheck as $extensionName) {
+		foreach ($extensionsToCheck as $extensionName) {
 			$extPath = ExtensionManagementUtility::extPath($extensionName);
-			if(file_exists($extPath . 'Meta/theme.yaml') && file_exists($extPath . 'Configuration/TypoScript/setup.txt')) {
+			if (file_exists($extPath . 'Meta/theme.yaml') && file_exists($extPath . 'Configuration/TypoScript/setup.txt')) {
 				$pObj->add(new Theme($extensionName));
 			}
 		}
 	}
+
 }

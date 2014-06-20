@@ -1,4 +1,5 @@
 <?php
+
 namespace KayStrobach\Themes\ViewHelpers;
 
 /**
@@ -12,20 +13,21 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	/**
 	 * Gets a constant
 	 *
-     * @param string $constant The name of the constant
+	 * @param string $constant The name of the constant
 	 * @return string Constant-Value
-     *
-     * = Examples =
-     *
-     * <code title="Example">
-     * <theme:constant constant="themes.configuration.baseurl" />
-     * </code>
-     * <output>
-     * http://yourdomain.tld/
-     * (depending on your domain)
-     * </output>
+	 *
+	 * = Examples =
+	 *
+	 * <code title="Example">
+	 * <theme:constant constant="themes.configuration.baseurl" />
+	 * </code>
+	 * <output>
+	 * http://yourdomain.tld/
+	 * (depending on your domain)
+	 * </output>
 	 */
-	public function render($constant='') {
+	public function render($constant = '') {
 		return isset($GLOBALS['TSFE']->tmpl->flatSetup[$constant]) ? $GLOBALS['TSFE']->tmpl->flatSetup[$constant] : NULL;
 	}
+
 }

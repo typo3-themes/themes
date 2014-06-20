@@ -1,10 +1,10 @@
 config {
-	linkVars         = L
-	uniqueLinkVars   = 1
+	linkVars = L
+	uniqueLinkVars = 1
 	sys_language_uid = {$themes.languages.current.uid}
-	language         = {$themes.languages.current.isoCodeShort}
-	locale_all       = {$themes.languages.current.isoCode}.UTF-8
-	htmlTag_langKey  = {$themes.languages.current.isoCodeHtml}
+	language = {$themes.languages.current.isoCodeShort}
+	locale_all = {$themes.languages.current.isoCode}.UTF-8
+	htmlTag_langKey = {$themes.languages.current.isoCodeHtml}
 }
 
 # Plugin configuration
@@ -17,9 +17,9 @@ plugin.tx_themes {
 				data = levelfield:-1, backend_layout_next_level, slide
 				override.field = backend_layout
 				split {
-					token     = pagets__
+					token = pagets__
 					1.current = 1
-					1.wrap    = |
+					1.wrap = |
 				}
 			}
 			stdWrap.ifEmpty.cObject = TEXT
@@ -31,15 +31,15 @@ plugin.tx_themes {
 	view {
 		templateRootPaths {
 			100 = EXT:themes/Resources/Private/Templates/
-            500 = {$themes.resourcesPrivatePath}Templates/
-        }
-        partialRootPaths {
-            100 = EXT:themes/Resources/Private/Partials/
-            500 = {$themes.resourcesPrivatePath}Partials/
-        }
-        layoutRootPaths {
-            100 = EXT:themes/Resources/Private/Layouts/
-            500 = {$themes.resourcesPrivatePath}Layouts/
+			500 = {$themes.resourcesPrivatePath}Templates/
+		}
+		partialRootPaths {
+			100 = EXT:themes/Resources/Private/Partials/
+			500 = {$themes.resourcesPrivatePath}Partials/
+		}
+		layoutRootPaths {
+			100 = EXT:themes/Resources/Private/Layouts/
+			500 = {$themes.resourcesPrivatePath}Layouts/
 		}
 	}
 	# This is an example how to modify the translation
@@ -52,16 +52,16 @@ plugin.tx_themes {
 
 page {
 	typeNum = 0
-    100 = USER
-    100 {
-        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-        extensionName = Themes
-        vendorName = KayStrobach
-        pluginName = Theme
-        controller = Theme
-	    action  = MenuContent
-        settings    =< plugin.tx_themes.settings
-        persistence =< plugin.tx_themes.persistence
-        view        =< plugin.tx_themes.view
-    }
+	100 = USER
+	100 {
+		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+		extensionName = Themes
+		vendorName = KayStrobach
+		pluginName = Theme
+		controller = Theme
+		action = MenuContent
+		settings =< plugin.tx_themes.settings
+		persistence =< plugin.tx_themes.persistence
+		view =< plugin.tx_themes.view
+	}
 }

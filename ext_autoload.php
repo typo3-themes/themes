@@ -15,7 +15,7 @@ return array(
 	'tx_themes_t3libtstemplateincludestatictyposcriptsourcesatendhook' => $extensionClassesPath . 'Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php',
 	'tx_themes_tca_themeselector' => $extensionClassesPath . 'Tca/ThemeSelector.php',
 	'tx_themes_templatemodulebodypostprocesshook' => $extensionClassesPath . 'Hook/TemplateModuleBodyPostProcessHook.php',
-    'tx_themes_viewhelpers_widget_languagemenuviewhelper' => $extensionClassesPath . 'ViewHelpers/Widget/LanguageMenuViewHelper.php',
-    'tx_themes_viewhelpers_widget_controller_languagemenucontroller' => $extensionClassesPath . 'ViewHelpers/Widget/Controller/LanguageMenuController.php',
+	'tx_themes_viewhelpers_widget_languagemenuviewhelper' => $extensionClassesPath . 'ViewHelpers/Widget/LanguageMenuViewHelper.php',
+	'tx_themes_viewhelpers_widget_controller_languagemenucontroller' => $extensionClassesPath . 'ViewHelpers/Widget/Controller/LanguageMenuController.php',
 );
 ?>

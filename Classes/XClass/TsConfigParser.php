@@ -1,6 +1,7 @@
 <?php
 
 namespace KayStrobach\Themes\XClass;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -8,7 +9,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @todo check if it's working
  */
-
 class TsConfigParser extends \TYPO3\CMS\Backend\Configuration\TsConfigParser {
 
 	/**
@@ -28,21 +28,22 @@ class TsConfigParser extends \TYPO3\CMS\Backend\Configuration\TsConfigParser {
 		 */
 		$themeRepository = GeneralUtility::makeInstance('KayStrobach\Themes\\Domain\\Repository\\ThemeRepository');
 		$theme = $themeRepository->findByPageOrRootline($id);
-		if($theme !== NULL) {
+		if ($theme !== NULL) {
 
-            // New
-            // 2014-06-06 tdeuling@coding.ms
-            // Parse TSConfig includes
-            $TSdataArray = array();
-            $TSdataArray['themesTSConfig'] = $theme->getTSConfig();
-            $TSdataArray = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines_array($TSdataArray);
-            $buffer = implode(LF . LF . '[GLOBAL]' . LF . LF, $TSdataArray). LF . LF . '[GLOBAL]'. LF . LF . $TStext;
+			// New
+			// 2014-06-06 tdeuling@coding.ms
+			// Parse TSConfig includes
+			$TSdataArray = array();
+			$TSdataArray['themesTSConfig'] = $theme->getTSConfig();
+			$TSdataArray = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines_array($TSdataArray);
+			$buffer = implode(LF . LF . '[GLOBAL]' . LF . LF, $TSdataArray) . LF . LF . '[GLOBAL]' . LF . LF . $TStext;
 
-            // Old
-            //$buffer = $theme->getTSConfig() . "\n\n[GLOBAL]\n\n" . $TStext;
+			// Old
+			//$buffer = $theme->getTSConfig() . "\n\n[GLOBAL]\n\n" . $TStext;
 			return parent::parseTSconfig($buffer, $type, $id, $rootLine);
 		} else {
 			return parent::parseTSconfig($TStext, $type, $id, $rootLine);
 		}
 	}
+
 }
