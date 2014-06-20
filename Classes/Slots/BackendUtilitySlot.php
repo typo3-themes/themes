@@ -18,12 +18,12 @@ class BackendUtilitySlot extends \TYPO3\CMS\Backend\Configuration\TsConfigParser
 	 * @param $returnPartArray
 	 * @return string The found TSConfig or an empty string.
 	 */
-	public function getPagesTSconfigPreInclude(&$TSdataArray, &$pageUid, &$rootLine, &$returnPartArray) {
+	public function getPagesTSconfigPreInclude($TSdataArray, $pageUid, $rootLine, $returnPartArray) {
 
 		$pageUid = (int)$pageUid;
 
 		if ($pageUid === 0) {
-			return '';
+			return NULL;
 		}
 
 		/** @var \KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository */
@@ -34,6 +34,13 @@ class BackendUtilitySlot extends \TYPO3\CMS\Backend\Configuration\TsConfigParser
 			return '';
 		}
 
-		$TSdataArray[] = $theme->getTSConfig();
+		array_unshift($TSdataArray, $theme->getTSConfig());
+
+		return array(
+			$TSdataArray,
+			$pageUid,
+			$rootLine,
+			$returnPartArray
+		);
 	}
 }
