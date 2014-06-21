@@ -26,7 +26,7 @@ Make your own theme
 Templating strategy
 -------------------
 
-To make your own theme you have to choose a templating engine. You can choose atleast between:
+To make your own theme you have to choose a templating engine. You can choose at least between:
 
 - pure TYPOScript
 - fluidcontent and fluidpages
@@ -83,7 +83,7 @@ You may use ext:themes_builder to generate the structure with just a bunch of cl
 Minimal TYPOScript of a theme
 -----------------------------
 
-If you want to make a theme with less TYPOScript as possible, you may use fluidcontent and fluidpages to make the
+If you want to make a theme with as less TYPOScript as possible, you may use fluidcontent and fluidpages to make the
 progress easier.
 Using this libraries you just need to configure where to find the definitions of pagelayout and elements.
 
@@ -117,7 +117,7 @@ Compatibility
 Add your own theme model to the repository
 ------------------------------------------
 
-You may create your own model for handling special usecases of themes. This way is possible to e.g. use
+You may create your own model for handling special usecases of themes. This way it's possible to e.g. use
 templavoila_framework skins or similar stuff with themes by simulating the needed libs.
 
 You may find examples in the extension EXT:themes_adapter_templavoilaframework or in EXT:themes_adapter_wordpress.
