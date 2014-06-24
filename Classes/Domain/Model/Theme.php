@@ -20,9 +20,7 @@ class Theme extends AbstractTheme {
 		parent::__construct($extensionName);
 
 		if (ExtensionManagementUtility::isLoaded($extensionName, FALSE)) {
-			/**
-			 * set needed path variables
-			 */
+			// set needed path variables
 			$path = ExtensionManagementUtility::extPath($this->getExtensionName());
 			$this->pathTyposcript = $path . 'Configuration/TypoScript/setup.txt';
 			$this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.txt';
@@ -113,7 +111,10 @@ class Theme extends AbstractTheme {
 		$themeItem['constants'] .= LF . $this->getTypoScriptForLanguage($params, $pObj);
 
 		$pObj->processTemplate(
-				$themeItem, $params['idList'] . ',ext_theme' . str_replace('_', '', $this->getExtensionName()), $params['pid'], 'ext_theme' . str_replace('_', '', $this->getExtensionName()), $params['templateId']
+			$themeItem,
+			$params['idList'] . ',ext_theme' . str_replace('_', '', $this->getExtensionName()),
+			$params['pid'], 'ext_theme' . str_replace('_', '', $this->getExtensionName()),
+			$params['templateId']
 		);
 	}
 

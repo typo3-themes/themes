@@ -19,7 +19,7 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 	 * @return	void
 	 */
 	public static function main(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj) {
-		/** @var  \TYPO3\CMS\Core\Database\DatabaseConnection $TYPO3_DB */
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $TYPO3_DB */
 		global $TYPO3_DB;
 
 		$idList = $params['idList'];
@@ -27,8 +27,8 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 		$pid = $params['pid'];
 		$row = $params['row'];
 
-		$t = $params;
-		$t['row'] = array_keys($row);
+		$t = $params; // unused?
+		$t['row'] = array_keys($row); // unused?
 
 		if ($templateID === $idList) {
 
@@ -61,14 +61,18 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 			if ($theme !== NULL) {
 				$theme->addTypoScriptForFe($params, $pObj);
 			}
-			// @todo
+
 			// @todo add hook to inject template overlays, e.g. for previewed constants before save ...
 			// Call hook for possible manipulation of current skin. constants
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['modifyTS'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['modifyTS'] as $userFunc) {
 					$themeItem = GeneralUtility::callUserFunction($userFunc, $_params, $pObj);
 					$pObj->processTemplate(
-						$themeItem, $params['idList'] . ',themes_modifyTsOverlay', $params['pid'], 'themes_' . 'themes_modifyTsOverlay', $params['templateId']
+						$themeItem,
+						$params['idList'] . ',themes_modifyTsOverlay',
+						$params['pid'],
+						'themes_' . 'themes_modifyTsOverlay',
+						$params['templateId']
 					);
 				}
 			}

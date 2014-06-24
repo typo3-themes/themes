@@ -31,6 +31,7 @@ class TsParserUtility implements SingletonInterface {
 	}
 
 	/**
+	 *
 	 * @param $pid
 	 * @return mixed
 	 */
@@ -89,18 +90,15 @@ class TsParserUtility implements SingletonInterface {
 	function getCategories($pid, $categoriesToShow = array(), $deniedFields = array()) {
 		$this->initializeTSParser($pid);
 
-		#print_r($this->tsParser->subCategories);
-		#die();
-
-		foreach ($this->tsParser->categories as $categorieName => $categorie) {
-			if ((count($categoriesToShow) === 0) || (in_array($categorieName, $categoriesToShow))) {
-				foreach ($categorie as $constantName => $type) {
+		foreach ($this->tsParser->categories as $categoryName => $category) {
+			if ((count($categoriesToShow) === 0) || (in_array($categoryName, $categoriesToShow))) {
+				foreach ($category as $constantName => $type) {
 					if (in_array($constantName, $deniedFields)) {
-						unset($this->tsParser->categories[$categorieName][$constantName]);
+						unset($this->tsParser->categories[$categoryName][$constantName]);
 					}
 				}
 			} else {
-				unset($this->tsParser->categories[$categorieName]);
+				unset($this->tsParser->categories[$categoryName]);
 			}
 		}
 

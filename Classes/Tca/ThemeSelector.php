@@ -3,10 +3,6 @@
 namespace KayStrobach\Themes\Tca;
 
 /**
- *
- */
-
-/**
  * @todo missing docblock
  */
 class ThemeSelector {
@@ -25,7 +21,7 @@ class ThemeSelector {
 		 */
 		$repository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
 
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Fluid_View_StandaloneView');
+		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
 		$view->setFormat('html');
 		$view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:themes/Resources/Private/Templates/ThemeSelector.html'));

@@ -61,34 +61,34 @@ class EditorController extends ActionController {
 		$this->tsParser = new TsParserUtility();
 
 		// extension configuration
-		$t = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
-		$t['categoriesToShow'] = GeneralUtility::trimExplode(',', $t['categoriesToShow']);
-		$t['constantsToHide'] = GeneralUtility::trimExplode(',', $t['constantsToHide']);
+		$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
+		$extensionConfiguration['categoriesToShow'] = GeneralUtility::trimExplode(',', $extensionConfiguration['categoriesToShow']);
+		$extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(',', $extensionConfiguration['constantsToHide']);
 
 		// mod.tx_themes.constantCategoriesToShow.value
 		$externalConstantCategoriesToShow = $GLOBALS["BE_USER"]->getTSConfig(
-				'mod.tx_themes.constantCategoriesToShow', BackendUtility::getPagesTSconfig($this->id)
+			'mod.tx_themes.constantCategoriesToShow', BackendUtility::getPagesTSconfig($this->id)
 		);
 		if ($externalConstantCategoriesToShow['value']) {
 			$this->externalConfig['constantCategoriesToShow'] = GeneralUtility::trimExplode(',', $externalConstantCategoriesToShow['value']);
-			ArrayUtility::mergeRecursiveWithOverrule($t['categoriesToShow'], $this->externalConfig['constantCategoriesToShow']);
+			ArrayUtility::mergeRecursiveWithOverrule($extensionConfiguration['categoriesToShow'], $this->externalConfig['constantCategoriesToShow']);
 		} else {
 			$this->externalConfig['constantCategoriesToShow'] = array();
 		}
 
 		// mod.tx_themes.constantsToHide.value
 		$externalConstantsToHide = $GLOBALS["BE_USER"]->getTSConfig(
-				'mod.tx_themes.constantsToHide', BackendUtility::getPagesTSconfig($this->id)
+			'mod.tx_themes.constantsToHide', BackendUtility::getPagesTSconfig($this->id)
 		);
 		if ($externalConstantsToHide['value']) {
 			$this->externalConfig['constantsToHide'] = GeneralUtility::trimExplode(',', $externalConstantsToHide['value']);
-			ArrayUtility::mergeRecursiveWithOverrule($t['constantsToHide'], $this->externalConfig['constantsToHide']);
+			ArrayUtility::mergeRecursiveWithOverrule($extensionConfiguration['constantsToHide'], $this->externalConfig['constantsToHide']);
 		} else {
 			$this->externalConfig['constantsToHide'] = array();
 		}
 
-		$this->allowedCategories = $t['categoriesToShow'];
-		$this->deniedFields = $t['constantsToHide'];
+		$this->allowedCategories = $extensionConfiguration['categoriesToShow'];
+		$this->deniedFields = $extensionConfiguration['constantsToHide'];
 
 		// initialize normally used values
 	}
@@ -110,10 +110,10 @@ class EditorController extends ActionController {
 		}
 
 		$this->view->assignMultiple(
-				array(
-					'pid' => $this->id,
-					'nearestPageWithTheme' => $nearestPageWithTheme,
-				)
+			array(
+				'pid' => $this->id,
+				'nearestPageWithTheme' => $nearestPageWithTheme,
+			)
 		);
 	}
 
@@ -137,11 +137,11 @@ class EditorController extends ActionController {
 	 */
 	public function showThemeAction() {
 		$this->view->assignMultiple(
-				array(
-					'selectedTheme' => $this->themeRepository->findByPageId($this->id),
-					'selectableThemes' => $this->themeRepository->findAll(),
-					'pid' => $this->id
-				)
+			array(
+				'selectedTheme' => $this->themeRepository->findByPageId($this->id),
+				'selectableThemes' => $this->themeRepository->findAll(),
+				'pid' => $this->id
+			)
 		);
 	}
 
@@ -150,7 +150,7 @@ class EditorController extends ActionController {
 	 * @param integer $pid
 	 */
 	public function setThemeAction(Theme $theme = NULL, $pid = 0) {
-		
+
 	}
 
 	/**
@@ -165,24 +165,23 @@ class EditorController extends ActionController {
 		$categories = $tsParserWrapper->getCategories($pid);
 		$subcategories = $tsParserWrapper->getSubCategories($pid);
 		$constants = $tsParserWrapper->getConstants($pid);
-		foreach ($categories as $categorieName => $categorie) {
-			asort($categorie);
-			if (is_array($categorie) && (($allowedCategories === NULL) || (in_array($categorieName, $allowedCategories)))) {
-				$title = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/Constants/locallang.xml:cat_' . $categorieName);
+		foreach ($categories as $categoryName => $category) {
+			asort($category);
+			if (is_array($category) && (($allowedCategories === NULL) || (in_array($categoryName, $allowedCategories)))) {
+				$title = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/Constants/locallang.xml:cat_' . $categoryName);
 				if (strlen($title) === 0) {
-					$title = $categorieName;
+					$title = $categoryName;
 				}
-				$definition[$categorieName] = array(
-					//'title'  => $GLOBALS['LANG']->sL($categorieName),
+				$definition[$categoryName] = array(
 					'title' => $title,
 					'items' => array(),
 				);
-				foreach ($categorie as $constantName => $type) {
+				foreach ($category as $constantName => $type) {
 					if (($deniedFields === NULL) || (!in_array($constantName, $deniedFields))) {
 						if (isset($subcategories[$constants[$constantName]['subcat_name']][0])) {
 							$constants[$constantName]['subcat_name'] = $subcategories[$constants[$constantName]['subcat_name']][0];
 						}
-						$definition[$categorieName]['items'][] = $constants[$constantName];
+						$definition[$categoryName]['items'][] = $constants[$constantName];
 					}
 				}
 			}

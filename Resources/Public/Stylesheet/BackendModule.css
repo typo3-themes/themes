@@ -1,65 +1,61 @@
 .showOnDefault {
-    display: none;
+	display: none;
 }
 .hideOnDefault {
-    display: inline-block;
-    width: 90%;
+	display: inline-block;
+	width: 90%;
 }
 .hideOnDefault input[type=text] {
-    width: 80%;
+	width: 80%;
 }
 .defaultValueIsSelected .showOnDefault {
-    display: inline-block;
+	display: inline-block;
 }
 .defaultValueIsSelected .hideOnDefault {
-    display: none;
+	display: none;
 }
 .hidden {
-    display: none;
+	display: none;
 }
 tr.constantLine {
-    height: 40px;
+	height: 40px;
 }
-
 .colorpicker {
-    z-index: 99999;
+	z-index: 99999;
 }
-
-
 .theme-clearfix:before,
 .theme-clearfix:after {
-    content: " ";
-    display: table;
+	content: " ";
+	display: table;
 }
 .theme-clearfix:after {
-    clear: both;
+	clear: both;
 }
-
 .theme-detail-header h1 {
-    margin-bottom: 0.5em;
+	margin-bottom: 0.5em;
 }
 .theme-detail-info-preview {
-    float: right;
-    border: 1px solid #d4d4d4;
-    margin-bottom: 1em;
+	float: right;
+	border: 1px solid #d4d4d4;
+	margin-bottom: 1em;
 }
 .theme-detail-info-preview img {
-    display: block;
+	display: block;
 }
 .theme-detail-summary {
-    margin-top: 2.5em;
-    margin-bottom: 2.5em;
+	margin-top: 2.5em;
+	margin-bottom: 2.5em;
 }
 .theme-detail-summary dt {
-    font-weight: bold;
-    float: left;
-    width: 100px;
-    clear: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+	font-weight: bold;
+	float: left;
+	width: 100px;
+	clear: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .theme-detail-summary dd {
-    margin-left: 110px;
-    margin-bottom: 0.25em;
+	margin-left: 110px;
+	margin-bottom: 0.25em;
 }

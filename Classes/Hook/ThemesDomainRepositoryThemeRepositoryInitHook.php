@@ -10,6 +10,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  */
 class ThemesDomainRepositoryThemeRepositoryInitHook {
 
+	// @todo find a more flexible solution
 	protected $ignoredExtensions = array(
 		'themes',
 		'skinselector_content',
@@ -45,7 +46,10 @@ class ThemesDomainRepositoryThemeRepositoryInitHook {
 	function init(&$params, $pObj) {
 		// exclude extensions, which are not worth to check them
 		$extensionsToCheck = array_diff(
-			ExtensionManagementUtility::getLoadedExtensionListArray(), ExtensionManagementUtility::getRequiredExtensionListArray(), $this->ignoredExtensions, scandir(PATH_typo3 . 'sysext')
+			ExtensionManagementUtility::getLoadedExtensionListArray(),
+			ExtensionManagementUtility::getRequiredExtensionListArray(),
+			$this->ignoredExtensions,
+			scandir(PATH_typo3 . 'sysext')
 		);
 
 		// check extensions, which are worth to check
