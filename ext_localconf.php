@@ -32,8 +32,9 @@ unset($signalSlotDispatcher);
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][] = 'KayStrobach\\Themes\\Hook\\IconUtilityHook';
 
 ExtensionUtility::configurePlugin(
-	'KayStrobach.' . $_EXTKEY, 'Theme', array(
+	'KayStrobach.' . $_EXTKEY,
+	'Theme', array(
 		'Theme' => 'index'
-	), array(
-	)
+	),
+	array()
 );

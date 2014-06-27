@@ -199,7 +199,11 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$themeItem['constants'] .= LF . $this->getTypoScriptForLanguage($params, $pObj);
 
 		$pObj->processTemplate(
-				$themeItem, $params['idList'] . ',ext_themes' . str_replace('_', '', $this->getExtensionName()), $params['pid'], 'ext_themes' . str_replace('_', '', $this->getExtensionName()), $params['templateId']
+			$themeItem,
+			$params['idList'] . ',ext_themes' . str_replace('_', '', $this->getExtensionName()),
+			$params['pid'],
+			'ext_themes' . str_replace('_', '', $this->getExtensionName()),
+			$params['templateId']
 		);
 	}
 

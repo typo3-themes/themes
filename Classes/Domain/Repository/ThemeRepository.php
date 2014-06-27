@@ -179,7 +179,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	 * @return mixed
 	 */
 	public function findByPageId($pid) {
-		$template = GeneralUtility::makeInstance("t3lib_tsparser_ext");
+		$template = GeneralUtility::makeInstance("TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService");
 		$template->tt_track = 0;
 		$template->init();
 		$templateRow = $template->ext_getFirstTemplate($pid);

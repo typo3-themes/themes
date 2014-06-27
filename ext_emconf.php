@@ -1,7 +1,7 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext "templavoila_framework".
+# Extension Manager/Repository config file for ext "Themes".
 #
 # Auto generated 25-08-2011 21:37
 #

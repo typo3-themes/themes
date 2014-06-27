@@ -34,7 +34,7 @@ jQuery(document).ready(function() {
 
 	// init slider
 	jQuery('.slider').unslider({
-		keys: true,               //  Enable keyboard (left, right) arrow shortcuts
-		dots: true               //  Display dot navigation
+		keys: true, //  Enable keyboard (left, right) arrow shortcuts
+		dots: true //  Display dot navigation
 	});
 });

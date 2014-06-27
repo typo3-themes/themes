@@ -25,14 +25,13 @@ class TemplateModuleBodyPostProcessHook {
 	function main(&$params, &$pObj) {
 		/**
 		 * @var $repository \KayStrobach\Themes\Domain\Repository\ThemeRepository
-		 * @var $view Tx_Fluid_View_StandaloneView
+		 * @var $view TYPO3\\CMS\\Fluid\\View\\StandaloneView
 		 */
 		if (($_GET['SET']['function'] === 'tx_tstemplateinfo' || !$_GET['SET']['function']) && ($params['moduleTemplateFilename'] === 'templates/tstemplate.html')) {
 
 			$repository = GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
 
-			//@todo namespace?!
-			$view = GeneralUtility::makeInstance('Tx_Fluid_View_StandaloneView');
+			$view = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
 			$view->setFormat('html');
 			$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:themes/Resources/Private/Templates/TsTemplateThemeData.html'));
@@ -44,6 +43,7 @@ class TemplateModuleBodyPostProcessHook {
 			$params['markers']['CONTENT'] = str_replace('<table class="t3-table-info">', '<table class="t3-table-info">' . $view->render(), $params['markers']['CONTENT']);
 			return;
 
+			// @todo remove code below, is not used
 			$headerEnd = strpos($params['markers']['CONTENT'], '</h2>');
 
 			if ($headerEnd) {
