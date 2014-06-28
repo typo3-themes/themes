@@ -55,7 +55,7 @@ class LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 	 * @return string
 	 */
 	public function render($availableLanguages = '', $currentLanguageUid = 0, $defaultLanguageIsoCodeShort = 'en', $defaultLanguageLabel = 'English', $defaultLanguageFlag = 'gb', $flagIconPath = '/typo3/sysext/t3skin/images/flags/', $flagIconFileExtension = 'png') {
-		return $this->initiateSubRequest();
+		return ($availableLanguages=='') ? '' : $this->initiateSubRequest();
 	}
 
 }
