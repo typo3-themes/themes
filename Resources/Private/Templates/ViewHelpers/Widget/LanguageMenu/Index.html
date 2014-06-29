@@ -5,7 +5,8 @@
                 <li class="{entry.class} active">
                     <f:link.page addQueryString="1"
                                  additionalParams="{L: entry.L}"
-                                 title="{entry.label}">
+                                 title="{entry.label}"
+                                 argumentsToBeExcludedFromQueryString="{0: 'id'}">
                         <span>{entry.label}</span>
                     </f:link.page>
                 </li>
@@ -14,7 +15,8 @@
                 <li class="{entry.class}">
                     <f:link.page addQueryString="1"
                                  additionalParams="{L: entry.L}"
-                                 title="{entry.label}">
+                                 title="{entry.label}"
+                                 argumentsToBeExcludedFromQueryString="{0: 'id'}">
                         <span>{entry.label}</span>
                     </f:link.page>
                 </li>
