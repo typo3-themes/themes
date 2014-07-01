@@ -208,9 +208,11 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @todo missing docblock
+	 * @param $params
+	 * @param \TYPO3\CMS\Core\TypoScript\TemplateService $pObj
+	 * @return string
 	 */
-	public function getTypoScriptForLanguage(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj) {
+	public function getTypoScriptForLanguage(&$params, &$pObj) {
 		/**
 		 * @var \TYPO3\CMS\Core\Database\DatabaseConnection $TYPO3_DB
 		 * @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager

@@ -16,7 +16,7 @@ class ThemeTest extends BaseTestCase {
 	protected $fixture;
 
 	public function setUp() {
-		$this->fixture = new Tx_Themes_Domain_Model_Theme('themes_theme_test');
+		$this->fixture = new \KayStrobach\Themes\Domain\Model\Theme('themes_theme_test');
 	}
 
 	public function tearDown() {
