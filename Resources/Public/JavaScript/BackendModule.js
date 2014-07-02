@@ -30,7 +30,7 @@ jQuery(document).ready(function() {
 				jQuery(this).ColorPickerSetColor(this.value);
 			}
 		});
-	})
+	});
 
 	// init slider
 	jQuery('.slider').unslider({
