@@ -14,7 +14,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepo
 /**
  * Register a page not found handler, overwrites the one in the install tool
  */
-$GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'] = 'USER_FUNCTION:KayStrobach\\Themes\\Hook\\PageNotFoundHandlingHook->main';
+# @todo refine that in the next version including the standalone mode!
+# $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'] = 'USER_FUNCTION:KayStrobach\\Themes\\Hook\\PageNotFoundHandlingHook->main';
 
 /**
  * register used hooks to inject the TS
@@ -43,8 +44,8 @@ ExtensionUtility::configurePlugin(
  * register cache for extension
  */
 if (!is_array($TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_cache'])) {
-    $TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_cache'] = array();
-    $TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_cache']['frontend'] = 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend';
-    $TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_cache']['backend'] = 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend';
-    $TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_cache']['options']['compression'] = 1;
+	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_cache'] = array();
+	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_cache']['frontend'] = 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend';
+	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_cache']['backend'] = 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend';
+	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_cache']['options']['compression'] = 1;
 }
