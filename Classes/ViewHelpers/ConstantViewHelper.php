@@ -48,7 +48,7 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 		}
 
 		// check if there is a value and return it
-		if((is_array($flatSetup)) && (array_key_exists($constant, $flatSetup))) {
+		if ((is_array($flatSetup)) && (array_key_exists($constant, $flatSetup))) {
 			return $flatSetup[$constant];
 		} else {
 			return NULL;
