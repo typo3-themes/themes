@@ -15,17 +15,25 @@
 		<div id="typo3-docheader">
 			<div class="typo3-docheader-functions">
 				<div class="left">
-					<f:be.menus.actionMenu>
-						<f:be.menus.actionMenuItem label="{f:translate(key:'setConstants')}" controller="Editor" action="index" />
-						<f:be.menus.actionMenuItem label="{f:translate(key:'setTheme')}" controller="Editor" action="showTheme" />
-					</f:be.menus.actionMenu>
+					<f:if condition="{themeIsSelectable}">
+						<f:then>
+							<f:be.menus.actionMenu>
+								<f:be.menus.actionMenuItem label="{f:translate(key:'setConstants')}" controller="Editor" action="index" />
+								<f:be.menus.actionMenuItem label="{f:translate(key:'setTheme')}" controller="Editor" action="showTheme" />
+							</f:be.menus.actionMenu>
+						</f:then>
+					</f:if>
 				</div>
 				<div class="right">
 					<f:be.pagePath /><f:be.pageInfo />
 				</div>
 			</div>
 			<div class="typo3-docheader-buttons">
-				<f:render section="Buttons" optional="1" />
+				<f:if condition="{themeIsSelectable}">
+					<f:then>
+						<f:render section="Buttons" optional="1" />
+					</f:then>
+				</f:if>
 			</div>
 		</div>
 	</div>

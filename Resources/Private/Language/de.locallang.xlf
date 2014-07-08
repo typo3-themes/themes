@@ -23,6 +23,10 @@
 				<source>Currently there is no theme choosing for this page.</source>
 				<target>Derzeit ist kein Theme gewählt.</target>
 			</trans-unit>
+			<trans-unit id="noThemeSelectable" xml:space="preserve">
+				<source>It's not possible to select or configure a theme on this page.</source>
+				<target>Es ist nicht möglich ein Theme auf dieser Seite zu wählen oder zu konfigurieren.</target>
+			</trans-unit>
 			<trans-unit id="selectTheme" xml:space="preserve">
 				<source>Choose a theme.</source>
 				<target>Wählen Sie ein Theme aus.</target>

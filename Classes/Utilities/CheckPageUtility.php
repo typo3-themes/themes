@@ -39,4 +39,18 @@ class CheckPageUtility {
 		}
 	}
 
+	public static function getThemeableSysTemplateRecord($pid) {
+		$templates = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'*',
+			'sys_template',
+			'pid = ' . (integer) $pid . ' AND deleted=0 AND hidden=0 AND root=1',
+			'',
+			'sorting ASC'
+		);
+		if(is_array($templates)) {
+			return $templates['uid'];
+		} else {
+			return FALSE;
+		}
+	}
 }

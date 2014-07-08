@@ -1,5 +1,11 @@
 <f:layout name="Backend" />
 
+<f:section name="Buttons">
+	<f:link.action action="index">
+		<span class="t3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-go-back">&nbsp;</span>
+	</f:link.action>
+</f:section>
+
 <f:section name="Content">
 	<link href="{f:uri.resource(path:'Stylesheet/ThemeSelector.css', extensionName:'themes')}" rel="stylesheet" />
 
@@ -20,16 +26,14 @@
 				<f:for each="{selectableThemes}" as="theme" key="themeNumber">
 					<f:if condition="{selectedTheme} == {theme}">
 						<f:else>
-							<f:render partial="Themes/Theme" arguments="{theme:theme}"/>
+							<f:link.action action="setTheme" arguments="{theme:theme.extensionName}">
+								<f:render partial="Themes/Theme" arguments="{theme:theme}"/>
+							</f:link.action>
 						</f:else>
 					</f:if>
 				</f:for>
 			</ul>
 		</div>
-
-
-
-
 		<div style="clear:both;"></div>
 	</f:form>
 </f:section>

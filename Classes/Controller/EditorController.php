@@ -3,6 +3,7 @@
 namespace KayStrobach\Themes\Controller;
 
 use KayStrobach\Themes\Domain\Model\Theme;
+use KayStrobach\Themes\Utilities\CheckPageUtility;
 use KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility;
 use KayStrobach\Themes\Utilities\TsParserUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -113,6 +114,7 @@ class EditorController extends ActionController {
 			array(
 				'pid' => $this->id,
 				'nearestPageWithTheme' => $nearestPageWithTheme,
+				'themeIsSelectable'    => CheckPageUtility::hasThemeableSysTemplateRecord($this->id),
 			)
 		);
 	}
@@ -140,17 +142,36 @@ class EditorController extends ActionController {
 			array(
 				'selectedTheme' => $this->themeRepository->findByPageId($this->id),
 				'selectableThemes' => $this->themeRepository->findAll(),
+				'themeIsSelectable'    => CheckPageUtility::hasThemeableSysTemplateRecord($this->id),
 				'pid' => $this->id
 			)
 		);
 	}
 
 	/**
-	 * @param \KayStrobach\Themes\Domain\Model\Theme $theme
-	 * @param integer $pid
+	 * @param string $theme
 	 */
-	public function setThemeAction(Theme $theme = NULL, $pid = 0) {
-
+	public function setThemeAction($theme = NULL) {
+		$sysTemplateRecordUid = CheckPageUtility::getThemeableSysTemplateRecord($this->id);
+		if(($sysTemplateRecordUid !== FALSE) && ($theme !== NULL)) {
+			$record = array(
+				'sys_template' => array(
+					$sysTemplateRecordUid => array(
+						'tx_themes_skin' => $theme
+					)
+				)
+			);
+			$tce = new \TYPO3\CMS\Core\DataHandling\DataHandler();
+			$tce->stripslashes_values = 0;
+			$user = clone $GLOBALS['BE_USER'];
+			$user->user['admin'] = 1;
+			$tce->start($record, Array(), $user);
+			$tce->process_datamap();
+			$tce->clear_cacheCmd('pages');
+		} else {
+			$this->flashMessageContainer->add('Problem selecting theme');
+		}
+		$this->redirect('showTheme');
 	}
 
 	/**
