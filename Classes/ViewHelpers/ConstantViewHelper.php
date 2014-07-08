@@ -27,43 +27,31 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	 * </output>
 	 */
 	public function render($constant = '') {
-		$constantValue = NULL;
+		$pageWithTheme   = \KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility::find($GLOBALS['TSFE']->id);
 		// instantiate the cache
-		$cache = $GLOBALS['typo3CacheManager']->getCache('themes_cache');
-		// If flatSetup is available, cache it
-		if (isset($GLOBALS['TSFE']->tmpl->flatSetup[$constant])) {
-			foreach($GLOBALS['TSFE']->tmpl->flatSetup as $constantName=>$value) {
-				// Only cache themes-constants
-				if(substr($constantName, 0, 7)=='themes.') {
-					// Cache-Identifier can be the same as the constant-name
-					// because it's already unique
-					// But we use also a sha1, because the constant-name could be longer than varchar(250)
-					$cacheIdentifier = sha1($constantName);
-					// save constant in cache
-					// lifetime= 0 doesnt work
-					// $lifetime = 0;
-					$lifetime = 60*60*24*7*365*20;
-					$cache->set($cacheIdentifier, $value, array(), $lifetime);
-				}
-			}
-			// Finally return the constant value
-			$constantValue = $GLOBALS['TSFE']->tmpl->flatSetup[$constant];
-		} else {
-			// otherwise, get constant value from cache
-			// Cache-Identifier can be the same as the constant-name
-			// because it's already unique
-			// But we use also a sha1, because the constant-name could be longer than varchar(250)
-			$cacheIdentifier = sha1($constant);
+		$cache           = $GLOBALS['typo3CacheManager']->getCache('themes_cache');
+		$cacheIdentifier = sha1('theme-of-page-' . $pageWithTheme);
 
-			// try to find the cached content
-			if (($value = $cache->get($cacheIdentifier)) !== FALSE) {
-				$constantValue = $value;
-			}
-			// Debugging
-			else {
-				$constantValue = $constant.'('.$cacheIdentifier.'|'.serialize($value).')';
-			}
+
+		$flatSetup = $GLOBALS['TSFE']->tmpl->flatSetup;
+
+		// If flatSetup is available, cache it
+		if ((isset($flatSetup) && (is_array($flatSetup)) && (count($flatSetup)>0))) {
+			$cache->set(
+				$cacheIdentifier,
+				$flatSetup,
+				array(),
+				60*60*24*7*365*20
+			);
+		} else {
+			$flatSetup = $cache->get($cacheIdentifier);
 		}
-		return $constantValue;
+
+		// check if there is a value and return it
+		if((is_array($flatSetup)) && (array_key_exists($constant, $flatSetup))) {
+			return $flatSetup[$constant];
+		} else {
+			return NULL;
+		}
 	}
 }
