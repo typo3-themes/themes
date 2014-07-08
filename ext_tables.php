@@ -69,5 +69,6 @@ if (!defined('TYPO3_MODE'))
 			'switch-disable' => ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_grey.png',
 			'switch-on' => ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_green.png',
 			'overlay-theme' => ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/overlay_theme.png',
-		), $_EXTKEY
+		),
+		$_EXTKEY
 	);
