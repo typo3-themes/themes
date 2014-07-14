@@ -5,6 +5,8 @@ config {
 	language = {$themes.languages.current.isoCodeShort}
 	locale_all = {$themes.languages.current.isoCode}.UTF-8
 	htmlTag_langKey = {$themes.languages.current.isoCodeHtml}
+	sys_language_overlay = hideNonTranslated
+	sys_language_mode = strict
 }
 
 # Plugin configuration
