@@ -17,7 +17,7 @@ plugin.tx_themes {
 			stdWrap.cObject = TEXT
 			stdWrap.cObject {
 				data = levelfield:-1, backend_layout_next_level, slide
-				override.field = page:backend_layout
+				override.data = page:backend_layout
 				split {
 					token = pagets__
 					1.current = 1
