@@ -44,4 +44,9 @@ script:
         fi
     "
   - >
-    ./bin/phpcs --standard=TYPO3CMS typo3conf/ext/themes/Classes/
+    echo;
+    echo "Running phpcs";
+    /bin/bash -c "
+      ./bin/phpcs --standard=TYPO3CMS typo3conf/ext/themes/Classes/;
+      exit 0;
+    "
