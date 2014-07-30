@@ -19,9 +19,9 @@ before_script:
   - composer self-update
   - cd ..
   - git clone --single-branch --branch $TYPO3_BRANCH --depth 1 https://github.com/TYPO3/TYPO3.CMS.git typo3_core
-  - mv themes/* .
+  - mv typo3_core/* .
   - composer install
-  - mkdir -p typo3conf/ext
+  - mkdir -p uploads typo3temp typo3conf/ext
   - mv themes typo3conf/ext/
 
 script:
