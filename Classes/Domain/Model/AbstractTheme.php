@@ -219,6 +219,10 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		 */
 		global $TYPO3_DB;
 
+		if(!is_object($TYPO3_DB)) {
+			return '';
+		}
+
 		$languages = $TYPO3_DB->exec_SELECTgetRows(
 				'sys.uid as uid, sys.title as title, sys.flag as flag,static.lg_name_local as lg_name_local, static.lg_name_en as lg_name_en, static.lg_collate_locale as lg_collate_locale', 'sys_language sys,static_languages static', 'sys.static_lang_isocode = static.uid AND sys.hidden=0'
 		);
