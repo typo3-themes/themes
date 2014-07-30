@@ -20,6 +20,7 @@ before_script:
   - cd ..
   - git clone --single-branch --branch $TYPO3_BRANCH --depth 1 https://github.com/TYPO3/TYPO3.CMS.git typo3_core
   - mv typo3_core/* .
+  - composer require --no-update "typo3-ci/typo3cms:dev-master" "typo3-ci/typo3sniffpool:dev-master"
   - composer install
   - mkdir -p uploads typo3temp typo3conf/ext
   - mv themes typo3conf/ext/
