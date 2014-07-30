@@ -44,4 +44,4 @@ script:
         fi
     "
   - >
-    ./bin/phpcs --standard=TYPO3CMS typo3conf/ext/themes_manager/Classes/
+    ./bin/phpcs --standard=TYPO3CMS typo3conf/ext/themes/Classes/
