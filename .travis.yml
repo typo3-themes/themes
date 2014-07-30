@@ -43,3 +43,5 @@ script:
             exit 99;
         fi
     "
+  ->
+    ./bin/phpcs --standard=TYPO3CMS typo3conf/ext/themes_manager/Classes/
