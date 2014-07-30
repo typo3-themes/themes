@@ -7,8 +7,11 @@ php:
   - 5.6
 
 env:
-  - TYPO3_BRANCH=master COVERAGE=0
-  - TYPO3_BRANCH=TYPO3_6-2 COVERAGE=0
+  global:
+    - EXTENSIONKEY=themes
+  matrix:
+    - TYPO3_BRANCH=master COVERAGE=0
+    - TYPO3_BRANCH=TYPO3_6-2 COVERAGE=0
 
 notifications:
   email:
@@ -23,30 +26,25 @@ before_script:
   - composer require --no-update "typo3-ci/typo3cms:dev-master" "typo3-ci/typo3sniffpool:dev-master"
   - composer install
   - mkdir -p uploads typo3temp typo3conf/ext
-  - mv themes typo3conf/ext/
+  - mv $EXTENSIONKEY typo3conf/ext/
 
 script:
   - >
     echo;
     echo "Running unit tests";
     /bin/bash -c "
-      if [ -d typo3conf/ext/themes/Tests/Unit/ ]; then
-        ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml typo3conf/ext/themes/Tests/Unit/
+      if [ -d typo3conf/ext/$EXTENSIONKEY/Tests/Unit/ ]; then
+        ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml typo3conf/ext/$EXTENSIONKEY/Tests/Unit/
       fi
     "
   - >
     echo;
     echo "Running php lint";
     /bin/bash -c "
-        if ! find typo3conf/ext/themes -name \*.php | parallel --gnu 'php -l {}' > /tmp/errors 2>&1; then
+        if ! find typo3conf/ext/$EXTENSIONKEY -name \*.php | parallel --gnu 'php -l {}' > /tmp/errors 2>&1; then
             grep -v \"No syntax errors detected in\" /tmp/errors;
             exit 99;
         fi
     "
   - >
-    echo;
-    echo "Running phpcs";
-    /bin/bash -c "
-      ./bin/phpcs --standard=TYPO3CMS typo3conf/ext/themes/Classes/;
-      exit 0;
-    "
+    ./bin/phpcs --standard=TYPO3CMS typo3conf/ext/$EXTENSIONKEY/Classes/
