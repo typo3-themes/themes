@@ -28,7 +28,11 @@ script:
   - >
     echo;
     echo "Running unit tests";
-    ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml typo3conf/ext/themes/Tests/Unit/
+    /bin/bash -c "
+      if [ -d typo3conf/ext/themes/Tests/Unit/ ]; then
+        ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml typo3conf/ext/themes/Tests/Unit/
+      fi
+    "
   - >
     echo;
     echo "Running php lint";
