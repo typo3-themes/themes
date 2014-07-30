@@ -19,4 +19,4 @@ Currently it's failing due to some codingstyle issues, to tackle them, the build
 TYPO3 codesniffers, stay tuned we will tackle them all!
 
 .. image:: https://travis-ci.org/typo3-themes/themes.svg
-:target: https://travis-ci.org/typo3-themes/themes
+   :target: https://travis-ci.org/typo3-themes/themes
