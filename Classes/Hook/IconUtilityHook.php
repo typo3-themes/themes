@@ -11,6 +11,9 @@ use KayStrobach\Themes\Utilities\CheckPageUtility;
 class IconUtilityHook {
 
 	/**
+	 * Missing description
+	 *
+	 * @return void
 	 * @todo missing docblock
 	 */
 	public function overrideIconOverlay($table, &$row, &$status) {

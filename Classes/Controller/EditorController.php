@@ -12,6 +12,8 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
+ * Missing class description
+ *
  * @todo missing docblock
  */
 class EditorController extends ActionController {
@@ -114,7 +116,7 @@ class EditorController extends ActionController {
 			array(
 				'pid' => $this->id,
 				'nearestPageWithTheme' => $nearestPageWithTheme,
-				'themeIsSelectable'    => CheckPageUtility::hasThemeableSysTemplateRecord($this->id),
+				'themeIsSelectable' => CheckPageUtility::hasThemeableSysTemplateRecord($this->id),
 			)
 		);
 	}
@@ -142,7 +144,7 @@ class EditorController extends ActionController {
 			array(
 				'selectedTheme' => $this->themeRepository->findByPageId($this->id),
 				'selectableThemes' => $this->themeRepository->findAll(),
-				'themeIsSelectable'    => CheckPageUtility::hasThemeableSysTemplateRecord($this->id),
+				'themeIsSelectable' => CheckPageUtility::hasThemeableSysTemplateRecord($this->id),
 				'pid' => $this->id
 			)
 		);

@@ -12,6 +12,8 @@ use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 use TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme;
 
 /**
+ * Missing description
+ *
  * @todo missing docblock
  */
 class ThemeRepository implements RepositoryInterface, SingletonInterface {
@@ -24,6 +26,9 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	protected $addedObjects = array();
 
 	/**
+	 * Missing description
+	 *
+	 * @return void
 	 * @todo missing docblock
 	 */
 	function __construct() {

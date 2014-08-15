@@ -5,6 +5,8 @@ namespace KayStrobach\Themes\Hook;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
+ * Missing description
+ *
  * @todo missing docblock
  */
 class TemplateModuleBodyPostProcessHook {
@@ -26,6 +28,8 @@ class TemplateModuleBodyPostProcessHook {
 		/**
 		 * @var $repository \KayStrobach\Themes\Domain\Repository\ThemeRepository
 		 * @var $view TYPO3\\CMS\\Fluid\\View\\StandaloneView
+		 *
+		 * @todo replace $_GET with GeneralUtility::_GP()
 		 */
 		if (($_GET['SET']['function'] === 'tx_tstemplateinfo' || !$_GET['SET']['function']) && ($params['moduleTemplateFilename'] === 'templates/tstemplate.html')) {
 
@@ -42,17 +46,6 @@ class TemplateModuleBodyPostProcessHook {
 
 			$params['markers']['CONTENT'] = str_replace('<table class="t3-table-info">', '<table class="t3-table-info">' . $view->render(), $params['markers']['CONTENT']);
 			return;
-
-			// @todo remove code below, is not used
-			$headerEnd = strpos($params['markers']['CONTENT'], '</h2>');
-
-			if ($headerEnd) {
-				$params['markers']['CONTENT'] = substr($params['markers']['CONTENT'], 0, $headerEnd + 5)
-						. $view->render()
-						. substr($params['markers']['CONTENT'], $headerEnd + 6);
-			} else {
-				$params['markers']['CONTENT'] = $view->render() . $params['markers']['CONTENT'];
-			}
 		}
 	}
 

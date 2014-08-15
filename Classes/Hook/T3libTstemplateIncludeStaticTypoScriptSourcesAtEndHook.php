@@ -7,6 +7,8 @@ namespace KayStrobach\Themes\Hook;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
+ * Missing description
+ *
  * @todo missing docblock
  */
 class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
@@ -23,14 +25,14 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 		global $TYPO3_DB;
 
 		$idList = $params['idList'];
-		$templateID = $params['templateId'];
+		$templateId = $params['templateId'];
 		$pid = $params['pid'];
 		$row = $params['row'];
 
 		$t = $params; // unused?
 		$t['row'] = array_keys($row); // unused?
 
-		if ($templateID === $idList) {
+		if ($templateId === $idList) {
 
 			$tRow = $TYPO3_DB->exec_SELECTgetSingleRow('*', 'sys_template', 'pid=' . (int) $pid);
 			$row['tx_themes_skin'] = $tRow['tx_themes_skin'];
