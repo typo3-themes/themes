@@ -5,6 +5,7 @@ namespace KayStrobach\Themes\Utilities;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
+ *
  * @todo missing docblock
  */
 class FindParentPageWithThemeUtility {

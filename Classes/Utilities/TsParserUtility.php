@@ -7,6 +7,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
+ *
  * @todo missing docblock
  */
 class TsParserUtility implements SingletonInterface {
@@ -24,18 +25,17 @@ class TsParserUtility implements SingletonInterface {
 	 * @param array $constants
 	 * @param array $isSetConstants
 	 */
-	function applyToPid($pid, array $constants, $isSetConstants = array()) {
+	public function applyToPid($pid, array $constants, $isSetConstants = array()) {
 		$this->initializeTSParser($pid);
 		$this->setConstants($pid, $constants, $isSetConstants);
 		//@todo add hook to apply additional options
 	}
 
 	/**
-	 *
 	 * @param $pid
 	 * @return mixed
 	 */
-	function getConstants($pid) {
+	public function getConstants($pid) {
 		$this->initializeTSParser($pid);
 
 		$return = $this->tsParserConstants;
@@ -87,7 +87,7 @@ class TsParserUtility implements SingletonInterface {
 	 * @param array $deniedFields
 	 * @return array
 	 */
-	function getCategories($pid, $categoriesToShow = array(), $deniedFields = array()) {
+	public function getCategories($pid, $categoriesToShow = array(), $deniedFields = array()) {
 		$this->initializeTSParser($pid);
 
 		foreach ($this->tsParser->categories as $categoryName => $category) {
@@ -118,7 +118,7 @@ class TsParserUtility implements SingletonInterface {
 	 * @param $pid
 	 * @return \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
 	 */
-	function getTsParser($pid) {
+	protected function getTsParser($pid) {
 		$this->initializeTSParser($pid);
 		return $this->tsParser;
 	}

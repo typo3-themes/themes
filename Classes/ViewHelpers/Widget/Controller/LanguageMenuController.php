@@ -10,6 +10,10 @@ namespace KayStrobach\Themes\ViewHelpers\Widget\Controller;
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * Class LanguageMenuController
+ * @package KayStrobach\Themes\ViewHelpers\Widget\Controller
+ */
 class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
 
 	/**
@@ -66,7 +70,7 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 					$class = $defaultLanguageIsoCodeShort != '' ? $defaultLanguageIsoCodeShort : 'en';
 					$label = $defaultLanguageLabel != '' ? $defaultLanguageLabel : 'English';
 					$flag = $defaultLanguageFlag != '' ? $defaultLanguageFlag : 'gb';
-				} else if ($sysLanguage = $this->getSysLanguage($languageUid)) {
+				} elseif (($sysLanguage = $this->getSysLanguage($languageUid))) {
 
 					if (!($this->languageRepository instanceof \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository)) {
 						$this->languageRepository = GeneralUtility::makeInstance('SJBR\\StaticInfoTables\\Domain\\Repository\\LanguageRepository');

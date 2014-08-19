@@ -32,16 +32,15 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 		$cache           = $GLOBALS['typo3CacheManager']->getCache('themes_cache');
 		$cacheIdentifier = sha1('theme-of-page-' . $pageWithTheme);
 
-
 		$flatSetup = $GLOBALS['TSFE']->tmpl->flatSetup;
 
 		// If flatSetup is available, cache it
-		if ((isset($flatSetup) && (is_array($flatSetup)) && (count($flatSetup)>0))) {
+		if ((isset($flatSetup) && (is_array($flatSetup)) && (count($flatSetup) > 0))) {
 			$cache->set(
 				$cacheIdentifier,
 				$flatSetup,
 				array(),
-				60*60*24*7*365*20
+				60 * 60 * 24 * 7 * 365 * 20
 			);
 		} else {
 			$flatSetup = $cache->get($cacheIdentifier);

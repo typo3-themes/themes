@@ -3,6 +3,7 @@
 namespace KayStrobach\Themes\Utilities;
 
 /**
+ *
  * @todo missing docblock
  */
 class CheckPageUtility {
