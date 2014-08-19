@@ -221,9 +221,8 @@ class TsParserUtility implements SingletonInterface {
 			} else {
 				return FALSE;
 			}
-		} else {
-			return TRUE;
 		}
+		return TRUE;
 	}
 
 }

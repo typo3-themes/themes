@@ -10,7 +10,9 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
- * @todo missing docblock
+ * Class ThemeController
+ *
+ * @package KayStrobach\Themes\Controller
  */
 class ThemeController extends ActionController {
 
@@ -45,7 +47,7 @@ class ThemeController extends ActionController {
 	}
 
 	/**
-	 * @todo missing docblock
+	 * @return void
 	 */
 	public function initializeAction() {
 		$this->themeRepository = new \KayStrobach\Themes\Domain\Repository\ThemeRepository();
@@ -53,6 +55,8 @@ class ThemeController extends ActionController {
 
 	/**
 	 * renders the given theme
+	 *
+	 * @return void
 	 */
 	public function indexAction() {
 		$this->templateName = $this->evaluateTypoScript('plugin.tx_themes.settings.templateName');

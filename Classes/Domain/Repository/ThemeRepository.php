@@ -9,7 +9,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
-use TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme;
+use KayStrobach\Themes\Domain\Model\AbstractTheme;
 
 /**
  * Class ThemeRepository
@@ -87,8 +87,8 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	/**
 	 * Replaces an object by another.
 	 *
-	 * @param \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme $existingObject The existing object
-	 * @param \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme $newObject The new object
+	 * @param AbstractTheme $existingObject The existing object
+	 * @param AbstractTheme $newObject The new object
 	 * @throws \TYPO3\CMS\Extbase\Object\Exception
 	 * @return void
 	 * @api
@@ -100,7 +100,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	/**
 	 * Replaces an existing object with the same identifier by the given object
 	 *
-	 * @param \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme $modifiedObject The modified object
+	 * @param AbstractTheme $modifiedObject The modified object
 	 * @return void
 	 * @api
 	 * @throws \TYPO3\CMS\Extbase\Object\Exception
@@ -165,7 +165,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	 * Finds an object matching the given identifier.
 	 *
 	 * @param int $uid The identifier of the object to find
-	 * @return \KayStrobach\Themes\Domain\Model\AbstractTheme The matching object if found, otherwise NULL
+	 * @return AbstractTheme The matching object if found, otherwise NULL
 	 * @api
 	 */
 	public function findByUid($uid) {
@@ -180,7 +180,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	 * @return AbstractTheme
 	 */
 	public function findByIdentifier($uid) {
-		$this->findByUid($uid);
+		return $this->findByUid($uid);
 	}
 
 	/**
@@ -243,7 +243,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	 * Returns a query for objects of this repository
 	 *
 	 * @throws \TYPO3\CMS\Extbase\Object\Exception
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+	 * @return void
 	 * @api
 	 */
 	public function createQuery() {

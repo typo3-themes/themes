@@ -12,7 +12,9 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
- * @todo missing docblock
+ * Class EditorController
+ *
+ * @package KayStrobach\Themes\Controller
  */
 class EditorController extends ActionController {
 
@@ -67,7 +69,7 @@ class EditorController extends ActionController {
 		$extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(',', $extensionConfiguration['constantsToHide']);
 
 		// mod.tx_themes.constantCategoriesToShow.value
-		$externalConstantCategoriesToShow = $GLOBALS["BE_USER"]->getTSConfig(
+		$externalConstantCategoriesToShow = $GLOBALS['BE_USER']->getTSConfig(
 			'mod.tx_themes.constantCategoriesToShow', BackendUtility::getPagesTSconfig($this->id)
 		);
 		if ($externalConstantCategoriesToShow['value']) {
@@ -78,7 +80,7 @@ class EditorController extends ActionController {
 		}
 
 		// mod.tx_themes.constantsToHide.value
-		$externalConstantsToHide = $GLOBALS["BE_USER"]->getTSConfig(
+		$externalConstantsToHide = $GLOBALS['BE_USER']->getTSConfig(
 			'mod.tx_themes.constantsToHide', BackendUtility::getPagesTSconfig($this->id)
 		);
 		if ($externalConstantsToHide['value']) {
@@ -96,6 +98,8 @@ class EditorController extends ActionController {
 
 	/**
 	 * show available constants
+	 *
+	 * @return void
 	 */
 	public function indexAction() {
 		$this->view->assign('selectableThemes', $this->themeRepository->findAll());
@@ -125,6 +129,7 @@ class EditorController extends ActionController {
 	 * @param array $data
 	 * @param array $check
 	 * @param integer $pid
+	 * @return void
 	 */
 	public function updateAction(array $data, array $check, $pid) {
 		/**
@@ -135,7 +140,9 @@ class EditorController extends ActionController {
 	}
 
 	/**
-	 * @todo missing docblock
+	 * Show theme details
+	 *
+	 * @return void
 	 */
 	public function showThemeAction() {
 		$this->view->assignMultiple(
@@ -149,11 +156,14 @@ class EditorController extends ActionController {
 	}
 
 	/**
+	 * activate a theme
+	 *
 	 * @param string $theme
+	 * @return void
 	 */
 	public function setThemeAction($theme = NULL) {
 		$sysTemplateRecordUid = CheckPageUtility::getThemeableSysTemplateRecord($this->id);
-		if(($sysTemplateRecordUid !== FALSE) && ($theme !== NULL)) {
+		if (($sysTemplateRecordUid !== FALSE) && ($theme !== NULL)) {
 			$record = array(
 				'sys_template' => array(
 					$sysTemplateRecordUid => array(
@@ -197,7 +207,7 @@ class EditorController extends ActionController {
 					'title' => $title,
 					'items' => array(),
 				);
-				foreach ($category as $constantName => $type) {
+				foreach (array_keys($category) as $constantName) {
 					if (($deniedFields === NULL) || (!in_array($constantName, $deniedFields))) {
 						if (isset($subcategories[$constants[$constantName]['subcat_name']][0])) {
 							$constants[$constantName]['subcat_name'] = $subcategories[$constants[$constantName]['subcat_name']][0];
