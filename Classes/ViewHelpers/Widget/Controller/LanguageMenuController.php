@@ -8,6 +8,7 @@ namespace KayStrobach\Themes\ViewHelpers\Widget\Controller;
  * @author Thomas Deuling <typo3@coding.ms>
  * @package themes
  */
+use SJBR\StaticInfoTables\Domain\Repository\LanguageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -25,16 +26,16 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 	/**
 	 * Language Repository
 	 *
-	 * @var \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository
+	 * @var LanguageRepository
 	 * @inject
 	 */
 	protected $languageRepository;
 
 	/**
-	 * @param \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository $languageRepository
+	 * @param LanguageRepository $languageRepository
 	 * @return void
 	 */
-	public function injectLanguageRepository(\SJBR\StaticInfoTables\Domain\Repository\LanguageRepository $languageRepository) {
+	public function injectLanguageRepository(LanguageRepository $languageRepository) {
 		$this->languageRepository = $languageRepository;
 	}
 
@@ -73,7 +74,7 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 					$flag = $defaultLanguageFlag != '' ? $defaultLanguageFlag : 'gb';
 				} elseif (($sysLanguage = $this->getSysLanguage($languageUid))) {
 
-					if (!($this->languageRepository instanceof \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository)) {
+					if (!($this->languageRepository instanceof LanguageRepository)) {
 						$this->languageRepository = GeneralUtility::makeInstance('SJBR\\StaticInfoTables\\Domain\\Repository\\LanguageRepository');
 					}
 					$languageObject = $this->languageRepository->findByIdentifier($sysLanguage['static_lang_isocode']);
