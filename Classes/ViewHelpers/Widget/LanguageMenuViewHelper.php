@@ -49,6 +49,8 @@ class LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 
 	/**
 	 * initialize the arguments of the viewHelper
+	 *
+	 * @return void
 	 */
 	public function initializeArguments() {
 		$this->registerArgument('availableLanguages', 'string', 'Commaseperated list of integers of the languages', FALSE, '');
