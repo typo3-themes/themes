@@ -31,14 +31,6 @@ before_script:
 script:
   - >
     echo;
-    echo "Running unit tests";
-    /bin/bash -c "
-      if [ -d typo3conf/ext/$EXTENSIONKEY/Tests/Unit/ ]; then
-        ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml typo3conf/ext/$EXTENSIONKEY/Tests/Unit/
-      fi
-    "
-  - >
-    echo;
     echo "Running php lint";
     /bin/bash -c "
         if ! find typo3conf/ext/$EXTENSIONKEY -name \*.php | parallel --gnu 'php -l {}' > /tmp/errors 2>&1; then
@@ -48,3 +40,19 @@ script:
     "
   - >
     ./bin/phpcs --standard=TYPO3CMS typo3conf/ext/$EXTENSIONKEY/Classes/
+  - >
+    echo;
+    echo "Running unit tests";
+    /bin/bash -c "
+      if [ -d typo3conf/ext/$EXTENSIONKEY/Tests/Unit/ ]; then
+        ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml typo3conf/ext/$EXTENSIONKEY/Tests/Unit/
+      fi
+    "
+  - >
+    echo;
+    echo "Running functional tests";
+    /bin/bash -c "
+      if [ -d typo3conf/ext/$EXTENSIONKEY/Tests/Functional/ ]; then
+        ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml typo3conf/ext/$EXTENSIONKEY/Tests/Functional/
+      fi
+    "
