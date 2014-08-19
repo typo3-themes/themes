@@ -18,7 +18,7 @@ class BackendUtilitySlot extends \TYPO3\CMS\Backend\Configuration\TsConfigParser
 	 * @param $returnPartArray
 	 * @return string The found TSConfig or an empty string.
 	 */
-	public function getPagesTSconfigPreInclude($typoscriptDataArray, $pageUid, $rootLine, $returnPartArray) {
+	public function getPagesTsConfigPreInclude($typoscriptDataArray, $pageUid, $rootLine, $returnPartArray) {
 
 		$pageUid = (int)$pageUid;
 
