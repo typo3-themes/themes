@@ -34,7 +34,7 @@ if (!defined('TYPO3_MODE'))
 		'TYPO3\\CMS\\Backend\\Utility\\BackendUtility',
 		'getPagesTSconfigPreInclude',
 		'KayStrobach\\Themes\\Slots\\BackendUtilitySlot',
-		'getPagesTSconfigPreInclude'
+		'getPagesTsConfigPreInclude'
 	);
 	unset($signalSlotDispatcher);
 
