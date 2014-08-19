@@ -30,7 +30,7 @@ class TsParserUtility implements SingletonInterface {
 	 * @return void
 	 */
 	public function applyToPid($pid, array $constants, $isSetConstants = array()) {
-		$this->initializeTSParser($pid);
+		$this->initializeTsParser($pid);
 		$this->setConstants($pid, $constants, $isSetConstants);
 		//@todo add hook to apply additional options
 	}
@@ -40,7 +40,7 @@ class TsParserUtility implements SingletonInterface {
 	 * @return mixed
 	 */
 	public function getConstants($pid) {
-		$this->initializeTSParser($pid);
+		$this->initializeTsParser($pid);
 
 		$return = $this->tsParserConstants;
 		if (is_array($return)) {
@@ -91,7 +91,7 @@ class TsParserUtility implements SingletonInterface {
 	 * @return array
 	 */
 	public function getCategories($pid, $categoriesToShow = array(), $deniedFields = array()) {
-		$this->initializeTSParser($pid);
+		$this->initializeTsParser($pid);
 
 		foreach ($this->tsParser->categories as $categoryName => $category) {
 			if ((count($categoriesToShow) === 0) || (in_array($categoryName, $categoriesToShow))) {
@@ -113,7 +113,7 @@ class TsParserUtility implements SingletonInterface {
 	 * @return array
 	 */
 	public function getSubCategories($pid) {
-		$this->initializeTSParser($pid);
+		$this->initializeTsParser($pid);
 		return $this->tsParser->subCategories;
 	}
 
@@ -122,7 +122,7 @@ class TsParserUtility implements SingletonInterface {
 	 * @return \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
 	 */
 	protected function getTsParser($pid) {
-		$this->initializeTSParser($pid);
+		$this->initializeTsParser($pid);
 		return $this->tsParser;
 	}
 
@@ -190,7 +190,7 @@ class TsParserUtility implements SingletonInterface {
 	 * @param int $templateUid
 	 * @return bool
 	 */
-	protected function initializeTSParser($pageId, $templateUid = 0) {
+	protected function initializeTsParser($pageId, $templateUid = 0) {
 		if (!$this->tsParserInitialized) {
 			$this->tsParserInitialized = TRUE;
 			$this->tsParser = GeneralUtility::makeInstance('TYPO3\\CMS\Core\\TypoScript\\ExtendedTemplateService');
