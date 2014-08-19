@@ -4,7 +4,9 @@ namespace KayStrobach\Themes\Tca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * @todo missing docblock
+ * Class ThemeSelector
+ *
+ * @package KayStrobach\Themes\Tca
  */
 class ThemeSelector {
 

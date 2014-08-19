@@ -42,6 +42,10 @@ class ThemesDomainRepositoryThemeRepositoryInitHook {
 
 	/**
 	 * hook function
+	 *
+	 * @param $params
+	 * @param $pObj
+	 * @return void
 	 */
 	public function init(&$params, $pObj) {
 		// exclude extensions, which are not worth to check them

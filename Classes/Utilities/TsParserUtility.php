@@ -95,7 +95,7 @@ class TsParserUtility implements SingletonInterface {
 
 		foreach ($this->tsParser->categories as $categoryName => $category) {
 			if ((count($categoriesToShow) === 0) || (in_array($categoryName, $categoriesToShow))) {
-				foreach ($category as $constantName => $_) {
+				foreach ($category as $constantName => $type) {
 					if (in_array($constantName, $deniedFields)) {
 						unset($this->tsParser->categories[$categoryName][$constantName]);
 					}

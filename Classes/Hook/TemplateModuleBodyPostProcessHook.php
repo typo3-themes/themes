@@ -36,7 +36,7 @@ class TemplateModuleBodyPostProcessHook {
 		$getSet = GeneralUtility::_GP('SET');
 
 		if (($getSet['function'] === 'tx_tstemplateinfo' || !$getSet['function'])
-		   && ($params['moduleTemplateFilename'] === 'templates/tstemplate.html')) {
+			&& ($params['moduleTemplateFilename'] === 'templates/tstemplate.html')) {
 
 			$repository = GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
 
