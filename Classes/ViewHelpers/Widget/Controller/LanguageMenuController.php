@@ -12,6 +12,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class LanguageMenuController
+ *
  * @package KayStrobach\Themes\ViewHelpers\Widget\Controller
  */
 class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
