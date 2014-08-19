@@ -6,12 +6,18 @@ use KayStrobach\Themes\Utilities\CheckPageUtility;
 
 /**
  * Class PageNotFoundHandlingHook
+ *
  * @package KayStrobach\Themes\Hook
  */
 class IconUtilityHook {
 
 	/**
-	 * @todo missing docblock
+	 * adds the overlay icon to a page with a theme set
+	 *
+	 * @param $table
+	 * @param $row
+	 * @param $status
+	 * @return void
 	 */
 	public function overrideIconOverlay($table, &$row, &$status) {
 		if ($table === 'pages') {

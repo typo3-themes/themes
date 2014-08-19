@@ -6,7 +6,11 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * @todo missing docblock
+ * Class Theme
+ *
+ * the theme model object
+ *
+ * @package KayStrobach\Themes\Domain\Model
  */
 class Theme extends AbstractTheme {
 
@@ -24,7 +28,7 @@ class Theme extends AbstractTheme {
 			$path = ExtensionManagementUtility::extPath($this->getExtensionName());
 			$this->pathTyposcript = $path . 'Configuration/TypoScript/setup.txt';
 			$this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.txt';
-			$this->pathTSConfig = $path . 'Configuration/PageTS/tsconfig.txt';
+			$this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.txt';
 
 			$this->importExtEmConf();
 
@@ -36,14 +40,17 @@ class Theme extends AbstractTheme {
 
 			if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml')) {
 				if (class_exists('\Symfony\Component\Yaml\Yaml')) {
-					$this->information = \Symfony\Component\Yaml\Yaml::parse(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml');
+					$this->information = \Symfony\Component\Yaml\Yaml::parse(
+						ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml'
+					);
 				}
 			}
 		}
 	}
 
 	/**
-	 * @todo missing docblock
+	 * abstract the extension meta data import
+	 * @return void
 	 */
 	protected function importExtEmConf() {
 		/**
@@ -63,7 +70,7 @@ class Theme extends AbstractTheme {
 	}
 
 	/**
-	 * @todo miss the description of the function
+	 * Return the TypoScript Config from the related file
 	 * @return string
 	 */
 	public function getTSConfig() {
@@ -75,22 +82,23 @@ class Theme extends AbstractTheme {
 	}
 
 	/**
-	 * @todo missing docblock
+	 * Calculates the relative path to the theme directory for frontend usage
+	 *
+	 * @return string
 	 */
 	public function getRelativePath() {
 		if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
 			return ExtensionManagementUtility::siteRelPath($this->getExtensionName());
-		} else {
-			return '';
 		}
+		return '';
 	}
 
 	/**
 	 * Includes static template records (from static_template table) and static template files (from extensions) for the input template record row.
 	 *
-	 * @param	array		Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
-	 * @param	object		Reference back to parent object, t3lib_tstemplate or one of its subclasses.
-	 * @return	void
+	 * @param array $params Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
+	 * @param object $pObj Reference back to parent object, t3lib_tstemplate or one of its subclasses.
+	 * @return void
 	 */
 	public function addTypoScriptForFe(&$params, &$pObj) {
 		$themeItem = array(

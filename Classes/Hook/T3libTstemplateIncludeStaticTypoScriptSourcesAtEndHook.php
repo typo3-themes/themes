@@ -7,7 +7,11 @@ namespace KayStrobach\Themes\Hook;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * @todo missing docblock
+ * Class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
+ *
+ * Hook to include the TypoScript during the rendering
+ *
+ * @package KayStrobach\Themes\Hook
  */
 class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 
@@ -19,37 +23,32 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 	 * @return	void
 	 */
 	public static function main(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj) {
-		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $TYPO3_DB */
-		global $TYPO3_DB;
-
 		$idList = $params['idList'];
-		$templateID = $params['templateId'];
+		$templateId = $params['templateId'];
 		$pid = $params['pid'];
 		$row = $params['row'];
 
-		$t = $params; // unused?
-		$t['row'] = array_keys($row); // unused?
+		if ($templateId === $idList) {
 
-		if ($templateID === $idList) {
-
-			$tRow = $TYPO3_DB->exec_SELECTgetSingleRow('*', 'sys_template', 'pid=' . (int) $pid);
+			$tRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_template', 'pid=' . (int) $pid);
 			$row['tx_themes_skin'] = $tRow['tx_themes_skin'];
 
-			// Call hook for possible manipulation of current skin - oldstyle for compatibility for ext:skin_preview :D
+			// Call hook for possible manipulation of current skin
+			// oldstyle for compatibility for ext:skin_preview :D
 			// @todo should be removed once theme_preview is stable ...
 			// it's deprecated to use this hook
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/templavoila_framework/class.tx_templavoilaframework_lib.php']['assignSkinKey'])) {
-				$_params = array('skinKey' => &$row['tx_themes_skin']);
+				$tempParamsForHook = array('skinKey' => &$row['tx_themes_skin']);
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/templavoila_framework/class.tx_templavoilaframework_lib.php']['assignSkinKey'] as $userFunc) {
-					$row['tx_themes_skin'] = GeneralUtility::callUserFunction($userFunc, $_params, $ref = NULL);
+					$row['tx_themes_skin'] = GeneralUtility::callUserFunction($userFunc, $tempParamsForHook, $ref = NULL);
 				}
 			}
 
 			// Call hook for possible manipulation of current skin.
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'])) {
-				$_params = array('theme' => &$row['tx_themes_skin']);
+				$tempParamsForHook = array('theme' => &$row['tx_themes_skin']);
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'] as $userFunc) {
-					$row['tx_themes_skin'] = GeneralUtility::callUserFunction($userFunc, $_params, $ref = NULL);
+					$row['tx_themes_skin'] = GeneralUtility::callUserFunction($userFunc, $tempParamsForHook, $ref = NULL);
 				}
 			}
 
@@ -66,12 +65,12 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 			// Call hook for possible manipulation of current skin. constants
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['modifyTS'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['modifyTS'] as $userFunc) {
-					$themeItem = GeneralUtility::callUserFunction($userFunc, $_params, $pObj);
+					$themeItem = GeneralUtility::callUserFunction($userFunc, $tempParamsForHook, $pObj);
 					$pObj->processTemplate(
 						$themeItem,
 						$params['idList'] . ',themes_modifyTsOverlay',
 						$params['pid'],
-						'themes_' . 'themes_modifyTsOverlay',
+						'themes_themes_modifyTsOverlay',
 						$params['templateId']
 					);
 				}

@@ -12,7 +12,11 @@ use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 use TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme;
 
 /**
- * @todo missing docblock
+ * Class ThemeRepository
+ *
+ * The Repository of available themes
+ *
+ * @package KayStrobach\Themes\Domain\Repository
  */
 class ThemeRepository implements RepositoryInterface, SingletonInterface {
 
@@ -24,9 +28,9 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	protected $addedObjects = array();
 
 	/**
-	 * @todo missing docblock
+	 * creates the repo
 	 */
-	function __construct() {
+	public function __construct() {
 		/**
 		 * @var \TYPO3\CMS\Core\Log\LogManager $logger
 		 */
@@ -94,6 +98,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	 * Replaces an existing object with the same identifier by the given object
 	 *
 	 * @param \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme $modifiedObject The modified object
+	 * @return void
 	 * @api
 	 * @throws \TYPO3\CMS\Extbase\Object\Exception
 	 */
@@ -116,7 +121,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	 * had been persisted to the storage layer before.
 	 *
 	 * @throws \TYPO3\CMS\Extbase\Object\Exception
-	 * @return array
+	 * @return void
 	 */
 	public function getRemovedObjects() {
 		throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
@@ -179,7 +184,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	 * @return mixed
 	 */
 	public function findByPageId($pid) {
-		$template = GeneralUtility::makeInstance("TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService");
+		$template = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
 		$template->tt_track = 0;
 		$template->init();
 		$templateRow = $template->ext_getFirstTemplate($pid);
