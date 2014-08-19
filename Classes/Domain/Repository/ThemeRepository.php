@@ -41,7 +41,10 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'])) {
 				$hookParameters = array();
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'] as $hookFunction) {
-					$logger->getLogger()->warning('Theme loader found ' . $hookFunction . ' - sadly this loader uses the old hook, please fix this, should be KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository nowThem');
+					$logger->getLogger()->warning(
+						'Theme loader found ' . $hookFunction .
+						' - sadly this loader uses the old hook, please fix this, should be KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository nowThem'
+					);
 					GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
 				}
 			}
@@ -173,7 +176,8 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	}
 
 	/**
-	 * @todo missing docblock
+	 * @param mixed $uid
+	 * @return AbstractTheme
 	 */
 	public function findByIdentifier($uid) {
 		$this->findByUid($uid);

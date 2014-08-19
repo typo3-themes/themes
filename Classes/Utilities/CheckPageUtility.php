@@ -21,9 +21,8 @@ class CheckPageUtility {
 		);
 		if ($templateCount > 0) {
 			return TRUE;
-		} else {
-			return FALSE;
 		}
+		return FALSE;
 	}
 
 	/**
@@ -38,9 +37,8 @@ class CheckPageUtility {
 		);
 		if ($templateCount > 0) {
 			return TRUE;
-		} else {
-			return FALSE;
 		}
+		return FALSE;
 	}
 
 	/**
@@ -57,8 +55,7 @@ class CheckPageUtility {
 		);
 		if (is_array($templates)) {
 			return $templates['uid'];
-		} else {
-			return FALSE;
 		}
+		return FALSE;
 	}
 }

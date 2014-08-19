@@ -76,9 +76,8 @@ class Theme extends AbstractTheme {
 	public function getTSConfig() {
 		if (file_exists($this->getTSConfigAbsPath()) && is_file($this->getTSConfigAbsPath())) {
 			return file_get_contents($this->getTSConfigAbsPath());
-		} else {
-			return '';
 		}
+		return '';
 	}
 
 	/**

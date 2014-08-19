@@ -95,7 +95,7 @@ class TsParserUtility implements SingletonInterface {
 
 		foreach ($this->tsParser->categories as $categoryName => $category) {
 			if ((count($categoriesToShow) === 0) || (in_array($categoryName, $categoriesToShow))) {
-				foreach ($category as $constantName => $type) {
+				foreach (array_keys($category) as $constantName) {
 					if (in_array($constantName, $deniedFields)) {
 						unset($this->tsParser->categories[$categoryName][$constantName]);
 					}
@@ -138,14 +138,16 @@ class TsParserUtility implements SingletonInterface {
 		$this->getConstants($pid);
 
 		$filteredConstants = array();
-		/* foreach($constants as $constant) {
-		 foreach($this->tsParserConstants as $allowedConstants) {
-		 if($constant['name'] == $allowedConstants['name']) {
-		 $filteredConstants[] = $constant;
-		 break;
-		 }
-		 }
-		 } */
+		/*
+		foreach($constants as $constant) {
+			foreach($this->tsParserConstants as $allowedConstants) {
+				if($constant['name'] == $allowedConstants['name']) {
+					$filteredConstants[] = $constant;
+					break;
+				}
+			}
+		}
+		*/
 		$filteredConstants = $constants;
 
 		$postData = array(
@@ -192,7 +194,8 @@ class TsParserUtility implements SingletonInterface {
 		if (!$this->tsParserInitialized) {
 			$this->tsParserInitialized = TRUE;
 			$this->tsParser = GeneralUtility::makeInstance('TYPO3\\CMS\Core\\TypoScript\\ExtendedTemplateService');
-			$this->tsParser->tt_track = 0; // Do not log time-performance information
+			// Do not log time-performance information
+			$this->tsParser->tt_track = 0;
 			$this->tsParser->init();
 
 			$this->tsParser->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate');
