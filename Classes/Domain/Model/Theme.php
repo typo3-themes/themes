@@ -101,6 +101,7 @@ class Theme extends AbstractTheme {
 	 * @return void
 	 */
 	public function addTypoScriptForFe(&$params, &$pObj) {
+		// @codingStandardsIgnoreStart
 		$themeItem = array(
 			'constants' => @is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptConstantsAbsPath()) : '',
 			'config' => @is_file($this->getTypoScriptAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptAbsPath()) : '',
@@ -109,6 +110,7 @@ class Theme extends AbstractTheme {
 			'title' => 'themes:' . $this->getExtensionName(),
 			'uid' => md5($this->getExtensionName())
 		);
+		// @codingStandardsIgnoreEnd
 
 		// @todo resources Path / private Path
 		$themeItem['constants'] .= LF . 'themes.resourcesPrivatePath = ' . $this->getRelativePath() . 'Resources/Private/';

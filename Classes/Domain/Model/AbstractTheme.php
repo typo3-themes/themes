@@ -184,6 +184,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function addTypoScriptForFe(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj) {
+		// @codingStandardsIgnoreStart
 		$themeItem = array(
 			'constants' => @is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptConstantsAbsPath()) : '',
 			'config' => @is_file($this->getTypoScriptAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptAbsPath()) : '',
@@ -192,6 +193,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			'title' => 'themes:' . $this->getExtensionName(),
 			'uid' => md5($this->getExtensionName())
 		);
+		// @codingStandardsIgnoreEnd
 
 		$themeItem['constants'] .= LF . 'themes.relPath = ' . $this->getRelativePath();
 		$themeItem['constants'] .= LF . 'themes.name = ' . $this->getExtensionName();
