@@ -57,13 +57,14 @@ class Theme extends AbstractTheme {
 		 * @var $EM_CONF array
 		 * @var $_EXTKEY string
 		 */
+
+		// @codingStandardsIgnoreStart
 		$_EXTKEY = $this->extensionName;
 		include(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'ext_emconf.php');
+		// @codingStandardsIgnoreEnd
 		$this->title = $EM_CONF[$this->getExtensionName()]['title'];
 		$this->description = $EM_CONF[$this->getExtensionName()]['description'];
-
 		$this->version = $EM_CONF[$this->getExtensionName()]['version'];
-
 		$this->author['name'] = $EM_CONF[$this->getExtensionName()]['author'];
 		$this->author['email'] = $EM_CONF[$this->getExtensionName()]['author_email'];
 		$this->author['company'] = $EM_CONF[$this->getExtensionName()]['author_company'];
