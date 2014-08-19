@@ -6,7 +6,7 @@ use KayStrobach\Themes\Domain\Model\Theme;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
- * @todo missing docblock
+ * Hooks into the theme repo to load the list of themes
  */
 class ThemesDomainRepositoryThemeRepositoryInitHook {
 
@@ -41,9 +41,9 @@ class ThemesDomainRepositoryThemeRepositoryInitHook {
 	);
 
 	/**
-	 * @todo missing docblock
+	 * hook function
 	 */
-	function init(&$params, $pObj) {
+	public function init(&$params, $pObj) {
 		// exclude extensions, which are not worth to check them
 		$extensionsToCheck = array_diff(
 			ExtensionManagementUtility::getLoadedExtensionListArray(),
