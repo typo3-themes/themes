@@ -73,9 +73,9 @@ class Theme extends AbstractTheme {
 	 * Return the TypoScript Config from the related file
 	 * @return string
 	 */
-	public function getTSConfig() {
-		if (file_exists($this->getTSConfigAbsPath()) && is_file($this->getTSConfigAbsPath())) {
-			return file_get_contents($this->getTSConfigAbsPath());
+	public function getTypoScriptConfig() {
+		if (file_exists($this->getTypoScriptConfigAbsPath()) && is_file($this->getTypoScriptConfigAbsPath())) {
+			return file_get_contents($this->getTypoScriptConfigAbsPath());
 		}
 		return '';
 	}

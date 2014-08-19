@@ -136,9 +136,9 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @return string
 	 */
-	public function getTSConfig() {
-		if (file_exists($this->getTSConfigAbsPath()) && is_file($this->getTSConfigAbsPath())) {
-			return file_get_contents($this->getTSConfigAbsPath());
+	public function getTypoScriptConfig() {
+		if (file_exists($this->getTypoScriptConfigAbsPath()) && is_file($this->getTypoScriptConfigAbsPath())) {
+			return file_get_contents($this->getTypoScriptConfigAbsPath());
 		}
 		return '';
 	}
@@ -146,7 +146,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @return string
 	 */
-	public function getTSConfigAbsPath() {
+	public function getTypoScriptConfigAbsPath() {
 		return $this->pathTsConfig;
 	}
 

@@ -34,7 +34,7 @@ class BackendUtilitySlot extends \TYPO3\CMS\Backend\Configuration\TsConfigParser
 			return '';
 		}
 
-		array_unshift($typoscriptDataArray, $theme->getTSConfig());
+		array_unshift($typoscriptDataArray, $theme->getTypoScriptConfig());
 
 		return array(
 			$typoscriptDataArray,
