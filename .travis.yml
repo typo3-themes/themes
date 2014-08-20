@@ -14,6 +14,8 @@ env:
 
 before_script:
   - sudo apt-get install parallel
+  - sudo npm install -g csslint
+  - sudo npm install -g jshint
   - composer self-update
   - cd ..
   - git clone --single-branch --branch $TYPO3_BRANCH --depth 1 https://github.com/TYPO3/TYPO3.CMS.git typo3_core
@@ -35,6 +37,22 @@ script:
     "
   - >
     ./bin/phpcs --standard=TYPO3CMS -n typo3conf/ext/$EXTENSIONKEY/Classes/
+  - >
+    echo;
+    echo "Running css lint";
+    /bin/bash -c "
+      if [ -d typo3conf/ext/$EXTENSIONKEY/Resources/Public/Css/ ]; then
+        csslint typo3conf/ext/$EXTENSIONKEY/Resources/Public/Css/
+      fi
+    "
+  - >
+    echo;
+    echo "Running jshint";
+    /bin/bash -c "
+      if [ -d typo3conf/ext/$EXTENSIONKEY/Resources/Public/JavaScript/ ]; then
+        jshint typo3conf/ext/$EXTENSIONKEY/Resources/Public/JavaScript/
+      fi
+    "
   - >
     echo;
     echo "Running unit tests";
