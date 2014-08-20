@@ -5,6 +5,9 @@ php:
   - 5.5
   - 5.6
 
+cache:
+  apt: true
+
 env:
   global:
     - EXTENSIONKEY=themes
@@ -13,7 +16,7 @@ env:
     - TYPO3_BRANCH=TYPO3_6-2 COVERAGE=0
 
 before_script:
-  - sudo apt-get install parallel
+  - sudo apt-get install parallel nodejs npm
   - sudo npm install -g csslint
   - sudo npm install -g jshint
   - composer self-update
