@@ -34,7 +34,7 @@ script:
         fi
     "
   - >
-    ./bin/phpcs --standard=TYPO3CMS typo3conf/ext/$EXTENSIONKEY/Classes/
+    ./bin/phpcs --standard=TYPO3CMS -n typo3conf/ext/$EXTENSIONKEY/Classes/
   - >
     echo;
     echo "Running unit tests";
