@@ -16,8 +16,8 @@ env:
     - TYPO3_BRANCH=TYPO3_6-2 COVERAGE=0
 
 before_script:
-  - apt-get install curl lsb-release
-  - curl -sL https://deb.nodesource.com/setup | bash -
+  - sudo apt-get install curl lsb-release
+  - sudo curl -sL https://deb.nodesource.com/setup | bash -
   - sudo apt-get install parallel nodejs nodejs-legacy npm
   - sudo npm install -g csslint
   - sudo npm install -g jshint
