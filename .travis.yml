@@ -18,7 +18,7 @@ env:
 before_script:
   - sudo apt-get install parallel
   - npm install csslint
-  - npm install jshint
+  - npm -g install jshint
   - composer self-update
   - cd ..
   - git clone --single-branch --branch $TYPO3_BRANCH --depth 1 https://github.com/TYPO3/TYPO3.CMS.git typo3_core
@@ -53,7 +53,7 @@ script:
     echo "Running jshint";
     /bin/bash -c "
       if [ -d typo3conf/ext/$EXTENSIONKEY/Resources/Public/JavaScript/ ]; then
-        ./node_modules/.bin/jshint typo3conf/ext/$EXTENSIONKEY/Resources/Public/JavaScript/
+        jshint typo3conf/ext/$EXTENSIONKEY/Resources/Public/JavaScript/
       fi
     "
   - >
