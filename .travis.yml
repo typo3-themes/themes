@@ -53,7 +53,7 @@ script:
     echo "Running jshint";
     /bin/bash -c "
       if [ -d typo3conf/ext/$EXTENSIONKEY/Resources/Public/JavaScript/ ]; then
-        jshint typo3conf/ext/$EXTENSIONKEY/Resources/Public/JavaScript/
+        ./node_modules/.bin/jshint typo3conf/ext/$EXTENSIONKEY/Resources/Public/JavaScript/
       fi
     "
   - >
