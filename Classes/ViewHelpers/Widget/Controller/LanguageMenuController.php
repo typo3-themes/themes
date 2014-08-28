@@ -26,13 +26,13 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 	/**
 	 * Language Repository
 	 *
-	 * @var LanguageRepository
+	 * @var \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository
 	 * @inject
 	 */
 	protected $languageRepository;
 
 	/**
-	 * @param LanguageRepository $languageRepository
+	 * @param \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository $languageRepository
 	 * @return void
 	 */
 	public function injectLanguageRepository(LanguageRepository $languageRepository) {
