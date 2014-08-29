@@ -29,6 +29,9 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 
 	/**
 	 * creates the repo
+	 *
+	 * @return void
+	 * @todo missing detailed description
 	 */
 	public function __construct() {
 		/**
