@@ -118,7 +118,7 @@ class EditorController extends ActionController {
 			array(
 				'pid'                  => $this->id,
 				'nearestPageWithTheme' => $nearestPageWithTheme,
-				'themeIsSelectable'    => CheckPageUtility::hasThemeableSysTemplateRecord($this->id),
+				'themeIsSelectable' => CheckPageUtility::hasThemeableSysTemplateRecord($this->id),
 			)
 		);
 	}
@@ -147,10 +147,10 @@ class EditorController extends ActionController {
 	public function showThemeAction() {
 		$this->view->assignMultiple(
 			array(
-				'pid'               => $this->id,
-				'selectedTheme'     => $this->themeRepository->findByPageId($this->id),
-				'selectableThemes'  => $this->themeRepository->findAll(),
-				'themeIsSelectable' => CheckPageUtility::hasThemeableSysTemplateRecord($this->id)
+				'selectedTheme' => $this->themeRepository->findByPageId($this->id),
+				'selectableThemes' => $this->themeRepository->findAll(),
+				'themeIsSelectable' => CheckPageUtility::hasThemeableSysTemplateRecord($this->id),
+				'pid' => $this->id,
 			)
 		);
 	}
