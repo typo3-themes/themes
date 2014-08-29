@@ -10,7 +10,10 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  */
 class ThemesDomainRepositoryThemeRepositoryInitHook {
 
-	// @todo find a more flexible solution
+	/**
+	 * @var array
+	 * @todo find a more flexible solution
+	 */
 	protected $ignoredExtensions = array(
 		'themes',
 		'skinselector_content',
@@ -45,7 +48,9 @@ class ThemesDomainRepositoryThemeRepositoryInitHook {
 	 *
 	 * @param $params
 	 * @param $pObj
+	 *
 	 * @return void
+	 * @todo add a more explaining description why this hook is required
 	 */
 	public function init(&$params, $pObj) {
 		// exclude extensions, which are not worth to check them

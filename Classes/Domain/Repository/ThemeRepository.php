@@ -3,7 +3,7 @@
 namespace KayStrobach\Themes\Domain\Repository;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Log\LogManager; // unused?
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
@@ -29,6 +29,9 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 
 	/**
 	 * creates the repo
+	 *
+	 * @return void
+	 * @todo missing detailed description
 	 */
 	public function __construct() {
 		/**
