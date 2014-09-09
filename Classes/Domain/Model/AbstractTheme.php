@@ -6,10 +6,10 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * @todo get rid of getExtensionname, use EXT:extname as theme name to avoid conflicts in the database
- *
  * Class AbstractTheme
+ *
  * @package KayStrobach\Themes\Domain\Model
+ * @todo get rid of getExtensionname, use EXT:extname as theme name to avoid conflicts in the database
  */
 class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
@@ -56,7 +56,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @var string
 	 */
-	protected $pathTSConfig;
+	protected $pathTsConfig;
 
 	/**
 	 * Constructs a new Theme
@@ -136,19 +136,18 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @return string
 	 */
-	public function getTSConfig() {
-		if (file_exists($this->getTSConfigAbsPath()) && is_file($this->getTSConfigAbsPath())) {
-			return file_get_contents($this->getTSConfigAbsPath());
-		} else {
-			return '';
+	public function getTypoScriptConfig() {
+		if (file_exists($this->getTypoScriptConfigAbsPath()) && is_file($this->getTypoScriptConfigAbsPath())) {
+			return file_get_contents($this->getTypoScriptConfigAbsPath());
 		}
+		return '';
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getTSConfigAbsPath() {
-		return $this->pathTSConfig;
+	public function getTypoScriptConfigAbsPath() {
+		return $this->pathTsConfig;
 	}
 
 	/**
@@ -166,14 +165,15 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @todo missing docblock
+	 * returns the relative path of the theme
+	 *
+	 * @return string
 	 */
 	public function getRelativePath() {
 		if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
 			return ExtensionManagementUtility::siteRelPath($this->getExtensionName());
-		} else {
-			return '';
 		}
+		return '';
 	}
 
 	/**
@@ -184,6 +184,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function addTypoScriptForFe(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj) {
+		// @codingStandardsIgnoreStart
 		$themeItem = array(
 			'constants' => @is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptConstantsAbsPath()) : '',
 			'config' => @is_file($this->getTypoScriptAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptAbsPath()) : '',
@@ -192,6 +193,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			'title' => 'themes:' . $this->getExtensionName(),
 			'uid' => md5($this->getExtensionName())
 		);
+		// @codingStandardsIgnoreEnd
 
 		$themeItem['constants'] .= LF . 'themes.relPath = ' . $this->getRelativePath();
 		$themeItem['constants'] .= LF . 'themes.name = ' . $this->getExtensionName();
@@ -213,14 +215,13 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return string
 	 */
 	public function getTypoScriptForLanguage(&$params, &$pObj) {
-		/**
-		 * @var \TYPO3\CMS\Core\Database\DatabaseConnection $TYPO3_DB
-		 * @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-		 */
-		global $TYPO3_DB;
+		if (!is_object($GLOBALS['TYPO3_DB'])) {
+			return '';
+		}
 
-		$languages = $TYPO3_DB->exec_SELECTgetRows(
-				'sys.uid as uid, sys.title as title, sys.flag as flag,static.lg_name_local as lg_name_local, static.lg_name_en as lg_name_en, static.lg_collate_locale as lg_collate_locale', 'sys_language sys,static_languages static', 'sys.static_lang_isocode = static.uid AND sys.hidden=0'
+		$languages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'sys.uid as uid, sys.title as title, sys.flag as flag,static.lg_name_local as lg_name_local,static.lg_name_en as lg_name_en, static.lg_collate_locale as lg_collate_locale',
+			'sys_language sys,static_languages static', 'sys.static_lang_isocode = static.uid AND sys.hidden=0'
 		);
 
 		$outputBuffer = '';
@@ -242,7 +243,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 				$buffer .= ' isoCodeHtml = ' . str_replace('_', '-', $language['lg_collate_locale']) . LF;
 				$buffer .= '} ' . LF;
 				$buffer .= '[global]' . LF;
-				$outputBuffer.= $buffer;
+				$outputBuffer .= $buffer;
 			}
 			$outputBuffer .= $key . '.available=' . implode(',', $languageUids) . LF;
 		} else {

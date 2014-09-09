@@ -6,11 +6,14 @@ use KayStrobach\Themes\Domain\Model\Theme;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
- * @todo missing docblock
+ * Hooks into the theme repo to load the list of themes
  */
 class ThemesDomainRepositoryThemeRepositoryInitHook {
 
-	// @todo find a more flexible solution
+	/**
+	 * @var array
+	 * @todo find a more flexible solution
+	 */
 	protected $ignoredExtensions = array(
 		'themes',
 		'skinselector_content',
@@ -41,9 +44,15 @@ class ThemesDomainRepositoryThemeRepositoryInitHook {
 	);
 
 	/**
-	 * @todo missing docblock
+	 * hook function
+	 *
+	 * @param $params
+	 * @param $pObj
+	 *
+	 * @return void
+	 * @todo add a more explaining description why this hook is required
 	 */
-	function init(&$params, $pObj) {
+	public function init(&$params, $pObj) {
 		// exclude extensions, which are not worth to check them
 		$extensionsToCheck = array_diff(
 			ExtensionManagementUtility::getLoadedExtensionListArray(),

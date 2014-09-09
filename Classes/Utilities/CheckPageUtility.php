@@ -3,12 +3,15 @@
 namespace KayStrobach\Themes\Utilities;
 
 /**
- * @todo missing docblock
+ * Class CheckPageUtility
+ *
+ * @package KayStrobach\Themes\Utilities
  */
 class CheckPageUtility {
 
 	/**
-	 * @todo missing docblock
+	 * @param $pid
+	 * @return bool
 	 */
 	public static function hasTheme($pid) {
 		$templateCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
@@ -18,13 +21,13 @@ class CheckPageUtility {
 		);
 		if ($templateCount > 0) {
 			return TRUE;
-		} else {
-			return FALSE;
 		}
+		return FALSE;
 	}
 
 	/**
-	 * @todo missing docblock
+	 * @param $pid
+	 * @return bool
 	 */
 	public static function hasThemeableSysTemplateRecord($pid) {
 		$templateCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
@@ -34,11 +37,14 @@ class CheckPageUtility {
 		);
 		if ($templateCount > 0) {
 			return TRUE;
-		} else {
-			return FALSE;
 		}
+		return FALSE;
 	}
 
+	/**
+	 * @param $pid
+	 * @return bool|integer
+	 */
 	public static function getThemeableSysTemplateRecord($pid) {
 		$templates = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'*',
@@ -47,10 +53,9 @@ class CheckPageUtility {
 			'',
 			'sorting ASC'
 		);
-		if(is_array($templates)) {
+		if (is_array($templates)) {
 			return $templates['uid'];
-		} else {
-			return FALSE;
 		}
+		return FALSE;
 	}
 }

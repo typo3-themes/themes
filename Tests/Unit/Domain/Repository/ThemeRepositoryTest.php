@@ -26,6 +26,8 @@ class ThemeRepositoryTest extends BaseTestCase {
 	 * @test
 	 */
 	public function findAllCountTest() {
+		$this->markTestSkipped('Needs to be moved to functionaltesting');
+		return;
 		$this->assertGreaterThanOrEqual(
 			1,
 			count($this->fixture->findAll()),
@@ -58,6 +60,8 @@ class ThemeRepositoryTest extends BaseTestCase {
 	 * @test
 	 */
 	public function checkForNewHookUsage() {
+		$this->markTestSkipped('Needs to be moved to functionaltesting');
+		return;
 		$this->assertSame(
 			TRUE,
 			is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init']),

@@ -8,8 +8,14 @@ namespace KayStrobach\Themes\ViewHelpers\Widget\Controller;
  * @author Thomas Deuling <typo3@coding.ms>
  * @package themes
  */
+use SJBR\StaticInfoTables\Domain\Repository\LanguageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * Class LanguageMenuController
+ *
+ * @package KayStrobach\Themes\ViewHelpers\Widget\Controller
+ */
 class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
 
 	/**
@@ -29,7 +35,7 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 	 * @param \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository $languageRepository
 	 * @return void
 	 */
-	public function injectLanguageRepository(\SJBR\StaticInfoTables\Domain\Repository\LanguageRepository $languageRepository) {
+	public function injectLanguageRepository(LanguageRepository $languageRepository) {
 		$this->languageRepository = $languageRepository;
 	}
 
@@ -66,9 +72,9 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 					$class = $defaultLanguageIsoCodeShort != '' ? $defaultLanguageIsoCodeShort : 'en';
 					$label = $defaultLanguageLabel != '' ? $defaultLanguageLabel : 'English';
 					$flag = $defaultLanguageFlag != '' ? $defaultLanguageFlag : 'gb';
-				} else if ($sysLanguage = $this->getSysLanguage($languageUid)) {
+				} elseif (($sysLanguage = $this->getSysLanguage($languageUid))) {
 
-					if (!($this->languageRepository instanceof \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository)) {
+					if (!($this->languageRepository instanceof LanguageRepository)) {
 						$this->languageRepository = GeneralUtility::makeInstance('SJBR\\StaticInfoTables\\Domain\\Repository\\LanguageRepository');
 					}
 					$languageObject = $this->languageRepository->findByIdentifier($sysLanguage['static_lang_isocode']);

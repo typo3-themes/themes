@@ -7,7 +7,11 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * @todo missing docblock
+ * Class TsParserUtility
+ *
+ * Provides an API to the complex TSParser
+ *
+ * @package KayStrobach\Themes\Utilities
  */
 class TsParserUtility implements SingletonInterface {
 
@@ -23,20 +27,20 @@ class TsParserUtility implements SingletonInterface {
 	 * @param $pid
 	 * @param array $constants
 	 * @param array $isSetConstants
+	 * @return void
 	 */
-	function applyToPid($pid, array $constants, $isSetConstants = array()) {
-		$this->initializeTSParser($pid);
+	public function applyToPid($pid, array $constants, $isSetConstants = array()) {
+		$this->initializeTsParser($pid);
 		$this->setConstants($pid, $constants, $isSetConstants);
 		//@todo add hook to apply additional options
 	}
 
 	/**
-	 *
 	 * @param $pid
 	 * @return mixed
 	 */
-	function getConstants($pid) {
-		$this->initializeTSParser($pid);
+	public function getConstants($pid) {
+		$this->initializeTsParser($pid);
 
 		$return = $this->tsParserConstants;
 		if (is_array($return)) {
@@ -76,9 +80,8 @@ class TsParserUtility implements SingletonInterface {
 				}
 			}
 			return $return;
-		} else {
-			return NULL;
 		}
+		return NULL;
 	}
 
 	/**
@@ -87,12 +90,12 @@ class TsParserUtility implements SingletonInterface {
 	 * @param array $deniedFields
 	 * @return array
 	 */
-	function getCategories($pid, $categoriesToShow = array(), $deniedFields = array()) {
-		$this->initializeTSParser($pid);
+	public function getCategories($pid, $categoriesToShow = array(), $deniedFields = array()) {
+		$this->initializeTsParser($pid);
 
 		foreach ($this->tsParser->categories as $categoryName => $category) {
 			if ((count($categoriesToShow) === 0) || (in_array($categoryName, $categoriesToShow))) {
-				foreach ($category as $constantName => $type) {
+				foreach (array_keys($category) as $constantName) {
 					if (in_array($constantName, $deniedFields)) {
 						unset($this->tsParser->categories[$categoryName][$constantName]);
 					}
@@ -110,7 +113,7 @@ class TsParserUtility implements SingletonInterface {
 	 * @return array
 	 */
 	public function getSubCategories($pid) {
-		$this->initializeTSParser($pid);
+		$this->initializeTsParser($pid);
 		return $this->tsParser->subCategories;
 	}
 
@@ -118,8 +121,8 @@ class TsParserUtility implements SingletonInterface {
 	 * @param $pid
 	 * @return \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
 	 */
-	function getTsParser($pid) {
-		$this->initializeTSParser($pid);
+	protected function getTsParser($pid) {
+		$this->initializeTsParser($pid);
 		return $this->tsParser;
 	}
 
@@ -135,14 +138,16 @@ class TsParserUtility implements SingletonInterface {
 		$this->getConstants($pid);
 
 		$filteredConstants = array();
-		/* foreach($constants as $constant) {
-		 foreach($this->tsParserConstants as $allowedConstants) {
-		 if($constant['name'] == $allowedConstants['name']) {
-		 $filteredConstants[] = $constant;
-		 break;
-		 }
-		 }
-		 } */
+		/*
+		foreach($constants as $constant) {
+			foreach($this->tsParserConstants as $allowedConstants) {
+				if($constant['name'] == $allowedConstants['name']) {
+					$filteredConstants[] = $constant;
+					break;
+				}
+			}
+		}
+		*/
 		$filteredConstants = $constants;
 
 		$postData = array(
@@ -166,14 +171,15 @@ class TsParserUtility implements SingletonInterface {
 			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->stripslashes_values = 0;
 
-			// Initialize
+			/**
+			 * Save data and clear the cache
+			 * (note: currently only admin-users can clear the cache)
+			 */
 			$user = clone $GLOBALS['BE_USER'];
 			$user->user['admin'] = 1;
 			$tce->start($recData, Array(), $user);
 			$tce->admin = 1;
-			// Saved the stuff
 			$tce->process_datamap();
-			// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
 			$tce->clear_cacheCmd('pages');
 			unset($user);
 		}
@@ -181,39 +187,42 @@ class TsParserUtility implements SingletonInterface {
 
 	/**
 	 * @param $pageId
-	 * @param int $template_uid
+	 * @param int $templateUid
 	 * @return bool
 	 */
-	protected function initializeTSParser($pageId, $template_uid = 0) {
+	protected function initializeTsParser($pageId, $templateUid = 0) {
 		if (!$this->tsParserInitialized) {
 			$this->tsParserInitialized = TRUE;
 			$this->tsParser = GeneralUtility::makeInstance('TYPO3\\CMS\Core\\TypoScript\\ExtendedTemplateService');
-			$this->tsParser->tt_track = 0; // Do not log time-performance information
+			// Do not log time-performance information
+			$this->tsParser->tt_track = 0;
 			$this->tsParser->init();
 
 			$this->tsParser->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate');
 			$this->tsParser->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'] . ExtensionManagementUtility::extRelPath('tstemplate');
 
-			$this->tsParserTplRow = $this->tsParser->ext_getFirstTemplate($pageId, $template_uid);
+			$this->tsParserTplRow = $this->tsParser->ext_getFirstTemplate($pageId, $templateUid);
 
 			if (is_array($this->tsParserTplRow)) {
 				/**
-				 * @var t3lib_pageSelect $sys_page
+				 * @var t3lib_pageSelect $sysPageRepository
 				 */
-				$sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-				$rootLine = $sys_page->getRootLine($pageId);
-				$this->tsParser->runThroughTemplates($rootLine, $template_uid); // This generates the constants/config + hierarchy info for the template.
-				$this->tsParserConstants = $this->tsParser->generateConfig_constants(); // The editable constants are returned in an array.
-				$this->tsParser->ext_categorizeEditableConstants($this->tsParserConstants); // The returned constants are sorted in categories, that goes into the $tmpl->categories array
+				$sysPageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+				$rootLine = $sysPageRepository->getRootLine($pageId);
+				// This generates the constants/config + hierarchy info for the template.
+				$this->tsParser->runThroughTemplates($rootLine, $templateUid);
+				// The editable constants are returned in an array.
+				$this->tsParserConstants = $this->tsParser->generateConfig_constants();
+				// The returned constants are sorted in categories, that goes into the $tmpl->categories array
+				$this->tsParser->ext_categorizeEditableConstants($this->tsParserConstants);
 				$this->tsParser->ext_regObjectPositions($this->tsParserTplRow['constants']);
 				// This array will contain key=[expanded constantname], value=linenumber in template. (after edit_divider, if any)
 				return TRUE;
 			} else {
 				return FALSE;
 			}
-		} else {
-			return TRUE;
 		}
+		return TRUE;
 	}
 
 }

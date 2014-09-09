@@ -40,24 +40,33 @@ class LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 		$this->languageRepository = $languageRepository;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function initialize() {
 		$this->controllerContext->getRequest()->setControllerExtensionName('Themes');
 	}
 
 	/**
-	 * @param string $availableLanguages the available languages in the current theme
-	 * @param int $currentLanguageUid the selected language uid
-	 * @param string $defaultLanguageIsoCodeShort the default language ISO code (short)
-	 * @param string $defaultLanguageLabel the default language label
-	 * @param string $defaultLanguageFlag the default language flag
-	 * @param string $flagIconPath Path of the used Flag-Icons
-	 * @param string $flagIconFileExtension File-Extension of the Flag-Ions
+	 * initialize the arguments of the viewHelper
+	 *
+	 * @return void
+	 */
+	public function initializeArguments() {
+		$this->registerArgument('availableLanguages', 'string', 'Commaseperated list of integers of the languages', FALSE, '');
+		$this->registerArgument('currentLanguageUid', 'int', 'Id of the current language', FALSE, 0);
+		$this->registerArgument('defaultLanguageIsoCodeShort', 'string', 'IsoCode of the default language', FALSE, 'en');
+		$this->registerArgument('defaultLanguageLabel', 'string', 'Label of the default language', FALSE, 'English');
+		$this->registerArgument('defaultLanguageFlag', 'string', 'Flag of the default language', FALSE, 'gb');
+		$this->registerArgument('flagIconPath', 'string', 'directory containing the flags', FALSE, '/typo3/sysext/t3skin/images/flags/');
+		$this->registerArgument('flagIconFileExtension', 'string', 'file extension of the flag files', FALSE, 'png');
+	}
+
+	/**
 	 * @return string
 	 */
-	public function render($availableLanguages = '', $currentLanguageUid = 0, $defaultLanguageIsoCodeShort = 'en', $defaultLanguageLabel = 'English', $defaultLanguageFlag = 'gb', $flagIconPath = '/typo3/sysext/t3skin/images/flags/', $flagIconFileExtension = 'png') {
-		return ($availableLanguages=='') ? '' : $this->initiateSubRequest();
+	public function render() {
+		return ($this->arguments['availableLanguages'] == '') ? '' : $this->initiateSubRequest();
 	}
 
 }
-
-?>

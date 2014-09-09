@@ -6,7 +6,11 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * @todo missing docblock
+ * Class Theme
+ *
+ * the theme model object
+ *
+ * @package KayStrobach\Themes\Domain\Model
  */
 class Theme extends AbstractTheme {
 
@@ -24,7 +28,7 @@ class Theme extends AbstractTheme {
 			$path = ExtensionManagementUtility::extPath($this->getExtensionName());
 			$this->pathTyposcript = $path . 'Configuration/TypoScript/setup.txt';
 			$this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.txt';
-			$this->pathTSConfig = $path . 'Configuration/PageTS/tsconfig.txt';
+			$this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.txt';
 
 			$this->importExtEmConf();
 
@@ -36,63 +40,68 @@ class Theme extends AbstractTheme {
 
 			if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml')) {
 				if (class_exists('\Symfony\Component\Yaml\Yaml')) {
-					$this->information = \Symfony\Component\Yaml\Yaml::parse(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml');
+					$this->information = \Symfony\Component\Yaml\Yaml::parse(
+						ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml'
+					);
 				}
 			}
 		}
 	}
 
 	/**
-	 * @todo missing docblock
+	 * abstract the extension meta data import
+	 * @return void
 	 */
 	protected function importExtEmConf() {
 		/**
 		 * @var $EM_CONF array
 		 * @var $_EXTKEY string
 		 */
+
+		// @codingStandardsIgnoreStart
 		$_EXTKEY = $this->extensionName;
 		include(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'ext_emconf.php');
+		// @codingStandardsIgnoreEnd
 		$this->title = $EM_CONF[$this->getExtensionName()]['title'];
 		$this->description = $EM_CONF[$this->getExtensionName()]['description'];
-
 		$this->version = $EM_CONF[$this->getExtensionName()]['version'];
-
 		$this->author['name'] = $EM_CONF[$this->getExtensionName()]['author'];
 		$this->author['email'] = $EM_CONF[$this->getExtensionName()]['author_email'];
 		$this->author['company'] = $EM_CONF[$this->getExtensionName()]['author_company'];
 	}
 
 	/**
-	 * @todo miss the description of the function
+	 * Return the TypoScript Config from the related file
 	 * @return string
 	 */
-	public function getTSConfig() {
-		if (file_exists($this->getTSConfigAbsPath()) && is_file($this->getTSConfigAbsPath())) {
-			return file_get_contents($this->getTSConfigAbsPath());
-		} else {
-			return '';
+	public function getTypoScriptConfig() {
+		if (file_exists($this->getTypoScriptConfigAbsPath()) && is_file($this->getTypoScriptConfigAbsPath())) {
+			return file_get_contents($this->getTypoScriptConfigAbsPath());
 		}
+		return '';
 	}
 
 	/**
-	 * @todo missing docblock
+	 * Calculates the relative path to the theme directory for frontend usage
+	 *
+	 * @return string
 	 */
 	public function getRelativePath() {
 		if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
 			return ExtensionManagementUtility::siteRelPath($this->getExtensionName());
-		} else {
-			return '';
 		}
+		return '';
 	}
 
 	/**
 	 * Includes static template records (from static_template table) and static template files (from extensions) for the input template record row.
 	 *
-	 * @param	array		Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
-	 * @param	object		Reference back to parent object, t3lib_tstemplate or one of its subclasses.
-	 * @return	void
+	 * @param array $params Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
+	 * @param object $pObj Reference back to parent object, t3lib_tstemplate or one of its subclasses.
+	 * @return void
 	 */
 	public function addTypoScriptForFe(&$params, &$pObj) {
+		// @codingStandardsIgnoreStart
 		$themeItem = array(
 			'constants' => @is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptConstantsAbsPath()) : '',
 			'config' => @is_file($this->getTypoScriptAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptAbsPath()) : '',
@@ -101,6 +110,7 @@ class Theme extends AbstractTheme {
 			'title' => 'themes:' . $this->getExtensionName(),
 			'uid' => md5($this->getExtensionName())
 		);
+		// @codingStandardsIgnoreEnd
 
 		// @todo resources Path / private Path
 		$themeItem['constants'] .= LF . 'themes.resourcesPrivatePath = ' . $this->getRelativePath() . 'Resources/Private/';
