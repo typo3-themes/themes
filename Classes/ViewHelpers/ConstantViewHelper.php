@@ -8,6 +8,7 @@ namespace KayStrobach\Themes\ViewHelpers;
  * @author Thomas Deuling <typo3@coding.ms>
  * @package themes
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
@@ -28,20 +29,20 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	 */
 	public function render($constant = '') {
 		$pageWithTheme   = \KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility::find($GLOBALS['TSFE']->id);
+		$pageLanguage    = (int)GeneralUtility::_GP('L');
 		// instantiate the cache
 		$cache           = $GLOBALS['typo3CacheManager']->getCache('themes_cache');
-		$cacheIdentifier = sha1('theme-of-page-' . $pageWithTheme);
-
+		$cacheIdentifier = sha1('theme-of-page-' . $pageWithTheme . '-of-language-' . $pageLanguage);
 
 		$flatSetup = $GLOBALS['TSFE']->tmpl->flatSetup;
 
 		// If flatSetup is available, cache it
-		if ((isset($flatSetup) && (is_array($flatSetup)) && (count($flatSetup)>0))) {
+		if ((isset($flatSetup) && (is_array($flatSetup)) && (count($flatSetup) > 0))) {
 			$cache->set(
 				$cacheIdentifier,
 				$flatSetup,
 				array(),
-				60*60*24*7*365*20
+				60 * 60 * 24 * 7 * 365 * 20
 			);
 		} else {
 			$flatSetup = $cache->get($cacheIdentifier);
@@ -50,8 +51,7 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 		// check if there is a value and return it
 		if ((is_array($flatSetup)) && (array_key_exists($constant, $flatSetup))) {
 			return $flatSetup[$constant];
-		} else {
-			return NULL;
 		}
+        return NULL;
 	}
 }
