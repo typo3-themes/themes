@@ -1,3 +1,6 @@
+.. image:: https://badge.waffle.io/typo3-themes/themes.png?label=ready&title=Ready 
+ :target: https://waffle.io/typo3-themes/themes
+ :alt: 'Stories in Ready'
 .. include:: Documentation/Index.rst
 
 ========================================================================================================================
