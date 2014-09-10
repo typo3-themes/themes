@@ -1,6 +1,7 @@
 <?php
 
 namespace KayStrobach\Themes\ViewHelpers;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Access constants
@@ -8,7 +9,8 @@ namespace KayStrobach\Themes\ViewHelpers;
  * @author Thomas Deuling <typo3@coding.ms>
  * @package themes
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+
 class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
@@ -52,6 +54,6 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 		if ((is_array($flatSetup)) && (array_key_exists($constant, $flatSetup))) {
 			return $flatSetup[$constant];
 		}
-        return NULL;
+		return NULL;
 	}
 }
