@@ -9,8 +9,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Thomas Deuling <typo3@coding.ms>
  * @package themes
  */
-
-
 class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
