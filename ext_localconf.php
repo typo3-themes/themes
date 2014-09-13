@@ -64,15 +64,3 @@ if (!defined('TYPO3_MODE'))
 		$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_cache']['backend'] = 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend';
 		$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_cache']['options']['compression'] = 1;
 	}
-
-/**
- * include stuff for independent mode
- */
-	$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
-	if(array_key_exists('themesIndependent', $extensionConfiguration) && ($extensionConfiguration['themesIndependent'] === '1')) {
-		/**
-		 * Register a page not found handler, overwrites the one in the install tool
-		 */
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'] = 'USER_FUNCTION:KayStrobach\\Themes\\Hook\\PageNotFoundHandlingHook->main';
-	}
-	unset($extensionConfiguration);
