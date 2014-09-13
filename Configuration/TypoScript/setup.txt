@@ -7,6 +7,8 @@ config {
 	htmlTag_langKey = {$themes.languages.current.isoCodeHtml}
 	sys_language_overlay = hideNonTranslated
 	sys_language_mode = strict
+	doctype = html5
+	metaCharset = UTF-8
 }
 
 # Plugin configuration
