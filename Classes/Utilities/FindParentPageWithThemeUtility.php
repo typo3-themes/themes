@@ -15,13 +15,14 @@ class FindParentPageWithThemeUtility {
 	 * @todo missing docblock
 	 */
 	public static function find($pid) {
+		// Check the own page first
+		if (CheckPageUtility::hasThemeableSysTemplateRecord($pid)) {
+			return $pid;
+		}
+
+		// ..then the rootline pages
 		$rootLineUtility = new RootlineUtility($pid);
 		$pages = $rootLineUtility->get();
-		// Check the own page first
-		if (CheckPageUtility::hasThemeableSysTemplateRecord($GLOBALS['TSFE']->id)) {
-			return $GLOBALS['TSFE']->id;
-		}
-		// ..then the rootline pages
 		foreach ($pages as $page) {
 			if (CheckPageUtility::hasThemeableSysTemplateRecord($page['pid'])) {
 				return $page['pid'];
