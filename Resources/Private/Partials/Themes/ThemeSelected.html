@@ -1,3 +1,4 @@
+{namespace themes=KayStrobach\Themes\ViewHelpers}
 <div class="theme-detail-info theme-clearfix">
 	<div class="theme-detail-info-preview">
 		<f:image src="{selectedTheme.previewImage}" width="300" />
@@ -23,7 +24,7 @@
 <div class="theme-detail-options theme-clearfix">
 	<f:form action="update" enctype="multipart/form-data" id="saveableForm">
 		<f:form.hidden name="pid" value="{pid}" />
-		<f:for each="{categories}" as="category">
+		<f:for each="{themes:iterator.sort(subject: categories, key: 'title')}" as="category">
 			<f:if condition="{category.items}">
 				<h2>{category.title}</h2>
 			</f:if>
@@ -54,7 +55,7 @@
 							</f:if>
 						</td>
 					</tr>
-					<f:for each="{subcategory}" as="item">
+					<f:for each="{themes:iterator.sort(subject: subcategory)}" as="item">
 						<tr  title="{item.name}" class="constantLine db_list_normal {f:if(condition:'{item.isDefault}', then:'defaultValueIsSelected')}">
 							<td nowrap="nowrap">
 								<div class="showOnDefault">
@@ -65,11 +66,11 @@
 								</div>
 								<f:form.hidden name="check[{item.name}]" value="{f:if(condition:'{item.isDefault}', then:'', else:'checked')}" class="hidden"/>
 							</td>
-							<td>
-								<f:render partial="FormFields/{item.typeCleaned}" arguments="{field: item}"/>
-							</td>
 							<td class="">
 								<label for="{item.name}">{item.label}</label>
+							</td>
+							<td>
+								<f:render partial="FormFields/{item.typeCleaned}" arguments="{field: item}"/>
 							</td>
 						</tr>
 					</f:for>
