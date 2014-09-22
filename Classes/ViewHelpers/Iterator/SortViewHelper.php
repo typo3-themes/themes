@@ -4,7 +4,13 @@ namespace KayStrobach\Themes\ViewHelpers\Iterator;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
-
+/**
+ * Class SortViewHelper
+ *
+ * Sorts a given array by a given key
+ *
+ * @package KayStrobach\Themes\ViewHelpers\Iterator
+ */
 class SortViewHelper extends AbstractViewHelper {
 
 	/**
