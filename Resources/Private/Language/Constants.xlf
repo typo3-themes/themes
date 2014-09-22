@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2013-09-19T09:11:39Z" product-name="themes_gridelements">
+        <header/>
+        <body>
+            <trans-unit id="available">
+                <source>Languages available for Language Switcher</source>
+            </trans-unit>
+            <trans-unit id="default_label">
+                <source>Default language label</source>
+            </trans-unit>
+            <trans-unit id="default_iso_code">
+                <source>Default language iso code</source>
+            </trans-unit>
+            <trans-unit id="default_iso_code_short">
+                <source>Default iso code short</source>
+            </trans-unit>
+            <trans-unit id="default_iso_code_html">
+                <source>lang attribute for html tag, can be as it is most time</source>
+            </trans-unit>
+            <trans-unit id="default_flag">
+                <source>Default language flag</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,16 +1,16 @@
 themes.languages {
-	# cat=languages; type=string; label=Languages available for Language Switcher
+	# cat=languages; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:available
 	available =
 	default {
-		# cat=languages; type=string; label=Default language label
+		# cat=languages; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_label
 		label = English
-		# cat=languages; type=string; label=Default language iso code
+		# cat=languages; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_iso_code
 		isoCode = en_EN
-		# cat=languages; type=string; label=Default iso code short
+		# cat=languages; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_iso_code_short
 		isoCodeShort = en
-		# cat=languages; type=string; label=lang attribute for html tag, can be as it is most time
+		# cat=languages; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_iso_code_html
 		isoCodeHtml = {$themes.languages.default.isoCodeShort}
-		# cat=languages; type=string; label=Default language flag
+		# cat=languages; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_flag
 		flag = gb
 	}
 	current {
