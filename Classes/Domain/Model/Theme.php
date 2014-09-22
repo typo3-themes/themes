@@ -32,8 +32,8 @@ class Theme extends AbstractTheme {
 
 			$this->importExtEmConf();
 
-			if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screens/screenshot.png')) {
-				$this->previewImage = ExtensionManagementUtility::extRelPath($this->getExtensionName()) . 'Meta/Screens/screenshot.png';
+			if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png')) {
+				$this->previewImage = ExtensionManagementUtility::extRelPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png';
 			} else {
 				$this->previewImage = ExtensionManagementUtility::extRelPath('themes') . 'Resources/Public/Images/screenshot.gif';
 			}
