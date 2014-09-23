@@ -21,6 +21,9 @@
             <trans-unit id="default_flag">
                 <source>Default language flag</source>
             </trans-unit>
+            <trans-unit id="fallback_mode">
+                <source>Language fallback mode, please refer to TSRef for valid options</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
