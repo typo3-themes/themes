@@ -36,7 +36,7 @@ tr.constantLine {
 }
 .theme-detail-info-preview {
 	float: right;
-	border: 1px solid #d4d4d4;
+	padding-left: 20px;
 	margin-bottom: 1em;
 }
 .theme-detail-info-preview img {
@@ -58,4 +58,18 @@ tr.constantLine {
 .theme-detail-summary dd {
 	margin-left: 110px;
 	margin-bottom: 0.25em;
+}
+
+.theme-tag {
+	padding: 2px;
+	background-color: gray;
+	border: 1px solid gray;
+	font-weight: bold;
+	color: white;
+	margin-right: 3px;
+	border-radius: 4px;
+}
+
+.theme-categorie {
+
 }

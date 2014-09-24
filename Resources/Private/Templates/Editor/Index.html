@@ -1,10 +1,14 @@
 <f:layout name="Backend" />
 
 <f:section name="Buttons">
-	<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save"><input type="image" name="_savedok" class="c-inputButton" src="clear.gif" title="Save document" id="saveIcon"></span>
-	<f:link.action action="showTheme" pageUid="{nearestPageWithTheme}">
-		<span class="t3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open">&nbsp;</span>
-	</f:link.action>
+	<f:if condition="{themeIsSelectable}">
+		<f:then>
+			<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save"><input type="image" name="_savedok" class="c-inputButton" src="clear.gif" title="Save document" id="saveIcon"></span>
+			<f:link.action action="showTheme" pageUid="{nearestPageWithTheme}">
+				<span class="t3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open">&nbsp;</span>
+			</f:link.action>
+		</f:then>
+	</f:if>
 </f:section>
 
 <f:section name="Content">
