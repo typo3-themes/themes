@@ -1,25 +1,25 @@
 {namespace themes=KayStrobach\Themes\ViewHelpers}
-<div class="theme-detail-info theme-clearfix">
-	<div class="theme-detail-info-preview">
-		<f:image src="{selectedTheme.previewImage}" width="300" />
-	</div>
-	<div class="theme-detail-header">
-		<h1>{f:translate(key:'optionsFor')} &quot;{selectedTheme.title}&quot;</h1>
-		<p>
-			{selectedTheme.description}
-		</p>
-	</div>
+<div class="row">
+	<div class="col-xs-4">
+		<h1>{selectedTheme.title} - {selectedTheme.version}</h1>
+		<f:if condition="{selectedTheme.metaInformation.description}">
+			<p>{selectedTheme.metaInformation.description}</p>
+		</f:if>
 
-	<dl class="theme-detail-summary">
-		<dt>Title:</dt>
-		<dd>{selectedTheme.title}</dd>
-		<dt>Key:</dt>
-		<dd>{selectedTheme.extensionName}</dd>
-		<dt>Version:</dt>
-		<dd>{selectedTheme.version}</dd>
-		<dt>Author:</dt>
-		<dd><a href="mailto:{selectedTheme.author.email}">{selectedTheme.author.name}</a> <f:if condition="{selectedTheme.author.company}">({selectedTheme.author.company})</f:if></dd>
-	</dl>
+		<f:if condition="{selectedTheme.metaInformation.constants.availableCategories -> f:count()}">
+			<b>Tags</b><br>
+			<p>
+				<f:for each="{selectedTheme.metaInformation.keywords}" as="tag">
+						<span class="theme-tag">
+							{tag}
+						</span>
+				</f:for>
+			</p>
+		</f:if>
+	</div>
+	<div class="col-xs-6 col-xs-push-1">
+		<f:render partial="Meta/Screenshots" arguments="{screenshots:selectedTheme.metaInformation.screenshots}"/>
+	</div>
 </div>
 <div class="theme-detail-options theme-clearfix">
 	<f:form action="update" enctype="multipart/form-data" id="saveableForm">
@@ -43,19 +43,6 @@
 							<img src="clear.gif" width="230" height="1" alt="">
 						</td>
 						<td nowrap="nowrap" class="" colspan="10"></td>
-					</tr>
-					<tr class="t3-row-header">
-						<td nowrap="nowrap" class="col-icon"></td>
-						<td nowrap="nowrap" class="" colspan="2">
-							<f:if condition="{subcat_name}">
-								<f:then>
-									{subcat_name}
-								</f:then>
-								<f:else>
-									{category.title}
-								</f:else>
-							</f:if>
-						</td>
 					</tr>
 					<f:for each="{themes:iterator.sort(subject: subcategory)}" as="item">
 						<tr  title="{item.name}" class="constantLine db_list_normal {f:if(condition:'{item.isDefault}', then:'defaultValueIsSelected')}">
