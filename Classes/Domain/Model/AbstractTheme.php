@@ -59,6 +59,11 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $pathTsConfig;
 
 	/**
+	 * @var array
+	 */
+	protected $metaInformation = array();
+
+	/**
 	 * Constructs a new Theme
 	 *
 	 * @api
@@ -98,6 +103,18 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getAllPreviewImages() {
+		return array(
+			array(
+				'file'    => $this->getPreviewImage(),
+				'caption' => '',
+			)
+		);
+	}
+
+	/**
 	 * Returns the previewImage
 	 *
 	 * @return string
@@ -105,6 +122,20 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getExtensionName() {
 		return $this->extensionName;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getMetaInformation() {
+		return $this->metaInformation;
+	}
+
+	/**
+	 * @param array $metaInformation
+	 */
+	public function setMetaInformation($metaInformation) {
+		$this->metaInformation = $metaInformation;
 	}
 
 	/**

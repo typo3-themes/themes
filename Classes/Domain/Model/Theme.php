@@ -40,9 +40,11 @@ class Theme extends AbstractTheme {
 
 			if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml')) {
 				if (class_exists('\Symfony\Component\Yaml\Yaml')) {
-					$this->information = \Symfony\Component\Yaml\Yaml::parse(
+					$this->metaInformation = \Symfony\Component\Yaml\Yaml::parse(
 						ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml'
 					);
+				} else {
+					throw new \Exception('No Yaml Parser ...');
 				}
 			}
 		}
@@ -68,6 +70,18 @@ class Theme extends AbstractTheme {
 		$this->author['name'] = $EM_CONF[$this->getExtensionName()]['author'];
 		$this->author['email'] = $EM_CONF[$this->getExtensionName()]['author_email'];
 		$this->author['company'] = $EM_CONF[$this->getExtensionName()]['author_company'];
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getAllPreviewImages() {
+		$buffer = $this->metaInformation['screenshots'];
+		$buffer[] = array(
+				'file'    => $this->getPreviewImage(),
+				'caption' => '',
+			);
+		return $buffer;
 	}
 
 	/**
