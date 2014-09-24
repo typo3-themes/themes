@@ -6,8 +6,7 @@ config {
 	locale_all = {$themes.languages.current.isoCode}.UTF-8
 	htmlTag_langKey = {$themes.languages.current.isoCodeHtml}
 	sys_language_overlay = hideNonTranslated
-	sys_language_mode =
-	# strict
+	sys_language_mode = content_fallback
 	doctype = html5
 	metaCharset = UTF-8
 }
