@@ -1,0 +1,8 @@
+<f:if condition="{author.email}">
+	<f:then>
+		<a href="mailto:{author.email}">{author.name}</a>
+	</f:then>
+	<f:else>
+		{author.name}
+	</f:else>
+</f:if>

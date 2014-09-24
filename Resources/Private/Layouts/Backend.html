@@ -3,12 +3,14 @@
 		loadJQuery="1"
 		includeCssFiles="{
 			0: '../typo3conf/ext/themes/Resources/Public/Contrib/colorpicker/css/colorpicker.css',
-			1: '../typo3conf/ext/themes/Resources/Public/Stylesheet/BackendModule.css'
+			1: '../typo3conf/ext/themes/Resources/Public/Stylesheet/BackendModule.css',
+			2: '../typo3conf/ext/themes/Resources/Public/Contrib/carousel/css/bootstrap.css'
 		}"
 		includeJsFiles="{
 			0: '../typo3conf/ext/themes/Resources/Public/Contrib/colorpicker/js/colorpicker.js',
 			1: '../typo3conf/ext/themes/Resources/Public/JavaScript/BackendModule.js',
-			2: '../typo3conf/ext/themes/Resources/Public/Contrib/unSlider/unslider.min.js'
+			2: '../typo3conf/ext/themes/Resources/Public/Contrib/unSlider/unslider.min.js',
+			3: '../typo3conf/ext/themes/Resources/Public/Contrib/carousel/js/bootstrap.min.js'
 		}"
 		>
 	<div class="typo3-fullDoc">
@@ -29,11 +31,7 @@
 				</div>
 			</div>
 			<div class="typo3-docheader-buttons">
-				<f:if condition="{themeIsSelectable}">
-					<f:then>
-						<f:render section="Buttons" optional="1" />
-					</f:then>
-				</f:if>
+				<f:render section="Buttons" optional="1" />
 			</div>
 		</div>
 	</div>
