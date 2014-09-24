@@ -28,7 +28,7 @@ if (!defined('TYPO3_MODE'))
 			'mod1', // Name of the module
 			'', // Position of the module
 			array(// Allowed controller action combinations
-				'Editor' => 'index,update,showTheme,setTheme',
+				'Editor' => 'index,update,showTheme,setTheme,showThemeDetails',
 			), array(// Additional configuration
 				'access' => 'user,group',
 				'icon' => 'EXT:themes/ext_icon.png',

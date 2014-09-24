@@ -161,6 +161,17 @@ class EditorController extends ActionController {
 	 * @param string $theme
 	 * @return void
 	 */
+	public function showThemeDetailsAction($theme = NULL) {
+		$themeObject = $this->themeRepository->findByIdentifier($theme);
+		$this->view->assign('theme', $themeObject);
+	}
+
+	/**
+	 * activate a theme
+	 *
+	 * @param string $theme
+	 * @return void
+	 */
 	public function setThemeAction($theme = NULL) {
 		$sysTemplateRecordUid = CheckPageUtility::getThemeableSysTemplateRecord($this->id);
 		if (($sysTemplateRecordUid !== FALSE) && ($theme !== NULL)) {
