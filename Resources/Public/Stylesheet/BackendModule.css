@@ -86,3 +86,7 @@ tr.constantLine {
 .table-list {
 	margin-top: 0px;
 }
+
+.hideOnDefault input[type="text"].colorselector {
+	width: 100px;
+}
