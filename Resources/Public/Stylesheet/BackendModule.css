@@ -68,8 +68,25 @@ tr.constantLine {
 	color: white;
 	margin-right: 3px;
 	border-radius: 4px;
+	line-height: 2.2em;
 }
 
 .theme-categorie {
 
+}
+
+.carousel-inner .item {
+	height: 270px;
+}
+
+.carousel-control.left, .carousel-control.right{
+	background-image: none;
+}
+
+.table-list {
+	margin-top: 0px;
+}
+
+.hideOnDefault input[type="text"].colorselector {
+	width: 100px;
 }

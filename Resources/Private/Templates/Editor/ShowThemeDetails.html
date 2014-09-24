@@ -6,26 +6,22 @@
 	<f:link.action action="index">
 		<span class="t3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-go-back">&nbsp;</span>
 	</f:link.action>
+
+	<f:link.action action="setTheme" arguments="{theme:theme.extensionName}">
+		<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save">&nbsp;</span>
+	</f:link.action>
 </f:section>
 
 <f:section name="Content">
-	<f:link.action action="setTheme" arguments="{theme:theme.extensionName}">
-		Activate "{theme.title}"
-	</f:link.action>
-
-
 	<div class="row">
-		<div class="col-xs-6">
+		<div class="col-xs-4">
 			<h1>{theme.title} - {theme.version}</h1>
-			<f:if condition="{theme.description}">
-				<p>{theme.description}</p>
-			</f:if>
 			<f:if condition="{theme.metaInformation.description}">
 				<p>{theme.metaInformation.description}</p>
 			</f:if>
 
 			<f:if condition="{theme.metaInformation.constants.availableCategories -> f:count()}">
-				<b>Supported Settings sections</b><br>
+				<b>Possible settings</b><br>
 				<p>
 					<f:for each="{theme.metaInformation.constants.availableCategories}" as="categorie">
 						<span class="theme-tag theme-categorie">
@@ -45,80 +41,75 @@
 				</p>
 			</f:if>
 		</div>
-		<div class="col-xs-6">
+		<div class="col-xs-6 col-xs-push-1">
+			<f:render partial="Meta/Screenshots" arguments="{screenshots:theme.metaInformation.screenshots}"/>
 		</div>
 	</div>
 
-	<h2>Authors</h2>
-	<table class="typo3-dblist">
-		<tr class="t3-row-header">
-			<td>Name</td>
-			<td>Company</td>
-		</tr>
-		<f:if condition="{theme.metaInformation.authors -> f:count()} > 0">
-			<f:for each="{theme.metaInformation.authors}" as="author">
-				<tr class="db_list_normal">
-					<td>
-						<f:render partial="Meta/Author" arguments="{author:author}"/>
-					</td>
-					<td>
-						<f:render partial="Meta/Company" arguments="{uri:author.companyWebsite, name:author.company, logo: author.companyLogo}"/>
-					</td>
-				</tr>
-			</f:for>
-			<tr class="db_list_normal">
-				<td>
-					<f:render partial="Meta/Author" arguments="{author:theme.author}"/>
-				</td>
-				<td>
-					{theme.author.company}
-				</td>
-			</tr>
-		</f:if>
-	</table>
-
-	<f:if condition="{theme.metaInformation.licenses}">
-		<f:then>
-			<h2>License Information</h2>
+	<div class="row">
+		<div class="col-xs-5">
+			<h2>Authors</h2>
 			<table class="typo3-dblist">
-				<tr class="t3-row-header">
-					<td>License</td>
-					<td>Resources</td>
-				</tr>
-				<f:for each="{theme.metaInformation.licenses}" as="license">
+				<f:if condition="{theme.metaInformation.authors -> f:count()} > 0">
+					<f:for each="{theme.metaInformation.authors}" as="author">
+						<tr class="db_list_normal">
+							<td>
+								<f:render partial="Meta/Author" arguments="{author:author}"/>
+							</td>
+							<td>
+								<f:render partial="Meta/Company" arguments="{uri:author.companyWebsite, name:author.company, logo: author.companyLogo}"/>
+							</td>
+						</tr>
+					</f:for>
 					<tr class="db_list_normal">
 						<td>
-							<f:render partial="Meta/License" arguments="{name: license.license, uri:license.licenseUri}" />
+							<f:render partial="Meta/Author" arguments="{author:theme.author}"/>
 						</td>
 						<td>
-							<ul>
-								<f:for each="{license.resources}" as="resource">
-									<li>{resource}</li>
-								</f:for>
-							</ul>
+							{theme.author.company}
 						</td>
 					</tr>
-				</f:for>
+				</f:if>
 			</table>
-		</f:then>
-	</f:if>
+		</div>
+		<div class="col-xs-6">
+			<f:if condition="{theme.metaInformation.licenses}">
+				<f:then>
+					<h2>License Information</h2>
+					<table class="typo3-dblist">
+						<f:for each="{theme.metaInformation.licenses}" as="license">
+							<tr class="db_list_normal">
+								<td>
+									<f:render partial="Meta/License" arguments="{name: license.license, uri:license.licenseUri}" />
+								</td>
+								<td>
+									<ul class="table-list">
+										<f:for each="{license.resources}" as="resource">
+											<li>{resource}</li>
+										</f:for>
+									</ul>
+								</td>
+							</tr>
+						</f:for>
+					</table>
+				</f:then>
+			</f:if>
+		</div>
+	</div>
+
+
 
 	<f:if condition="{theme.metaInformation.supportedExtensions}">
 		<f:then>
 			<h2>Supported Extensions</h2>
 			<table class="typo3-dblist">
-				<tr class="t3-row-header">
-					<td>Extension</td>
-					<td>Version</td>
-					<td>Description</td>
-				</tr>
 				<f:for each="{theme.metaInformation.supportedExtensions}" as="extension" key="extensionName">
 					<tr class="db_list_normal">
 						<td>
-							{extensionName}
-						</td>
-						<td>
-							{extension.version}
+							<f:link.external uri="http://typo3.org/extensions/repository/view/{extensionName}" target="_blank">
+								{extensionName}
+								({extension.version})
+							</f:link.external>
 						</td>
 						<td>
 							<f:format.nl2br>{extension.description}</f:format.nl2br>

@@ -192,7 +192,7 @@ class EditorController extends ActionController {
 		} else {
 			$this->flashMessageContainer->add('Problem selecting theme');
 		}
-		$this->redirect('showTheme');
+		$this->redirect('index');
 	}
 
 	/**
