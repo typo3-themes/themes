@@ -35,15 +35,6 @@
 					<col style="width:5%" />
 					<col style="width:50%" />
 					<col style="width:45%" />
-					<tr class="c-table-row-spacer"><td nowrap="nowrap" class="col-icon"><a href="#">&nbsp;</a></td>
-						<td nowrap="nowrap" class="col-icon">
-							<img src="clear.gif" width="1" height="8" alt="">
-						</td>
-						<td nowrap="nowrap" class="">
-							<img src="clear.gif" width="230" height="1" alt="">
-						</td>
-						<td nowrap="nowrap" class="" colspan="10"></td>
-					</tr>
 					<f:for each="{themes:iterator.sort(subject: subcategory)}" as="item">
 						<tr  title="{item.name}" class="constantLine db_list_normal {f:if(condition:'{item.isDefault}', then:'defaultValueIsSelected')}">
 							<td nowrap="nowrap">
