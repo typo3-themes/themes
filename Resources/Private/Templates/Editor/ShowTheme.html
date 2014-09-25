@@ -16,10 +16,10 @@
 
 		<div class="tx_themes_themeselector">
 
-			<ul>
+			<div class="theme-holder">
 				<f:if condition="{selectedTheme}">
 					<f:then>
-						<f:render partial="Themes/Theme" arguments="{theme:selectedTheme, additionalClass:'highlightTheme'}"/>
+						<f:render partial="Themes/ThemeSmallPreview" arguments="{theme:selectedTheme, additionalClass:'highlightTheme'}"/>
 					</f:then>
 				</f:if>
 
@@ -27,12 +27,12 @@
 					<f:if condition="{selectedTheme} == {theme}">
 						<f:else>
 							<f:link.action action="showThemeDetails" arguments="{theme:theme.extensionName}">
-								<f:render partial="Themes/Theme" arguments="{theme:theme}"/>
+								<f:render partial="Themes/ThemeSmallPreview" arguments="{theme:theme}"/>
 							</f:link.action>
 						</f:else>
 					</f:if>
 				</f:for>
-			</ul>
+			</div>
 		</div>
 		<div style="clear:both;"></div>
 	</f:form>

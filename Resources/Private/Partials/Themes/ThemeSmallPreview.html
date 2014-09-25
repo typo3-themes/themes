@@ -1,0 +1,36 @@
+<div class="theme {additionalClass}">
+	<div class="theme-image">
+		<f:image src="{theme.previewImage}"  alt="{screenshot.caption}" width="300" />
+		<div class="theme-hover">
+			<div class="theme-hover-inner">
+				<dl class="description-horizontal">
+					<dt>Title:</dt>
+					<dd>{theme.title}</dd>
+					<dt>Key:</dt>
+					<dd>{theme.extensionname}</dd>
+					<dt>Version:</dt>
+					<dd>{theme.version}</dd>
+				</dl>
+				<div class="themeDescription"></div>
+			</div>
+		</div>
+	</div>
+	<div class="theme-meta">
+		<h2 class="theme-title">
+			<f:link.action action="showThemeDetails" arguments="{theme:theme.extensionname}">
+				{theme.title}
+			</f:link.action>
+		</h2>
+		<div class="theme-install">
+			<f:link.action action="showThemeDetails" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme">
+				<span class="t3-icon t3-icon-actions t3-icon-system-extension-import">&nbsp;</span>
+				Details
+			</f:link.action>
+
+			<f:link.action action="setTheme" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme">
+				<span class="t3-icon t3-icon-actions t3-icon-system-extension-import">&nbsp;</span>
+				Activate
+			</f:link.action>
+		</div>
+	</div>
+</div>
