@@ -14,8 +14,7 @@ if (!defined('TYPO3_MODE'))
 /**
  * @todo: add some translations
  */
-	$tempColumn = array();
-	$tempColumn[] = array(
+	$tempColumn = array(
 		'tx_themes_variants' => array(
 			'exclude' => 1,
 			'label' => 'Variants',
@@ -24,9 +23,27 @@ if (!defined('TYPO3_MODE'))
 				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentVariants->renderField',
 			)
 		),
+		'tx_themes_responsive' => array(
+			'exclude' => 1,
+			'label' => 'Responsive settings',
+			'config' => array(
+				'type' => 'user',
+				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentResponsive->renderField',
+			)
+		),
+		'tx_themes_behavior' => array(
+			'exclude' => 1,
+			'label' => 'Behavior',
+			'config' => array(
+				'type' => 'user',
+				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentBehavior->renderField',
+			)
+		),
 	);
 	ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumn);
 	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_variants', '', 'after:section_frame');
+	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_responsive', '', 'after:tx_themes_variants');
+	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_behavior', '', 'after:tx_themes_responsive');
 
 /**
  * manipulate the sys_template table

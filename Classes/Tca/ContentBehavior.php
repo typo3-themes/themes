@@ -4,14 +4,14 @@ namespace KayStrobach\Themes\Tca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Render a Content Variant row
+ * Render a Content Behavior row
  *
  * @package KayStrobach\Themes\Tca
  */
-class ContentVariants {
+class ContentBehavior {
 
 	/**
-	 * Render a Content Variant row
+	 * Render a Content Behavior row
 	 *
 	 * @param array $parameters
 	 * @param mixed $parentObject
@@ -30,19 +30,19 @@ class ContentVariants {
 		$type = 'default';
 		
 		// Get configuration
-		$variants = $GLOBALS["BE_USER"]->getTSConfig(
-			'themes.content.variants.' . $type,
+		$behaviors = $GLOBALS["BE_USER"]->getTSConfig(
+			'themes.content.behavior.' . $type,
 			\TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pid)
 		);
 		
 		// Build checkboxes
 		$checkboxes = '';
-		if(isset($variants['properties']) && is_array($variants['properties'])) {
-			foreach($variants['properties'] as $key=>$label) {
+		if(isset($behaviors['properties']) && is_array($behaviors['properties'])) {
+			foreach($behaviors['properties'] as $key=>$label) {
 				$checked = (isset($values[$key])) ? 'checked="checked"' : '';
 				$checkboxes.= '<div style="width:200px;float:left">' . LF;
-				$checkboxes.= '<input type="checkbox" onchange="contentVariantChange(this)" name="' . $key . '" id="theme-variant-' . $key . '" ' . $checked . '>' . LF;
-				$checkboxes.= '<label for="theme-variant-' . $key . '">' . $label . '</label>' . LF;
+				$checkboxes.= '<input type="checkbox" onchange="contentBehaviorChange(this)" name="' . $key . '" id="theme-behavior-' . $key . '" ' . $checked . '>' . LF;
+				$checkboxes.= '<label for="theme-behavior-' . $key . '">' . $label . '</label>' . LF;
 				$checkboxes.= '</div>' . LF;
 			}
 		}
@@ -58,18 +58,18 @@ class ContentVariants {
 		 * @todo auslagern!!
 		 */
 		$script = '<script type="text/javascript">'.LF;
-		$script.= 'function contentVariantChange(field) {'.LF;
+		$script.= 'function contentBehaviorChange(field) {'.LF;
 		$script.= '  if(field.checked) {'.LF;
-		$script.= '    jQuery("#contentVariant").addClass(field.name);'.LF;
+		$script.= '    jQuery("#contentBehavior").addClass(field.name);'.LF;
 		$script.= '  }'.LF;
 		$script.= '  else {'.LF;
-		$script.= '    jQuery("#contentVariant").removeClass(field.name);'.LF;
+		$script.= '    jQuery("#contentBehavior").removeClass(field.name);'.LF;
 		$script.= '  }'.LF;
-		$script.= '  jQuery("#contentVariant").attr("value", jQuery("#contentVariant").attr("class").replace(/\ /g, ","));'.LF;
+		$script.= '  jQuery("#contentBehavior").attr("value", jQuery("#contentBehavior").attr("class").replace(/\ /g, ","));'.LF;
 		$script.= '}'.LF;
 		$script.= '</script>'.LF;
 		
-		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" id="contentVariant" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($value) . '" class="' . htmlspecialchars(str_replace(',', ' ', $value)) . '">' . LF;
+		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" id="contentBehavior" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($value) . '" class="' . htmlspecialchars(str_replace(',', ' ', $value)) . '">' . LF;
 		
 		return '<div>' . $checkboxes . $hiddenField . $script . '</div>';
 	}

@@ -31,7 +31,7 @@ class ContentResponsive {
 		
 		// Get configuration
 		$responsives = $GLOBALS["BE_USER"]->getTSConfig(
-			'themes.responsive.' . $type,
+			'themes.content.responsive.' . $type,
 			\TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pid)
 		);
 		
@@ -40,17 +40,16 @@ class ContentResponsive {
 		if(isset($responsives['properties']) && is_array($responsives['properties'])) {
 			foreach($responsives['properties'] as $groupKey=>$settings) {
 
-				
-				$radiobuttons.= '<fieldset >' . LF;
-				
-				// Set fieldset label
+				// Validate groupKey and get label
+				$groupKey = substr($groupKey, 0, -1);
 				$label = isset($settings['label']) ? $settings['label'] : $groupKey;
+				
+				$radiobuttons.= '<fieldset id="themeResponsiveValues" style="margin-bottom:12px;">' . LF;
 				$radiobuttons.= '<legend>' . $label . '</legend>' . LF;
-
 				if(isset($settings['visibility.']) && is_array($settings['visibility.'])) {
 					foreach($settings['visibility.'] as $visibilityKey=>$visibilityLabel) {
-						$tempKey = substr($groupKey, 0, -1) . '-' . $visibilityKey;
-						$selected = (isset($values[$tempKey])) ? 'selected="selected"' : '';
+						$tempKey = $groupKey . '-' . $visibilityKey;
+						$selected = (isset($values[$tempKey])) ? 'checked="checked"' : '';
 						$radiobuttons.= '<div style="width:200px;float:left">' . LF;
 						$radiobuttons.= '<input type="radio" onchange="contentResponsiveChange(this)" name="' . $groupKey . '" value="' . $tempKey . '" id="theme-responsive-' . $tempKey . '" ' . $selected . '>' . LF;
 						$radiobuttons.= '<label for="theme-responsive-' . $tempKey . '">' . $visibilityLabel . '</label>' . LF;
@@ -74,21 +73,19 @@ class ContentResponsive {
 		 */
 		$script = '<script type="text/javascript">'.LF;
 		$script.= 'function contentResponsiveChange(field) {'.LF;
-		$script.= '  if(field.checked) {'.LF;
-
-
-		$script.= '    jQuery.each(jQuery("input[name=\'large\']"), function( index, value ) {'.LF;
-		$script.= '      console.los(index, value);'.LF;
-		$script.= '      jQuery("#contentResponsive").removeClass(value);'.LF;
-		$script.= '    });'.LF;
-		
-		$script.= '    jQuery("#contentResponsive").addClass(field.value);'.LF;
-		$script.= '  }'.LF;
+		$script.= 'console.log("in:", field);'.LF;
+		$script.= '  jQuery.each(jQuery("#themeResponsiveValues input[name=\'"+field.name+"\']"), function(index, node) {'.LF;
+		$script.= '    console.log("remove:", node);'.LF;
+		$script.= '    console.log("remove:", node.value);'.LF;
+		$script.= '    jQuery("#contentResponsive").removeClass(node.value);'.LF;
+		$script.= '  });'.LF;
+		$script.= '  console.log("add:", field.value);'.LF;
+		$script.= '  jQuery("#contentResponsive").addClass(field.value);'.LF;
 		$script.= '  jQuery("#contentResponsive").attr("value", jQuery("#contentResponsive").attr("class").replace(/\ /g, ","));'.LF;
 		$script.= '}'.LF;
 		$script.= '</script>'.LF;
 		
-		$hiddenField = '<input style="width:100%" type="text" id="contentResponsive" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($value) . '">' . LF;
+		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" id="contentResponsive" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($value) . '"  class="' . htmlspecialchars(str_replace(',', ' ', $value)) . '">' . LF;
 		
 		return '<div>' . $radiobuttons . $hiddenField . $script . '</div>';
 	}
