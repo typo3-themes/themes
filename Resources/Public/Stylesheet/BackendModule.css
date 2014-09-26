@@ -90,3 +90,167 @@ tr.constantLine {
 .hideOnDefault input[type="text"].colorselector {
 	width: 100px;
 }
+
+/*****************************************************************************/
+
+.theme {
+	border: 1px solid #d4d4d4;
+	background-color: #fafafa;
+	margin-bottom: 20px;
+	margin-left: 20px;
+	width: 300px;
+	float: left
+}
+
+.theme:hover {
+	background-color: #f2f2f2
+}
+
+.theme:hover .theme-hover {
+	top: 0px;
+	opacity: 1
+}
+
+.theme:hover .theme-more {
+	text-decoration: underline
+}
+
+.theme-holder {
+	top: 0px;
+	bottom: 0px;
+	margin-left: -20px
+}
+
+.theme-holder:before,.theme-holder:after {
+	content: " ";
+	display: table
+}
+
+.theme-holder:after {
+	clear: both
+}
+
+.theme-image {
+	position: relative;
+	width: 300px;
+	height: 225px;
+	overflow: hidden
+}
+
+.theme-image img {
+	display: block;
+	width: 100%
+}
+
+.theme-hover {
+	background-color: #fafafa;
+	position: absolute;
+	top: 100%;
+	left: 0px;
+	width: 300px;
+	height: 225px;
+	overflow: hidden;
+	opacity: 0;
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	-ms-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out
+}
+
+.theme-hover-inner {
+	padding: 15px
+}
+
+.theme-meta {
+	border-top: 1px solid #e0e0e0;
+	padding: 15px
+}
+
+.theme-meta .theme-title {
+	margin: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	font-size: 14px
+}
+
+.theme-meta .theme-install {
+	margin-top: 0.5em
+}
+
+.theme-meta .t3-button {
+	margin: 0;
+	padding-right: 8px
+}
+
+.theme-meta .theme-official {
+	border: 1px solid #ff8600;
+	background-color: #ff8600;
+	border-radius: 2px;
+	display: inline-block;
+	padding: 3px 8px;
+	vertical-align: middle;
+	color: #FFFFFF
+}
+
+.theme-detail-flashmessage {
+	margin-bottom: 2.5em
+}
+
+.theme-detail-flashmessage p {
+	padding-bottom: 0
+}
+
+.theme-detail {
+	min-width: 750px
+}
+
+.theme-detail:before,.theme-detail:after {
+	content: " ";
+	display: table
+}
+
+.theme-detail:after {
+	clear: both
+}
+
+.theme-detail-previewpane {
+	float: left;
+	margin-right: 30px
+}
+
+.theme-detail-preview {
+	display: block;
+	border: 1px solid #d4d4d4
+}
+
+.theme-detail-body {
+	overflow: hidden;
+	zoom: 1
+}
+
+.theme-detail-header {
+	margin-bottom: 2.5em
+}
+
+.theme-detail-header h1 {
+	margin-bottom: 0.5em
+}
+
+.theme-detail-header p {
+	padding: 0px;
+	max-width: 500px;
+	margin-bottom: 1.25em
+}
+
+.theme-detail-summary {
+	margin-top: 2.5em;
+	margin-bottom: 2.5em
+}
+
+.theme-installed hr {
+	margin: 2.5em 0;
+	border: 0;
+	border-top: 1px solid #d4d4d4
+}
