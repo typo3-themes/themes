@@ -1,4 +1,6 @@
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers">>
+{namespace themes=KayStrobach\Themes\ViewHelpers}
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers">
 
 <f:layout name="Backend"/>
 
@@ -16,6 +18,23 @@
 	<div class="row">
 		<div class="col-xs-4">
 			<h1>{theme.title} - {theme.version}</h1>
+
+			<themes:ThemeEnabledCondition theme="{theme.extensionname}">
+				<f:then>
+					<span class="theme-tag theme-activated">
+						Active
+					</span>
+				</f:then>
+				<f:else>
+					<f:link.action action="setTheme" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme">
+						<span class="t3-icon t3-icon-status t3-icon-status-dialog t3-icon-dialog-ok">&nbsp;</span>
+						Activate Theme
+					</f:link.action>
+				</f:else>
+			</themes:ThemeEnabledCondition>
+
+
+
 			<f:if condition="{theme.metaInformation.description}">
 				<p>{theme.metaInformation.description}</p>
 			</f:if>
@@ -40,6 +59,7 @@
 					</f:for>
 				</p>
 			</f:if>
+
 		</div>
 		<div class="col-xs-6 col-xs-push-1">
 			<f:render partial="Meta/Screenshots" arguments="{screenshots:theme.metaInformation.screenshots}"/>

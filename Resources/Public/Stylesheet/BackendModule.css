@@ -61,18 +61,24 @@ tr.constantLine {
 }
 
 .theme-tag {
-	padding: 2px;
+	padding: 3px;
 	background-color: gray;
 	border: 1px solid gray;
 	font-weight: bold;
 	color: white;
-	margin-right: 3px;
+	margin-right: 4px;
+	margin-bottom: 6px;
 	border-radius: 4px;
-	line-height: 2.2em;
+	display: inline-block;
 }
 
 .theme-categorie {
+}
 
+.theme-activated {
+	background-color: green;
+	border: 1px solid green;
+	color: white;
 }
 
 .carousel-inner .item {
