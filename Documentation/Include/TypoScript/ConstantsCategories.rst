@@ -1,5 +1,5 @@
 .. ..................................
-.. container:: table-row dl-horizontal constants categories
+.. container:: table-row dl-horizontal panel panel-default constants categories
 
 	theme
 		General theme settings

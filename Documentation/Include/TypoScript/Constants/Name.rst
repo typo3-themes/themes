@@ -1,5 +1,5 @@
 .. ..................................
-.. container:: table-row dl-horizontal constants theme
+.. container:: table-row dl-horizontal panel panel-default constants themes readonly
 
 	Property
 		``name``
