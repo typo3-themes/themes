@@ -9,9 +9,14 @@
 		<span class="t3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-go-back">&nbsp;</span>
 	</f:link.action>
 
-	<f:link.action action="setTheme" arguments="{theme:theme.extensionName}">
-		<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save">&nbsp;</span>
-	</f:link.action>
+	<themes:ThemeEnabledCondition theme="{theme.extensionname}">
+		<f:then></f:then>
+		<f:else>
+			<f:link.action action="setTheme" arguments="{theme:theme.extensionName}">
+				<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save">&nbsp;</span>
+			</f:link.action>
+		</f:else>
+	</themes:ThemeEnabledCondition>
 </f:section>
 
 <f:section name="Content">
