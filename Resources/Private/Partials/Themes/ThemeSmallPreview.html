@@ -1,3 +1,4 @@
+{namespace themes=KayStrobach\Themes\ViewHelpers}
 <div class="theme {additionalClass}">
 	<div class="theme-image">
 		<f:image src="{theme.previewImage}"  alt="{screenshot.caption}" width="300" />
@@ -23,14 +24,23 @@
 		</h2>
 		<div class="theme-install">
 			<f:link.action action="showThemeDetails" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme">
-				<span class="t3-icon t3-icon-actions t3-icon-system-extension-import">&nbsp;</span>
+				<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-info">&nbsp;</span>
 				Details
 			</f:link.action>
 
-			<f:link.action action="setTheme" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme">
-				<span class="t3-icon t3-icon-actions t3-icon-system-extension-import">&nbsp;</span>
-				Activate
-			</f:link.action>
+			<themes:ThemeEnabledCondition theme="{theme.extensionname}">
+				<f:then>
+					<span class="theme-tag theme-activated">
+						Active
+					</span>
+				</f:then>
+				<f:else>
+					<f:link.action action="setTheme" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme">
+						<span class="t3-icon t3-icon-status t3-icon-status-dialog t3-icon-dialog-ok">&nbsp;</span>
+						Activate
+					</f:link.action>
+				</f:else>
+			</themes:ThemeEnabledCondition>
 		</div>
 	</div>
 </div>
