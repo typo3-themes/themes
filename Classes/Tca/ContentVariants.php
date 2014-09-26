@@ -8,7 +8,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @package KayStrobach\Themes\Tca
  */
-class ContentVariants {
+class ContentVariants extends AbstractContentRow {
 
 	/**
 	 * Render a Content Variant row
@@ -20,27 +20,26 @@ class ContentVariants {
 	public function renderField(array &$parameters, &$parentObject) {
 
 		// Vars
-		$uid   = &$parameters["row"]["uid"];
+		$uid   = $parameters["row"]["uid"];
 		$pid   = $parameters["row"]["pid"];
 		$name  = $parameters['itemFormElName'];
 		$value = $parameters['itemFormElValue'];
+		$cType = $parameters['row']['CType'];
+		$gridLayout = $parameters['row']['tx_gridelements_backend_layout'];
+
+		// Get values
 		$values = explode(',', $value);
 		$valuesFlipped = array_flip($values);
 		$valuesAvailable = array();
-
-		// Type: default or ctype specific
-		$type = 'default';
 		
 		// Get configuration
-		$variants = $GLOBALS["BE_USER"]->getTSConfig(
-			'themes.content.variants.' . $type,
-			\TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pid)
-		);
+		$variants = $this->getMergedConfiguration($pid, 'variants', $cType);
 		
 		// Build checkboxes
 		$checkboxes = '';
 		if(isset($variants['properties']) && is_array($variants['properties'])) {
 			foreach($variants['properties'] as $key=>$label) {
+				$key = 'variants-' . $key;
 				$valuesAvailable[] = $key;
 				$checked = (isset($valuesFlipped[$key])) ? 'checked="checked"' : '';
 				$checkboxes.= '<div style="width:200px;float:left">' . LF;
@@ -79,16 +78,10 @@ class ContentVariants {
 		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" id="contentVariant" name="' . htmlspecialchars($name) . '" value="' . $settedValue . '" class="' . $settedClass . '">' . LF;
 		
 		// Missed classes
-		$missedField = '';
-		$missedClasses = array_diff($values, $valuesAvailable);
-		if(!empty($missedClasses)) {
-			$missedClass = htmlspecialchars(implode(',', $missedClasses));
-			$missedField = '<span style="display:inline-block;color: #C00">Unavailable classes: '. $missedClass . '</span>';
-		}
+		$missedField = $this->getMissedFields($values, $valuesAvailable);
 		
 		return '<div>' . $checkboxes . $hiddenField . $script . $missedField . '</div>';
 	}
-
 
 }
 

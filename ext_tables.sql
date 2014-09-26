@@ -32,9 +32,10 @@ CREATE TABLE cf_themes_cache_tags (
 # Table structure for table 'tt_content'
 #
 CREATE TABLE tt_content (
-
 	tx_themes_responsive VARCHAR(1024) DEFAULT '' NOT NULL,
 	tx_themes_behavior VARCHAR(1024) DEFAULT '' NOT NULL,
-	tx_themes_variants VARCHAR(1024) DEFAULT '' NOT NULL
+	tx_themes_variants VARCHAR(1024) DEFAULT '' NOT NULL,
+	tx_themes_enforceequalcolumnheight VARCHAR(1024) DEFAULT '' NOT NULL
+	tx_themes_columnsettings VARCHAR(1024) DEFAULT '' NOT NULL
 
 );

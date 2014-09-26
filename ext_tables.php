@@ -46,6 +46,59 @@ if (!defined('TYPO3_MODE'))
 	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_behavior', '', 'after:tx_themes_responsive');
 
 /**
+ * In case of gridelements is used
+ * add some additional fields
+ */
+if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements')) {
+
+	// Enforce equal column height
+	$tempColumn = array(
+		'tx_themes_enforceequalcolumnheight' => array(
+			'displayCond' => array(
+				'AND' => array(
+					'FIELD:CType:=:gridelements_pi1',
+					'OR' => array(
+						'FIELD:tx_gridelements_backend_layout:=:row',
+						//'FIELD:tx_gridelements_backend_layout:=:column',
+					),
+				),
+			),
+			'exclude' => 1,
+			'label' => 'Enforce equal column height',
+			'config' => array(
+				'type' => 'user',
+				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentEnforceEqualColumnHeight->renderField',
+			)
+		),
+	);
+	ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumn);
+	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_enforceequalcolumnheight', '', 'after:tx_themes_behavior');
+
+	// Column settings
+	$tempColumn = array(
+		'tx_themes_columnsettings' => array(
+			'displayCond' => array(
+				'AND' => array(
+					'FIELD:CType:=:gridelements_pi1',
+					'OR' => array(
+						//'FIELD:tx_gridelements_backend_layout:=:row',
+						'FIELD:tx_gridelements_backend_layout:=:column',
+					),
+				),
+			),
+			'exclude' => 1,
+			'label' => 'Column settings',
+			'config' => array(
+				'type' => 'user',
+				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentColumnSettings->renderField',
+			)
+		),
+	);
+	ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumn);
+	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_columnsettings', '', 'after:tx_themes_enforceequalcolumnheight');
+}
+
+/**
  * manipulate the sys_template table
  */
 	$tempColumn = array(
