@@ -24,7 +24,9 @@ class ContentVariants {
 		$pid   = $parameters["row"]["pid"];
 		$name  = $parameters['itemFormElName'];
 		$value = $parameters['itemFormElValue'];
-		$values = array_flip(explode(',', $value));
+		$values = explode(',', $value);
+		$valuesFlipped = array_flip($values);
+		$valuesAvailable = array();
 
 		// Type: default or ctype specific
 		$type = 'default';
@@ -39,7 +41,8 @@ class ContentVariants {
 		$checkboxes = '';
 		if(isset($variants['properties']) && is_array($variants['properties'])) {
 			foreach($variants['properties'] as $key=>$label) {
-				$checked = (isset($values[$key])) ? 'checked="checked"' : '';
+				$valuesAvailable[] = $key;
+				$checked = (isset($valuesFlipped[$key])) ? 'checked="checked"' : '';
 				$checkboxes.= '<div style="width:200px;float:left">' . LF;
 				$checkboxes.= '<input type="checkbox" onchange="contentVariantChange(this)" name="' . $key . '" id="theme-variant-' . $key . '" ' . $checked . '>' . LF;
 				$checkboxes.= '<label for="theme-variant-' . $key . '">' . $label . '</label>' . LF;
@@ -68,10 +71,22 @@ class ContentVariants {
 		$script.= '  jQuery("#contentVariant").attr("value", jQuery("#contentVariant").attr("class").replace(/\ /g, ","));'.LF;
 		$script.= '}'.LF;
 		$script.= '</script>'.LF;
+
+		$settedClasses = array_intersect($values, $valuesAvailable);
+		$settedClass = htmlspecialchars(implode(' ', $settedClasses));
+		$settedValue = htmlspecialchars(implode(',', $settedClasses));
 		
-		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" id="contentVariant" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($value) . '" class="' . htmlspecialchars(str_replace(',', ' ', $value)) . '">' . LF;
+		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" id="contentVariant" name="' . htmlspecialchars($name) . '" value="' . $settedValue . '" class="' . $settedClass . '">' . LF;
 		
-		return '<div>' . $checkboxes . $hiddenField . $script . '</div>';
+		// Missed classes
+		$missedField = '';
+		$missedClasses = array_diff($values, $valuesAvailable);
+		if(!empty($missedClasses)) {
+			$missedClass = htmlspecialchars(implode(',', $missedClasses));
+			$missedField = '<span style="display:inline-block;color: #C00">Unavailable classes: '. $missedClass . '</span>';
+		}
+		
+		return '<div>' . $checkboxes . $hiddenField . $script . $missedField . '</div>';
 	}
 
 

@@ -4,14 +4,14 @@ namespace KayStrobach\Themes\Tca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Render a Content Variant row
+ * Render a grid element equal height
  *
  * @package KayStrobach\Themes\Tca
  */
-class ContentResponsive {
+class GridElementEqualHeight {
 
 	/**
-	 * Render a Content Variant row
+	 * Render a grid element equal height
 	 *
 	 * @param array $parameters
 	 * @param mixed $parentObject
