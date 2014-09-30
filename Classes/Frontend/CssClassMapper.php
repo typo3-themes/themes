@@ -13,6 +13,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CssClassMapper {
 
 	public function mapGenericToFramework($content, $conf) {
+		$frameworkClasses = array();
 		$genericClasses = array_flip(GeneralUtility::trimExplode(',', $content));
 		foreach($conf as $checkConfKey => $checkConfValue) {
 			if(is_array($conf[$checkConfValue])) {
@@ -21,8 +22,10 @@ class CssClassMapper {
 				$checkConfValue = ltrim($checkConfValue, '< lib.') . '.';
 				$conf[$checkConfKey] = $GLOBALS['TSFE']->tmpl->setup['lib.'][$checkConfValue];
 			}
+			if(is_array($conf[$checkConfKey])) {
+				$frameworkClasses = array_merge($frameworkClasses, $conf[$checkConfKey]);
+			}
 		}
-		$frameworkClasses = array_merge($conf['allClassMapping'], $conf['behaviourClassMapping'], $conf['rowClassMapping'], $conf['columnClassMapping']);
 		$mappedClasses = array_intersect_key($frameworkClasses, $genericClasses);
 		return implode(' ', $mappedClasses);
 	}
