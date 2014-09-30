@@ -4,14 +4,14 @@ namespace KayStrobach\Themes\Tca;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Render a Content Behavior row
+ * Render a Content Behaviour row
  *
  * @package KayStrobach\Themes\Tca
  */
-class ContentBehavior extends AbstractContentRow {
+class ContentBehaviour extends AbstractContentRow {
 
 	/**
-	 * Render a Content Behavior row
+	 * Render a Content Behaviour row
 	 *
 	 * @param array $parameters
 	 * @param mixed $parentObject
@@ -33,18 +33,18 @@ class ContentBehavior extends AbstractContentRow {
 		$valuesAvailable = array();
 
 		// Get configuration
-		$behaviors = $this->getMergedConfiguration($pid, 'behavior', $cType);
+		$behaviours = $this->getMergedConfiguration($pid, 'behaviour', $cType);
 		
 		// Build checkboxes
 		$checkboxes = '';
-		if(isset($behaviors['properties']) && is_array($behaviors['properties'])) {
-			foreach($behaviors['properties'] as $key=>$label) {
-				$key = 'behavior-' . $key;
+		if(isset($behaviours['properties']) && is_array($behaviours['properties'])) {
+			foreach($behaviours['properties'] as $key=>$label) {
+				$key = 'behaviour-' . $key;
 				$valuesAvailable[] = $key;
 				$checked = (isset($valuesFlipped[$key])) ? 'checked="checked"' : '';
 				$checkboxes.= '<div style="width:200px;float:left">' . LF;
-				$checkboxes.= '<input type="checkbox" onchange="contentBehaviorChange(this)" name="' . $key . '" id="theme-behavior-' . $key . '" ' . $checked . '>' . LF;
-				$checkboxes.= '<label for="theme-behavior-' . $key . '">' . $label . '</label>' . LF;
+				$checkboxes.= '<input type="checkbox" onchange="contentBehaviourChange(this)" name="' . $key . '" id="theme-behaviour-' . $key . '" ' . $checked . '>' . LF;
+				$checkboxes.= '<label for="theme-behaviour-' . $key . '">' . $label . '</label>' . LF;
 				$checkboxes.= '</div>' . LF;
 			}
 		}
@@ -60,14 +60,14 @@ class ContentBehavior extends AbstractContentRow {
 		 * @todo auslagern!!
 		 */
 		$script = '<script type="text/javascript">'.LF;
-		$script.= 'function contentBehaviorChange(field) {'.LF;
+		$script.= 'function contentBehaviourChange(field) {'.LF;
 		$script.= '  if(field.checked) {'.LF;
-		$script.= '    jQuery("#contentBehavior").addClass(field.name);'.LF;
+		$script.= '    jQuery("#contentBehaviour").addClass(field.name);'.LF;
 		$script.= '  }'.LF;
 		$script.= '  else {'.LF;
-		$script.= '    jQuery("#contentBehavior").removeClass(field.name);'.LF;
+		$script.= '    jQuery("#contentBehaviour").removeClass(field.name);'.LF;
 		$script.= '  }'.LF;
-		$script.= '  jQuery("#contentBehavior").attr("value", jQuery("#contentBehavior").attr("class").replace(/\ /g, ","));'.LF;
+		$script.= '  jQuery("#contentBehaviour").attr("value", jQuery("#contentBehaviour").attr("class").replace(/\ /g, ","));'.LF;
 		$script.= '}'.LF;
 		$script.= '</script>'.LF;
 
@@ -75,7 +75,7 @@ class ContentBehavior extends AbstractContentRow {
 		$settedClass = htmlspecialchars(implode(' ', $settedClasses));
 		$settedValue = htmlspecialchars(implode(',', $settedClasses));
 		
-		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" id="contentBehavior" name="' . htmlspecialchars($name) . '" value="' . $settedValue . '" class="' . $settedClass . '">' . LF;
+		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" id="contentBehaviour" name="' . htmlspecialchars($name) . '" value="' . $settedValue . '" class="' . $settedClass . '">' . LF;
 
 		// Missed classes
 		$missedField = $this->getMissedFields($values, $valuesAvailable);

@@ -22,7 +22,7 @@ class CssClassMapper {
 				$conf[$checkConfKey] = $GLOBALS['TSFE']->tmpl->setup['lib.'][$checkConfValue];
 			}
 		}
-		$frameworkClasses = array_merge($conf['allClassMapping'], $conf['behaviorClassMapping'], $conf['rowClassMapping'], $conf['columnClassMapping']);
+		$frameworkClasses = array_merge($conf['allClassMapping'], $conf['behaviourClassMapping'], $conf['rowClassMapping'], $conf['columnClassMapping']);
 		$mappedClasses = array_intersect_key($frameworkClasses, $genericClasses);
 		return implode(' ', $mappedClasses);
 	}

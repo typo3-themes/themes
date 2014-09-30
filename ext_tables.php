@@ -31,19 +31,19 @@ if (!defined('TYPO3_MODE'))
 				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentResponsive->renderField',
 			)
 		),
-		'tx_themes_behavior' => array(
+		'tx_themes_behaviour' => array(
 			'exclude' => 1,
-			'label' => 'Behavior',
+			'label' => 'Behaviour',
 			'config' => array(
 				'type' => 'user',
-				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentBehavior->renderField',
+				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentBehaviour->renderField',
 			)
 		),
 	);
 	ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumn);
 	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_variants', '', 'after:section_frame');
 	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_responsive', '', 'after:tx_themes_variants');
-	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_behavior', '', 'after:tx_themes_responsive');
+	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_behaviour', '', 'after:tx_themes_responsive');
 
 /**
  * In case of gridelements is used
@@ -72,7 +72,7 @@ if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements'))
 		),
 	);
 	ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumn);
-	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_enforceequalcolumnheight', '', 'after:tx_themes_behavior');
+	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_enforceequalcolumnheight', '', 'after:tx_themes_behaviour');
 
 	// Column settings
 	$tempColumn = array(
