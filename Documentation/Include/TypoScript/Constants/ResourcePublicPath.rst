@@ -2,7 +2,7 @@
 .. container:: table-row dl-horizontal panel panel-default constants themes readonly
 
 	Property
-		``name``
+		``resourcePublicPath``
 
 	Data type
 		string
