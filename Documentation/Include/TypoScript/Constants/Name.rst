@@ -7,6 +7,9 @@
 	Data type
 		string
 
+	Category
+		none
+
 	Description
 		Extension-Key of the Theme (automatically setted, readonly)
 

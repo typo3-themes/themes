@@ -7,6 +7,9 @@
 	Data type
 		string
 
+	Category
+		none
+
 	Description
 		Relative path to the theme (automatically setted, readonly)
 

@@ -7,6 +7,9 @@
 	Data type
 		string
 
+	Category
+		none
+
 	Description
 		Path to private resources of the theme (automatically setted, readonly)
 
