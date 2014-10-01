@@ -8,7 +8,7 @@
 		string
 
 	Description
-		Extension-Key of the Theme
+		Extension-Key of the Theme (automatically setted, readonly)
 
 	Default
 		*none*

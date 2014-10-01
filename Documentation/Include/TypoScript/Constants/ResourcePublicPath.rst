@@ -8,7 +8,7 @@
 		string
 
 	Description
-		Path to public resources of the theme
+		Path to public resources of the theme (automatically setted, readonly)
 
 	Default
 		*none*
