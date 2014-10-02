@@ -2,7 +2,7 @@
 .. container:: table-row dl-horizontal panel panel-default constants themes cat_languages
 
 	Property
-		``languages.default.label``
+		``default.label``
 
 	Data type
 		string
