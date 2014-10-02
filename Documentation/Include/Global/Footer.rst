@@ -1,2 +1,2 @@
 
-Letzte Aktualisierung: |time|
+Last change: |time|
