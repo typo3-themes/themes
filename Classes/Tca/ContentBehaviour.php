@@ -20,8 +20,8 @@ class ContentBehaviour extends AbstractContentRow {
 	public function renderField(array &$parameters, &$parentObject) {
 
 		// Vars
-		$uid   = $parameters["row"]["uid"];
-		$pid   = $parameters["row"]["pid"];
+		$uid   = $parameters['row']['uid'];
+		$pid   = $parameters['row']['pid'];
 		$name  = $parameters['itemFormElName'];
 		$value = $parameters['itemFormElValue'];
 		$cType = $parameters['row']['CType'];
@@ -37,15 +37,15 @@ class ContentBehaviour extends AbstractContentRow {
 		
 		// Build checkboxes
 		$checkboxes = '';
-		if(isset($behaviours['properties']) && is_array($behaviours['properties'])) {
-			foreach($behaviours['properties'] as $key=>$label) {
+		if (isset($behaviours['properties']) && is_array($behaviours['properties'])) {
+			foreach ($behaviours['properties'] as $key => $label) {
 				$key = 'behaviour-' . $key;
 				$valuesAvailable[] = $key;
 				$checked = (isset($valuesFlipped[$key])) ? 'checked="checked"' : '';
-				$checkboxes.= '<div style="width:200px;float:left">' . LF;
-				$checkboxes.= '<input type="checkbox" onchange="contentBehaviourChange(this)" name="' . $key . '" id="theme-behaviour-' . $key . '" ' . $checked . '>' . LF;
-				$checkboxes.= '<label for="theme-behaviour-' . $key . '">' . $label . '</label>' . LF;
-				$checkboxes.= '</div>' . LF;
+				$checkboxes .= '<div style="width:200px;float:left">' . LF;
+				$checkboxes .= '<input type="checkbox" onchange="contentBehaviourChange(this)" name="' . $key . '" id="theme-behaviour-' . $key . '" ' . $checked . '>' . LF;
+				$checkboxes .= '<label for="theme-behaviour-' . $key . '">' . $label . '</label>' . LF;
+				$checkboxes .= '</div>' . LF;
 			}
 		}
 
@@ -60,16 +60,16 @@ class ContentBehaviour extends AbstractContentRow {
 		 * @todo auslagern!!
 		 */
 		$script = '<script type="text/javascript">'.LF;
-		$script.= 'function contentBehaviourChange(field) {'.LF;
-		$script.= '  if(field.checked) {'.LF;
-		$script.= '    jQuery("#contentBehaviour").addClass(field.name);'.LF;
-		$script.= '  }'.LF;
-		$script.= '  else {'.LF;
-		$script.= '    jQuery("#contentBehaviour").removeClass(field.name);'.LF;
-		$script.= '  }'.LF;
-		$script.= '  jQuery("#contentBehaviour").attr("value", jQuery("#contentBehaviour").attr("class").replace(/\ /g, ","));'.LF;
-		$script.= '}'.LF;
-		$script.= '</script>'.LF;
+		$script .= 'function contentBehaviourChange(field) {'.LF;
+		$script .= '  if (field.checked) {'.LF;
+		$script .= '    jQuery("#contentBehaviour").addClass(field.name);'.LF;
+		$script .= '  }'.LF;
+		$script .= '  else {'.LF;
+		$script .= '    jQuery("#contentBehaviour").removeClass(field.name);'.LF;
+		$script .= '  }'.LF;
+		$script .= '  jQuery("#contentBehaviour").attr("value", jQuery("#contentBehaviour").attr("class").replace(/\ /g, ","));'.LF;
+		$script .= '}'.LF;
+		$script .= '</script>'.LF;
 
 		$settedClasses = array_intersect($values, $valuesAvailable);
 		$settedClass = htmlspecialchars(implode(' ', $settedClasses));
@@ -84,5 +84,3 @@ class ContentBehaviour extends AbstractContentRow {
 	}
 
 }
-
-?>

@@ -21,8 +21,8 @@ class ContentColumnSettings extends AbstractContentRow {
 	public function renderField(array &$parameters, &$parentObject) {
 
 		// Vars
-		$uid   = $parameters["row"]["uid"];
-		$pid   = $parameters["row"]["pid"];
+		$uid   = $parameters['row']['uid'];
+		$pid   = $parameters['row']['pid'];
 		$name  = $parameters['itemFormElName'];
 		$value = $parameters['itemFormElValue'];
 		$cType = $parameters['row']['CType'];
@@ -38,45 +38,45 @@ class ContentColumnSettings extends AbstractContentRow {
 		
 		// Build checkboxes
 		$radiobuttons = '';
-		if(isset($responsives['properties']) && is_array($responsives['properties'])) {
-			foreach($responsives['properties'] as $groupKey=>$settings) {
+		if (isset($responsives['properties']) && is_array($responsives['properties'])) {
+			foreach ($responsives['properties'] as $groupKey => $settings) {
 
 				// Validate groupKey and get label
 				$groupKey = substr($groupKey, 0, -1);
 				$label = isset($settings['label']) ? $settings['label'] : $groupKey;
 				
-				$radiobuttons.= '<fieldset style="border:0 solid;border-right: 1px solid #ccc;width:120px;float:left;">' . LF;
-				$radiobuttons.= '<legend style="font-weight:bold">' . $label . '</legend>' . LF;
-				if(isset($settings['columnSettings.']) && is_array($settings['columnSettings.'])) {
-					foreach($settings['columnSettings.'] as $visibilityKey=>$visibilityLabel) {
+				$radiobuttons .= '<fieldset style="border:0 solid;border-right: 1px solid #ccc;width:120px;float:left;">' . LF;
+				$radiobuttons .= '<legend style="font-weight:bold">' . $label . '</legend>' . LF;
+				if (isset($settings['columnSettings.']) && is_array($settings['columnSettings.'])) {
+					foreach ($settings['columnSettings.'] as $visibilityKey => $visibilityLabel) {
 						$tempKey = 'responsive-' . $groupKey . '-' . $visibilityKey;
 						
 						// Collect selectable values
-						for($i=1 ; $i<=12 ; $i++) {
+						for($i=1; $i<=12; $i++) {
 							$valuesAvailable[] = $tempKey . '-' . $i;
 						}
 						
 						// build radiobox
-						$radiobuttons.= '<div style="float:left">' . LF;
-						//$radiobuttons.= '<input type="radio" name="' . $groupKey . '" value="' . $tempKey . '" id="theme-enforceequalcolumnheight-' . $tempKey . '" ' . $selected .  '>' . LF;
-						$radiobuttons.= '<label style="width:50px;display:inline-block" for="theme-enforceequalcolumnheight-' . $tempKey . '">' . $visibilityLabel .'</label>' . LF;
+						$radiobuttons .= '<div style="float:left">' . LF;
+						//$radiobuttons .= '<input type="radio" name="' . $groupKey . '" value="' . $tempKey . '" id="theme-enforceequalcolumnheight-' . $tempKey . '" ' . $selected .  '>' . LF;
+						$radiobuttons .= '<label style="width:50px;display:inline-block" for="theme-enforceequalcolumnheight-' . $tempKey . '">' . $visibilityLabel .'</label>' . LF;
 
-						$radiobuttons.= '<select style="width:110px" onchange="contentColumnSettingsChange(this)" name="' . $tempKey . '">' . LF;
-						$radiobuttons.= '<option value="">default</option>' . LF;
+						$radiobuttons .= '<select style="width:110px" onchange="contentColumnSettingsChange(this)" name="' . $tempKey . '">' . LF;
+						$radiobuttons .= '<option value="">default</option>' . LF;
 						for($i=1 ; $i<=12 ; $i++) {
 
 							// set the selected value
 							$selected = (isset($valuesFlipped[$tempKey . '-' . $i])) ? 'selected="selected"' : '';
 							
-							$radiobuttons.= '<option value="' . $tempKey . '-' . $i . '" ' . $selected .  '>' . $visibilityKey . '-' . $i . '</option>' . LF;
+							$radiobuttons .= '<option value="' . $tempKey . '-' . $i . '" ' . $selected .  '>' . $visibilityKey . '-' . $i . '</option>' . LF;
 						}
-						$radiobuttons.= '</select>' . LF;
+						$radiobuttons .= '</select>' . LF;
 						
 						
-						$radiobuttons.= '</div>' . LF;
+						$radiobuttons .= '</div>' . LF;
 					}
 				}
-				$radiobuttons.= '</fieldset>' . LF;
+				$radiobuttons .= '</fieldset>' . LF;
 				
 			}
 		}
@@ -92,18 +92,18 @@ class ContentColumnSettings extends AbstractContentRow {
 		 * @todo auslagern!!
 		 */
 		$script = '<script type="text/javascript">'.LF;
-		$script.= 'function contentColumnSettingsChange(field) {'.LF;
-		//$script.= 'console.log("in:", field);'.LF;
-		$script.= '  jQuery.each(jQuery("#themeColumnSettingsValues select[name=\'"+field.name+"\'] option"), function(index, node) {'.LF;
-		//$script.= '    console.log("remove:", node);'.LF;
-		//$script.= '    console.log("remove:", node.value);'.LF;
-		$script.= '    jQuery("#contentEnforceEqualColumnHeight").removeClass(node.value);'.LF;
-		$script.= '  });'.LF;
-		//$script.= '  console.log("add:", field.value);'.LF;
-		$script.= '  jQuery("#contentEnforceEqualColumnHeight").addClass(field.value);'.LF;
-		$script.= '  jQuery("#contentEnforceEqualColumnHeight").attr("value", jQuery("#contentEnforceEqualColumnHeight").attr("class").replace(/\ /g, ","));'.LF;
-		$script.= '}'.LF;
-		$script.= '</script>'.LF;
+		$script .= 'function contentColumnSettingsChange(field) {'.LF;
+		//$script .= 'console.log("in:", field);'.LF;
+		$script .= '  jQuery.each(jQuery("#themeColumnSettingsValues select[name=\'"+field.name+"\'] option"), function(index, node) {'.LF;
+		//$script .= '    console.log("remove:", node);'.LF;
+		//$script .= '    console.log("remove:", node.value);'.LF;
+		$script .= '    jQuery("#contentEnforceEqualColumnHeight").removeClass(node.value);'.LF;
+		$script .= '  });'.LF;
+		//$script .= '  console.log("add:", field.value);'.LF;
+		$script .= '  jQuery("#contentEnforceEqualColumnHeight").addClass(field.value);'.LF;
+		$script .= '  jQuery("#contentEnforceEqualColumnHeight").attr("value", jQuery("#contentEnforceEqualColumnHeight").attr("class").replace(/\ /g, ","));'.LF;
+		$script .= '}'.LF;
+		$script .= '</script>'.LF;
 
 		$settedClasses = array_intersect($values, $valuesAvailable);
 		$settedClass = htmlspecialchars(implode(' ', $settedClasses));
@@ -118,5 +118,3 @@ class ContentColumnSettings extends AbstractContentRow {
 	}
 
 }
-
-?>

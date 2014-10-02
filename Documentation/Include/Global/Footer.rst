@@ -1,0 +1,2 @@
+
+Letzte Aktualisierung: |time|

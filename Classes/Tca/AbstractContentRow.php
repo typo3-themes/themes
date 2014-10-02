@@ -14,7 +14,7 @@ abstract class AbstractContentRow {
 		$missedField = '';
 		$missedClasses = array_diff($values, $valuesAvailable);
 		$missedClass = htmlspecialchars(implode(',', $missedClasses));
-		if(!empty($missedClass)) {
+		if (!empty($missedClass)) {
 			$missedField = '<span style="display:inline-block;color: #C00">Unavailable classes: '. $missedClass . '</span>';
 		}
 		return $missedField;
@@ -40,5 +40,3 @@ abstract class AbstractContentRow {
 		return $config;
 	}
 }
-
-?>
