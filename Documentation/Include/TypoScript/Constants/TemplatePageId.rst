@@ -7,8 +7,11 @@
 	Data type
 		integer
 
+	Category
+		none
+
 	Description
-		Id of the page where the theme is selected
+		Id of the page where the theme is selected (automatically setted, readonly)
 
 	Default
 		*none*

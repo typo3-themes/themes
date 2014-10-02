@@ -2,13 +2,16 @@
 .. container:: table-row dl-horizontal panel panel-default constants themes readonly
 
 	Property
-		``name``
+		``resourcePublicPath``
 
 	Data type
 		string
 
+	Category
+		none
+
 	Description
-		Path to public resources of the theme
+		Path to public resources of the theme (automatically setted, readonly)
 
 	Default
 		*none*
