@@ -109,7 +109,9 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 	}
 
 	/**
-	 * @todo missing docblock
+	 * Get the data of a sys language
+	 * @param $uid \int Language uid
+	 * @return \array Language data array
 	 */
 	protected function getSysLanguage($uid = 0) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -120,6 +122,12 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 		return $sysLanguage;
 	}
 
+	/**
+	 * Check if a translation of a page is available
+	 * @param $pid \int Page id
+	 * @param $languageUid \int Language uid
+	 * @return bool
+	 */
 	protected function hasTranslation($pid, $languageUid) {
 
 		$enableFieldsSql  = $this->contentObjectRenderer->enableFields('pages_language_overlay');
