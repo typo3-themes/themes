@@ -1,5 +1,5 @@
 # cat=basic; type=boolean; label=themes independent mode
-themesIndependent = 1
+themesIndependent = 0
 # cat=basic; type=string; label=Categories which should be shown
 categoriesToShow = theme,siteConstants,site colors,site layout,colors,language,font,meta,metaDefaults,page,container,menu,header,footer
 # cat=basic; type=string; label=constants to hide

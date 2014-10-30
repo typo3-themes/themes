@@ -82,7 +82,7 @@ if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements'))
 					'FIELD:CType:=:gridelements_pi1',
 					'OR' => array(
 						//'FIELD:tx_gridelements_backend_layout:=:row',
-						'FIELD:tx_gridelements_backend_layout:=:column',
+						'FIELD:tx_gridelements_backend_layout:=:singleColumn',
 					),
 				),
 			),
