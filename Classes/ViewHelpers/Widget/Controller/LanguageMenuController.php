@@ -32,6 +32,14 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 	protected $languageRepository;
 
 	/**
+	 * ContentObjectRenderer
+	 *
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 * @inject
+	 */
+	protected $contentObjectRenderer;
+
+	/**
 	 * @param \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository $languageRepository
 	 * @return void
 	 */
@@ -63,6 +71,7 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 				$class = 'unknown';
 				$label = 'unknown';
 				$flag = 'unknown';
+				$hasTranslation = TRUE;
 
 				// Is active language
 				$menuEntry['active'] = ((int) $currentLanguageUid === (int) $languageUid);
@@ -83,11 +92,13 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 						$label = $languageObject->getNameEn();
 					}
 					$flag = $sysLanguage['flag'];
+					$hasTranslation = $this->hasTranslation($GLOBALS['TSFE']->id, $languageUid);
 				}
 
 				$menuEntry['label'] = $label;
 				$menuEntry['class'] = strtolower($class);
 				$menuEntry['flag'] = $flag;
+				$menuEntry['hasTranslation'] = $hasTranslation;
 				$menu[] = $menuEntry;
 			}
 		}
@@ -109,4 +120,18 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 		return $sysLanguage;
 	}
 
+	protected function hasTranslation($pid, $languageUid) {
+
+		$enableFieldsSql  = $this->contentObjectRenderer->enableFields('pages_language_overlay');
+		//$visibleSql  = ' deleted=0 AND t3ver_state<=0 AND hidden=0 ';
+		//$startEndSql = ' AND (starttime<=' . time() . ' AND (endtime=0 OR endtime >=' . time() . ')) ';
+		$languageSql = ' pid=' . ((int)$pid) . ' AND `sys_language_uid` =' . ((int)$languageUid) . ' ';
+		$where = $languageSql.$enableFieldsSql; //$visibleSql.$startEndSql;
+		
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COUNT(uid)', 'pages_language_overlay', $where);
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		return ($row[0]>0);
+	}
+	
 }
