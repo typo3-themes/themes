@@ -24,8 +24,11 @@ class CssClassMapper {
 				$genericClasses = array_flip(explode(',', $content));
 				foreach($conf as $checkConfKey => $checkConfValue) {
 					if(!is_array($conf[$checkConfValue]) && $checkConfValue && strpos($checkConfValue, '<') === 0) {
-						$checkConfValue = ltrim($checkConfValue, '< lib.') . '.';
-						$conf[$checkConfKey] = $GLOBALS['TSFE']->tmpl->setup['lib.'][$checkConfValue];
+						$checkConfArray = explode('.', ltrim($checkConfValue, '< '));
+						$conf[$checkConfKey] = $GLOBALS['TSFE']->tmpl->setup[array_shift($checkConfArray) . '.'];
+						foreach($checkConfArray as $checkConfArrayKey) {
+							$conf[$checkConfKey] = $conf[$checkConfKey][$checkConfArrayKey . '.'];
+						}
 					}
 					if(is_array($conf[$checkConfKey])) {
 						$frameworkClasses = array_merge($frameworkClasses, $conf[$checkConfKey]);
