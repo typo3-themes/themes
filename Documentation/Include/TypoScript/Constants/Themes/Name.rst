@@ -11,7 +11,7 @@
 		none
 
 	Description
-		Extension-Key of the Theme (automatically setted, readonly)
+		Extension-Key of the Theme (automatically set, readonly)
 
 	Default
 		*none*

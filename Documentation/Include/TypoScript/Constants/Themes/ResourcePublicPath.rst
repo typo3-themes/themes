@@ -11,7 +11,7 @@
 		none
 
 	Description
-		Path to public resources of the theme (automatically setted, readonly)
+		Path to public resources of the theme (automatically set, readonly)
 
 	Default
 		*none*
@@ -20,4 +20,4 @@
 		themes
 
 	Definition
-		automatically setted, readonly
+		automatically set, readonly

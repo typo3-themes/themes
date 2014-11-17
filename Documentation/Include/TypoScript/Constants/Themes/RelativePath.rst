@@ -11,7 +11,7 @@
 		none
 
 	Description
-		Relative path to the theme (automatically setted, readonly)
+		Relative path to the theme (automatically set, readonly)
 
 	Default
 		*none*
@@ -20,4 +20,4 @@
 		themes
 
 	Definition
-		automatically setted, readonly
+		automatically set, readonly

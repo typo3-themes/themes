@@ -59,7 +59,7 @@ class ContentColumnSettings extends AbstractContentRow {
 						// build radiobox
 						$radiobuttons .= '<div style="float:left">' . LF;
 						//$radiobuttons .= '<input type="radio" name="' . $groupKey . '" value="' . $tempKey . '" id="theme-enforceequalcolumnheight-' . $tempKey . '" ' . $selected .  '>' . LF;
-						$radiobuttons .= '<label style="width:50px;display:inline-block" for="theme-enforceequalcolumnheight-' . $tempKey . '">' . $visibilityLabel .'</label>' . LF;
+						$radiobuttons .= '<label style="width:50px;display:inline-block">' . $visibilityLabel .'</label>' . LF;
 
 						$radiobuttons .= '<select style="width:110px" onchange="contentColumnSettingsChange(this)" name="' . $tempKey . '">' . LF;
 						$radiobuttons .= '<option value="">default</option>' . LF;
@@ -94,27 +94,27 @@ class ContentColumnSettings extends AbstractContentRow {
 		$script = '<script type="text/javascript">'.LF;
 		$script .= 'function contentColumnSettingsChange(field) {'.LF;
 		//$script .= 'console.log("in:", field);'.LF;
-		$script .= '  jQuery.each(jQuery("#themeColumnSettingsValues select[name=\'"+field.name+"\'] option"), function(index, node) {'.LF;
+		$script .= '  jQuery.each(jQuery(".contentColumnSettings select[name=\'"+field.name+"\'] option"), function(index, node) {'.LF;
 		//$script .= '    console.log("remove:", node);'.LF;
 		//$script .= '    console.log("remove:", node.value);'.LF;
-		$script .= '    jQuery("#contentEnforceEqualColumnHeight").removeClass(node.value);'.LF;
+		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentColumnSettings input[readonly=\'readonly\']").removeClass(node.value);'.LF;
 		$script .= '  });'.LF;
 		//$script .= '  console.log("add:", field.value);'.LF;
-		$script .= '  jQuery("#contentEnforceEqualColumnHeight").addClass(field.value);'.LF;
-		$script .= '  jQuery("#contentEnforceEqualColumnHeight").attr("value", jQuery("#contentEnforceEqualColumnHeight").attr("class").replace(/\ /g, ","));'.LF;
+		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentColumnSettings input[readonly=\'readonly\']").addClass(field.value);'.LF;
+		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentColumnSettings input[readonly=\'readonly\']").attr("value", jQuery(field).closest(".t3-form-field-item").find(".contentColumnSettings input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));'.LF;
 		$script .= '}'.LF;
 		$script .= '</script>'.LF;
 
-		$settedClasses = array_intersect($values, $valuesAvailable);
-		$settedClass = htmlspecialchars(implode(' ', $settedClasses));
-		$settedValue = htmlspecialchars(implode(',', $settedClasses));
+		$setClasses = array_intersect($values, $valuesAvailable);
+		$setClass = htmlspecialchars(implode(' ', $setClasses));
+		$setValue = htmlspecialchars(implode(',', $setClasses));
 		
-		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" id="contentEnforceEqualColumnHeight" name="' . htmlspecialchars($name) . '" value="' . $settedValue . '"  class="' . $settedClass . '">' . LF;
+		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" name="' . htmlspecialchars($name) . '" value="' . $setValue . '"  class="' . $setClass . '">' . LF;
 
 		// Missed classes
 		$missedField = $this->getMissedFields($values, $valuesAvailable);
 		
-		return '<div id="themeColumnSettingsValues">' . $radiobuttons . $hiddenField . $script . $missedField . '</div>';
+		return '<div class="contentColumnSettings">' . $radiobuttons . $hiddenField . $script . $missedField . '</div>';
 	}
 
 }

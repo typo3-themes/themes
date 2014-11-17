@@ -11,7 +11,7 @@
 		none
 
 	Description
-		Id of the page where the theme is selected (automatically setted, readonly)
+		Id of the page where the theme is selected (automatically set, readonly)
 
 	Default
 		*none*
@@ -20,4 +20,4 @@
 		themes
 
 	Definition
-		automatically setted, readonly
+		automatically set, readonly

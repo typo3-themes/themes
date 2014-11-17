@@ -49,32 +49,32 @@ class ContentResponsive extends AbstractContentRow {
 				if (isset($settings['visibility.']) && is_array($settings['visibility.'])) {
 
 					// check if theres already a value selected
-					$valueSetted = FALSE;
+					$valueSet = FALSE;
 					foreach ($settings['visibility.'] as $visibilityKey => $visibilityLabel) {
 						$tempKey = 'responsive-' . $groupKey . '-' . $visibilityKey;
-						if (!$valueSetted) {
-							$valueSetted = isset($valuesFlipped[$tempKey]);
+						if (!$valueSet) {
+							$valueSet = isset($valuesFlipped[$tempKey]);
 						}
 					}
-					
+
 					foreach ($settings['visibility.'] as $visibilityKey => $visibilityLabel) {
 						$tempKey = 'responsive-' . $groupKey . '-' . $visibilityKey;
 						$valuesAvailable[] = $tempKey;
 						
 						// set the selected value
-						if ($valueSetted) {
+						if ($valueSet) {
 							$selected = (isset($valuesFlipped[$tempKey])) ? 'checked="checked"' : '';
 						}
 						// set the default value, this means the first one
 						else {
 							$selected = 'checked="checked"';
-							$valueSetted = TRUE;
+							$valueSet = TRUE;
 						}
-						
+
 						// build radiobox
 						$radiobuttons .= '<div style="float:left">' . LF;
-						$radiobuttons .= '<input type="radio" onchange="contentResponsiveChange(this)" name="responsive-' . $groupKey . '" value="' . $tempKey . '" id="theme-responsive-' . $tempKey . '" ' . $selected . '>' . LF;
-						$radiobuttons .= '<label for="theme-responsive-' . $tempKey . '">' . $visibilityLabel . '</label>' . LF;
+						$radiobuttons .= '<label><input type="radio" onchange="contentResponsiveChange(this)" name="responsive-' . $groupKey . '" value="' . $tempKey . '" ' . $selected . ' />' . LF;
+						$radiobuttons .= $visibilityLabel . '</label>' . LF;
 						$radiobuttons .= '</div>' . LF;
 					}
 				}
@@ -96,27 +96,27 @@ class ContentResponsive extends AbstractContentRow {
 		$script = '<script type="text/javascript">'.LF;
 		$script .= 'function contentResponsiveChange(field) {'.LF;
 		//$script .= 'console.log("in:", field);'.LF;
-		$script .= '  jQuery.each(jQuery("#themeResponsiveValues input[name=\'"+field.name+"\']"), function(index, node) {'.LF;
+		$script .= '  jQuery.each(jQuery(".contentResponsive input[name=\'"+field.name+"\']"), function(index, node) {'.LF;
 		//$script .= '    console.log("remove:", node);'.LF;
 		//$script .= '    console.log("remove:", node.value);'.LF;
-		$script .= '    jQuery("#contentResponsive").removeClass(node.value);'.LF;
+		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentResponsive input[readonly=\'readonly\']").removeClass(node.value);'.LF;
 		$script .= '  });'.LF;
 		//$script .= '  console.log("add:", field.value);'.LF;
-		$script .= '  jQuery("#contentResponsive").addClass(field.value);'.LF;
-		$script .= '  jQuery("#contentResponsive").attr("value", jQuery("#contentResponsive").attr("class").replace(/\ /g, ","));'.LF;
+		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentResponsive input[readonly=\'readonly\']").addClass(field.value);'.LF;
+		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentResponsive input[readonly=\'readonly\']").attr("value", jQuery(field).closest(".t3-form-field-item").find(".contentResponsive input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));'.LF;
 		$script .= '}'.LF;
 		$script .= '</script>'.LF;
 
-		$settedClasses = array_intersect($values, $valuesAvailable);
-		$settedClass = htmlspecialchars(implode(' ', $settedClasses));
-		$settedValue = htmlspecialchars(implode(',', $settedClasses));
+		$setClasses = array_intersect($values, $valuesAvailable);
+		$setClass = htmlspecialchars(implode(' ', $setClasses));
+		$setValue = htmlspecialchars(implode(',', $setClasses));
 		
-		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" id="contentResponsive" name="' . htmlspecialchars($name) . '" value="' . $settedValue . '"  class="' . $settedClass . '">' . LF;
+		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" name="' . htmlspecialchars($name) . '" value="' . $setValue . '"  class="' . $setClass . '">' . LF;
 
 		// Missed classes
 		$missedField = $this->getMissedFields($values, $valuesAvailable);
 		
-		return '<div id="themeResponsiveValues">' . $radiobuttons . $hiddenField . $script . $missedField . '</div>';
+		return '<div class="contentResponsive">' . $radiobuttons . $hiddenField . $script . $missedField . '</div>';
 	}
 
 }

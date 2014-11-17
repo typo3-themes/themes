@@ -43,8 +43,8 @@ class ContentVariants extends AbstractContentRow {
 				$valuesAvailable[] = $key;
 				$checked = (isset($valuesFlipped[$key])) ? 'checked="checked"' : '';
 				$checkboxes .= '<div style="width:200px;float:left">' . LF;
-				$checkboxes .= '<input type="checkbox" onchange="contentVariantChange(this)" name="' . $key . '" id="theme-variant-' . $key . '" ' . $checked . '>' . LF;
-				$checkboxes .= '<label for="theme-variant-' . $key . '">' . $label . '</label>' . LF;
+				$checkboxes .= '<label><input type="checkbox" onchange="contentVariantChange(this)" name="' . $key . '" ' . $checked . '>' . LF;
+				$checkboxes .= $label . '</label>' . LF;
 				$checkboxes .= '</div>' . LF;
 			}
 		}
@@ -62,25 +62,25 @@ class ContentVariants extends AbstractContentRow {
 		$script = '<script type="text/javascript">'.LF;
 		$script .= 'function contentVariantChange(field) {'.LF;
 		$script .= '  if (field.checked) {'.LF;
-		$script .= '    jQuery("#contentVariant").addClass(field.name);'.LF;
+		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").addClass(field.name);'.LF;
 		$script .= '  }'.LF;
 		$script .= '  else {'.LF;
-		$script .= '    jQuery("#contentVariant").removeClass(field.name);'.LF;
+		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").removeClass(field.name);'.LF;
 		$script .= '  }'.LF;
-		$script .= '  jQuery("#contentVariant").attr("value", jQuery("#contentVariant").attr("class").replace(/\ /g, ","));'.LF;
+		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").attr("value", jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));'.LF;
 		$script .= '}'.LF;
 		$script .= '</script>'.LF;
 
-		$settedClasses = array_intersect($values, $valuesAvailable);
-		$settedClass = htmlspecialchars(implode(' ', $settedClasses));
-		$settedValue = htmlspecialchars(implode(',', $settedClasses));
+		$setClasses = array_intersect($values, $valuesAvailable);
+		$setClass = htmlspecialchars(implode(' ', $setClasses));
+		$setValue = htmlspecialchars(implode(',', $setClasses));
 		
-		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" id="contentVariant" name="' . htmlspecialchars($name) . '" value="' . $settedValue . '" class="' . $settedClass . '">' . LF;
+		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" name="' . htmlspecialchars($name) . '" value="' . $setValue . '" class="' . $setClass . '">' . LF;
 		
 		// Missed classes
 		$missedField = $this->getMissedFields($values, $valuesAvailable);
 		
-		return '<div>' . $checkboxes . $hiddenField . $script . $missedField . '</div>';
+		return '<div class="contentVariant">' . $checkboxes . $hiddenField . $script . $missedField . '</div>';
 	}
 
 }
