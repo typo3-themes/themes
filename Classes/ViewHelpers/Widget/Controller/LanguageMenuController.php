@@ -134,12 +134,12 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 		//$visibleSql  = ' deleted=0 AND t3ver_state<=0 AND hidden=0 ';
 		//$startEndSql = ' AND (starttime<=' . time() . ' AND (endtime=0 OR endtime >=' . time() . ')) ';
 		$languageSql = ' pid=' . ((int)$pid) . ' AND `sys_language_uid` =' . ((int)$languageUid) . ' ';
-		$where = $languageSql.$enableFieldsSql; //$visibleSql.$startEndSql;
-		
+		$where = $languageSql . $enableFieldsSql;
+		//$visibleSql.$startEndSql;
+
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COUNT(uid)', 'pages_language_overlay', $where);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		return ($row[0]>0);
+		return ($row[0] > 0);
 	}
-	
 }

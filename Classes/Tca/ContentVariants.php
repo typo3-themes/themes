@@ -31,10 +31,10 @@ class ContentVariants extends AbstractContentRow {
 		$values = explode(',', $value);
 		$valuesFlipped = array_flip($values);
 		$valuesAvailable = array();
-		
+
 		// Get configuration
 		$variants = $this->getMergedConfiguration($pid, 'variants', $cType);
-		
+
 		// Build checkboxes
 		$checkboxes = '';
 		if (isset($variants['properties']) && is_array($variants['properties'])) {
@@ -59,28 +59,28 @@ class ContentVariants extends AbstractContentRow {
 		/**
 		 * @todo auslagern!!
 		 */
-		$script = '<script type="text/javascript">'.LF;
-		$script .= 'function contentVariantChange(field) {'.LF;
-		$script .= '  if (field.checked) {'.LF;
-		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").addClass(field.name);'.LF;
-		$script .= '  }'.LF;
-		$script .= '  else {'.LF;
-		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").removeClass(field.name);'.LF;
-		$script .= '  }'.LF;
-		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").attr("value", jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));'.LF;
-		$script .= '}'.LF;
-		$script .= '</script>'.LF;
+		$script = '<script type="text/javascript">' . LF;
+		$script .= 'function contentVariantChange(field) {' . LF;
+		$script .= '  if (field.checked) {' . LF;
+		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").addClass(field.name);' . LF;
+		$script .= '  }' . LF;
+		$script .= '  else {' . LF;
+		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").removeClass(field.name);' . LF;
+		$script .= '  }' . LF;
+		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").attr("value", ' . LF;
+		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));' . LF;
+		$script .= '}' . LF;
+		$script .= '</script>' . LF;
 
 		$setClasses = array_intersect($values, $valuesAvailable);
 		$setClass = htmlspecialchars(implode(' ', $setClasses));
 		$setValue = htmlspecialchars(implode(',', $setClasses));
-		
+
 		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" name="' . htmlspecialchars($name) . '" value="' . $setValue . '" class="' . $setClass . '">' . LF;
-		
+
 		// Missed classes
 		$missedField = $this->getMissedFields($values, $valuesAvailable);
-		
+
 		return '<div class="contentVariant">' . $checkboxes . $hiddenField . $script . $missedField . '</div>';
 	}
-
 }

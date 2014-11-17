@@ -28,7 +28,7 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	 * </output>
 	 */
 	public function render($constant = '') {
-		
+
 		$pageWithTheme   = \KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility::find($GLOBALS['TSFE']->id);
 		$pageLanguage    = (int)GeneralUtility::_GP('L');
 		// instantiate the cache
@@ -61,7 +61,7 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 				$cacheLifeTime
 			);
 		}
-		
+
 		// check if there is a value and return it
 		if ((is_array($flatSetup)) && (array_key_exists($constant, $flatSetup))) {
 			return $flatSetup[$constant];

@@ -25,9 +25,9 @@ class ThemeEnabledConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 		$pageId = intval(GeneralUtility::_GET('id'));
 		$themeOfPage = $this->themeRepository->findByPageOrRootline($pageId);
 
-		if(($themeOfPage !== NULL) && ($themeOfPage->getExtensionName() === $theme)) {
+		if (($themeOfPage !== NULL) && ($themeOfPage->getExtensionName() === $theme)) {
 			return $this->renderThenChild();
 		}
 		return $this->renderElseChild();
- 	}
+	}
 }
