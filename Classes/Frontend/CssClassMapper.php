@@ -17,7 +17,7 @@ class CssClassMapper {
 	 * @return string
 	 */
 	public function mapGenericToFramework($content = '', $conf = array()) {
-		if($content) {
+		if ($content) {
 			$hashKey = md5($content . serialize($conf));
 			if (!isset($GLOBALS['TSFE']->themesCssClassMapperCache[$hashKey])) {
 				$frameworkClasses = array();
