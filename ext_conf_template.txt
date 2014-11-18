@@ -1,6 +1,6 @@
 # cat=basic; type=boolean; label=themes independent mode
 themesIndependent = 0
 # cat=basic; type=string; label=Categories which should be shown
-categoriesToShow = theme,siteConstants,site colors,site layout,colors,language,font,meta,metaDefaults,pages,container,menu,header,footer
+categoriesToShow = theme,siteConstants,site colors,site layout,colors,languages,font,meta,metaDefaults,pages,container,menu,header,footer,forms
 # cat=basic; type=string; label=constants to hide
 constantsToHide = dateFormat,timeFormat,dateTimeFormat
