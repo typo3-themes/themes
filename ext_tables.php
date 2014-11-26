@@ -1,9 +1,5 @@
 <?php
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
-
 if (!defined('TYPO3_MODE'))
 	die('Access denied.');
 
@@ -40,10 +36,10 @@ if (!defined('TYPO3_MODE'))
 			)
 		),
 	);
-	ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumn);
-	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_variants', '', 'after:section_frame');
-	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_responsive', '', 'after:tx_themes_variants');
-	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_behaviour', '', 'after:tx_themes_responsive');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumn);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_variants', '', 'after:section_frame');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_responsive', '', 'after:tx_themes_variants');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_behaviour', '', 'after:tx_themes_responsive');
 
 /**
  * In case of gridelements is used
@@ -71,8 +67,8 @@ if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements'))
 			)
 		),
 	);
-	ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumn);
-	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_enforceequalcolumnheight', '', 'after:tx_themes_behaviour');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumn);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_enforceequalcolumnheight', '', 'after:tx_themes_behaviour');
 
 	// Column settings
 	$tempColumn = array(
@@ -94,8 +90,8 @@ if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements'))
 			)
 		),
 	);
-	ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumn);
-	ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_columnsettings', '', 'after:tx_themes_enforceequalcolumnheight');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumn);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_columnsettings', '', 'after:tx_themes_enforceequalcolumnheight');
 }
 
 /**
@@ -114,7 +110,7 @@ if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements'))
 	);
 
 	if (TYPO3_MODE === 'BE') {
-		ExtensionUtility::registerModule(
+		\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 			'KayStrobach.' . $_EXTKEY, 'web', // Main area
 			'mod1', // Name of the module
 			'', // Position of the module
@@ -129,18 +125,18 @@ if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements'))
 	}
 
 	// Add the skin selector for backend users.
-	ExtensionManagementUtility::addTCAcolumns('sys_template', $tempColumn);
-	ExtensionManagementUtility::addToAllTCAtypes('sys_template', '--div--;Themes,tx_themes_skin');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_template', $tempColumn);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('sys_template', '--div--;Themes,tx_themes_skin');
 
 /**
  * auto inject base TS
  */
 	$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
 	if(array_key_exists('themesIndependent', $extensionConfiguration) && ($extensionConfiguration['themesIndependent'] === '1')) {
-		ExtensionManagementUtility::addTypoScriptSetup('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:themes/Configuration/TypoScript/setup.txt">');
-		ExtensionManagementUtility::addTypoScriptConstants('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:themes/Configuration/TypoScript/constants.txt">');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:themes/Configuration/TypoScript/setup.txt">');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:themes/Configuration/TypoScript/constants.txt">');
 	} else {
-		ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Themes');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Themes');
 	}
 	unset($extensionConfiguration);
 
@@ -155,10 +151,10 @@ if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements'))
  */
 	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
 		array(
-			'switch-off' => ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_orange.png',
-			'switch-disable' => ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_grey.png',
-			'switch-on' => ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_green.png',
-			'overlay-theme' => ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/overlay_theme.png',
+			'switch-off' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_orange.png',
+			'switch-disable' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_grey.png',
+			'switch-on' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_green.png',
+			'overlay-theme' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/overlay_theme.png',
 		),
 		$_EXTKEY
 	);

@@ -1,8 +1,5 @@
 <?php
 
-use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use \TYPO3\CMS\Extbase\Utility\ExtensionUtility;
-
 if (!defined('TYPO3_MODE'))
 	die('Access denied.');
 
@@ -47,7 +44,7 @@ if (!defined('TYPO3_MODE'))
 /**
  * register frontend plugin to allow usage of extbase controller
  */
-	ExtensionUtility::configurePlugin(
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
 		'KayStrobach.' . $_EXTKEY,
 		'Theme', array(
 			'Theme' => 'index'
