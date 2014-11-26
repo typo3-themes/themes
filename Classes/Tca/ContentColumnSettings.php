@@ -49,10 +49,11 @@ class ContentColumnSettings extends AbstractContentRow {
 				$radiobuttons .= '<legend style="font-weight:bold">' . $label . '</legend>' . LF;
 				if (isset($settings['columnSettings.']) && is_array($settings['columnSettings.'])) {
 					foreach ($settings['columnSettings.'] as $visibilityKey => $visibilityLabel) {
+						$start = $visibilityKey === 'width' ? 1 : 0;
 						$tempKey = 'responsive-' . $groupKey . '-' . $visibilityKey;
 
 						// Collect selectable values
-						for ($i = 1; $i <= 12; $i++) {
+						for ($i = $start; $i <= 12; $i++) {
 							$valuesAvailable[] = $tempKey . '-' . $i;
 						}
 
@@ -63,7 +64,7 @@ class ContentColumnSettings extends AbstractContentRow {
 
 						$radiobuttons .= '<select style="width:110px" onchange="contentColumnSettingsChange(this)" name="' . $tempKey . '">' . LF;
 						$radiobuttons .= '<option value="">default</option>' . LF;
-						for ($i = 1; $i <= 12; $i++) {
+						for ($i = $start; $i <= 12; $i++) {
 
 							// set the selected value
 							$selected = (isset($valuesFlipped[$tempKey . '-' . $i])) ? 'selected="selected"' : '';
