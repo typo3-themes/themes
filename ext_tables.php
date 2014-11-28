@@ -7,13 +7,10 @@ if (!defined('TYPO3_MODE'))
 /**
  * manipulate the tt_content table
  */
-/**
- * @todo: add some translations
- */
 	$tempColumn = array(
 		'tx_themes_variants' => array(
 			'exclude' => 1,
-			'label' => 'Variants',
+			'label' => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants',
 			'config' => array(
 				'type' => 'user',
 				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentVariants->renderField',
@@ -21,7 +18,7 @@ if (!defined('TYPO3_MODE'))
 		),
 		'tx_themes_responsive' => array(
 			'exclude' => 1,
-			'label' => 'Responsive settings',
+			'label' => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:responsive_settings',
 			'config' => array(
 				'type' => 'user',
 				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentResponsive->renderField',
@@ -29,7 +26,7 @@ if (!defined('TYPO3_MODE'))
 		),
 		'tx_themes_behaviour' => array(
 			'exclude' => 1,
-			'label' => 'Behaviour',
+			'label' => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:behaviour',
 			'config' => array(
 				'type' => 'user',
 				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentBehaviour->renderField',
@@ -60,7 +57,7 @@ if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements'))
 				),
 			),
 			'exclude' => 1,
-			'label' => 'Enforce equal column height',
+			'label' => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:enforce_equal_column_height',
 			'config' => array(
 				'type' => 'user',
 				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentEnforceEqualColumnHeight->renderField',
@@ -83,7 +80,7 @@ if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements'))
 				),
 			),
 			'exclude' => 1,
-			'label' => 'Column settings',
+			'label' => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:column_settings',
 			'config' => array(
 				'type' => 'user',
 				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentColumnSettings->renderField',
@@ -100,7 +97,7 @@ if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements'))
 	$tempColumn = array(
 		'tx_themes_skin' => array(
 			'exclude' => 1,
-			'label' => 'Themes',
+			'label' => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:themes',
 			'displayCond' => 'FIELD:root:REQ:true',
 			'config' => array(
 				'type' => 'user',

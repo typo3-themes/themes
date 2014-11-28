@@ -6,6 +6,9 @@
 			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
 				<source>Themes</source>
 			</trans-unit>
+			<trans-unit id="themes" xml:space="preserve">
+				<source>Themes</source>
+			</trans-unit>
 			<trans-unit id="setConstants" xml:space="preserve">
 				<source>Configure Theme</source>
 			</trans-unit>
@@ -30,7 +33,41 @@
 			<trans-unit id="category.language" xml:space="preserve">
 				<source>Language</source>
 			</trans-unit>
+			<trans-unit id="unavailable_classes" xml:space="preserve">
+				<source>Unavailable classes/settings</source>
+			</trans-unit>
 
+			<!-- Variants-TCA-Row -->
+			<trans-unit id="variants" xml:space="preserve">
+				<source>Variants</source>
+			</trans-unit>
+			<trans-unit id="variants.default_label" xml:space="preserve">
+				<source>Variants for all content-types</source>
+			</trans-unit>
+			<trans-unit id="variants.ctype_label" xml:space="preserve">
+				<source>Variants for this content-type</source>
+			</trans-unit>
+			<trans-unit id="variants.no_variants_available" xml:space="preserve">
+				<source>No variants available</source>
+			</trans-unit>
+
+			<!-- Behaviour-TCA-Row -->
+			<trans-unit id="behaviour" xml:space="preserve">
+				<source>Behaviour</source>
+			</trans-unit>
+
+			<!-- Responsive-TCA-Row -->
+			<trans-unit id="responsive_settings" xml:space="preserve">
+				<source>Responsive settings</source>
+			</trans-unit>
+			
+			<trans-unit id="enforce_equal_column_height" xml:space="preserve">
+				<source>Equal column height</source>
+			</trans-unit>
+			<trans-unit id="column_settings" xml:space="preserve">
+				<source>Column settings</source>
+			</trans-unit>
+			
 		</body>
 	</file>
 </xliff>

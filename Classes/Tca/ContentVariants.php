@@ -36,19 +36,44 @@ class ContentVariants extends AbstractContentRow {
 		$variants = $this->getMergedConfiguration($pid, 'variants', $cType);
 
 		// Build checkboxes
-		$checkboxes = '';
+		$checkboxesArray = array();
+		$checkboxesArray['default'] = array();
+		$checkboxesArray['ctype'] = array();
 		if (isset($variants['properties']) && is_array($variants['properties'])) {
 			foreach ($variants['properties'] as $key => $label) {
-				$key = 'variants-' . $key;
-				$valuesAvailable[] = $key;
+				$fullKey = 'variants-' . $key;
+				$valuesAvailable[] = $fullKey;
 				$checked = (isset($valuesFlipped[$key])) ? 'checked="checked"' : '';
-				$checkboxes .= '<div style="width:200px;float:left">' . LF;
-				$checkboxes .= '<label><input type="checkbox" onchange="contentVariantChange(this)" name="' . $key . '" ' . $checked . '>' . LF;
-				$checkboxes .= $GLOBALS['LANG']->sL($label) . '</label>' . LF;
-				$checkboxes .= '</div>' . LF;
+				$checkbox = '<div style="width:200px;float:left">' . LF;
+				$checkbox .= '<label><input type="checkbox" onchange="contentVariantChange(this)" name="' . $fullKey . '" ' . $checked . '>' . LF;
+				$checkbox .= $GLOBALS['LANG']->sL($label) . '</label>' . LF;
+				$checkbox .= '</div>' . LF;
+				if(array_key_exists($key, $this->defaultProperties)) {
+					$checkboxesArray['default'][] = $checkbox;
+				}
+				else {
+					$checkboxesArray['ctype'][] = $checkbox;
+				}
 			}
 		}
 
+		$checkboxes = '';
+		if(!empty($checkboxesArray['default'])) {
+			$label = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.default_label');
+			$checkboxes = '<fieldset style="border:0 solid">' . LF;
+			$checkboxes .= '<legend style="font-weight:bold">' . $label . ':</legend>' . implode('', $checkboxesArray['default']). LF;
+			$checkboxes .= '</fieldset>' . LF;
+		}
+		if(!empty($checkboxesArray['ctype'])) {
+			$label = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.ctype_label');
+			$checkboxes .= '<fieldset style="border:0 solid">' . LF;
+			$checkboxes .= '<legend style="font-weight:bold">' . $label . ':</legend>' . implode('', $checkboxesArray['ctype']). LF;
+			$checkboxes .= '</fieldset>' . LF;
+		}
+		if($checkboxes==='') {
+			$checkboxes = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.no_variants_available');;
+		}
+		
 		/**
 		 * Include jQuery in backend
 		 * @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer
