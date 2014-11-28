@@ -45,7 +45,7 @@ class ContentResponsive extends AbstractContentRow {
 				$label = isset($settings['label']) ? $settings['label'] : $groupKey;
 
 				$radiobuttons .= '<fieldset style="border:0 solid;border-right: 1px solid #ccc;width:120px;float:left;">' . LF;
-				$radiobuttons .= '<legend style="font-weight:bold">' . $label . '</legend>' . LF;
+				$radiobuttons .= '<legend style="font-weight:bold">' . $GLOBALS['LANG']->sL($label) . '</legend>' . LF;
 				if (isset($settings['visibility.']) && is_array($settings['visibility.'])) {
 
 					// check if theres already a value selected
@@ -74,7 +74,7 @@ class ContentResponsive extends AbstractContentRow {
 						// build radiobox
 						$radiobuttons .= '<div style="float:left">' . LF;
 						$radiobuttons .= '<label><input type="radio" onchange="contentResponsiveChange(this)" name="responsive-' . $groupKey . '" value="' . $tempKey . '" ' . $selected . ' />' . LF;
-						$radiobuttons .= $visibilityLabel . '</label>' . LF;
+						$radiobuttons .= $GLOBALS['LANG']->sL($visibilityLabel) . '</label>' . LF;
 						$radiobuttons .= '</div>' . LF;
 					}
 				}

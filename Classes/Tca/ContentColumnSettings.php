@@ -46,7 +46,7 @@ class ContentColumnSettings extends AbstractContentRow {
 				$label = isset($settings['label']) ? $settings['label'] : $groupKey;
 
 				$radiobuttons .= '<fieldset style="border:0 solid;border-right: 1px solid #ccc;width:120px;float:left;">' . LF;
-				$radiobuttons .= '<legend style="font-weight:bold">' . $label . '</legend>' . LF;
+				$radiobuttons .= '<legend style="font-weight:bold">' . $GLOBALS['LANG']->sL($label) . '</legend>' . LF;
 				if (isset($settings['columnSettings.']) && is_array($settings['columnSettings.'])) {
 					foreach ($settings['columnSettings.'] as $visibilityKey => $visibilityLabel) {
 						$start = $visibilityKey === 'width' ? 1 : 0;
@@ -60,7 +60,7 @@ class ContentColumnSettings extends AbstractContentRow {
 						// build radiobox
 						$radiobuttons .= '<div style="float:left">' . LF;
 						//$radiobuttons .= '<input type="radio" name="' . $groupKey . '" value="' . $tempKey . '" id="theme-enforceequalcolumnheight-' . $tempKey . '" ' . $selected .  '>' . LF;
-						$radiobuttons .= '<label style="width:50px;display:inline-block">' . $visibilityLabel . '</label>' . LF;
+						$radiobuttons .= '<label style="width:50px;display:inline-block">' . $GLOBALS['LANG']->sL($visibilityLabel) . '</label>' . LF;
 
 						$radiobuttons .= '<select style="width:110px" onchange="contentColumnSettingsChange(this)" name="' . $tempKey . '">' . LF;
 						$radiobuttons .= '<option value="">default</option>' . LF;

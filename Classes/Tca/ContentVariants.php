@@ -44,7 +44,7 @@ class ContentVariants extends AbstractContentRow {
 				$checked = (isset($valuesFlipped[$key])) ? 'checked="checked"' : '';
 				$checkboxes .= '<div style="width:200px;float:left">' . LF;
 				$checkboxes .= '<label><input type="checkbox" onchange="contentVariantChange(this)" name="' . $key . '" ' . $checked . '>' . LF;
-				$checkboxes .= $label . '</label>' . LF;
+				$checkboxes .= $GLOBALS['LANG']->sL($label) . '</label>' . LF;
 				$checkboxes .= '</div>' . LF;
 			}
 		}
