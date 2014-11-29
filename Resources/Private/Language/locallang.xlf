@@ -41,11 +41,14 @@
 			<trans-unit id="variants" xml:space="preserve">
 				<source>Variants</source>
 			</trans-unit>
-			<trans-unit id="variants.default_label" xml:space="preserve">
+			<trans-unit id="variants.default_group_label" xml:space="preserve">
 				<source>Variants for all content-types</source>
 			</trans-unit>
-			<trans-unit id="variants.ctype_label" xml:space="preserve">
+			<trans-unit id="variants.ctype_group_label" xml:space="preserve">
 				<source>Variants only for this content-type</source>
+			</trans-unit>
+			<trans-unit id="variants.gridlayout_group_label" xml:space="preserve">
+				<source>Variants  only for this grid-layout</source>
 			</trans-unit>
 			<trans-unit id="variants.no_variants_available" xml:space="preserve">
 				<source>No variants available</source>
@@ -54,6 +57,18 @@
 			<!-- Behaviour-TCA-Row -->
 			<trans-unit id="behaviour" xml:space="preserve">
 				<source>Behaviour</source>
+			</trans-unit>
+			<trans-unit id="behaviour.default_group_label" xml:space="preserve">
+				<source>Behaviour for all content-types</source>
+			</trans-unit>
+			<trans-unit id="behaviour.ctype_group_label" xml:space="preserve">
+				<source>Behaviour only for this content-type</source>
+			</trans-unit>
+			<trans-unit id="behaviour.gridlayout_group_label" xml:space="preserve">
+				<source>Behaviour only for this grid-layout</source>
+			</trans-unit>
+			<trans-unit id="behaviour.no_behaviour_available" xml:space="preserve">
+				<source>No behaviour available</source>
 			</trans-unit>
 
 			<!-- Responsive-TCA-Row -->

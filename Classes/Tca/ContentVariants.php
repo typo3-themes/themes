@@ -10,6 +10,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ContentVariants extends AbstractContentRow {
 
+	protected $checkboxesArray = array();
+	protected $valuesFlipped = array();
+	protected $valuesAvailable = array();
+
 	/**
 	 * Render a Content Variant row
 	 *
@@ -29,49 +33,59 @@ class ContentVariants extends AbstractContentRow {
 
 		// Get values
 		$values = explode(',', $value);
-		$valuesFlipped = array_flip($values);
-		$valuesAvailable = array();
+		$this->valuesFlipped = array_flip($values);
+		$this->valuesAvailable = array();
 
 		// Get configuration
 		$variants = $this->getMergedConfiguration($pid, 'variants', $cType);
 
 		// Build checkboxes
-		$checkboxesArray = array();
-		$checkboxesArray['default'] = array();
-		$checkboxesArray['ctype'] = array();
+		$this->checkboxesArray['default'] = array();
+		$this->checkboxesArray['ctype'] = array();
+		$this->checkboxesArray['gridLayout'] = array();
 		if (isset($variants['properties']) && is_array($variants['properties'])) {
-			foreach ($variants['properties'] as $key => $label) {
-				$fullKey = 'variants-' . $key;
-				$valuesAvailable[] = $fullKey;
-				$checked = (isset($valuesFlipped[$key])) ? 'checked="checked"' : '';
-				$checkbox = '<div style="width:200px;float:left">' . LF;
-				$checkbox .= '<label><input type="checkbox" onchange="contentVariantChange(this)" name="' . $fullKey . '" ' . $checked . '>' . LF;
-				$checkbox .= $GLOBALS['LANG']->sL($label) . '</label>' . LF;
-				$checkbox .= '</div>' . LF;
-				if(array_key_exists($key, $this->defaultProperties)) {
-					$checkboxesArray['default'][] = $checkbox;
+			foreach ($variants['properties'] as $contentElementKey => $label) {
+
+				// GridElements: are able to provide grid-specific variants
+				if (is_array($label) && $cType === 'gridelements_pi1') {
+					$contentElementKey = substr($contentElementKey, 0, -1);
+
+					// Variant for all GridElements
+					if ($contentElementKey == 'default' && !empty($label)) {
+						foreach ($label as $gridLayoutKey => $gridLayoutVariantLabel) {
+							$this->createCheckbox($gridLayoutKey, $gridLayoutVariantLabel, 'ctype');
+						}
+					}
+					// Variant only for selected GridElement
+					else if ($contentElementKey == $gridLayout && !empty($label)) {
+						foreach ($label as $gridLayoutKey => $gridLayoutVariantLabel) {
+							$this->createCheckbox($gridLayoutKey, $gridLayoutVariantLabel, 'gridLayout');
+						}
+					}
+
 				}
+				// Normal CEs
 				else {
-					$checkboxesArray['ctype'][] = $checkbox;
+					// Is default property!?
+					if (array_key_exists($contentElementKey, $this->defaultProperties)) {
+						$this->createCheckbox($contentElementKey, $label, 'default');
+					}
+					// Is ctype specific!
+					else {
+						$this->createCheckbox($contentElementKey, $label, 'ctype');
+					}
 				}
+				
 			}
 		}
 
+		// Merge checkbox groups
 		$checkboxes = '';
-		if(!empty($checkboxesArray['default'])) {
-			$label = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.default_label');
-			$checkboxes = '<fieldset style="border:0 solid">' . LF;
-			$checkboxes .= '<legend style="font-weight:bold">' . $label . ':</legend>' . implode('', $checkboxesArray['default']). LF;
-			$checkboxes .= '</fieldset>' . LF;
-		}
-		if(!empty($checkboxesArray['ctype'])) {
-			$label = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.ctype_label');
-			$checkboxes .= '<fieldset style="border:0 solid">' . LF;
-			$checkboxes .= '<legend style="font-weight:bold">' . $label . ':</legend>' . implode('', $checkboxesArray['ctype']). LF;
-			$checkboxes .= '</fieldset>' . LF;
-		}
-		if($checkboxes==='') {
-			$checkboxes = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.no_variants_available');;
+		$checkboxes .= $this->getMergedCheckboxes('default');
+		$checkboxes .= $this->getMergedCheckboxes('ctype');
+		$checkboxes .= $this->getMergedCheckboxes('gridLayout');
+		if ($checkboxes === '') {
+			$checkboxes = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.no_variants_available');
 		}
 		
 		/**
@@ -97,15 +111,51 @@ class ContentVariants extends AbstractContentRow {
 		$script .= '}' . LF;
 		$script .= '</script>' . LF;
 
-		$setClasses = array_intersect($values, $valuesAvailable);
+		$setClasses = array_intersect($values, $this->valuesAvailable);
 		$setClass = htmlspecialchars(implode(' ', $setClasses));
 		$setValue = htmlspecialchars(implode(',', $setClasses));
 
 		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" name="' . htmlspecialchars($name) . '" value="' . $setValue . '" class="' . $setClass . '">' . LF;
 
 		// Missed classes
-		$missedField = $this->getMissedFields($values, $valuesAvailable);
+		$missedField = $this->getMissedFields($values, $this->valuesAvailable);
 
 		return '<div class="contentVariant">' . $checkboxes . $hiddenField . $script . $missedField . '</div>';
 	}
+
+	/**
+	 * Creates a checkbox
+	 *
+	 * @param $key \string Key/name of the checkbox
+	 * @param $label \string Label of the checkbox
+	 * @param $type \string Type of the checkbox property
+	 */
+	protected function createCheckbox($key, $label, $type) {
+		$this->valuesAvailable[] = $key;
+		$checked = (isset($this->valuesFlipped[$key])) ? 'checked="checked"' : '';
+		$checkbox = '<div style="width:200px;float:left">' . LF;
+		$checkbox .= '<label><input type="checkbox" onchange="contentVariantChange(this)" name="' . $key . '" ' . $checked . '>' . LF;
+		$checkbox .= $GLOBALS['LANG']->sL($label) . '</label>' . LF;
+		$checkbox .= '</div>' . LF;
+		$this->checkboxesArray[$type][] = $checkbox;
+	}
+
+	/**
+	 * Merge checkboxes into a group
+	 *
+	 * @param $type \string Type of the checkbox property
+	 * @return string Grouped checkboxes
+	 */
+	protected function getMergedCheckboxes($type) {
+		$checkboxes = '';
+		if (!empty($this->checkboxesArray[$type])) {
+			$labelKey = 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:behaviour.' . strtolower($type) . '_group_label';
+			$label = $GLOBALS['LANG']->sL($labelKey);
+			$checkboxes .= '<fieldset style="border:0 solid">' . LF;
+			$checkboxes .= '<legend style="font-weight:bold">' . $label . ':</legend>' . implode('', $this->checkboxesArray[$type]). LF;
+			$checkboxes .= '</fieldset>' . LF;
+		}
+		return $checkboxes;
+	}
+	
 }

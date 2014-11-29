@@ -16,7 +16,7 @@ abstract class AbstractContentRow {
 	protected function getMissedFields($values, $valuesAvailable) {
 		$missedField = '';
 		$missedClasses = array_diff($values, $valuesAvailable);
-		$missedClass = htmlspecialchars(implode(',', $missedClasses));
+		$missedClass = htmlspecialchars(implode(', ', $missedClasses));
 		if (!empty($missedClass)) {
 			$label = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:unavailable_classes');
 			$missedField = '<span style="display:inline-block;color: #C00">' . $label . ': '. $missedClass . '</span>';

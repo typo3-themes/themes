@@ -10,6 +10,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ContentBehaviour extends AbstractContentRow {
 
+	protected $checkboxesArray = array();
+	protected $valuesFlipped = array();
+	protected $valuesAvailable = array();
+	
 	/**
 	 * Render a Content Behaviour row
 	 *
@@ -29,24 +33,60 @@ class ContentBehaviour extends AbstractContentRow {
 
 		// Get values
 		$values = explode(',', $value);
-		$valuesFlipped = array_flip($values);
-		$valuesAvailable = array();
+		$this->valuesFlipped = array_flip($values);
+		$this->valuesAvailable = array();
 
 		// Get configuration
 		$behaviours = $this->getMergedConfiguration($pid, 'behaviour', $cType);
 
 		// Build checkboxes
-		$checkboxes = '';
+		$this->checkboxesArray['default'] = array();
+		$this->checkboxesArray['ctype'] = array();
+		$this->checkboxesArray['gridLayout'] = array();
 		if (isset($behaviours['properties']) && is_array($behaviours['properties'])) {
-			foreach ($behaviours['properties'] as $key => $label) {
-				$key = 'behaviour-' . $key;
-				$valuesAvailable[] = $key;
-				$checked = (isset($valuesFlipped[$key])) ? 'checked="checked"' : '';
-				$checkboxes .= '<div style="width:200px;float:left">' . LF;
-				$checkboxes .= '<label><input type="checkbox" onchange="contentBehaviourChange(this)" name="' . $key . '" ' . $checked . '>' . LF;
-				$checkboxes .= $GLOBALS['LANG']->sL($label) . '</label>' . LF;
-				$checkboxes .= '</div>' . LF;
+			
+			foreach ($behaviours['properties'] as $contentElementKey => $label) {
+
+				// GridElements: are able to provide grid-specific behaviours
+				if (is_array($label) && $cType === 'gridelements_pi1') {
+					$contentElementKey = substr($contentElementKey, 0, -1);
+					
+					// Behaviour for all GridElements
+					if ($contentElementKey == 'default' && !empty($label)) {
+						foreach ($label as $gridLayoutKey => $gridLayoutBehaviourLabel) {
+							$this->createCheckbox($gridLayoutKey, $gridLayoutBehaviourLabel, 'ctype');
+						}
+					}
+					// Behaviour only for selected GridElement
+					else if ($contentElementKey == $gridLayout && !empty($label)) {
+						foreach ($label as $gridLayoutKey => $gridLayoutBehaviourLabel) {
+							$this->createCheckbox($gridLayoutKey, $gridLayoutBehaviourLabel, 'gridLayout');
+						}
+					}
+					
+				}
+				// Normal CEs
+				else {
+					// Is default property!?
+					if (array_key_exists($contentElementKey, $this->defaultProperties)) {
+						$this->createCheckbox($contentElementKey, $label, 'default');
+					}
+					// Is ctype specific!
+					else {
+						$this->createCheckbox($contentElementKey, $label, 'ctype');
+					}
+				}
+				
 			}
+		}
+
+		// Merge checkbox groups
+		$checkboxes = '';
+		$checkboxes .= $this->getMergedCheckboxes('default');
+		$checkboxes .= $this->getMergedCheckboxes('ctype');
+		$checkboxes .= $this->getMergedCheckboxes('gridLayout');
+		if ($checkboxes === '') {
+			$checkboxes = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:behaviour.no_behaviour_available');
 		}
 
 		/**
@@ -72,16 +112,50 @@ class ContentBehaviour extends AbstractContentRow {
 		$script .= '}' . LF;
 		$script .= '</script>' . LF;
 
-		$setClasses = array_intersect($values, $valuesAvailable);
+		$setClasses = array_intersect($values, $this->valuesAvailable);
 		$setClass = htmlspecialchars(implode(' ', $setClasses));
 		$setValue = htmlspecialchars(implode(',', $setClasses));
 
 		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" name="' . htmlspecialchars($name) . '" value="' . $setValue . '" class="' . $setClass . '">' . LF;
 
 		// Missed classes
-		$missedField = $this->getMissedFields($values, $valuesAvailable);
+		$missedField = $this->getMissedFields($values, $this->valuesAvailable);
 
 		return '<div class="contentBehaviour">' . $checkboxes . $hiddenField . $script . $missedField . '</div>';
 	}
 
+	/**
+	 * Creates a checkbox
+	 * 
+	 * @param $key \string Key/name of the checkbox
+	 * @param $label \string Label of the checkbox
+	 * @param $type \string Type of the checkbox property
+	 */
+	protected function createCheckbox($key, $label, $type) {
+		$this->valuesAvailable[] = $key;
+		$checked = (isset($this->valuesFlipped[$key])) ? 'checked="checked"' : '';
+		$checkbox = '<div style="width:200px;float:left">' . LF;
+		$checkbox .= '<label><input type="checkbox" onchange="contentBehaviourChange(this)" name="' . $key . '" ' . $checked . '>' . LF;
+		$checkbox .= $GLOBALS['LANG']->sL($label) . '</label>' . LF;
+		$checkbox .= '</div>' . LF;
+		$this->checkboxesArray[$type][] = $checkbox;
+	}
+
+	/**
+	 * Merge checkboxes into a group
+	 * 
+	 * @param $type \string Type of the checkbox property
+	 * @return string Grouped checkboxes
+	 */
+	protected function getMergedCheckboxes($type) {
+		$checkboxes = '';
+		if (!empty($this->checkboxesArray[$type])) {
+			$labelKey = 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:behaviour.' . strtolower($type) . '_group_label';
+			$label = $GLOBALS['LANG']->sL($labelKey);
+			$checkboxes .= '<fieldset style="border:0 solid">' . LF;
+			$checkboxes .= '<legend style="font-weight:bold">' . $label . ':</legend>' . implode('', $this->checkboxesArray[$type]). LF;
+			$checkboxes .= '</fieldset>' . LF;
+		}
+		return $checkboxes;
+	}
 }
