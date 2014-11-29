@@ -45,7 +45,7 @@
 				<source>Variants for all content-types</source>
 			</trans-unit>
 			<trans-unit id="variants.ctype_label" xml:space="preserve">
-				<source>Variants for this content-type</source>
+				<source>Variants only for this content-type</source>
 			</trans-unit>
 			<trans-unit id="variants.no_variants_available" xml:space="preserve">
 				<source>No variants available</source>

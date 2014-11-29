@@ -58,8 +58,8 @@
 				<target>Varianten für alle Inhaltselement-Typen</target>
 			</trans-unit>
 			<trans-unit id="variants.ctype_label" xml:space="preserve">
-				<source>Variants for this content-type</source>
-				<target>Varianten für diesen Inhaltselement-Typen</target>
+				<source>Variants only for this content-type</source>
+				<target>Varianten nur für diesen Inhaltselement-Typ</target>
 			</trans-unit>
 			<trans-unit id="variants.no_variants_available" xml:space="preserve">
 				<source>No variants available</source>
