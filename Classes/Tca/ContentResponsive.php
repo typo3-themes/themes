@@ -51,14 +51,14 @@ class ContentResponsive extends AbstractContentRow {
 					// check if theres already a value selected
 					$valueSet = FALSE;
 					foreach ($settings['visibility.'] as $visibilityKey => $_) {
-						$tempKey = 'responsive-' . $groupKey . '-' . $visibilityKey;
+						$tempKey = $groupKey . '-' . $visibilityKey;
 						if (!$valueSet) {
 							$valueSet = isset($valuesFlipped[$tempKey]);
 						}
 					}
 
 					foreach ($settings['visibility.'] as $visibilityKey => $visibilityLabel) {
-						$tempKey = 'responsive-' . $groupKey . '-' . $visibilityKey;
+						$tempKey = $groupKey . '-' . $visibilityKey;
 						$valuesAvailable[] = $tempKey;
 
 						// set the selected value
@@ -73,7 +73,7 @@ class ContentResponsive extends AbstractContentRow {
 
 						// build radiobox
 						$radiobuttons .= '<div style="float:left">' . LF;
-						$radiobuttons .= '<label><input type="radio" onchange="contentResponsiveChange(this)" name="responsive-' . $groupKey . '" value="' . $tempKey . '" ' . $selected . ' />' . LF;
+						$radiobuttons .= '<label><input type="radio" onchange="contentResponsiveChange(this)" name="' . $groupKey . '" value="' . $tempKey . '" ' . $selected . ' />' . LF;
 						$radiobuttons .= $GLOBALS['LANG']->sL($visibilityLabel) . '</label>' . LF;
 						$radiobuttons .= '</div>' . LF;
 					}
