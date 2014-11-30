@@ -131,10 +131,13 @@ class ContentVariants extends AbstractContentRow {
 	 * @param $type \string Type of the checkbox property
 	 */
 	protected function createCheckbox($key, $label, $type) {
+		$label = $GLOBALS['LANG']->sL($label);
+		$labelStyles = 'display: inline-block;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 190px';
 		$this->valuesAvailable[] = $key;
 		$checked = (isset($this->valuesFlipped[$key])) ? 'checked="checked"' : '';
 		$checkbox = '<div style="width:200px;float:left">' . LF;
-		$checkbox .= '<label><input type="checkbox" onchange="contentVariantChange(this)" name="' . $key . '" ' . $checked . '>' . LF;
+		$checkbox .= '<label style="' . $labelStyles . '" title="' . $label . '">' . LF;
+		$checkbox .= '<input type="checkbox" onchange="contentVariantChange(this)" name="' . $key . '" ' . $checked . '>' . LF;
 		$checkbox .= $GLOBALS['LANG']->sL($label) . '</label>' . LF;
 		$checkbox .= '</div>' . LF;
 		$this->checkboxesArray[$type][] = $checkbox;
@@ -149,7 +152,7 @@ class ContentVariants extends AbstractContentRow {
 	protected function getMergedCheckboxes($type) {
 		$checkboxes = '';
 		if (!empty($this->checkboxesArray[$type])) {
-			$labelKey = 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:behaviour.' . strtolower($type) . '_group_label';
+			$labelKey = 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.' . strtolower($type) . '_group_label';
 			$label = $GLOBALS['LANG']->sL($labelKey);
 			$checkboxes .= '<fieldset style="border:0 solid">' . LF;
 			$checkboxes .= '<legend style="font-weight:bold">' . $label . ':</legend>' . implode('', $this->checkboxesArray[$type]). LF;

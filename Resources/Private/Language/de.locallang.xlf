@@ -72,23 +72,23 @@
 
 			<!-- Behaviour-TCA-Row -->
 			<trans-unit id="behaviour" xml:space="preserve">
-				<source>Behaviour</source>
+				<source>Behaviours</source>
 				<target>Verhalten</target>
 			</trans-unit>
 			<trans-unit id="behaviour.default_group_label" xml:space="preserve">
-				<source>Behaviour for all content-types</source>
+				<source>Behaviours for all content-types</source>
 				<target>Verhalten für alle Inhaltselement-Typen</target>
 			</trans-unit>
 			<trans-unit id="behaviour.ctype_group_label" xml:space="preserve">
-				<source>Behaviour only for this content-type</source>
+				<source>Behaviours only for this content-type</source>
 				<target>Verhalten nur für diesen Inhaltselement-Typ</target>
 			</trans-unit>
 			<trans-unit id="behaviour.gridlayout_group_label" xml:space="preserve">
-				<source>Behaviour only for this grid-layout</source>
+				<source>Behaviours only for this grid-layout</source>
 				<target>Verhalten nur für dieses Grid-Layout</target>
 			</trans-unit>
 			<trans-unit id="behaviour.no_behaviour_available" xml:space="preserve">
-				<source>No behaviour available</source>
+				<source>No behaviours available</source>
 				<target>Es konnten keine Verhalten gefunden werden</target>
 			</trans-unit>
 

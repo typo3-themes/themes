@@ -72,7 +72,7 @@ class ContentResponsive extends AbstractContentRow {
 						}
 
 						// build radiobox
-						$radiobuttons .= '<div style="float:left">' . LF;
+						$radiobuttons .= '<div style="float:left;width: 120px">' . LF;
 						$radiobuttons .= '<label><input type="radio" onchange="contentResponsiveChange(this)" name="' . $groupKey . '" value="' . $tempKey . '" ' . $selected . ' />' . LF;
 						$radiobuttons .= $GLOBALS['LANG']->sL($visibilityLabel) . '</label>' . LF;
 						$radiobuttons .= '</div>' . LF;
