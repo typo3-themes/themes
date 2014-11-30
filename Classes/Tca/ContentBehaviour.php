@@ -132,11 +132,14 @@ class ContentBehaviour extends AbstractContentRow {
 	 * @param $type \string Type of the checkbox property
 	 */
 	protected function createCheckbox($key, $label, $type) {
+		$label = $GLOBALS['LANG']->sL($label);
+		$labelStyles = 'display: inline-block;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 190px';
 		$this->valuesAvailable[] = $key;
 		$checked = (isset($this->valuesFlipped[$key])) ? 'checked="checked"' : '';
 		$checkbox = '<div style="width:200px;float:left">' . LF;
-		$checkbox .= '<label><input type="checkbox" onchange="contentBehaviourChange(this)" name="' . $key . '" ' . $checked . '>' . LF;
-		$checkbox .= $GLOBALS['LANG']->sL($label) . '</label>' . LF;
+		$checkbox .= '<label style="' . $labelStyles . '" title="' . $label . '">' . LF;
+		$checkbox .= '<input type="checkbox" onchange="contentBehaviourChange(this)" name="' . $key . '" ' . $checked . '>' . LF;
+		$checkbox .= $label . '</label>' . LF;
 		$checkbox .= '</div>' . LF;
 		$this->checkboxesArray[$type][] = $checkbox;
 	}
