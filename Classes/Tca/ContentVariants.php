@@ -149,7 +149,7 @@ class ContentVariants extends AbstractContentRow {
 	protected function getMergedCheckboxes($type) {
 		$checkboxes = '';
 		if (!empty($this->checkboxesArray[$type])) {
-			$labelKey = 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:behaviour.' . strtolower($type) . '_group_label';
+			$labelKey = 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.' . strtolower($type) . '_group_label';
 			$label = $GLOBALS['LANG']->sL($labelKey);
 			$checkboxes .= '<fieldset style="border:0 solid">' . LF;
 			$checkboxes .= '<legend style="font-weight:bold">' . $label . ':</legend>' . implode('', $this->checkboxesArray[$type]). LF;
