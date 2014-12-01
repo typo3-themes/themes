@@ -50,7 +50,7 @@ class ContentColumnSettings extends AbstractContentRow {
 				if (isset($settings['columnSettings.']) && is_array($settings['columnSettings.'])) {
 					foreach ($settings['columnSettings.'] as $visibilityKey => $visibilityLabel) {
 						$start = $visibilityKey === 'width' ? 1 : 0;
-						$tempKey = 'responsive-' . $groupKey . '-' . $visibilityKey;
+						$tempKey = $groupKey . '-' . $visibilityKey;
 
 						// Collect selectable values
 						for ($i = $start; $i <= 12; $i++) {

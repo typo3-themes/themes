@@ -52,14 +52,14 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow {
 					// check if theres already a value selected
 					$valueSet = FALSE;
 					foreach ($settings['rowSettings.'] as $visibilityKey => $_) {
-						$tempKey = 'responsive-' . $groupKey . '-' . $visibilityKey;
+						$tempKey = $groupKey . '-' . $visibilityKey;
 						if (!$valueSet) {
 							$valueSet = isset($valuesFlipped[$tempKey]);
 						}
 					}
 
 					foreach ($settings['rowSettings.'] as $visibilityKey => $visibilityLabel) {
-						$tempKey = 'responsive-' . $groupKey . '-' . $visibilityKey;
+						$tempKey = $groupKey . '-' . $visibilityKey;
 						$valuesAvailable[] = $tempKey;
 
 						// set the selected value
