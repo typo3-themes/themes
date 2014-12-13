@@ -1,8 +1,11 @@
+themes.relativePath
+-------------------
+
 .. ..................................
 .. container:: table-row dl-horizontal panel panel-default constants themes readonly
 
 	Property
-		``resourcePrivatePath``
+		``relativePath``
 
 	Data type
 		string
@@ -11,7 +14,7 @@
 		none
 
 	Description
-		Path to private resources of the theme (automatically set, readonly)
+		Relative path to the theme (automatically set, readonly)
 
 	Default
 		*none*

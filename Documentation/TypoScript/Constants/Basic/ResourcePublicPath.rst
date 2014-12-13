@@ -1,8 +1,11 @@
+themes.resourcePublicPath
+-------------------------
+
 .. ..................................
 .. container:: table-row dl-horizontal panel panel-default constants themes readonly
 
 	Property
-		``name``
+		``resourcePublicPath``
 
 	Data type
 		string
@@ -11,7 +14,7 @@
 		none
 
 	Description
-		Extension-Key of the Theme (automatically set, readonly)
+		Path to public resources of the theme (automatically set, readonly)
 
 	Default
 		*none*
@@ -20,4 +23,4 @@
 		themes
 
 	Definition
-		automatically setted, readonly
+		automatically set, readonly

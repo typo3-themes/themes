@@ -1,8 +1,11 @@
+themes.name
+-----------
+
 .. ..................................
 .. container:: table-row dl-horizontal panel panel-default constants themes readonly
 
 	Property
-		``relativePath``
+		``name``
 
 	Data type
 		string
@@ -11,7 +14,7 @@
 		none
 
 	Description
-		Relative path to the theme (automatically set, readonly)
+		Extension-Key of the Theme (automatically set, readonly)
 
 	Default
 		*none*
@@ -20,4 +23,4 @@
 		themes
 
 	Definition
-		automatically set, readonly
+		automatically setted, readonly

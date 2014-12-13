@@ -1,8 +1,11 @@
+themes.languages.available
+--------------------------
+
 .. ..................................
 .. container:: table-row dl-horizontal panel panel-default constants themes cat_languages
 
 	Property
-		``default.isoCode``
+		``available``
 
 	Data type
 		string
@@ -11,14 +14,14 @@
 		languages
 
 	Description
-		Default language iso code
+		Languages available for Language Switcher
 
 	Default
-		en_EN
+		*none*
 
 	Provided by ext
 		themes
 
 	Definition
-		# cat=languages; type=string; label=Default language iso code
-		languages.default.isoCode = en_EN
+		# cat=languages; type=string; label=Languages available for Language Switcher
+		languages.available =

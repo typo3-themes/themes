@@ -1,8 +1,11 @@
+themes.languages.default.isoCode
+--------------------------------
+
 .. ..................................
 .. container:: table-row dl-horizontal panel panel-default constants themes cat_languages
 
 	Property
-		``default.label``
+		``default.isoCode``
 
 	Data type
 		string
@@ -11,14 +14,14 @@
 		languages
 
 	Description
-		Default language label
+		Default language iso code
 
 	Default
-		English
+		en_EN
 
 	Provided by ext
 		themes
 
 	Definition
-		# cat=languages; type=string; label=Default language label
-		languages.default.label = English
+		# cat=languages; type=string; label=Default language iso code
+		languages.default.isoCode = en_EN

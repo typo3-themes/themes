@@ -1,17 +1,20 @@
+themes.templatePageId
+---------------------
+
 .. ..................................
 .. container:: table-row dl-horizontal panel panel-default constants themes readonly
 
 	Property
-		``resourcePublicPath``
+		``templatePageId``
 
 	Data type
-		string
+		integer
 
 	Category
 		none
 
 	Description
-		Path to public resources of the theme (automatically set, readonly)
+		Id of the page where the theme is selected (automatically set, readonly)
 
 	Default
 		*none*

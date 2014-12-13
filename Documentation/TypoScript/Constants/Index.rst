@@ -1,5 +1,19 @@
-Constants
-=========
+.. include:: ../../_IncludedDirectives.rst
+
+====================
+TypoScript-Constants
+====================
+
+**Table of content**
+
+.. toctree::
+	:maxdepth: 5
+	:glob:
+
+	Basic/Index
+	Languages/Index
+	
+	
 
 Default constants of the THEMES extension.
 
@@ -81,5 +95,6 @@ menuFooter   int+         Container für die Seiten des Footer-Menüs
             menuFooter = 0
         }
     }
+
 
 
