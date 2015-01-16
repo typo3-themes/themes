@@ -1,11 +1,11 @@
-themes.resourcePrivatePath
---------------------------
+themes.resourcesPrivatePath
+---------------------------
 
 .. ..................................
 .. container:: table-row dl-horizontal panel panel-default constants themes readonly
 
 	Property
-		``resourcePrivatePath``
+		``resourcesPrivatePath``
 
 	Data type
 		string
