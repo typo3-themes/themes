@@ -1,11 +1,11 @@
-themes.languages.default.flag
------------------------------
+themes.languages.default.isoCodeShort
+-------------------------------------
 
 .. ..................................
 .. container:: table-row dl-horizontal panel panel-default constants themes cat_languages
 
 	Property
-		``default.flag``
+		``default.isoCodeShort``
 
 	Data type
 		string
@@ -14,16 +14,14 @@ themes.languages.default.flag
 		languages
 
 	Description
-		Default language flag
+		Default iso code short
 
 	Default
-		gb
+		en
 
 	Provided by ext
 		themes
 
 	Definition
-		.. code-block:: php
-
-		# cat=languages; type=string; label=Default language flag
-		languages.default.flag = gb
+		# cat=languages/default/; type=string; label=Default iso code short
+		languages.default.isoCodeShort = en

@@ -23,5 +23,5 @@ themes.languages.default.isoCode
 		themes
 
 	Definition
-		# cat=languages; type=string; label=Default language iso code
+		# cat=languages/default/; type=string; label=Default language iso code
 		languages.default.isoCode = en_EN

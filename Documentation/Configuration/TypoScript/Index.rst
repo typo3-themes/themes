@@ -1,4 +1,4 @@
-.. include:: ../_IncludedDirectives.rst
+.. include:: ../../_IncludedDirectives.rst
 
 ==========
 TypoScript
@@ -8,5 +8,8 @@ TypoScript
 
 .. toctree::
 	:maxdepth: 4
+	:glob:
 
+	*
 	Constants/Index
+	Setup/Index

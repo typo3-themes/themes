@@ -2,9 +2,9 @@
     ...................................................
     Hint: following expression |my_substition_value| will be replaced when rendering doc.
 
-.. |author| replace:: Jo Hasenau <info@cybercraft.de>, Kay Strobach <typo3themes@kay-strobach.de>, Thomas Deuling <typo3@coding.ms>
+.. |author| replace:: Thomas Deuling <typo3@coding.ms>, Jo Hasenau <info@cybercraft.de>, Kay Strobach <typo3themes@kay-strobach.de>
 .. |extension_key| replace:: themes
-.. |extension_name| replace:: Themes-GridElements
+.. |extension_name| replace:: THEMES
 .. |version| replace:: 1.0.0
 .. |version_typo3| replace:: TYPO3 6.2.x
 .. |time| date:: %Y-%m-%d %H:%M

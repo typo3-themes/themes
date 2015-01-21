@@ -23,5 +23,5 @@ themes.languages.default.isoCodeHtml
 		themes
 
 	Definition
-		# cat=languages; type=string; label=lang attribute for html tag, can be as it is most time
+		# cat=languages/default/; type=string; label=lang attribute for html tag, can be as it is most time
 		languages.default.isoCodeHtml = {$themes.languages.default.isoCodeShort}
