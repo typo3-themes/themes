@@ -1,8 +1,9 @@
 .. include:: ../../../_IncludedDirectives.rst
 
-===============
-Basic-Constants
-===============
+================
+TypoScript-Setup
+================
+
 
 **Table of content**
 
@@ -11,3 +12,4 @@ Basic-Constants
 	:glob:
 
 	*
+
