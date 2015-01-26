@@ -56,7 +56,6 @@ class ThemesDomainRepositoryThemeRepositoryInitHook {
 		// exclude extensions, which are not worth to check them
 		$extensionsToCheck = array_diff(
 			ExtensionManagementUtility::getLoadedExtensionListArray(),
-			ExtensionManagementUtility::getRequiredExtensionListArray(),
 			$this->ignoredExtensions,
 			scandir(PATH_typo3 . 'sysext')
 		);

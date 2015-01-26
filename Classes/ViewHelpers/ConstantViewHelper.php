@@ -32,7 +32,7 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 		$pageWithTheme   = \KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility::find($GLOBALS['TSFE']->id);
 		$pageLanguage    = (int)GeneralUtility::_GP('L');
 		// instantiate the cache
-		$cache           = $GLOBALS['typo3CacheManager']->getCache('themes_cache');
+		$cache           = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('themes_cache');
 		$cacheLifeTime = 60 * 60 * 24 * 7 * 365 * 20;
 		$cacheIdentifierString = 'theme-of-page-' . $pageWithTheme . '-of-language-' . $pageLanguage;
 		$cacheIdentifier = sha1($cacheIdentifierString);
