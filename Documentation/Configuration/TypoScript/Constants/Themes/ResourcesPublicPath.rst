@@ -1,11 +1,11 @@
-themes.resourcePublicPath
--------------------------
+themes.resourcesPublicPath
+--------------------------
 
 .. ..................................
 .. container:: table-row dl-horizontal panel panel-default constants themes readonly
 
 	Property
-		``resourcePublicPath``
+		``resourcesPublicPath``
 
 	Data type
 		string

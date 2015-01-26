@@ -1,11 +1,11 @@
-themes.languages.default.label
-------------------------------
+themes.languages.default.flag
+-----------------------------
 
 .. ..................................
 .. container:: table-row dl-horizontal panel panel-default constants themes cat_languages
 
 	Property
-		``default.label``
+		``default.flag``
 
 	Data type
 		string
@@ -14,14 +14,14 @@ themes.languages.default.label
 		languages
 
 	Description
-		Default language label
+		Default language flag
 
 	Default
-		English
+		gb
 
 	Provided by ext
 		themes
 
 	Definition
-		# cat=languages; type=string; label=Default language label
-		languages.default.label = English
+		# cat=languages/default/; type=string; label=Default language flag
+		languages.default.flag = gb
