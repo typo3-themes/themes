@@ -45,4 +45,18 @@ abstract class AbstractContentRow {
 		
 		return $config;
 	}
+
+	/**
+	 * Checks if a backend user is an admin user
+	 * @return boolean
+	 */
+	protected function isAdmin() {
+		if (isset($GLOBALS['BE_USER'])) {
+			if (isset($GLOBALS['BE_USER']->user)) {
+				return (bool)$GLOBALS['BE_USER']->user['is_admin'];
+			}
+		}
+		return FALSE;
+	}
+	
 }
