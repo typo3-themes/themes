@@ -53,7 +53,7 @@ abstract class AbstractContentRow {
 	protected function isAdmin() {
 		if (isset($GLOBALS['BE_USER'])) {
 			if (isset($GLOBALS['BE_USER']->user)) {
-				return (bool)$GLOBALS['BE_USER']->user['is_admin'];
+				return (bool)$GLOBALS['BE_USER']->user['admin'];
 			}
 		}
 		return FALSE;
