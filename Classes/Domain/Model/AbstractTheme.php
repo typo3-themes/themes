@@ -2,6 +2,7 @@
 
 namespace KayStrobach\Themes\Domain\Model;
 
+use KayStrobach\Themes\Utilities\ApplicationContext;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -226,9 +227,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		);
 		// @codingStandardsIgnoreEnd
 
-		$themeItem['constants'] .= LF . 'themes.relPath = ' . $this->getRelativePath();
-		$themeItem['constants'] .= LF . 'themes.name = ' . $this->getExtensionName();
-		$themeItem['constants'] .= LF . 'themes.templatePid = ' . $params['pid'];
+		$themeItem['constants'] .= $this->getBasicConstants($params['pid']);
 		$themeItem['constants'] .= LF . $this->getTypoScriptForLanguage($params, $pObj);
 
 		$pObj->processTemplate(
@@ -283,6 +282,15 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 		/** @var \TYPO3\CMS\Lang\Domain\Model\Language $language */
 		return $outputBuffer;
+	}
+
+	protected function getBasicConstants($pid) {
+		$buffer = '';
+		$buffer .= LF . 'themes.relativePath = ' . $this->getRelativePath();
+		$buffer .= LF . 'themes.name = ' . $this->getExtensionName();
+		$buffer .= LF . 'themes.templatePageId = ' . $pid;
+		$buffer .= LF . 'themes.developmentMode = ' . (int)ApplicationContext::isDevelopmentModeActive();
+		return $buffer;
 	}
 
 }
