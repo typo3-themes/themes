@@ -204,6 +204,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	 */
 	public function findByPageOrRootline($pid) {
 		$rootline = BackendUtility::BEgetRootLine($pid);
+
 		foreach ($rootline as $page) {
 			$theme = $this->findByPageId($page['uid']);
 			if ($theme !== NULL) {
