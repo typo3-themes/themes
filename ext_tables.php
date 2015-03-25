@@ -98,7 +98,9 @@ if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements'))
 		'tx_themes_skin' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:themes',
-			'displayCond' => 'FIELD:root:REQ:true',
+			'displayCond' => array(
+				'FIELD:root:REQ:true'
+			),
 			'config' => array(
 				'type' => 'user',
 				'userFunc' => 'KayStrobach\\Themes\\Tca\\ThemeSelector->display',

@@ -112,7 +112,11 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow {
 		$setClass = htmlspecialchars(implode(' ', $setClasses));
 		$setValue = htmlspecialchars(implode(',', $setClasses));
 
-		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" name="' . htmlspecialchars($name) . '" value="' . $setValue . '"  class="' . $setClass . '">' . LF;
+		$inputType = 'hidden';
+		if($this->isAdmin()) {
+			$inputType = 'text';
+		}
+		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="' . $inputType . '" name="' . htmlspecialchars($name) . '" value="' . $setValue . '"  class="' . $setClass . '">' . LF;
 
 		// Missed classes
 		$missedField = $this->getMissedFields($values, $valuesAvailable);

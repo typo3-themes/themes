@@ -35,6 +35,14 @@
 					<col style="width:5%" />
 					<col style="width:50%" />
 					<col style="width:45%" />
+					<f:if condition="{subcat_name}">
+						<thead>
+							<tr>
+								<td colspan="3">{subcat_name}</td>
+							</tr>
+						</thead>
+					</f:if>
+
 					<f:for each="{themes:iterator.sort(subject: subcategory)}" as="item">
 						<tr  title="{item.name}" class="constantLine db_list_normal {f:if(condition:'{item.isDefault}', then:'defaultValueIsSelected')}">
 							<td nowrap="nowrap">

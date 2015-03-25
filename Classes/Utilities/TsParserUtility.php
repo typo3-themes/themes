@@ -61,6 +61,8 @@ class TsParserUtility implements SingletonInterface {
 					$return[$key]['typeCleaned'] = 'Boolean';
 				} elseif ($field['type'] === 'string') {
 					$return[$key]['typeCleaned'] = 'String';
+				} elseif(substr($field['type'], 0, 4) === 'file') {
+					$return[$key]['typeCleaned'] = 'File';
 				} elseif (substr($field['type'], 0, 7) === 'options') {
 					$return[$key]['typeCleaned'] = 'Options';
 					$options = explode(',', substr($field['type'], 8, -1));

@@ -42,6 +42,14 @@ if (!defined('TYPO3_MODE'))
 		= 'KayStrobach\\Themes\\Hook\\IconUtilityHook';
 
 /**
+ * register hook to inject BeLayoutTsprovider
+ */
+	if (TYPO3_MODE === 'BE') {
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']['pagets']
+			= 'KayStrobach\\Themes\\Provider\\TsProvider';
+	}
+
+/**
  * register frontend plugin to allow usage of extbase controller
  */
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(

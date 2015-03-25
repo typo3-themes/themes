@@ -129,9 +129,7 @@ class Theme extends AbstractTheme {
 		// @todo resources Path / private Path
 		$themeItem['constants'] .= LF . 'themes.resourcesPrivatePath = ' . $this->getRelativePath() . 'Resources/Private/';
 		$themeItem['constants'] .= LF . 'themes.resourcesPublicPath = ' . $this->getRelativePath() . 'Resources/Public/';
-		$themeItem['constants'] .= LF . 'themes.relativePath = ' . $this->getRelativePath();
-		$themeItem['constants'] .= LF . 'themes.name = ' . $this->getExtensionName();
-		$themeItem['constants'] .= LF . 'themes.templatePageId = ' . $params['pid'];
+		$themeItem['constants'] .= $this->getBasicConstants($params['pid']);
 		$themeItem['constants'] .= LF . $this->getTypoScriptForLanguage($params, $pObj);
 
 		$pObj->processTemplate(

@@ -137,6 +137,8 @@ class EditorController extends ActionController {
 		 */
 		$this->tsParser->applyToPid($pid, $data, $check);
 		$this->redirect('index');
+
+		$this->themeRepository->findByUid(array())->getAllPreviewImages();
 	}
 
 	/**
