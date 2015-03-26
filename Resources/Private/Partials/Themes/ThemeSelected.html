@@ -23,49 +23,83 @@
 </div>
 <div class="theme-detail-options theme-clearfix">
 	<f:form action="update" enctype="multipart/form-data" id="saveableForm">
+		
+		<div id="categoriesFilter">
+			<div class="row">
+				<div class="col-md-12">
+					<label for="categoriesFilterSearchField"><f:translate key="categoriesFilterSearch" /></label>
+					<input id="categoriesFilterSearchField" name="search" type="text" value="">
+					<label for="categoriesFilterSearchScope"><f:translate key="categoriesFilterIn" /></label>
+					<select id="categoriesFilterSearchScope" name="scope">
+						<option value="all"><f:translate key="categoriesFilterAll" /></option>
+						<f:for each="{themes:iterator.sort(subject: categories, key: 'title')}" as="category">
+							<f:if condition="{category.items}">
+								<option value="{category.key}"><f:translate key="{category.title}" default="{category.title}" /></option>
+							</f:if>
+						</f:for>
+					</select>
+					<button onclick="categoriesFilterSearch(); return false"><f:translate key="categoriesFilterRefresh" /></button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<input id="categoriesFilterShowBasic" name="showBasic" value="1" type="checkbox" checked="selected">
+					<label for="categoriesFilterShowBasic"><f:translate key="categoriesFilterBasic" /></label>
+					<input id="categoriesFilterShowAdvanced" name="showAdvanced" value="1" type="checkbox">
+					<label for="categoriesFilterShowAdvanced"><f:translate key="categoriesFilterAdvanced" /></label>
+					<input id="categoriesFilterShowExpert" name="showExpert" value="1" type="checkbox">
+					<label for="categoriesFilterShowExpert"><f:translate key="categoriesFilterExpert" /></label>
+				</div>
+			</div>
+		</div>
+		
 		<f:form.hidden name="pid" value="{pid}" />
 		<f:for each="{themes:iterator.sort(subject: categories, key: 'title')}" as="category">
-			<f:if condition="{category.items}">
-				<h2>
-					<f:translate key="{category.title}" default="{category.title}" />
-				</h2>
-			</f:if>
-			<f:groupedFor each="{category.items}" as="subcategory" groupBy="subcat_name" groupKey="subcat_name">
-				<table border="0" cellpadding="0" cellspacing="0" class="t3-table" style="max-width: 100%;">
-					<col style="width:5%" />
-					<col style="width:50%" />
-					<col style="width:45%" />
-					<f:if condition="{subcat_name}">
+			<section data-category="{category.key}" class="constants-group visible">
+				<f:if condition="{category.items}">
+					<h2><f:translate key="{category.title}" default="{category.title}" /></h2>
+				</f:if>
+				<f:groupedFor each="{category.items}" as="subcategory" groupBy="subcat_name" groupKey="subcat_name">
+					<table border="0" cellpadding="0" cellspacing="0" class="t3-table" style="max-width: 100%;">
+						<col style="width:5%" />
+						<col style="width:50%" />
+						<col style="width:45%" />
+
 						<thead>
 							<tr>
-								<td colspan="3">{subcat_name}</td>
+								<f:if condition="{subcat_name}">
+									<f:then>
+										<td colspan="3">{subcat_name}</td>
+									</f:then>
+									<f:else>
+										<td colspan="3"><f:translate key="{category.title}" default="{category.title}" /></td>
+									</f:else>
+								</f:if>
 							</tr>
 						</thead>
-					</f:if>
-
-					<f:for each="{themes:iterator.sort(subject: subcategory)}" as="item">
-						<tr  title="{item.name}" class="constantLine db_list_normal {f:if(condition:'{item.isDefault}', then:'defaultValueIsSelected')}">
-							<td nowrap="nowrap">
-								<div class="showOnDefault">
-									<span class="showEditForm"><f:image src="EXT:themes/Resources/Public/Icons/power_grey.png" alt="alt text" /></span>
-								</div>
-								<div class="hideOnDefault">
-									<span class="hideEditForm"><f:image src="EXT:themes/Resources/Public/Icons/power_green.png" alt="alt text" /></span>
-								</div>
-								<f:form.hidden name="check[{item.name}]" value="{f:if(condition:'{item.isDefault}', then:'', else:'checked')}" class="hidden"/>
-							</td>
-							<td class="">
-								<label for="{item.name}">
-									<f:format.htmlSpecialChars><f:translate key="{item.label}" default="{item.label}"/></f:format.htmlSpecialChars>
-								</label>
-							</td>
-							<td>
-								<f:render partial="FormFields/{item.typeCleaned}" arguments="{field: item}"/>
-							</td>
-						</tr>
-					</f:for>
-				</table>
-			</f:groupedFor>
+	
+						<f:for each="{themes:iterator.sort(subject: subcategory)}" as="item">
+							<tr title="{item.name}" data-userscope="{item.userScope}" data-subcategory="{item.subCategory}" class="constantLine db_list_normal visible {f:if(condition:'{item.isDefault}', then:'defaultValueIsSelected')}">
+								<td nowrap="nowrap">
+									<div class="showOnDefault">
+										<span class="showEditForm"><f:image src="EXT:themes/Resources/Public/Icons/power_grey.png" alt="alt text" /></span>
+									</div>
+									<div class="hideOnDefault">
+										<span class="hideEditForm"><f:image src="EXT:themes/Resources/Public/Icons/power_green.png" alt="alt text" /></span>
+									</div>
+									<f:form.hidden name="check[{item.name}]" value="{f:if(condition:'{item.isDefault}', then:'', else:'checked')}" class="hidden"/>
+								</td>
+								<td class="title">
+									<label for="{item.name}"><f:format.htmlSpecialChars><f:translate key="{item.label}" default="{item.label}"/></f:format.htmlSpecialChars></label>
+								</td>
+								<td>
+									<f:render partial="FormFields/{item.typeCleaned}" arguments="{field: item}"/>
+								</td>
+							</tr>
+						</f:for>
+					</table>
+				</f:groupedFor>
+			</section>
 		</f:for>
 	</f:form>
 </div>

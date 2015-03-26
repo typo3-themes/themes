@@ -215,6 +215,7 @@ class EditorController extends ActionController {
 					$title = $categoryName;
 				}
 				$definition[$categoryName] = array(
+					'key' => $categoryName,
 					'title' => $title,
 					'items' => array(),
 				);
@@ -222,6 +223,27 @@ class EditorController extends ActionController {
 					if (($deniedFields === NULL) || (!in_array($constantName, $deniedFields))) {
 						if (isset($subcategories[$constants[$constantName]['subcat_name']][0])) {
 							$constants[$constantName]['subcat_name'] = $subcategories[$constants[$constantName]['subcat_name']][0];
+						}
+						// Basic, advanced or expert?!
+						$constants[$constantName]['userScope'] = '';
+						if(isset($categories['basic']) && array_key_exists($constants[$constantName]['name'], $categories['basic'])) {
+							$constants[$constantName]['userScope'] = 'basic';
+						}
+						else if(isset($categories['advanced']) && array_key_exists($constants[$constantName]['name'], $categories['advanced'])) {
+							$constants[$constantName]['userScope'] = 'advanced';
+						}
+						else if(isset($categories['expert']) && array_key_exists($constants[$constantName]['name'], $categories['expert'])) {
+							$constants[$constantName]['userScope'] = 'expert';
+						}
+						// Only get the first category
+						$catParts = explode(',', $constants[$constantName]['cat']);
+						if(isset($catParts[1])) {
+							$constants[$constantName]['cat'] = $catParts[0];
+						}
+						// Extract sub category
+						$subcatParts = explode('/', $constants[$constantName]['subcat']);
+						if(isset($subcatParts[1])) {
+							$constants[$constantName]['subCategory'] = $subcatParts[1];
 						}
 						$definition[$categoryName]['items'][] = $constants[$constantName];
 					}

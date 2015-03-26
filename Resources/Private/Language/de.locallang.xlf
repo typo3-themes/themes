@@ -48,6 +48,36 @@
 				<target>Nicht gefundene Klassen/Einstellungen</target>
 			</trans-unit>
 
+			<!-- Constants filter -->
+			<trans-unit id="categoriesFilterBasic" xml:space="preserve">
+				<source>Basic</source>
+				<target>Basic</target>
+			</trans-unit>
+			<trans-unit id="categoriesFilterAdvanced" xml:space="preserve">
+				<source>Advanced</source>
+				<target>Advanced</target>
+			</trans-unit>
+			<trans-unit id="categoriesFilterExpert" xml:space="preserve">
+				<source>Expert</source>
+				<target>Expert</target>
+			</trans-unit>
+			<trans-unit id="categoriesFilterRefresh" xml:space="preserve">
+				<source>refresh</source>
+				<target>aktualisieren</target>
+			</trans-unit>
+			<trans-unit id="categoriesFilterAll" xml:space="preserve">
+				<source>all</source>
+				<target>alle</target>
+			</trans-unit>
+			<trans-unit id="categoriesFilterSearch" xml:space="preserve">
+				<source>Search</source>
+				<target>Suche</target>
+			</trans-unit>
+			<trans-unit id="categoriesFilterIn" xml:space="preserve">
+				<source>in</source>
+				<target>in</target>
+			</trans-unit>
+
 			<!-- Variants-TCA-Row -->
 			<trans-unit id="variants" xml:space="preserve">
 				<source>Variants</source>

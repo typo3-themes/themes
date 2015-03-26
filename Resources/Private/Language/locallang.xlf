@@ -36,6 +36,29 @@
 			<trans-unit id="unavailable_classes" xml:space="preserve">
 				<source>Unavailable classes/settings</source>
 			</trans-unit>
+			
+			<!-- Constants filter -->
+			<trans-unit id="categoriesFilterBasic" xml:space="preserve">
+				<source>Basic</source>
+			</trans-unit>
+			<trans-unit id="categoriesFilterAdvanced" xml:space="preserve">
+				<source>Advanced</source>
+			</trans-unit>
+			<trans-unit id="categoriesFilterExpert" xml:space="preserve">
+				<source>Expert</source>
+			</trans-unit>
+			<trans-unit id="categoriesFilterRefresh" xml:space="preserve">
+				<source>refresh</source>
+			</trans-unit>
+			<trans-unit id="categoriesFilterAll" xml:space="preserve">
+				<source>all</source>
+			</trans-unit>
+			<trans-unit id="categoriesFilterSearch" xml:space="preserve">
+				<source>Search</source>
+			</trans-unit>
+			<trans-unit id="categoriesFilterIn" xml:space="preserve">
+				<source>in</source>
+			</trans-unit>
 
 			<!-- Variants-TCA-Row -->
 			<trans-unit id="variants" xml:space="preserve">
