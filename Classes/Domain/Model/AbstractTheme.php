@@ -289,7 +289,9 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$buffer .= LF . 'themes.relativePath = ' . $this->getRelativePath();
 		$buffer .= LF . 'themes.name = ' . $this->getExtensionName();
 		$buffer .= LF . 'themes.templatePageId = ' . $pid;
-		$buffer .= LF . 'themes.developmentMode = ' . (int)ApplicationContext::isDevelopmentModeActive();
+		$buffer .= LF . 'themes.mode.context = ' . ApplicationContext::getApplicationContext();
+		$buffer .= LF . 'themes.mode.isDevelopment = ' . (int)ApplicationContext::isDevelopmentModeActive();
+		$buffer .= LF . 'themes.mode.isProduction = ' . (int)!ApplicationContext::isDevelopmentModeActive();
 		return $buffer;
 	}
 

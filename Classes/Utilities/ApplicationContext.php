@@ -24,6 +24,13 @@ class ApplicationContext {
 	}
 
 	/**
+	 * @return string
+	 */
+	public static function getApplicationContext() {
+		return (string) GeneralUtility::getApplicationContext();
+	}
+
+	/**
 	 * @return bool
 	 */
 	public static function isDevelopmentModeActive() {
