@@ -33,17 +33,6 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 			$tRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_template', 'pid=' . (int) $pid);
 			$row['tx_themes_skin'] = $tRow['tx_themes_skin'];
 
-			// Call hook for possible manipulation of current skin
-			// oldstyle for compatibility for ext:skin_preview :D
-			// @todo should be removed once theme_preview is stable ...
-			// it's deprecated to use this hook
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/templavoila_framework/class.tx_templavoilaframework_lib.php']['assignSkinKey'])) {
-				$tempParamsForHook = array('skinKey' => &$row['tx_themes_skin']);
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/templavoila_framework/class.tx_templavoilaframework_lib.php']['assignSkinKey'] as $userFunc) {
-					$row['tx_themes_skin'] = GeneralUtility::callUserFunction($userFunc, $tempParamsForHook, $ref = NULL);
-				}
-			}
-
 			// Call hook for possible manipulation of current skin.
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'])) {
 				$tempParamsForHook = array('theme' => &$row['tx_themes_skin']);
