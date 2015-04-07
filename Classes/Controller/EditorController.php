@@ -227,7 +227,7 @@ class EditorController extends ActionController {
 							$constants[$constantName]['subcat_name'] = $subcategories[$constants[$constantName]['subcat_name']][0];
 						}
 						// Basic, advanced or expert?!
-						$constants[$constantName]['userScope'] = '';
+						$constants[$constantName]['userScope'] = 'advanced';
 						if(isset($categories['basic']) && array_key_exists($constants[$constantName]['name'], $categories['basic'])) {
 							$constants[$constantName]['userScope'] = 'basic';
 						}
