@@ -4,6 +4,7 @@ namespace KayStrobach\Themes\Hook;
 
 // class for: $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'][]
 
+use TYPO3\CMS\Core\FormProtection\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -31,32 +32,28 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 		if ($templateId === $idList) {
 
 			$tRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_template', 'pid=' . (int) $pid);
-			$row['tx_themes_skin'] = $tRow['tx_themes_skin'];
-
-			// Call hook for possible manipulation of current skin
-			// oldstyle for compatibility for ext:skin_preview :D
-			// @todo should be removed once theme_preview is stable ...
-			// it's deprecated to use this hook
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/templavoila_framework/class.tx_templavoilaframework_lib.php']['assignSkinKey'])) {
-				$tempParamsForHook = array('skinKey' => &$row['tx_themes_skin']);
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/templavoila_framework/class.tx_templavoilaframework_lib.php']['assignSkinKey'] as $userFunc) {
-					$row['tx_themes_skin'] = GeneralUtility::callUserFunction($userFunc, $tempParamsForHook, $ref = NULL);
-				}
-			}
+			$themeIdentifier = $tRow['tx_themes_skin'];
 
 			// Call hook for possible manipulation of current skin.
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'])) {
-				$tempParamsForHook = array('theme' => &$row['tx_themes_skin']);
+				$tempParamsForHook = array('theme' => $themeIdentifier);
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'] as $userFunc) {
-					$row['tx_themes_skin'] = GeneralUtility::callUserFunction($userFunc, $tempParamsForHook, $ref = NULL);
+					$themeIdentifier = GeneralUtility::callUserFunction($userFunc, $tempParamsForHook, $ref = NULL);
 				}
+			}
+			if(empty($themeIdentifier)) {
+				$themeIdentifier = $tRow['tx_themes_skin'];
 			}
 
 			/**
 			 * @var $themeRepository \KayStrobach\Themes\Domain\Repository\ThemeRepository
 			 */
 			$themeRepository = GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
-			$theme = $themeRepository->findByUid($row['tx_themes_skin']);
+			$theme = $themeRepository->findByUid($themeIdentifier);
+			if($theme === NULL) {
+				// fallback if the hook returns a undefined theme
+				$theme = $themeRepository->findByUid($tRow['tx_themes_skin']);
+			}
 			if ($theme !== NULL) {
 				$theme->addTypoScriptForFe($params, $pObj);
 			}
