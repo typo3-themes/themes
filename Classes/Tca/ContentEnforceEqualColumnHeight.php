@@ -62,19 +62,11 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow {
 						$tempKey = $groupKey . '-' . $visibilityKey;
 						$valuesAvailable[] = $tempKey;
 
-						// set the selected value
-						if ($valueSet) {
-							$selected = (isset($valuesFlipped[$tempKey])) ? 'checked="checked"' : '';
-						}
-						// set the default value, this means the first one
-						else {
-							$selected = 'checked="checked"';
-							$valueSet = TRUE;
-						}
+						$checked = (isset($valuesFlipped[$tempKey])) ? 'checked="checked"' : '';
 
-						// build radiobox
+						// build checkbox
 						$radiobuttons .= '<div style="float:left">' . LF;
-						$radiobuttons .= '<label><input type="radio" onchange="contentEnforceEqualColumnHeightChange(this)" name="' . $groupKey . '" value="' . $tempKey . '" ' . $selected . '>' . LF;
+						$radiobuttons .= '<label><input type="checkbox" onchange="contentEnforceEqualColumnHeightChange(this)" name="' . $tempKey . '" value="' . $tempKey . '" ' . $checked . '>' . LF;
 						$radiobuttons .= $GLOBALS['LANG']->sL($visibilityLabel) . '</label>' . LF;
 						$radiobuttons .= '</div>' . LF;
 					}
@@ -95,14 +87,12 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow {
 		 */
 		$script = '<script type="text/javascript">' . LF;
 		$script .= 'function contentEnforceEqualColumnHeightChange(field) {' . LF;
-		//$script .= 'console.log("in:", field);' . LF;
-		$script .= '  jQuery.each(jQuery(".contentEnforceEqualColumnHeight input[name=\'"+field.name+"\']"), function(index, node) {' . LF;
-		//$script .= '    console.log("remove:", node);' . LF;
-		//$script .= '    console.log("remove:", node.value);' . LF;
-		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").removeClass(node.value);' . LF;
-		$script .= '  });' . LF;
-		//$script .= '  console.log("add:", field.value);' . LF;
-		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").addClass(field.value);' . LF;
+		$script .= '  if (field.checked) {' . LF;
+		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").addClass(field.name);' . LF;
+		$script .= '  }' . LF;
+		$script .= '  else {' . LF;
+		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").removeClass(field.name);' . LF;
+		$script .= '  }' . LF;
 		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").attr("value", ' . LF;
 		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));' . LF;
 		$script .= '}' . LF;
