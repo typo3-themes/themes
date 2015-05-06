@@ -68,3 +68,5 @@ page {
 		view =< plugin.tx_themes.view
 	}
 }
+
+<INCLUDE_TYPOSCRIPT: source="DIR:EXT:themes/Configuration/Elements/TypoScript" extensions="setupts">

@@ -1,0 +1,58 @@
+lib.buttoncontent = COA
+lib.buttoncontent {
+	wrap = <div class="btn-group">|</div>
+	wrap.fieldRequired = tx_themes_buttoncontent
+	10 = LOAD_REGISTER
+	10 {
+		buttonClasses = button-default
+		buttonClasses {
+			override.dataWrap = {field:tx_themes_variants}
+			override.fieldRequired = tx_themes_variants
+			postUserFunc = KayStrobach\Themes\Frontend\CssClassMapper->mapGenericToFramework
+			postUserFunc {
+				variantsMapping =< lib.content.cssMap.variants.buttons
+			}
+		}
+	}
+	20 = TEXT
+	20 {
+		field = header
+		stdWrap.noTrimWrap = || |
+		stdWrap.noTrimWrap.if.isTrue.field = tx_themes_buttoncontent
+		typolink.parameter.field = header_link
+		typolink.parameter.if.isFalse.field = tx_themes_buttoncontent
+		typolink.ATagParams.dataWrap = class="{register:buttonClasses}" role="button"
+		typolink.ATagParams.dataWrap.override = class="{register:buttonClasses} dropdown-toggle" data-toggle="dropdown" aria-expanded="false" role="button"
+		typolink.ATagParams.dataWrap.override.if.isTrue.field = tx_themes_buttoncontent
+
+		wrap = <button type="button" class="{register:buttonClasses}">|</button>
+		wrap.if.isTrue.field = header_link
+		wrap.if.isFalse.field = tx_themes_buttoncontent
+		wrap.if.negate = 1
+		wrap.insertData = 1
+		wrap.override = <button type="button" class="{register:buttonClasses} dropdown-toggle" data-toggle="dropdown" aria-expanded="false">|<span class="caret"></span></button>
+		wrap.override.insertData = 1
+		wrap.override.if.isTrue.field = tx_themes_buttoncontent
+	}
+	30 = COA
+	30 {
+		stdWrap.fieldRequired = tx_themes_buttoncontent
+		wrap = <ul class="dropdown-menu" role="menu">|</ul>
+		10 = CONTENT
+		10 {
+			table = tx_themes_buttoncontent
+			select {
+				andWhere.dataWrap = tt_content = {field:uid}
+			}
+			renderObj = TEXT
+			renderObj {
+				field = linktext
+				typolink.parameter.field = linktarget
+				typolink.ATagTitle.field = linktitle
+				wrap = <li>|</li>
+			}
+		}
+	}
+}
+
+tt_content.themes_buttoncontent_pi1 < lib.buttoncontent
