@@ -5,6 +5,21 @@ if (!defined('TYPO3_MODE'))
 
 
 /**
+ * auto inject base TS
+ */
+$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
+if ((is_array($extensionConfiguration))
+	&& (array_key_exists('themesIndependent', $extensionConfiguration))
+	&& ($extensionConfiguration['themesIndependent'] === '1')) {
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:themes/Configuration/TypoScript/setup.txt">');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:themes/Configuration/TypoScript/constants.txt">');
+} else {
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Themes');
+}
+unset($extensionConfiguration);
+
+
+/**
  * manipulate the tt_content table
  */
 	$tempColumn = array(
