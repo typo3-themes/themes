@@ -78,6 +78,12 @@
 				<target>in</target>
 			</trans-unit>
 
+			<!-- Icon-TCA-Row -->
+			<trans-unit id="icon" xml:space="preserve">
+				<source>Icon</source>
+				<target>Symbol</target>
+			</trans-unit>
+
 			<!-- Variants-TCA-Row -->
 			<trans-unit id="variants" xml:space="preserve">
 				<source>Variants</source>

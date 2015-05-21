@@ -77,6 +77,14 @@ CREATE TABLE tt_content (
 	tx_themes_variants VARCHAR(1024) DEFAULT '' NOT NULL,
 	tx_themes_enforceequalcolumnheight VARCHAR(1024) DEFAULT '' NOT NULL,
 	tx_themes_columnsettings VARCHAR(1024) DEFAULT '' NOT NULL,
-	tx_themes_buttoncontent int(11) DEFAULT '0' NOT NULL
+	tx_themes_buttoncontent int(11) DEFAULT '0' NOT NULL,
+	tx_themes_icon varchar(32) DEFAULT '' NOT NULL
+);
+
+#
+# Table structure for table 'pages'
+#
+CREATE TABLE pages (
+	tx_themes_icon varchar(32) DEFAULT '' NOT NULL
 );
 

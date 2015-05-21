@@ -60,6 +60,11 @@
 				<source>in</source>
 			</trans-unit>
 
+			<!-- Icon-TCA-Row -->
+			<trans-unit id="icon" xml:space="preserve">
+				<source>Icon</source>
+			</trans-unit>
+
 			<!-- Variants-TCA-Row -->
 			<trans-unit id="variants" xml:space="preserve">
 				<source>Variants</source>
