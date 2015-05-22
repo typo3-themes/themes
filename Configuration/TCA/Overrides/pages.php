@@ -11,7 +11,7 @@ $tempColumn = array(
 			'type' => 'select',
 			'selicon_cols' => 14,
 			'items' => array(
-				array('', 0)
+				array('', '')
 			),
 		)
 	)
