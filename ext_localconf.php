@@ -28,10 +28,10 @@ if (!defined('TYPO3_MODE'))
  */
 	$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
 	$signalSlotDispatcher->connect(
-		'TYPO3\\CMS\\Backend\\Utility\\BackendUtility',
-		'getPagesTSconfigPreInclude',
 		'KayStrobach\\Themes\\Slots\\BackendUtilitySlot',
-		'getPagesTsConfigPreInclude'
+		'getPagesTsConfigPreInclude',
+		'TYPO3\\CMS\\Backend\\Utility\\BackendUtility',
+		'getPagesTSconfigPreInclude'
 	);
 	unset($signalSlotDispatcher);
 
