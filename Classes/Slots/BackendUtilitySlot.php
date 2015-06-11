@@ -1,6 +1,7 @@
 <?php
 namespace KayStrobach\Themes\Slots;
 
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -34,7 +35,9 @@ class BackendUtilitySlot extends \TYPO3\CMS\Backend\Configuration\TsConfigParser
 			return '';
 		}
 
+		$defaultDataArray['defaultPageTSconfig'] = array_shift($typoscriptDataArray);
 		array_unshift($typoscriptDataArray, $theme->getTypoScriptConfig());
+		$typoscriptDataArray = $defaultDataArray + $typoscriptDataArray;
 
 		return array(
 			$typoscriptDataArray,
