@@ -17,6 +17,16 @@ lib.buttoncontent {
 	20 = TEXT
 	20 {
 		field = header
+		stdWrap.prepend = TEXT
+		stdWrap.prepend {
+			field = tx_themes_icon
+			fielRequired = tx_themes_icon
+			stdWrap.postUserFunc = KayStrobach\Themes\Frontend\CssClassMapper->mapGenericToFramework
+			stdWrap.postUserFunc {
+				iconMapping =< lib.icons.cssMap
+			}
+			wrap = <i class="|"></i>
+		}
 		stdWrap.noTrimWrap = || |
 		stdWrap.noTrimWrap.if.isTrue.field = tx_themes_buttoncontent
 		typolink.parameter.field = header_link
