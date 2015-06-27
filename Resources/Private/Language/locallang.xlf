@@ -59,6 +59,9 @@
 			<trans-unit id="categoriesFilterIn" xml:space="preserve">
 				<source>in</source>
 			</trans-unit>
+			<trans-unit id="categoriesFilterDisplay" xml:space="preserve">
+				<source>Display</source>
+			</trans-unit>
 
 			<!-- Icon-TCA-Row -->
 			<trans-unit id="icon" xml:space="preserve">

@@ -17,7 +17,7 @@
 		<f:then>
 			<f:if condition="{selectedTheme}">
 				<f:then>
-					<f:render partial="Themes/ThemeSelected" arguments="{selectedTheme:selectedTheme, categories:categories, pid:pid, nearestPageWithTheme:nearestPageWithTheme}"/>
+					<f:render partial="Themes/ThemeSelected" arguments="{selectedTheme:selectedTheme, categories:categories, categoriesFilterSettings:categoriesFilterSettings, pid:pid, nearestPageWithTheme:nearestPageWithTheme}"/>
 				</f:then>
 				<f:else>
 					<f:render partial="Errors/Error" arguments="{preparedMessage:'ErrorNoThemeSelected'}"></f:render>

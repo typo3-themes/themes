@@ -108,6 +108,15 @@ class EditorController extends ActionController {
 			$nearestPageWithTheme = $this->id;
 			$this->view->assign('selectedTheme', $selectedTheme);
 			$this->view->assign('categories', $this->renderFields($this->tsParser, $this->id, $this->allowedCategories, $this->deniedFields));
+			$categoriesFilterSettings = $GLOBALS['BE_USER']->getModuleData('mod-web_ThemesMod1/Categories/Filter/Settings', 'ses');
+			if($categoriesFilterSettings === NULL) {
+				$categoriesFilterSettings = array();
+				$categoriesFilterSettings['searchScope'] = 'all';
+				$categoriesFilterSettings['showBasic'] = '1';
+				$categoriesFilterSettings['showAdvanced'] = '0';
+				$categoriesFilterSettings['showExpert'] = '0';
+			}
+			$this->view->assign('categoriesFilterSettings', $categoriesFilterSettings);
 		} elseif ($this->id !== 0) {
 			$nearestPageWithTheme = FindParentPageWithThemeUtility::find($this->id);
 		} else {
@@ -255,4 +264,39 @@ class EditorController extends ActionController {
 		return array_values($definition);
 	}
 
+	public function saveCategoriesFilterSettingsAction() {
+		// Validation definition
+		$validSettings = array(
+			'searchScope' => 'string', 
+			'showBasic' => 'boolean', 
+			'showAdvanced' => 'boolean', 
+			'showExpert' => 'boolean'
+		);
+		// Validate params
+		$categoriesFilterSettings = array();
+		foreach($validSettings as $setting => $type) {
+			if($this->request->hasArgument($setting)) {
+				if($type == 'boolean') {
+					$categoriesFilterSettings[$setting] = (bool)$this->request->getArgument($setting) ? '1' : '0';
+				}
+				else if($type == 'string') {
+					$categoriesFilterSettings[$setting] = ctype_alpha($this->request->getArgument($setting)) ? $this->request->getArgument($setting) : 'all';
+				}
+			}
+		}
+		// Save settings
+		$GLOBALS['BE_USER']->pushModuleData('mod-web_ThemesMod1/Categories/Filter/Settings', $categoriesFilterSettings);
+		// Create JSON-String
+		$response = array();
+		$response['success'] = '';
+		$response['error'] = '';
+		$response['data'] = $categoriesFilterSettings;
+		$json = json_encode($response);
+		// Display data
+		header("Content-Type: application/json; charset=utf-8");
+		header("Content-Transfer-Encoding: 8bit");
+		header("Content-Length: ".strlen($json));
+		echo $json;
+		exit;
+	}
 }

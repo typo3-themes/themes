@@ -46,15 +46,19 @@ jQuery(document).ready(function() {
 	});
 	jQuery('#categoriesFilterSearchScope').change(function() {
 		categoriesFilterSearch();
+		saveCategoriesSettings();
 	});
 	jQuery('#categoriesFilterShowBasic').change(function() {
 		categoriesFilterSearch();
+		saveCategoriesSettings();
 	});
 	jQuery('#categoriesFilterShowAdvanced').change(function() {
 		categoriesFilterSearch();
+		saveCategoriesSettings();
 	});
 	jQuery('#categoriesFilterShowExpert').change(function() {
 		categoriesFilterSearch();
+		saveCategoriesSettings();
 	});
 
 	// Filter initially
@@ -143,6 +147,32 @@ function categoriesFilterSearch() {
 		if(jQuery(value).find('table.hidden').length == jQuery(value).find('table').length) {
 			jQuery(value).addClass('hidden');
 			jQuery(value).removeClass('visible');
+		}
+	});
+	
+}
+
+/**
+ * Save the selected settings
+ * Fire and forget!
+ */
+function saveCategoriesSettings() {
+	var url = jQuery('#categoriesFilterSettingsSaveUrl').val();
+	var data = {};
+	data.tx_themes_web_themesmod1 = {};
+	data.tx_themes_web_themesmod1.searchScope = jQuery('#categoriesFilterSearchScope').val();
+	data.tx_themes_web_themesmod1.showBasic = jQuery('#categoriesFilterShowBasic').prop('checked') ? '1' : '0';
+	data.tx_themes_web_themesmod1.showAdvanced = jQuery('#categoriesFilterShowAdvanced').prop('checked') ? '1' : '0';
+	data.tx_themes_web_themesmod1.showExpert = jQuery('#categoriesFilterShowExpert').prop('checked') ? '1' : '0';
+	jQuery.ajax({
+		dataType: "json",
+		url: url,
+		data: data,
+		success: function () {
+			//alert('done');
+		},
+		error: function () {
+			//alert('error');
 		}
 	});
 }

@@ -22,36 +22,40 @@
 	</div>
 </div>
 <div class="theme-detail-options theme-clearfix">
-	<f:form action="update" enctype="multipart/form-data" id="saveableForm">
-		
-		<div id="categoriesFilter">
-			<div class="row">
-				<div class="col-md-12">
-					<label for="categoriesFilterSearchField"><f:translate key="categoriesFilterSearch" /></label>
-					<input id="categoriesFilterSearchField" name="search" type="text" value="">
-					<label for="categoriesFilterSearchScope"><f:translate key="categoriesFilterIn" /></label>
-					<select id="categoriesFilterSearchScope" name="scope">
-						<option value="all"><f:translate key="categoriesFilterAll" /></option>
-						<f:for each="{themes:iterator.sort(subject: categories, key: 'title')}" as="category">
-							<f:if condition="{category.items}">
-								<option value="{category.key}"><f:translate key="{category.title}" default="{category.title}" /></option>
-							</f:if>
-						</f:for>
-					</select>
-					<button onclick="categoriesFilterSearch(); return false"><f:translate key="categoriesFilterRefresh" /></button>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<input id="categoriesFilterShowBasic" name="showBasic" value="1" type="checkbox" checked="selected">
-					<label for="categoriesFilterShowBasic"><f:translate key="categoriesFilterBasic" /></label>
-					<input id="categoriesFilterShowAdvanced" name="showAdvanced" value="1" type="checkbox">
-					<label for="categoriesFilterShowAdvanced"><f:translate key="categoriesFilterAdvanced" /></label>
-					<input id="categoriesFilterShowExpert" name="showExpert" value="1" type="checkbox">
-					<label for="categoriesFilterShowExpert"><f:translate key="categoriesFilterExpert" /></label>
-				</div>
+
+	<div id="categoriesFilter">
+		<input type="hidden" name="categoriesFilterSettingsSaveUrl" value="{f:uri.action(action: 'saveCategoriesFilterSettings')}" id="categoriesFilterSettingsSaveUrl">
+		<div class="row">
+			<div class="col-md-12">
+				<label for="categoriesFilterSearchField"><f:translate key="categoriesFilterSearch" /></label>
+				<input id="categoriesFilterSearchField" name="search" type="text" value="">
+				<label for="categoriesFilterSearchScope"><f:translate key="categoriesFilterIn" /></label>
+				<select id="categoriesFilterSearchScope" name="scope">
+					<option value="all"><f:translate key="categoriesFilterAll" /></option>
+					<f:for each="{themes:iterator.sort(subject: categories, key: 'title')}" as="category">
+						<f:if condition="{category.items}">
+							<option value="{category.key}" {f:if(condition:'{category.key} == {categoriesFilterSettings.searchScope}', then:'selected="selected"')}>
+								<f:translate key="{category.title}" default="{category.title}" />
+							</option>
+						</f:if>
+					</f:for>
+				</select>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<f:translate key="categoriesFilterDisplay" />:
+				<input id="categoriesFilterShowBasic" name="showBasic" value="1" type="checkbox" {f:if(condition:'{categoriesFilterSettings.showBasic} == 1', then:'checked="checked"')}>
+				<label for="categoriesFilterShowBasic"><f:translate key="categoriesFilterBasic" /></label>
+				<input id="categoriesFilterShowAdvanced" name="showAdvanced" value="1" type="checkbox" {f:if(condition:'{categoriesFilterSettings.showAdvanced} == 1', then:'checked="checked"')}>
+				<label for="categoriesFilterShowAdvanced"><f:translate key="categoriesFilterAdvanced" /></label>
+				<input id="categoriesFilterShowExpert" name="showExpert" value="1" type="checkbox" {f:if(condition:'{categoriesFilterSettings.showExpert} == 1', then:'checked="checked"')}>
+				<label for="categoriesFilterShowExpert"><f:translate key="categoriesFilterExpert" /></label>
+			</div>
+		</div>
+	</div>
+	
+	<f:form action="update" enctype="multipart/form-data" id="saveableForm">
 		
 		<f:form.hidden name="pid" value="{pid}" />
 		<f:for each="{themes:iterator.sort(subject: categories, key: 'title')}" as="category">
