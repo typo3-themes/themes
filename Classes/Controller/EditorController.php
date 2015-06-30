@@ -292,11 +292,6 @@ class EditorController extends ActionController {
 		$response['error'] = '';
 		$response['data'] = $categoriesFilterSettings;
 		$json = json_encode($response);
-		// Display data
-		header("Content-Type: application/json; charset=utf-8");
-		header("Content-Transfer-Encoding: 8bit");
-		header("Content-Length: ".strlen($json));
-		echo $json;
-		exit;
+		return $json;
 	}
 }
