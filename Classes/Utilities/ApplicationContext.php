@@ -74,7 +74,7 @@ class ApplicationContext {
 				continue;
 			}
 		}
-		if($activePreset->getName() === 'Development') {
+		if($activePreset && $activePreset->getName() === 'Development') {
 			return true;
 		}
 		return false;
