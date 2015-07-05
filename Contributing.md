@@ -10,7 +10,7 @@ Please use __polite language__.
 
 Please just describe __one__ problem per issue.
 
-Please provide __as muss information as possible__, normally the following information is highly important for fixing problems.
+Please provide __as much information as possible__, normally the following information is highly important for fixing problems.
 
 * used TYPO3 Version
 * used PHP Version
@@ -18,7 +18,7 @@ Please provide __as muss information as possible__, normally the following infor
 
 Additionally we need information to reproduce the problem.
 
-* What do you wanted to achieve?
+* What did you want to achieve?
 * What have you done?
 * What happened?
 * What have you expected to happen?
