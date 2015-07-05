@@ -8,7 +8,9 @@ We all want to make the theming easier, so please be patient.
 
 Please use __polite language__.
 
-Please provide as muss information as possible, normally the following information is highly important for fixing problems.
+Please just describe __one__ problem per issue.
+
+Please provide __as muss information as possible__, normally the following information is highly important for fixing problems.
 
 * used TYPO3 Version
 * used PHP Version
