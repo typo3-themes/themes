@@ -24,7 +24,7 @@
 				<target>Einstellungen für</target>
 			</trans-unit>
 			<trans-unit id="noThemeSelected" xml:space="preserve">
-				<source>Currently there is no theme choosing for this page.</source>
+				<source>Currently there is no theme selected for this page.</source>
 				<target>Derzeit ist kein Theme gewählt.</target>
 			</trans-unit>
 			<trans-unit id="noThemeSelectable" xml:space="preserve">

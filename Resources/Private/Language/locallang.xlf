@@ -19,7 +19,7 @@
 				<source>Options for</source>
 			</trans-unit>
 			<trans-unit id="noThemeSelected" xml:space="preserve">
-				<source>Currently there is no theme choosing for this page.</source>
+				<source>Currently there is no theme selected for this page.</source>
 			</trans-unit>
 			<trans-unit id="noThemeSelectable" xml:space="preserve">
 				<source>It's not possible to select or configure a theme on this page.</source>
