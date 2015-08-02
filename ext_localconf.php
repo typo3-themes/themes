@@ -4,6 +4,11 @@ if (!defined('TYPO3_MODE'))
 	die('Access denied.');
 
 /**
+ * Add page typoscript for new content element wizard
+ */
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/PageTS/tsconfig.txt">');
+
+/**
  * Register hook to inject themes
  */
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'][]

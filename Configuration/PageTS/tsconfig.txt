@@ -1,0 +1,15 @@
+mod.wizards.newContentElement.wizardItems {
+	forms {
+		elements {
+			buttonContent {
+				title = LLL:EXT:themes/Resources/Private/Language/ButtonContent.xlf:tt_content.CType_pi1
+				description = LLL:EXT:themes/Resources/Private/Language/ButtonContent.xlf:tx_themes_buttoncontent
+				icon = ../typo3conf/ext/themes/Resources/Public/Icons/new_content_el_ButtonContent.gif
+				tt_content_defValues {
+					CType = themes_buttoncontent_pi1
+				}
+			}
+		}
+		show := addToList(buttonContent)
+	}
+}
