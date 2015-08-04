@@ -1,0 +1,11 @@
+lib.icons.cssMap >
+lib.icons.cssMap {
+
+	# This is the list of available icons in this theme
+	# you can use items, which are provided by this theme or kept from theme_bootstrap
+	# the <i> tag will be generated for available classes only
+
+	<f:for each="{icons}" as="icon">
+	    {icon} = {prefix} {prefix}-{icon}
+    </f:for>
+}
