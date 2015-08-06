@@ -51,7 +51,7 @@ if (!defined('TYPO3_MODE'))
  */
 	if (TYPO3_MODE === 'BE') {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']['pagets']
-			= 'KayStrobach\\Themes\\Provider\\TsProvider';
+			= 'KayStrobach\\Themes\\Provider\\PageTsBackendLayoutDataProvider';
 	}
 
 /**
