@@ -53,9 +53,10 @@ Advantages for Developers
 * often we used FLUID instead of complex TypoScript
 * customizeable
 * works with all 12 column grid frameworks we know like:
- * bootstrap
- * foundation
- * yaml
+
+  + bootstrap
+  + foundation
+  + yaml
 
 Advantages for integrators
 --------------------------
@@ -64,7 +65,8 @@ Advantages for integrators
 * atomic deployment as extension
 * no TypoScript in the Database
 * shared licenses:
- * please see a list of community shared licenses on https://github.com/typo3-themes/themes/wiki/Bought-Theme-Licenses
+
+  + please see a list of community shared licenses on https://github.com/typo3-themes/themes/wiki/Bought-Theme-Licenses
 
  
 Advantages for Editors
