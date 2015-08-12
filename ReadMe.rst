@@ -15,6 +15,8 @@ About the THEMES Project
 The THEMES project was started with the idea in mind to provide a standardized way how the frontend output of TYPO3 should be created.
 So the approach is similar to the Wordpress or Drupal world, where we have standardized datastructures and renderers since ages.
 
+**We use FLUID to render the page templates normally, this allows to extend given themes, without the need to overwrite all. But you still can choose to render everything with TypoScript or marker based templates, even if this is not what we suggest.**
+
 To achieve that goal and to be highly flexible configurable at the same time we build a set of extensions which provides the needed functionality:
 
 +---------------------+-------------------------------------------------+ 
@@ -42,6 +44,29 @@ Having the base packages and also ready made themes like:
 It's easy and fast to start a new web project with less effort.
 
 Combined with TYPO3 core features like distributions you can start the first structure of a webpage in minutes instead of hours.
+
+Installation
+------------
+
+To install THEMES and get started fast, we highly recommend to take the following steps:
+
+**Simply install the themes from TER you would like to have**
+This will install all the needed dependencies and you are ready to go.
+
+You can get the list of all themes which are available via the TER on `typo3-themes.org <http://www.typo3-themes.org/>`_ 
+
+Some example themes are:
+
+* `theme_bootstrap_highland <http://typo3.org/extensions/repository/view/theme_bootstrap_highland>`_
+* `theme_bootstrap_mosaic <http://typo3.org/extensions/repository/view/theme_bootstrap_mosaic>`_
+* `theme_zurbink <http://typo3.org/extensions/repository/view/theme_zurbink>`_
+* `theme_foundation <http://typo3.org/extensions/repository/view/theme_foundation>`_
+
+Additionally you can install a ready made distribution which also adds a pagetree into your TYPO3 installation:
+
+* `themes_distribution <http://typo3.org/extensions/repository/view/themes_distribution>`_
+
+This will make your TYPO3 serving a dummy webpage within some seconds.
 
 Advantages for Developers
 -------------------------
