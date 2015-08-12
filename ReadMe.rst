@@ -15,7 +15,7 @@ About the THEMES Project
 The THEMES project was started with the idea in mind to provide a standardized way how the frontend output of TYPO3 should be created.
 So the approach is similar to the Wordpress or Drupal world, where we have standardized datastructures and renderers since ages.
 
-**We use `FLUID <http://wiki.typo3.org/Fluid>`_ to render the page templates normally, this allows to extend given themes, without the need to overwrite all. But you still can choose to render everything with TypoScript or marker based templates, even if this is not what we suggest.**
+**We use http://wiki.typo3.org/Fluid to render the page templates normally, this allows to extend given themes, without the need to overwrite all. But you still can choose to render everything with TypoScript or marker based templates, even if this is not what we suggest.**
 
 To achieve that goal and to be highly flexible configurable at the same time we build a set of extensions which provides the needed functionality:
 
