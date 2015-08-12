@@ -101,6 +101,18 @@ Advantages for Editors
 * flexible
 * ...
 
+Community
+---------
+
+We use the TYPO3 Slack channel to communicate:
+
+* `Sign Up <https://forger.typo3.org/slack>`_
+* `Start typo3-themes channel <https://typo3.slack.com/messages/typo3-themes/>`_
+
+Issues should be sent to the appropriate extension on github:
+
+* `TYPO3-THEMES on Github <https://github.com/typo3-themes>`_
+
 ========================================================================================================================
 More resources
 ========================================================================================================================
