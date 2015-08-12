@@ -15,7 +15,7 @@ About the THEMES Project
 The THEMES project was started with the idea in mind to provide a standardized way how the frontend output of TYPO3 should be created.
 So the approach is similar to the Wordpress or Drupal world, where we have standardized datastructures and renderers since ages.
 
-**We use FLUID to render the page templates normally, this allows to extend given themes, without the need to overwrite all. But you still can choose to render everything with TypoScript or marker based templates, even if this is not what we suggest.**
+**We use `FLUID <http://wiki.typo3.org/Fluid>`_ to render the page templates normally, this allows to extend given themes, without the need to overwrite all. But you still can choose to render everything with TypoScript or marker based templates, even if this is not what we suggest.**
 
 To achieve that goal and to be highly flexible configurable at the same time we build a set of extensions which provides the needed functionality:
 
@@ -37,9 +37,9 @@ To achieve that goal and to be highly flexible configurable at the same time we 
 
 Having the base packages and also ready made themes like:
 
-* theme_bootstrap_slate
-* theme_bootstrap_mosaic
-* theme_zurbink
+* `theme_bootstrap_slate <http://typo3.org/extensions/repository/view/theme_bootstrap_slate>`_
+* `theme_bootstrap_mosaic <http://typo3.org/extensions/repository/view/theme_bootstrap_mosaic>`_
+* `theme_zurbink <http://typo3.org/extensions/repository/view/theme_zurbink>`_
 
 It's easy and fast to start a new web project with less effort.
 
@@ -79,9 +79,9 @@ Advantages for Developers
 * customizeable
 * works with all 12 column grid frameworks we know like:
 
-  + bootstrap
-  + foundation
-  + yaml
+  + `bootstrap <http://getbootstrap.com/>`_
+  + `foundation <http://foundation.zurb.com/>`_
+  + `yaml <http://www.yaml.de/>`_
 
 Advantages for integrators
 --------------------------
