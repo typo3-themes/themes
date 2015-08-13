@@ -38,6 +38,7 @@ $EM_CONF[$_EXTKEY] = array(
 			'yaml_parser' => '1.0.0-1.0.99',
 		),
 		'conflicts' => array(
+			'belayout_tsprovider' => ''
 		),
 		'suggests' => array(
 		),
