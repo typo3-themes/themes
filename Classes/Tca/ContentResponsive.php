@@ -96,15 +96,20 @@ class ContentResponsive extends AbstractContentRow {
 		$script = '<script type="text/javascript">' . LF;
 		$script .= 'function contentResponsiveChange(field) {' . LF;
 		//$script .= 'console.log("in:", field);' . LF;
+		$script .= 'var itemselector = "";' . LF;
+		$script .= 'if(jQuery(field).closest(".t3-form-field-item").index() > 0){' . LF;
+		$script .= 'itemselector = ".t3-form-field-item";' . LF;
+		$script .= '}else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0){' . LF;
+		$script .= 'itemselector = ".t3js-formengine-field-item";}' . LF;
 		$script .= '  jQuery.each(jQuery(".contentResponsive input[name=\'"+field.name+"\']"), function(index, node) {' . LF;
 		//$script .= '    console.log("remove:", node);' . LF;
 		//$script .= '    console.log("remove:", node.value);' . LF;
-		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentResponsive input[readonly=\'readonly\']").removeClass(node.value);' . LF;
+		$script .= '    jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").removeClass(node.value);' . LF;
 		$script .= '  });' . LF;
 		//$script .= '  console.log("add:", field.value);' . LF;
-		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentResponsive input[readonly=\'readonly\']").addClass(field.value);' . LF;
-		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentResponsive input[readonly=\'readonly\']").attr("value", ' . LF;
-		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentResponsive input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));' . LF;
+		$script .= '  jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").addClass(field.value);' . LF;
+		$script .= '  jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").attr("value", ' . LF;
+		$script .= '  jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));' . LF;
 		$script .= '}' . LF;
 		$script .= '</script>' . LF;
 
