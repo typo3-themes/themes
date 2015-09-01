@@ -66,7 +66,11 @@ class LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 	 * @return string
 	 */
 	public function render() {
-		return ($this->arguments['availableLanguages'] == '') ? '' : $this->initiateSubRequest();
+		try {
+			return ($this->arguments['availableLanguages'] == '') ? '' : $this->initiateSubRequest();
+		} catch(\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $e) {
+			return 'ERROR: Problem loading image files, flag folder is missing ...';
+		}
 	}
 
 }
