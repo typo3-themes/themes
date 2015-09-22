@@ -31,7 +31,7 @@ namespace KayStrobach\Themes\ViewHelpers;
  *
  * {themes:arrayIndex(object: results, index: 'key')}
  */
-class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper {
+class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
  
     /**
      * @param $object  Object|array Objekt oder Array in dem der Index ist
