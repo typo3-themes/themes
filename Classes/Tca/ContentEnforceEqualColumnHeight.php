@@ -87,14 +87,19 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow {
 		 */
 		$script = '<script type="text/javascript">' . LF;
 		$script .= 'function contentEnforceEqualColumnHeightChange(field) {' . LF;
+		$script .= 'var itemselector = "";' . LF;
+		$script .= 'if(jQuery(field).closest(".t3-form-field-item").index() > 0){' . LF;
+		$script .= '  itemselector = ".t3-form-field-item";' . LF;
+		$script .= '}else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0){' . LF;
+		$script .= 'itemselector = ".t3js-formengine-field-item";}' . LF;
 		$script .= '  if (field.checked) {' . LF;
-		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").addClass(field.name);' . LF;
+		$script .= '    jQuery(field).closest(itemselector).find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").addClass(field.name);' . LF;
 		$script .= '  }' . LF;
 		$script .= '  else {' . LF;
-		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").removeClass(field.name);' . LF;
+		$script .= '    jQuery(field).closest(itemselector).find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").removeClass(field.name);' . LF;
 		$script .= '  }' . LF;
-		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").attr("value", ' . LF;
-		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));' . LF;
+		$script .= '  jQuery(field).closest(itemselector).find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").attr("value", ' . LF;
+		$script .= '  jQuery(field).closest(itemselector).find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));' . LF;
 		$script .= '}' . LF;
 		$script .= '</script>' . LF;
 

@@ -75,7 +75,7 @@ class ContentVariants extends AbstractContentRow {
 						$this->createCheckbox($contentElementKey, $label, 'ctype');
 					}
 				}
-				
+
 			}
 		}
 
@@ -87,7 +87,7 @@ class ContentVariants extends AbstractContentRow {
 		if ($checkboxes === '') {
 			$checkboxes = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.no_variants_available');
 		}
-		
+
 		/**
 		 * Include jQuery in backend
 		 * @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer
@@ -100,14 +100,19 @@ class ContentVariants extends AbstractContentRow {
 		 */
 		$script = '<script type="text/javascript">' . LF;
 		$script .= 'function contentVariantChange(field) {' . LF;
+		$script .= 'var itemselector = "";' . LF;
+		$script .= 'if(jQuery(field).closest(".t3-form-field-item").index() > 0){' . LF;
+		$script .= '  itemselector = ".t3-form-field-item";' . LF;
+		$script .= '}else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0){' . LF;
+		$script .= 'itemselector = ".t3js-formengine-field-item";}' . LF;
 		$script .= '  if (field.checked) {' . LF;
-		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").addClass(field.name);' . LF;
+		$script .= '    jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").addClass(field.name);' . LF;
 		$script .= '  }' . LF;
 		$script .= '  else {' . LF;
-		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").removeClass(field.name);' . LF;
+		$script .= '    jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").removeClass(field.name);' . LF;
 		$script .= '  }' . LF;
-		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").attr("value", ' . LF;
-		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentVariant input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));' . LF;
+		$script .= '  jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").attr("value", ' . LF;
+		$script .= '  jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));' . LF;
 		$script .= '}' . LF;
 		$script .= '</script>' . LF;
 
@@ -164,5 +169,5 @@ class ContentVariants extends AbstractContentRow {
 		}
 		return $checkboxes;
 	}
-	
+
 }
