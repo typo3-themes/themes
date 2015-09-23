@@ -27,7 +27,7 @@ namespace KayStrobach\Themes\ViewHelpers;
  
  
 /**
- * Greift dynamisch auf einen Array-Index zu
+ * can be used to access array keys or object properties dynamically
  *
  * {themes:arrayIndex(object: results, index: 'key')}
  */
@@ -39,10 +39,9 @@ class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
      * @param $prop string Index auf den zugegriffen werden soll
      * @return mixed
      */
-    public function render($object, $index = '', $prop = '') {
-        
+    public function render($object, $index = '') {
         if(is_object($object)) {
-            return $object->$prop;
+            return $object->$index;
         }
         elseif(is_array($object)) {
             if(array_key_exists($index, $object)) {
