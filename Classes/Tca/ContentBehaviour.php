@@ -13,7 +13,7 @@ class ContentBehaviour extends AbstractContentRow {
 	protected $checkboxesArray = array();
 	protected $valuesFlipped = array();
 	protected $valuesAvailable = array();
-	
+
 	/**
 	 * Render a Content Behaviour row
 	 *
@@ -44,13 +44,13 @@ class ContentBehaviour extends AbstractContentRow {
 		$this->checkboxesArray['ctype'] = array();
 		$this->checkboxesArray['gridLayout'] = array();
 		if (isset($behaviours['properties']) && is_array($behaviours['properties'])) {
-			
+
 			foreach ($behaviours['properties'] as $contentElementKey => $label) {
 
 				// GridElements: are able to provide grid-specific behaviours
 				if (is_array($label) && $cType === 'gridelements_pi1') {
 					$contentElementKey = substr($contentElementKey, 0, -1);
-					
+
 					// Behaviour for all GridElements
 					if ($contentElementKey == 'default' && !empty($label)) {
 						foreach ($label as $gridLayoutKey => $gridLayoutBehaviourLabel) {
@@ -63,7 +63,7 @@ class ContentBehaviour extends AbstractContentRow {
 							$this->createCheckbox($gridLayoutKey, $gridLayoutBehaviourLabel, 'gridLayout');
 						}
 					}
-					
+
 				}
 				// Normal CEs
 				else {
@@ -76,7 +76,7 @@ class ContentBehaviour extends AbstractContentRow {
 						$this->createCheckbox($contentElementKey, $label, 'ctype');
 					}
 				}
-				
+
 			}
 		}
 
@@ -101,14 +101,19 @@ class ContentBehaviour extends AbstractContentRow {
 		 */
 		$script = '<script type="text/javascript">' . LF;
 		$script .= 'function contentBehaviourChange(field) {' . LF;
+		$script .= 'var itemselector = "";' . LF;
+		$script .= 'if(jQuery(field).closest(".t3-form-field-item").index() > 0){' . LF;
+		$script .= '  itemselector = ".t3-form-field-item";' . LF;
+		$script .= '}else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0){' . LF;
+		$script .= 'itemselector = ".t3js-formengine-field-item";}' . LF;
 		$script .= '  if (field.checked) {' . LF;
-		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentBehaviour input[readonly=\'readonly\']").addClass(field.name);' . LF;
+		$script .= '    jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").addClass(field.name);' . LF;
 		$script .= '  }' . LF;
 		$script .= '  else {' . LF;
-		$script .= '    jQuery(field).closest(".t3-form-field-item").find(".contentBehaviour input[readonly=\'readonly\']").removeClass(field.name);' . LF;
+		$script .= '    jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").removeClass(field.name);' . LF;
 		$script .= '  }' . LF;
-		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentBehaviour input[readonly=\'readonly\']").attr("value", ' . LF;
-		$script .= '  jQuery(field).closest(".t3-form-field-item").find(".contentBehaviour input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));' . LF;
+		$script .= '  jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").attr("value", ' . LF;
+		$script .= '  jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));' . LF;
 		$script .= '}' . LF;
 		$script .= '</script>' . LF;
 
@@ -130,7 +135,7 @@ class ContentBehaviour extends AbstractContentRow {
 
 	/**
 	 * Creates a checkbox
-	 * 
+	 *
 	 * @param $key \string Key/name of the checkbox
 	 * @param $label \string Label of the checkbox
 	 * @param $type \string Type of the checkbox property
@@ -150,7 +155,7 @@ class ContentBehaviour extends AbstractContentRow {
 
 	/**
 	 * Merge checkboxes into a group
-	 * 
+	 *
 	 * @param $type \string Type of the checkbox property
 	 * @return string Grouped checkboxes
 	 */

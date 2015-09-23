@@ -38,6 +38,12 @@ class ThemeController extends ActionController {
 	protected $themeRepository;
 
 	/**
+	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
+	 * @inject
+	 */
+	protected $pageRepository;
+
+	/**
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
@@ -66,6 +72,8 @@ class ThemeController extends ActionController {
 		}
 		$this->view->assign('templateName', $this->templateName);
 		$this->view->assign('theme', $this->themeRepository->findByPageOrRootline($GLOBALS['TSFE']->id));
+		$this->view->assign('page', $this->pageRepository->getPage($GLOBALS['TSFE']->id));
+		$this->view->assign('TSFE', $GLOBALS['TSFE']);
 	}
 
 	/**
