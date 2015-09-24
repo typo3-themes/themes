@@ -73,6 +73,7 @@ class ThemeController extends ActionController {
 		$this->view->assign('templateName', $this->templateName);
 		$this->view->assign('theme', $this->themeRepository->findByPageOrRootline($GLOBALS['TSFE']->id));
 		$this->view->assign('page', $this->pageRepository->getPage($GLOBALS['TSFE']->id));
+		$this->view->assign('data', $this->pageRepository->getPage($GLOBALS['TSFE']->id));
 		$this->view->assign('TSFE', $GLOBALS['TSFE']);
 	}
 
