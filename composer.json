@@ -1,0 +1,21 @@
+{
+  "name": "typo3-themes/themes",
+  "type": "typo3-cms-extension",
+  "description": "TYPO3 THEMES",
+  "homepage": "http://typo3-themes.org",
+  "license": ["GPL-2.0+"],
+  "keywords": ["TYPO3 CMS", "TYPO3 THEMES", "THEMES", "THEMES", "FLUID", "CUSTOMIZE"],
+  "support": {
+    "issues": "https://github.com/typo3-themes/themes/issues"
+  },
+  "autoload": {
+    "psr-4": { "KayStrobach\\Themes\\": "Classes/"}
+  },
+  "autoload-dev": {
+    "psr-4": { "KayStrobach\\Themes\\Tests\\": "tests/"}
+  },
+  "replace": {
+    "themes": "self.version",
+    "typo3-ter/themes": "self.version"
+  }
+}
