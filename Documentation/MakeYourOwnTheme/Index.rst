@@ -27,6 +27,7 @@ A theme is basicly a set of TYPOScript files stored in an extension with some ad
 	================================= ======================================================================
 	ext_emconf.php                    Needed for every extension in TYPO3
 	ext_icon.gif                      Icon for the extensionmanager
+	Meta/theme.yaml                   contains some meta data
 	Configuration/Theme/constants.txt contains constants to easily configure a theme
 	Configuration/Theme/setup.txt     contains the needed TYPOScript to render the frontend
 	Configuration/Theme/tsconfig.txt  contains the PageTS to configure the pagebranch of a selected theme
