@@ -36,8 +36,10 @@ class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
     /**
      * @param $object  Object|array Objekt oder Array in dem der Index ist
      * @param $index string Index auf den zugegriffen werden soll
+     * @param $prop string Index auf den zugegriffen werden soll
+     * @return mixed
      */
-    public function render($object, $index) {
+    public function render($object, $index = '', $prop = '') {
         
         if(is_object($object)) {
             return $object->$prop;
