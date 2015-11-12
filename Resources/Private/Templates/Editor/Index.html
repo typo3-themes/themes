@@ -20,13 +20,13 @@
 					<f:render partial="Themes/ThemeSelected" arguments="{selectedTheme:selectedTheme, categories:categories, categoriesFilterSettings:categoriesFilterSettings, pid:pid, nearestPageWithTheme:nearestPageWithTheme}"/>
 				</f:then>
 				<f:else>
-					<f:render partial="Errors/Error" arguments="{preparedMessage:'ErrorNoThemeSelected'}"></f:render>
+					<f:render partial="Errors/Error" arguments="{preparedMessage:'ErrorNoThemeSelected'}" />
 					<f:render partial="Themes/ThemeNotSelected" arguments="{selectedTheme:selectedTheme, categories:categories, pid:pid, nearestPageWithTheme:nearestPageWithTheme}"/>
 				</f:else>
 			</f:if>
 		</f:then>
 		<f:else>
-			<f:render partial="Errors/Error" arguments="{preparedMessage:'ErrorThemeNotPossible', redirectUid:nearestPageWithTheme}"></f:render>
+			<f:render partial="Errors/Error" arguments="{preparedMessage:'ErrorThemeNotPossible', redirectUid:nearestPageWithTheme}" />
 		</f:else>
 	</f:if>
 </f:section>
