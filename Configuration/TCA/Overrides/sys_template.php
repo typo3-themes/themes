@@ -11,8 +11,12 @@ $tempColumn = array(
 			'FIELD:root:REQ:true'
 		),
 		'config' => array(
-			'type' => 'user',
-			'userFunc' => 'KayStrobach\\Themes\\Tca\\ThemeSelector->display',
+			'type' => 'select',
+			'renderType' => 'selectSingle',
+			'size' => 1,
+			'maxitems' => 1,
+			'itemsProcFunc' => 'KayStrobach\\Themes\\Tca\\ThemeSelector->items',
+			'showIconTable' => 1,
 		)
 	),
 );

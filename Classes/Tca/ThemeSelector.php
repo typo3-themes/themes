@@ -1,6 +1,7 @@
 <?php
 
 namespace KayStrobach\Themes\Tca;
+use KayStrobach\Themes\Domain\Model\Theme;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -10,35 +11,29 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ThemeSelector {
 
-	/**
-	 * Displays the Theme selector as a TCEForm's userfunc. Handles display of
-	 * skins and copying skins but leaves the saving to TCEmain.
-	 *
-	 * @param	array	$pa
-	 * @param	object	$pObj
-	 * @return	string
-	 */
-	public function display($pa, $pObj) {
+	public function items(&$PA, $fobj) {
 		/**
-		 * @var Tx_Themes_Domain_Repository_ThemeRepository $repository
+		 * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository $repository
 		 */
 		$repository = GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
 
-		$view = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+		$themes = $repository->findAll();
 
-		$view->setFormat('html');
-		$view->setTemplatePathAndFilename(
-			GeneralUtility::getFileAbsFileName('EXT:themes/Resources/Private/Templates/ThemeSelector.html')
+		$PA['items'] = array(
+			array(
+				0 => 'None',
+				1 => '',
+			)
 		);
-		$view->assignMultiple(array(
-			'formField' => array(
-				'table' => $pa['table'],
-				'row' => $pa['row'],
-			),
-			'selectedTheme' => $repository->findByUid($pa['row']['tx_themes_skin']),
-			'selectableThemes' => $repository->findAll(),
-		));
-		return $view->render();
+
+		/** @var Theme $theme */
+		foreach($themes as $theme) {
+			$PA['items'][] = array(
+				0 => $theme->getTitle(),
+				1 => $theme->getExtensionName(),
+				2 => $theme->getPreviewImage(),
+			);
+		}
 	}
 
 }
