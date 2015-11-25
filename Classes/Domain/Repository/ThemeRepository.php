@@ -187,7 +187,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface {
 	}
 
 	/**
-	 * @param $pid id of the Page
+	 * @param integer $pid id of the Page
 	 * @return mixed
 	 */
 	public function findByPageId($pid) {
