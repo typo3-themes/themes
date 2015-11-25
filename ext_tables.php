@@ -7,7 +7,7 @@ if (!defined('TYPO3_MODE'))
 /**
  * auto inject base TS
  */
-$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
+$extensionConfiguration = \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::getCurrentConfiguration('themes');
 if ((is_array($extensionConfiguration))
 	&& (array_key_exists('themesIndependent', $extensionConfiguration))
 	&& ($extensionConfiguration['themesIndependent'] === '1')) {

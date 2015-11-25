@@ -11,6 +11,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility;
 
 /**
  * Class EditorController
@@ -65,7 +66,7 @@ class EditorController extends ActionController {
 		$this->tsParser = new TsParserUtility();
 
 		// extension configuration
-		$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
+		$extensionConfiguration = ConfigurationUtility::getCurrentConfiguration('themes');
 		$extensionConfiguration['categoriesToShow'] = GeneralUtility::trimExplode(',', $extensionConfiguration['categoriesToShow']);
 		$extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(',', $extensionConfiguration['constantsToHide']);
 
