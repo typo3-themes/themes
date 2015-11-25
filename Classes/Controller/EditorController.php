@@ -6,6 +6,7 @@ use KayStrobach\Themes\Domain\Model\Theme;
 use KayStrobach\Themes\Utilities\CheckPageUtility;
 use KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility;
 use KayStrobach\Themes\Utilities\TsParserUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -69,7 +70,7 @@ class EditorController extends ActionController {
 		$extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(',', $extensionConfiguration['constantsToHide']);
 
 		// mod.tx_themes.constantCategoriesToShow.value
-		$externalConstantCategoriesToShow = $GLOBALS['BE_USER']->getTSConfig(
+		$externalConstantCategoriesToShow = $this->getBackendUser()->getTSConfig(
 			'mod.tx_themes.constantCategoriesToShow', BackendUtility::getPagesTSconfig($this->id)
 		);
 		if ($externalConstantCategoriesToShow['value']) {
@@ -80,7 +81,7 @@ class EditorController extends ActionController {
 		}
 
 		// mod.tx_themes.constantsToHide.value
-		$externalConstantsToHide = $GLOBALS['BE_USER']->getTSConfig(
+		$externalConstantsToHide = $this->getBackendUser()->getTSConfig(
 			'mod.tx_themes.constantsToHide', BackendUtility::getPagesTSconfig($this->id)
 		);
 		if ($externalConstantsToHide['value']) {
@@ -108,7 +109,7 @@ class EditorController extends ActionController {
 			$nearestPageWithTheme = $this->id;
 			$this->view->assign('selectedTheme', $selectedTheme);
 			$this->view->assign('categories', $this->renderFields($this->tsParser, $this->id, $this->allowedCategories, $this->deniedFields));
-			$categoriesFilterSettings = $GLOBALS['BE_USER']->getModuleData('mod-web_ThemesMod1/Categories/Filter/Settings', 'ses');
+			$categoriesFilterSettings = $this->getBackendUser()->getModuleData('mod-web_ThemesMod1/Categories/Filter/Settings', 'ses');
 			if($categoriesFilterSettings === NULL) {
 				$categoriesFilterSettings = array();
 				$categoriesFilterSettings['searchScope'] = 'all';
@@ -195,7 +196,7 @@ class EditorController extends ActionController {
 			);
 			$tce = new \TYPO3\CMS\Core\DataHandling\DataHandler();
 			$tce->stripslashes_values = 0;
-			$user = clone $GLOBALS['BE_USER'];
+			$user = clone $this->getBackendUser();
 			$user->user['admin'] = 1;
 			$tce->start($record, Array(), $user);
 			$tce->process_datamap();
@@ -285,7 +286,7 @@ class EditorController extends ActionController {
 			}
 		}
 		// Save settings
-		$GLOBALS['BE_USER']->pushModuleData('mod-web_ThemesMod1/Categories/Filter/Settings', $categoriesFilterSettings);
+		$this->getBackendUser()->pushModuleData('mod-web_ThemesMod1/Categories/Filter/Settings', $categoriesFilterSettings);
 		// Create JSON-String
 		$response = array();
 		$response['success'] = '';
@@ -293,5 +294,12 @@ class EditorController extends ActionController {
 		$response['data'] = $categoriesFilterSettings;
 		$json = json_encode($response);
 		return $json;
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 }
