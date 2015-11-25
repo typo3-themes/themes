@@ -23,7 +23,7 @@ themes.languages {
 		uid = 0
 		label = {$themes.languages.default.label}
 		isoCode = {$themes.languages.default.isoCode}
-		isoCodeShort = {$themes.languages.default.flag}
+		isoCodeShort = {$themes.languages.default.isoCodeShort}
 		isoCodeHtml = {$themes.languages.default.isoCodeHtml}
 		flag = {$themes.languages.default.flag}
 	}
