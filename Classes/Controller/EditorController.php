@@ -66,7 +66,10 @@ class EditorController extends ActionController {
 		$this->tsParser = new TsParserUtility();
 
 		// extension configuration
-		$extensionConfiguration = ConfigurationUtility::getCurrentConfiguration('themes');
+
+		/** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
+		$configurationUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
+		$extensionConfiguration = $configurationUtility->getCurrentConfiguration('themes');
 		$extensionConfiguration['categoriesToShow'] = GeneralUtility::trimExplode(',', $extensionConfiguration['categoriesToShow']);
 		$extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(',', $extensionConfiguration['constantsToHide']);
 

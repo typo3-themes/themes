@@ -7,7 +7,11 @@ if (!defined('TYPO3_MODE'))
 /**
  * auto inject base TS
  */
-$extensionConfiguration = \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::getCurrentConfiguration('themes');
+
+/** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
+$configurationUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
+$extensionConfiguration = $configurationUtility->getCurrentConfiguration('themes');
+
 if ((is_array($extensionConfiguration))
 	&& (array_key_exists('themesIndependent', $extensionConfiguration))
 	&& ($extensionConfiguration['themesIndependent'] === '1')) {
