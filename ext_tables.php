@@ -9,8 +9,9 @@ if (!defined('TYPO3_MODE'))
  */
 
 /** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
-$configurationUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
-$extensionConfiguration = $configurationUtility->getCurrentConfiguration('themes');
+//$configurationUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
+//$extensionConfiguration = $configurationUtility->getCurrentConfiguration('themes');
+$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
 
 if ((is_array($extensionConfiguration))
 	&& (array_key_exists('themesIndependent', $extensionConfiguration))
