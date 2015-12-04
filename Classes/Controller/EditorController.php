@@ -70,8 +70,8 @@ class EditorController extends ActionController {
 		/** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
 		$configurationUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
 		$extensionConfiguration = $configurationUtility->getCurrentConfiguration('themes');
-		$extensionConfiguration['categoriesToShow'] = GeneralUtility::trimExplode(',', $extensionConfiguration['categoriesToShow']);
-		$extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(',', $extensionConfiguration['constantsToHide']);
+		#$extensionConfiguration['categoriesToShow'] = GeneralUtility::trimExplode(',', $extensionConfiguration['categoriesToShow']);
+		#$extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(',', $extensionConfiguration['constantsToHide']);
 
 		// mod.tx_themes.constantCategoriesToShow.value
 		$externalConstantCategoriesToShow = $this->getBackendUser()->getTSConfig(
