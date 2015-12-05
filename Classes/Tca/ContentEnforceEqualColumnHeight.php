@@ -19,15 +19,16 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow {
 	 * @return string
 	 */
 	public function renderField(array &$parameters, &$parentObject) {
-
 		// Vars
 		$uid   = $parameters['row']['uid'];
 		$pid   = $parameters['row']['pid'];
 		$name  = $parameters['itemFormElName'];
 		$value = $parameters['itemFormElValue'];
 		$cType = $parameters['row']['CType'];
-		$gridLayout = $parameters['row']['tx_gridelements_backend_layout'];
-
+		// C-Type could be an array or a string
+		if(is_array($cType) && isset($cType[0])) {
+			$cType = $cType[0];
+		}
 		// Get values
 		$values = explode(',', $value);
 		$valuesFlipped = array_flip($values);
@@ -37,16 +38,15 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow {
 		$responsives = $this->getMergedConfiguration($pid, 'responsive', $cType);
 
 		// Build checkboxes
-		$radiobuttons = '';
+		$checkboxes = '';
 		if (isset($responsives['properties']) && is_array($responsives['properties'])) {
 			foreach ($responsives['properties'] as $groupKey => $settings) {
 
 				// Validate groupKey and get label
 				$groupKey = substr($groupKey, 0, -1);
 				$label = isset($settings['label']) ? $settings['label'] : $groupKey;
-
-				$radiobuttons .= '<fieldset style="border:0 solid;border-right: 1px solid #ccc;width:120px;float:left;">' . LF;
-				$radiobuttons .= '<legend style="font-weight:bold">' . $GLOBALS['LANG']->sL($label) . '</legend>' . LF;
+				$checkboxes .= '<div class="col-xs-6 col-sm-2 themes-column">' . LF;
+				$checkboxes .= '<label class="t3js-formengine-label">' . $this->getLanguageService()->sL($label) . '</label>' . LF;
 				if (isset($settings['rowSettings.']) && is_array($settings['rowSettings.'])) {
 
 					// check if theres already a value selected
@@ -57,66 +57,42 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow {
 							$valueSet = isset($valuesFlipped[$tempKey]);
 						}
 					}
-
 					foreach ($settings['rowSettings.'] as $visibilityKey => $visibilityLabel) {
 						$tempKey = $groupKey . '-' . $visibilityKey;
 						$valuesAvailable[] = $tempKey;
-
 						$checked = (isset($valuesFlipped[$tempKey])) ? 'checked="checked"' : '';
 
 						// build checkbox
-						$radiobuttons .= '<div style="float:left">' . LF;
-						$radiobuttons .= '<label><input type="checkbox" onchange="contentEnforceEqualColumnHeightChange(this)" name="' . $tempKey . '" value="' . $tempKey . '" ' . $checked . '>' . LF;
-						$radiobuttons .= $GLOBALS['LANG']->sL($visibilityLabel) . '</label>' . LF;
-						$radiobuttons .= '</div>' . LF;
+						$checkboxes .= '<div>' . LF;
+						$checkboxes .= '<label><input type="checkbox" name="' . $tempKey . '" value="' . $tempKey . '" ' . $checked . '>' . LF;
+						$checkboxes .= $this->getLanguageService()->sL($visibilityLabel) . '</label>' . LF;
+						$checkboxes .= '</div>' . LF;
 					}
 				}
-				$radiobuttons .= '</fieldset>' . LF;
+				$checkboxes .= '</div>' . LF;
 			}
 		}
-
-		/**
-		 * Include jQuery in backend
-		 * @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer
-		 */
-		$pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
-		$pageRenderer->loadJquery(NULL, NULL, $pageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
-
-		/**
-		 * @todo auslagern!!
-		 */
-		$script = '<script type="text/javascript">' . LF;
-		$script .= 'function contentEnforceEqualColumnHeightChange(field) {' . LF;
-		$script .= 'var itemselector = "";' . LF;
-		$script .= 'if(jQuery(field).closest(".t3-form-field-item").index() > 0){' . LF;
-		$script .= '  itemselector = ".t3-form-field-item";' . LF;
-		$script .= '}else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0){' . LF;
-		$script .= 'itemselector = ".t3js-formengine-field-item";}' . LF;
-		$script .= '  if (field.checked) {' . LF;
-		$script .= '    jQuery(field).closest(itemselector).find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").addClass(field.name);' . LF;
-		$script .= '  }' . LF;
-		$script .= '  else {' . LF;
-		$script .= '    jQuery(field).closest(itemselector).find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").removeClass(field.name);' . LF;
-		$script .= '  }' . LF;
-		$script .= '  jQuery(field).closest(itemselector).find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").attr("value", ' . LF;
-		$script .= '  jQuery(field).closest(itemselector).find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));' . LF;
-		$script .= '}' . LF;
-		$script .= '</script>' . LF;
-
+		// Process current classes/identifiers
 		$setClasses = array_intersect($values, $valuesAvailable);
 		$setClass = htmlspecialchars(implode(' ', $setClasses));
 		$setValue = htmlspecialchars(implode(',', $setClasses));
-
+		// Allow admins to see the internal identifiers
 		$inputType = 'hidden';
 		if($this->isAdmin()) {
 			$inputType = 'text';
 		}
-		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="' . $inputType . '" name="' . htmlspecialchars($name) . '" value="' . $setValue . '"  class="' . $setClass . '">' . LF;
-
+		// Build hidden field structure
+		$hiddenField = '<div class="t3js-formengine-field-item">' . LF;
+		$hiddenField .= '<div class="form-control-wrap">' . LF;
+		$hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
+		$hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
+		$hiddenField .= 'name="' . htmlspecialchars($name) . '" ';
+		$hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . LF;
+		$hiddenField .= '</div>' . LF;
+		$hiddenField .= '</div>' . LF;
 		// Missed classes
 		$missedField = $this->getMissedFields($values, $valuesAvailable);
-
-		return '<div class="contentEnforceEqualColumnHeight">' . $radiobuttons . $hiddenField . $script . $missedField . '</div>';
+		return '<div class="contentEnforceEqualColumnHeight">' . $checkboxes . $hiddenField . $missedField . '</div>';
 	}
 
 }

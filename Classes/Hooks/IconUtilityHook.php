@@ -1,13 +1,13 @@
 <?php
 
-namespace KayStrobach\Themes\Hook;
+namespace KayStrobach\Themes\Hooks;
 
 use KayStrobach\Themes\Utilities\CheckPageUtility;
 
 /**
  * Class PageNotFoundHandlingHook
  *
- * @package KayStrobach\Themes\Hook
+ * @package KayStrobach\Themes\Hooks
  */
 class IconUtilityHook {
 

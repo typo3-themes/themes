@@ -1,6 +1,6 @@
 <?php
 
-namespace KayStrobach\Themes\Hook;
+namespace KayStrobach\Themes\Hooks;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -10,7 +10,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Hook to change the look of the template module
  *
  * @todo get it working again, is broken since 6.2
- * @package KayStrobach\Themes\Hook
+ * @package KayStrobach\Themes\Hooks
  */
 class TemplateModuleBodyPostProcessHook {
 
