@@ -4,10 +4,6 @@ if (!defined('TYPO3_MODE'))
 	die('Access denied.');
 
 
-/**
- * auto inject base TS
- */
-
 /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
 $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 
@@ -31,6 +27,7 @@ if (TYPO3_MODE === 'BE') {
 		), array(// Additional configuration
 			'access' => 'user,group',
 			'icon' => 'EXT:themes/ext_icon.png',
+			'iconIdentifier' => 'module-themes',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xml',
 		)
 	);
@@ -67,4 +64,14 @@ if (TYPO3_MODE === 'BE') {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'buttoncontent_icon.gif'
 	),
 	'CType'
+);
+
+// Register module icon
+$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+$iconRegistry->registerIcon(
+	'module-themes',
+	\TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+	array(
+		'source' => 'EXT:themes/ext_icon.svg'
+	)
 );
