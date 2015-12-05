@@ -72,8 +72,12 @@ return array(
 		'icon' => array(
 			'exclude' => 1,
 			'label'   => $l10n . 'icon',
-			'config'  => array(
-				'type' => 'input',
+			'config' => array(
+				'type' => 'select',
+				'selicon_cols' => 14,
+				'items' => array(
+					array('', '')
+				)
 			)
 		),
 		'hidden' => array(
