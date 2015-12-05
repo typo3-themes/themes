@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="{f:uri.resource(extensionName:'t3skin', path:'Css/backend.css')}">
+
+
+<div class="alert alert-danger">
+	<h4 class="alert-title">
+		There is a problem rendering your Frontend.
+	</h4>
+
+	<div class="alert-message">
+		<f:if condition="{layout}">
+			<f:then>
+				<p>
+					You previously selected "{layout}" as backend layout, which is not supported by the currently selected theme.
+				</p>
+				<p>
+					Please select another one in the properties of your page.
+				</p>
+			</f:then>
+			<f:else>
+				<p>
+					You have not selected a backend layout in your page properties, please do so in the properties of your page.
+				</p>
+			</f:else>
+		</f:if>
+	</div>
+</div>
