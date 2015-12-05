@@ -68,7 +68,7 @@ class EditorController extends ActionController {
 		// extension configuration
 
 		/** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
-		$configurationUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
+		$configurationUtility = $this->objectManager->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
 		$extensionConfiguration = $configurationUtility->getCurrentConfiguration('themes');
 		#$extensionConfiguration['categoriesToShow'] = GeneralUtility::trimExplode(',', $extensionConfiguration['categoriesToShow']);
 		#$extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(',', $extensionConfiguration['constantsToHide']);
@@ -77,9 +77,14 @@ class EditorController extends ActionController {
 		$externalConstantCategoriesToShow = $this->getBackendUser()->getTSConfig(
 			'mod.tx_themes.constantCategoriesToShow', BackendUtility::getPagesTSconfig($this->id)
 		);
+
 		if ($externalConstantCategoriesToShow['value']) {
 			$this->externalConfig['constantCategoriesToShow'] = GeneralUtility::trimExplode(',', $externalConstantCategoriesToShow['value']);
-			ArrayUtility::mergeRecursiveWithOverrule($extensionConfiguration['categoriesToShow'], $this->externalConfig['constantCategoriesToShow']);
+			$categoriesToShow = GeneralUtility::trimExplode(',', $extensionConfiguration['categoriesToShow']['value']);
+			ArrayUtility::mergeRecursiveWithOverrule(
+					$categoriesToShow,
+					$this->externalConfig['constantCategoriesToShow']
+			);
 		} else {
 			$this->externalConfig['constantCategoriesToShow'] = array();
 		}
@@ -95,7 +100,7 @@ class EditorController extends ActionController {
 			$this->externalConfig['constantsToHide'] = array();
 		}
 
-		$this->allowedCategories = $extensionConfiguration['categoriesToShow'];
+		$this->allowedCategories = $categoriesToShow;
 		$this->deniedFields = $extensionConfiguration['constantsToHide'];
 
 		// initialize normally used values
