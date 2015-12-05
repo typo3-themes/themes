@@ -41,7 +41,9 @@ class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
      */
     public function render($object, $index = '') {
         if(is_object($object)) {
-            return $object->$index;
+            if(property_exists($object, $index)) {
+                return $object->$index;
+            }
         }
         elseif(is_array($object)) {
             if(array_key_exists($index, $object)) {
