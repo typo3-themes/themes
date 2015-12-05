@@ -8,10 +8,12 @@ if (!defined('TYPO3_MODE'))
  * auto inject base TS
  */
 
+/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+
 /** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
-//$configurationUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
-//$extensionConfiguration = $configurationUtility->getCurrentConfiguration('themes');
-$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['themes']);
+$configurationUtility = $objectManager->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
+$extensionConfiguration = $configurationUtility->getCurrentConfiguration('themes');
 
 if ((is_array($extensionConfiguration))
 	&& (array_key_exists('themesIndependent', $extensionConfiguration))
