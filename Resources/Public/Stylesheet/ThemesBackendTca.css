@@ -1,0 +1,42 @@
+.themes-label-default {
+	
+}
+.themes-label-ctype {
+	margin-top: 10px;
+}
+.themes-label-gridLayout {
+	margin-top: 10px;
+}
+.themes-checkbox-label {
+	display: inline-block;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	width: 190px;
+}
+.themes-hidden-admin-field {
+	border: 1px solid #bbbbbb;
+	background-color: #f5f5f5;
+	color: #333;
+}
+.themes-column {
+	border:0 solid;
+	border-right: 1px solid #ccc;
+}
+.contentResponsive label {
+	width: 100%;
+}
+.contentResponsive .t3js-formengine-label,
+.contentColumnSettings .t3js-formengine-label,
+.contentEnforceEqualColumnHeight .t3js-formengine-label {
+	border-bottom: 1px solid #bbbbbb;
+	width: 100%;
+}
+.contentColumnSettings select {
+	width: 100%;
+	min-width: 100px;
+	margin-bottom: 5px;
+}
+.contentColumnSettings .themes-select-label {
+	margin-bottom: 0;
+}

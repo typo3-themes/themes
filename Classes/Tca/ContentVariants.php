@@ -22,7 +22,6 @@ class ContentVariants extends AbstractContentRow {
 	 * @return string
 	 */
 	public function renderField(array &$parameters, &$parentObject) {
-
 		// Vars
 		$uid   = $parameters['row']['uid'];
 		$pid   = $parameters['row']['pid'];
@@ -30,12 +29,17 @@ class ContentVariants extends AbstractContentRow {
 		$value = $parameters['itemFormElValue'];
 		$cType = $parameters['row']['CType'];
 		$gridLayout = $parameters['row']['tx_gridelements_backend_layout'];
-
+		// C-Type could be an array or a string
+		if(is_array($cType) && isset($cType[0])) {
+			$cType = $cType[0];
+		}
+		if(is_array($gridLayout) && isset($gridLayout[0])) {
+			$gridLayout = $gridLayout[0];
+		}
 		// Get values
 		$values = explode(',', $value);
 		$this->valuesFlipped = array_flip($values);
 		$this->valuesAvailable = array();
-
 		// Get configuration
 		$variants = $this->getMergedConfiguration($pid, 'variants', $cType);
 
@@ -78,58 +82,35 @@ class ContentVariants extends AbstractContentRow {
 
 			}
 		}
-
 		// Merge checkbox groups
 		$checkboxes = '';
 		$checkboxes .= $this->getMergedCheckboxes('default');
-		$checkboxes .= $this->getMergedCheckboxes('ctype');
-		$checkboxes .= $this->getMergedCheckboxes('gridLayout');
+		$checkboxes .= $this->getMergedCheckboxes('ctype', $cType);
+		$checkboxes .= $this->getMergedCheckboxes('gridLayout', $cType . '/' . $gridLayout);
 		if ($checkboxes === '') {
-			$checkboxes = $GLOBALS['LANG']->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.no_variants_available');
+			$checkboxes = $this->getLanguageService()->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.no_variants_available');
 		}
-
-		/**
-		 * Include jQuery in backend
-		 * @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer
-		 */
-		$pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
-		$pageRenderer->loadJquery(NULL, NULL, $pageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
-
-		/**
-		 * @todo auslagern!!
-		 */
-		$script = '<script type="text/javascript">' . LF;
-		$script .= 'function contentVariantChange(field) {' . LF;
-		$script .= 'var itemselector = "";' . LF;
-		$script .= 'if(jQuery(field).closest(".t3-form-field-item").index() > 0){' . LF;
-		$script .= '  itemselector = ".t3-form-field-item";' . LF;
-		$script .= '}else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0){' . LF;
-		$script .= 'itemselector = ".t3js-formengine-field-item";}' . LF;
-		$script .= '  if (field.checked) {' . LF;
-		$script .= '    jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").addClass(field.name);' . LF;
-		$script .= '  }' . LF;
-		$script .= '  else {' . LF;
-		$script .= '    jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").removeClass(field.name);' . LF;
-		$script .= '  }' . LF;
-		$script .= '  jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").attr("value", ' . LF;
-		$script .= '  jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));' . LF;
-		$script .= '}' . LF;
-		$script .= '</script>' . LF;
-
+		// Process current classes/identifiers
 		$setClasses = array_intersect($values, $this->valuesAvailable);
 		$setClass = htmlspecialchars(implode(' ', $setClasses));
 		$setValue = htmlspecialchars(implode(',', $setClasses));
-
+		// Allow admins to see the internal identifiers
 		$inputType = 'hidden';
 		if($this->isAdmin()) {
 			$inputType = 'text';
 		}
-		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="' . $inputType . '" name="' . htmlspecialchars($name) . '" value="' . $setValue . '" class="' . $setClass . '">' . LF;
-
+		// Build hidden field structure
+		$hiddenField = '<div class="t3js-formengine-field-item">' . LF;
+		$hiddenField .= '<div class="form-control-wrap">' . LF;
+		$hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
+		$hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
+		$hiddenField .= 'name="' . htmlspecialchars($name) . '" ';
+		$hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . LF;
+		$hiddenField .= '</div>' . LF;
+		$hiddenField .= '</div>' . LF;
 		// Missed classes
 		$missedField = $this->getMissedFields($values, $this->valuesAvailable);
-
-		return '<div class="contentVariant">' . $checkboxes . $hiddenField . $script . $missedField . '</div>';
+		return '<div class="contentVariant">' . $checkboxes . $hiddenField . $missedField . '</div>';
 	}
 
 	/**
@@ -140,14 +121,13 @@ class ContentVariants extends AbstractContentRow {
 	 * @param $type \string Type of the checkbox property
 	 */
 	protected function createCheckbox($key, $label, $type) {
-		$label = $GLOBALS['LANG']->sL($label);
-		$labelStyles = 'display: inline-block;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 190px';
+		$label = $this->getLanguageService()->sL($label);
 		$this->valuesAvailable[] = $key;
 		$checked = (isset($this->valuesFlipped[$key])) ? 'checked="checked"' : '';
-		$checkbox = '<div style="width:200px;float:left">' . LF;
-		$checkbox .= '<label style="' . $labelStyles . '" title="' . $label . '">' . LF;
-		$checkbox .= '<input type="checkbox" onchange="contentVariantChange(this)" name="' . $key . '" ' . $checked . '>' . LF;
-		$checkbox .= $GLOBALS['LANG']->sL($label) . '</label>' . LF;
+		$checkbox = '<div  class="col-xs-12 col-sm-4 col-md-3 col-lg-2">' . LF;
+		$checkbox .= '<label class="themes-checkbox-label" title="' . $label . '">' . LF;
+		$checkbox .= '<input type="checkbox" name="' . $key . '" ' . $checked . '>' . LF;
+		$checkbox .= $this->getLanguageService()->sL($label) . '</label>' . LF;
 		$checkbox .= '</div>' . LF;
 		$this->checkboxesArray[$type][] = $checkbox;
 	}
@@ -158,14 +138,16 @@ class ContentVariants extends AbstractContentRow {
 	 * @param $type \string Type of the checkbox property
 	 * @return string Grouped checkboxes
 	 */
-	protected function getMergedCheckboxes($type) {
+	protected function getMergedCheckboxes($type, $labelInfo='') {
 		$checkboxes = '';
 		if (!empty($this->checkboxesArray[$type])) {
 			$labelKey = 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.' . strtolower($type) . '_group_label';
-			$label = $GLOBALS['LANG']->sL($labelKey);
-			$checkboxes .= '<fieldset style="border:0 solid">' . LF;
-			$checkboxes .= '<legend style="font-weight:bold">' . $label . ':</legend>' . implode('', $this->checkboxesArray[$type]). LF;
-			$checkboxes .= '</fieldset>' . LF;
+			$label = $this->getLanguageService()->sL($labelKey);
+			if(trim($labelInfo)!='') {
+				$label .= '(' . $labelInfo . ')';
+			}
+			$checkboxes .= '<label class="t3js-formengine-label themes-label-' . $type . ' col-xs-12">' . $label . ':</label>';
+			$checkboxes .= implode('', $this->checkboxesArray[$type]). LF;
 		}
 		return $checkboxes;
 	}

@@ -1,6 +1,6 @@
 <?php
 
-namespace KayStrobach\Themes\Hook;
+namespace KayStrobach\Themes\Hooks;
 
 // class for: $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'][]
 
@@ -12,7 +12,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Hook to include the TypoScript during the rendering
  *
- * @package KayStrobach\Themes\Hook
+ * @package KayStrobach\Themes\Hooks
  */
 class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 
@@ -35,9 +35,9 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 			$themeIdentifier = $tRow['tx_themes_skin'];
 
 			// Call hook for possible manipulation of current skin.
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'])) {
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hooks/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'])) {
 				$tempParamsForHook = array('theme' => $themeIdentifier);
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'] as $userFunc) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hooks/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'] as $userFunc) {
 					$themeIdentifier = GeneralUtility::callUserFunction($userFunc, $tempParamsForHook, $ref = NULL);
 				}
 			}
@@ -60,8 +60,8 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook {
 
 			// @todo add hook to inject template overlays, e.g. for previewed constants before save ...
 			// Call hook for possible manipulation of current skin. constants
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['modifyTS'])) {
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hook/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['modifyTS'] as $userFunc) {
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hooks/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['modifyTS'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hooks/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['modifyTS'] as $userFunc) {
 					$themeItem = GeneralUtility::callUserFunction($userFunc, $tempParamsForHook, $pObj);
 					$pObj->processTemplate(
 						$themeItem,

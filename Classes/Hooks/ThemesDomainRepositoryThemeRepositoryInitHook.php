@@ -1,6 +1,6 @@
 <?php
 
-namespace KayStrobach\Themes\Hook;
+namespace KayStrobach\Themes\Hooks;
 
 use KayStrobach\Themes\Domain\Model\Theme;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;

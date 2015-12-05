@@ -12,19 +12,19 @@ if (!defined('TYPO3_MODE'))
  * Register hook to inject themes
  */
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'][]
-		= 'KayStrobach\\Themes\\Hook\\ThemesDomainRepositoryThemeRepositoryInitHook->init';
+		= 'KayStrobach\\Themes\\Hooks\\ThemesDomainRepositoryThemeRepositoryInitHook->init';
 
 /**
  * register used hooks to inject the TS
  */
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'][]
-		= 'KayStrobach\\Themes\\Hook\\T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook->main';
+		= 'KayStrobach\\Themes\\Hooks\\T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook->main';
 
 /**
  * register hook to manipulate the template module
  */
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['moduleBodyPostProcess'][]
-		= 'KayStrobach\\Themes\\Hook\\TemplateModuleBodyPostProcessHook->main';
+		= 'KayStrobach\\Themes\\Hooks\\TemplateModuleBodyPostProcessHook->main';
 
 /**
  * register signal to inject pagets without xclassing
@@ -44,7 +44,7 @@ if (!defined('TYPO3_MODE'))
  * register hook for icon overlay
  */
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][]
-		= 'KayStrobach\\Themes\\Hook\\IconUtilityHook';
+		= 'KayStrobach\\Themes\\Hooks\\IconUtilityHook';
 
 /**
  * register hook to inject BeLayoutTsprovider

@@ -19,15 +19,16 @@ class ContentColumnSettings extends AbstractContentRow {
 	 * @return string
 	 */
 	public function renderField(array &$parameters, &$parentObject) {
-
 		// Vars
 		$uid   = $parameters['row']['uid'];
 		$pid   = $parameters['row']['pid'];
 		$name  = $parameters['itemFormElName'];
 		$value = $parameters['itemFormElValue'];
 		$cType = $parameters['row']['CType'];
-		$gridLayout = $parameters['row']['tx_gridelements_backend_layout'];
-
+		// C-Type could be an array or a string
+		if(is_array($cType) && isset($cType[0])) {
+			$cType = $cType[0];
+		}
 		// Get values
 		$values = explode(',', $value);
 		$valuesFlipped = array_flip($values);
@@ -36,17 +37,15 @@ class ContentColumnSettings extends AbstractContentRow {
 		// Get configuration
 		$responsives = $this->getMergedConfiguration($pid, 'responsive', $cType);
 
-		// Build checkboxes
-		$radiobuttons = '';
+		// Build selectboxes
+		$selectboxes = '';
 		if (isset($responsives['properties']) && is_array($responsives['properties'])) {
 			foreach ($responsives['properties'] as $groupKey => $settings) {
-
 				// Validate groupKey and get label
 				$groupKey = substr($groupKey, 0, -1);
 				$label = isset($settings['label']) ? $settings['label'] : $groupKey;
-
-				$radiobuttons .= '<fieldset style="border:0 solid;border-right: 1px solid #ccc;width:120px;float:left;">' . LF;
-				$radiobuttons .= '<legend style="font-weight:bold">' . $GLOBALS['LANG']->sL($label) . '</legend>' . LF;
+				$selectboxes .= '<div class="col-xs-6 col-sm-2 themes-column">' . LF;
+				$selectboxes .= '<label class="t3js-formengine-label">' . $this->getLanguageService()->sL($label) . '</label>' . LF;
 				if (isset($settings['columnSettings.']) && is_array($settings['columnSettings.'])) {
 					foreach ($settings['columnSettings.'] as $visibilityKey => $visibilityLabel) {
 						$start = $visibilityKey === 'width' ? 1 : 0;
@@ -58,66 +57,42 @@ class ContentColumnSettings extends AbstractContentRow {
 						}
 
 						// build radiobox
-						$radiobuttons .= '<div style="float:left">' . LF;
-						//$radiobuttons .= '<input type="radio" name="' . $groupKey . '" value="' . $tempKey . '" id="theme-enforceequalcolumnheight-' . $tempKey . '" ' . $selected .  '>' . LF;
-						$radiobuttons .= '<label style="width:50px;display:inline-block">' . $GLOBALS['LANG']->sL($visibilityLabel) . '</label>' . LF;
-
-						$radiobuttons .= '<select style="width:110px" onchange="contentColumnSettingsChange(this)" name="' . $tempKey . '">' . LF;
-						$radiobuttons .= '<option value="">default</option>' . LF;
+						$selectboxes .= '<div>' . LF;
+						$selectboxes .= '<label class="themes-select-label">' . $this->getLanguageService()->sL($visibilityLabel) . '</label>' . LF;
+						$selectboxes .= '<select class="form-control form-control-adapt input-sm" name="' . $tempKey . '">' . LF;
+						$selectboxes .= '<option value="">default</option>' . LF;
 						for ($i = $start; $i <= 12; $i++) {
-
 							// set the selected value
 							$selected = (isset($valuesFlipped[$tempKey . '-' . $i])) ? 'selected="selected"' : '';
-
-							$radiobuttons .= '<option value="' . $tempKey . '-' . $i . '" ' . $selected .  '>' . $visibilityKey . '-' . $i . '</option>' . LF;
+							$selectboxes .= '<option value="' . $tempKey . '-' . $i . '" ' . $selected .  '>' . $visibilityKey . '-' . $i . '</option>' . LF;
 						}
-						$radiobuttons .= '</select>' . LF;
-						$radiobuttons .= '</div>' . LF;
+						$selectboxes .= '</select>' . LF;
+						$selectboxes .= '</div>' . LF;
 					}
 				}
-				$radiobuttons .= '</fieldset>' . LF;
+				$selectboxes .= '</div>' . LF;
 			}
 		}
-
-		/**
-		 * Include jQuery in backend
-		 * @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer
-		 */
-		$pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
-		$pageRenderer->loadJquery(NULL, NULL, $pageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
-
-		/**
-		 * @todo auslagern!!
-		 */
-		$script = '<script type="text/javascript">' . LF;
-		$script .= 'function contentColumnSettingsChange(field) {' . LF;
-		//$script .= 'console.log("in:", field);' . LF;
-		$script .= 'var itemselector = "";' . LF;
-		$script .= 'if(jQuery(field).closest(".t3-form-field-item").index() > 0){' . LF;
-		$script .= '  itemselector = ".t3-form-field-item";' . LF;
-		$script .= '}else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0){' . LF;
-		$script .= 'itemselector = ".t3js-formengine-field-item";}' . LF;
-		$script .= '  jQuery.each(jQuery(".contentColumnSettings select[name=\'"+field.name+"\'] option"), function(index, node) {' . LF;
-		//$script .= '    console.log("remove:", node);' . LF;
-		//$script .= '    console.log("remove:", node.value);' . LF;
-		$script .= '    jQuery(field).closest(itemselector).find(".contentColumnSettings input[readonly=\'readonly\']").removeClass(node.value);' . LF;
-		$script .= '  });' . LF;
-		//$script .= '  console.log("add:", field.value);' . LF;
-		$script .= '  jQuery(field).closest(itemselector).find(".contentColumnSettings input[readonly=\'readonly\']").addClass(field.value);' . LF;
-		$script .= '  jQuery(field).closest(itemselector).find(".contentColumnSettings input[readonly=\'readonly\']").attr("value", ' . LF;
-		$script .= '  jQuery(field).closest(itemselector).find(".contentColumnSettings input[readonly=\'readonly\']").attr("class").replace(/\ /g, ","));' . LF;
-		$script .= '}' . LF;
-		$script .= '</script>' . LF;
-
+		// Process current classes/identifiers
 		$setClasses = array_intersect($values, $valuesAvailable);
 		$setClass = htmlspecialchars(implode(' ', $setClasses));
 		$setValue = htmlspecialchars(implode(',', $setClasses));
-
-		$hiddenField = '<input style="width:90%;background-color:#dadada" readonly="readonly" type="text" name="' . htmlspecialchars($name) . '" value="' . $setValue . '"  class="' . $setClass . '">' . LF;
-
+		// Allow admins to see the internal identifiers
+		$inputType = 'hidden';
+		if($this->isAdmin()) {
+			$inputType = 'text';
+		}
+		// Build hidden field structure
+		$hiddenField = '<div class="t3js-formengine-field-item">' . LF;
+		$hiddenField .= '<div class="form-control-wrap">' . LF;
+		$hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
+		$hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
+		$hiddenField .= 'name="' . htmlspecialchars($name) . '" ';
+		$hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . LF;
+		$hiddenField .= '</div>' . LF;
+		$hiddenField .= '</div>' . LF;
 		// Missed classes
 		$missedField = $this->getMissedFields($values, $valuesAvailable);
-
-		return '<div class="contentColumnSettings">' . $radiobuttons . $hiddenField . $script . $missedField . '</div>';
+		return '<div class="contentColumnSettings">' . $selectboxes . $hiddenField . $missedField . '</div>';
 	}
 }

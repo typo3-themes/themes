@@ -58,20 +58,20 @@ $tempColumn = array(
 			'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentVariants->renderField',
 		)
 	),
-	'tx_themes_responsive' => array(
-		'exclude' => 1,
-		'label' => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:responsive_settings',
-		'config' => array(
-			'type' => 'user',
-			'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentResponsive->renderField',
-		)
-	),
 	'tx_themes_behaviour' => array(
 		'exclude' => 1,
 		'label' => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:behaviour',
 		'config' => array(
 			'type' => 'user',
 			'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentBehaviour->renderField',
+		)
+	),
+	'tx_themes_responsive' => array(
+		'exclude' => 1,
+		'label' => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:responsive_settings',
+		'config' => array(
+			'type' => 'user',
+			'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentResponsive->renderField',
 		)
 	),
 );
@@ -81,52 +81,5 @@ $GLOBALS['TCA']['tt_content']['types']['themes_buttoncontent_pi1']['showitem'] =
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_icon', '', 'after:header');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_variants', '', 'after:section_frame');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_responsive', '', 'after:tx_themes_variants');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_behaviour', '', 'after:tx_themes_responsive');
-
-/**
- * In case of gridelements is used
- * add some additional fields
- */
-if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements')) {
-
-	// Enforce equal column height
-	$tempColumn = array(
-		'tx_themes_enforceequalcolumnheight' => array(
-			'displayCond' => array(
-				'AND' => array(
-					'FIELD:CType:=:gridelements_pi1',
-					'OR' => array(
-						'FIELD:tx_gridelements_backend_layout:=:row',
-						//'FIELD:tx_gridelements_backend_layout:=:column',
-					),
-				),
-			),
-			'exclude' => 1,
-			'label' => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:enforce_equal_column_height',
-			'config' => array(
-				'type' => 'user',
-				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentEnforceEqualColumnHeight->renderField',
-			)
-		),
-		'tx_themes_columnsettings' => array(
-			'displayCond' => array(
-				'AND' => array(
-					'FIELD:CType:=:gridelements_pi1',
-					'OR' => array(
-						'FIELD:tx_gridelements_backend_layout:=:singleColumn',
-						'FIELD:tx_gridelements_backend_layout:=:singleColumnHorizontal',
-					),
-				),
-			),
-			'exclude' => 1,
-			'label' => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:column_settings',
-			'config' => array(
-				'type' => 'user',
-				'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentColumnSettings->renderField',
-			)
-		),
-	);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumn);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_enforceequalcolumnheight,tx_themes_columnsettings', '', 'after:tx_themes_behaviour');
-}
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_behaviour', '', 'after:tx_themes_variants');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_themes_responsive', '', 'after:tx_themes_behaviour');
