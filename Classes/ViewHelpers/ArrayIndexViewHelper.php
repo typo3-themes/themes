@@ -34,9 +34,8 @@ namespace KayStrobach\Themes\ViewHelpers;
 class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
  
     /**
-     * @param $object  Object|array Objekt oder Array in dem der Index ist
-     * @param $index string Index auf den zugegriffen werden soll
-     * @param $prop string Index auf den zugegriffen werden soll
+     * @param $object  Object|array Array or Object
+     * @param $index string Index or property
      * @return mixed
      */
     public function render($object, $index = '') {
