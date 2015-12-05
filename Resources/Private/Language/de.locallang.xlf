@@ -143,7 +143,10 @@
 				<target>Spalten Einstellungen</target>
 			</trans-unit>
 
-			
+			<trans-unit id="theme" xml:space="preserve">
+				<source>Site related settings</source>
+				<target>Seitenspezifische Einstellungen</target>
+			</trans-unit>
 			
 		</body>
 	</file>
