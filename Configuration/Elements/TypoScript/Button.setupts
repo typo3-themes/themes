@@ -56,15 +56,15 @@ lib.buttoncontent {
 			}
 			renderObj = TEXT
 			renderObj {
-				prepend = TEXT
-				prepend {
+				stdWrap.prepend = TEXT
+				stdWrap.prepend {
 					field = icon
 					fielRequired = icon
 					stdWrap.postUserFunc = KayStrobach\Themes\Frontend\CssClassMapper->mapGenericToFramework
 					stdWrap.postUserFunc {
 						iconMapping =< lib.icons.cssMap
 					}
-					wrap = <i class="|"></i>
+					wrap = <i class="|"></i> 
 				}
 				field = linktext
 				typolink.parameter.field = linktarget
