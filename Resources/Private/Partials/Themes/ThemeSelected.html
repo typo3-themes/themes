@@ -86,10 +86,14 @@
 							<tr title="{item.name}" data-userscope="{item.userScope}" data-subcategory="{item.subCategory}" class="constantLine db_list_normal visible {f:if(condition:'{item.isDefault}', then:'defaultValueIsSelected')}">
 								<td nowrap="nowrap">
 									<div class="showOnDefault">
-										<span class="showEditForm"><f:image src="EXT:themes/Resources/Public/Icons/power_grey.png" alt="alt text" /></span>
+										<span class="showEditForm">
+											<f:be.buttons.icon icon="switch-off" title="Overwrite with custom value" />
+										</span>
 									</div>
 									<div class="hideOnDefault">
-										<span class="hideEditForm"><f:image src="EXT:themes/Resources/Public/Icons/power_green.png" alt="alt text" /></span>
+										<span class="hideEditForm">
+											<f:be.buttons.icon icon="switch-on" title="Deactivate custom value and use default" />
+										</span>
 									</div>
 									<f:form.hidden name="check[{item.name}]" value="{f:if(condition:'{item.isDefault}', then:'', else:'checked')}" class="hidden"/>
 								</td>
