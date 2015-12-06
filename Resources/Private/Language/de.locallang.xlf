@@ -147,7 +147,10 @@
 				<source>Site related settings</source>
 				<target>Seitenspezifische Einstellungen</target>
 			</trans-unit>
-			
+
+			<trans-unit id="contains-theme" xml:space="preserve">
+				<source>Theme (Webseitendesign)</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

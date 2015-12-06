@@ -118,6 +118,10 @@
 				<source>Site related settings</source>
 			</trans-unit>
 
+			<trans-unit id="contains-theme" xml:space="preserve">
+				<source>Theme</source>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>
