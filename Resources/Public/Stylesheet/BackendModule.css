@@ -5,6 +5,10 @@
 	display: inline-block;
 	width: 90%;
 }
+.showOnDefault img,
+.hideOnDefault img {
+	cursor: pointer;
+}
 .hideOnDefault input[type=text] {
 	width: 80%;
 }
@@ -90,7 +94,7 @@ tr.constantLine {
 }
 
 .table-list {
-	margin-top: 0px;
+	margin-top: 0;
 }
 
 .hideOnDefault input[type="text"].colorselector {
@@ -113,7 +117,7 @@ tr.constantLine {
 }
 
 .theme:hover .theme-hover {
-	top: 0px;
+	top: 0;
 	opacity: 1
 }
 
@@ -122,8 +126,8 @@ tr.constantLine {
 }
 
 .theme-holder {
-	top: 0px;
-	bottom: 0px;
+	top: 0;
+	bottom: 0;
 	margin-left: -20px
 }
 
@@ -152,7 +156,7 @@ tr.constantLine {
 	background-color: #fafafa;
 	position: absolute;
 	top: 100%;
-	left: 0px;
+	left: 0;
 	width: 300px;
 	height: 225px;
 	overflow: hidden;
@@ -246,7 +250,7 @@ tr.constantLine {
 }
 
 .theme-detail-header p {
-	padding: 0px;
+	padding: 0;
 	max-width: 500px;
 	margin-bottom: 1.25em
 }

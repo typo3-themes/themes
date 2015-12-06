@@ -1,5 +1,5 @@
 <?php
-namespace KayStrobach\Themes\ViewHelpers\Condition;
+namespace KayStrobach\Themes\ViewHelpers;
 
 	/***************************************************************
 	 *  Copyright notice
@@ -25,31 +25,27 @@ namespace KayStrobach\Themes\ViewHelpers\Condition;
 	 *  This copyright notice MUST APPEAR in all copies of the script!
 	 ***************************************************************/
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * This view helper implements an if/else condition.
- *
- * @see \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::convertArgumentValue()
- * @api
+ * 
  */
-class IfInListViewHelper extends AbstractConditionViewHelper {
-	
+class InListViewHelper extends AbstractViewHelper {
+
+
+
 	/**
-	 * Checks if a value exists within a string, like behaviour, variants..
+	 * 
 	 *
 	 * @param string $string
 	 * @param string $value
+	 * @param string $delimiter
 	 * @return string
 	 */
-	public function render($string, $value) {
-		$array = GeneralUtility::trimExplode(',', $string);
+	public function render($string, $value, $delimiter=' ') {
+		$array = GeneralUtility::trimExplode($delimiter, $string);
 		$array = array_flip($array);
-		if (TRUE === array_key_exists($value, $array)) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
+		return array_key_exists($value, $array);
 	}
 	
 }

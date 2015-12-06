@@ -26,7 +26,6 @@ if (TYPO3_MODE === 'BE') {
 			'Editor' => 'index,update,showTheme,setTheme,showThemeDetails,saveCategoriesFilterSettings',
 		), array(// Additional configuration
 			'access' => 'user,group',
-			'icon' => 'EXT:themes/ext_icon.png',
 			'iconIdentifier' => 'module-themes',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xml',
 		)
@@ -44,16 +43,16 @@ if (TYPO3_MODE === 'BE') {
 
 /**
  * add sprites
- */
 	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
 		array(
-			'switch-off' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_orange.png',
+			//'switch-off' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_orange.png',
 			'switch-disable' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_grey.png',
 			'switch-on' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_green.png',
 			'overlay-theme' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/overlay_theme.png',
 		),
 		$_EXTKEY
 	);
+ */
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_themes_buttoncontent');
 
@@ -73,5 +72,40 @@ $iconRegistry->registerIcon(
 	\TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
 	array(
 		'source' => 'EXT:themes/ext_icon.svg'
+	)
+);
+$iconRegistry->registerIcon(
+	'content-button',
+	\TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+	array(
+		'source' => 'EXT:themes/Resources/Public/Icons/new_content_el_ButtonContent.svg'
+	)
+);
+$iconRegistry->registerIcon(
+	'switch-off',
+	\TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+	array(
+		'source' => 'EXT:themes/Resources/Public/Icons/power_grey.svg'
+	)
+);
+$iconRegistry->registerIcon(
+	'switch-on',
+	\TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+	array(
+		'source' => 'EXT:themes/Resources/Public/Icons/power_green.svg'
+	)
+);
+$iconRegistry->registerIcon(
+	'switch-disable',
+	\TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+	array(
+		'source' => 'EXT:themes/Resources/Public/Icons/power_orange.svg'
+	)
+);
+$iconRegistry->registerIcon(
+	'overlay-theme',
+	\TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+	array(
+		'source' => 'EXT:themes/Resources/Public/Icons/overlay_theme.svg'
 	)
 );
