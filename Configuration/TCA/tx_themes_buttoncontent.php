@@ -19,7 +19,7 @@ return array(
 		'enablecolumns'      => array(
 			'disabled' => 'hidden',
 		),
-		'iconfile'           => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('themes') . 'Resources/Public/Icons/button_content.gif',
+		'iconfile'           => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('themes') . 'Resources/Public/Icons/new_content_el_ButtonContent.gif',
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'linktext,linktarget,linktitle,icon'
@@ -72,8 +72,12 @@ return array(
 		'icon' => array(
 			'exclude' => 1,
 			'label'   => $l10n . 'icon',
-			'config'  => array(
-				'type' => 'input',
+			'config' => array(
+				'type' => 'select',
+				'selicon_cols' => 14,
+				'items' => array(
+					array('', '')
+				)
 			)
 		),
 		'hidden' => array(

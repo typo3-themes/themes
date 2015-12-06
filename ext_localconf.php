@@ -41,12 +41,6 @@ if (!defined('TYPO3_MODE'))
 	unset($signalSlotDispatcher);
 
 /**
- * register hook for icon overlay
- */
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][]
-		= 'KayStrobach\\Themes\\Hooks\\IconUtilityHook';
-
-/**
  * register hook to inject BeLayoutTsprovider
  */
 	if (TYPO3_MODE === 'BE') {

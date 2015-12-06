@@ -56,6 +56,16 @@ lib.buttoncontent {
 			}
 			renderObj = TEXT
 			renderObj {
+				stdWrap.prepend = TEXT
+				stdWrap.prepend {
+					field = icon
+					fielRequired = icon
+					stdWrap.postUserFunc = KayStrobach\Themes\Frontend\CssClassMapper->mapGenericToFramework
+					stdWrap.postUserFunc {
+						iconMapping =< lib.icons.cssMap
+					}
+					wrap = <i class="|"></i> 
+				}
 				field = linktext
 				typolink.parameter.field = linktarget
 				typolink.ATagTitle.field = linktitle

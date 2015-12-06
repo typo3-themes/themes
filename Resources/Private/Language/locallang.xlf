@@ -113,7 +113,11 @@
 			<trans-unit id="column_settings" xml:space="preserve">
 				<source>Column settings</source>
 			</trans-unit>
-			
+
+			<trans-unit id="theme" xml:space="preserve">
+				<source>Site related settings</source>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>
