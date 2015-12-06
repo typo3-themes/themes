@@ -50,6 +50,7 @@ if (TYPO3_MODE === 'BE') {
 			'switch-off' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_orange.png',
 			'switch-disable' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_grey.png',
 			'switch-on' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_green.png',
+			'contains-theme' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'ext_icon.png',
 		),
 		$_EXTKEY
 	);
@@ -74,3 +75,12 @@ $iconRegistry->registerIcon(
 		'source' => 'EXT:themes/ext_icon.svg'
 	)
 );
+
+$GLOBALS['TCA']['pages']['columns']['module']['config']['items'][] =
+	array(
+		0 => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:contains-theme',
+		1 => 'themes',
+		2 => 'extensions-themes-contains-theme'
+	);
+
+$GLOBALS['TCA']['pages']['ctrl']['typeicon_classes']['contains-themes'] = 'extensions-themes-contains-theme';
