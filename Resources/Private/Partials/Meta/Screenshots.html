@@ -1,7 +1,7 @@
 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
 	<ol class="carousel-indicators">
 		<f:for each="{screenshots}" as="screenshot" iteration="iteration">
-			<li data-target="#carousel-example-generic" data-slide-to="{}" class="{f:if(condition:iteration.isFirst, then:'active')}"></li>
+			<li data-target="#carousel-example-generic" data-slide-to="{iteration.index}" class="{f:if(condition:iteration.isFirst, then:'active')}"></li>
 		</f:for>
 	</ol>
 	<div class="carousel-inner">

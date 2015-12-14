@@ -1,26 +1,46 @@
-.showOnDefault {
+/* Screenshots carousel */
+.typo3-themes-module .carousel {
+	border: 1px solid #ccc;
+}
+.typo3-themes-module ol.carousel-indicators li {
+	border: 1px solid #ccc;
+}
+.typo3-themes-module ol.carousel-indicators li {
+	border: 1px solid #ccc;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+.typo3-themes-module ol.carousel-indicators li.active {
+	border: 1px solid #999;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.typo3-themes-module .showOnDefault {
 	display: none;
 }
-.hideOnDefault {
+.typo3-themes-module .hideOnDefault {
 	display: inline-block;
 	width: 90%;
 }
-.showOnDefault img,
-.hideOnDefault img {
+
+
+.typo3-themes-module .showOnDefault img,
+.typo3-themes-module .hideOnDefault img {
 	cursor: pointer;
 }
-.hideOnDefault input[type=text] {
+.typo3-themes-module .hideOnDefault input[type=text] {
 	width: 80%;
 }
-.defaultValueIsSelected .showOnDefault {
+.typo3-themes-module .defaultValueIsSelected .showOnDefault {
 	display: inline-block;
 }
-.defaultValueIsSelected .hideOnDefault {
+.typo3-themes-module .defaultValueIsSelected .hideOnDefault {
 	display: none;
 }
-.hidden {
-	display: none;
-}
+
+/**
+ * @todo: Prefix all css selectors
+ */
+
 tr.constantLine {
 	height: 40px;
 }
