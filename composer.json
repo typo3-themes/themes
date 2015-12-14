@@ -2,12 +2,12 @@
   "name": "typo3-themes/themes",
   "type": "typo3-cms-extension",
   "description": "TYPO3 THEMES",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "homepage": "http://typo3-themes.org",
   "license": ["GPL-2.0+"],
   "keywords": ["TYPO3 CMS", "TYPO3 THEMES", "THEMES", "THEMES", "FLUID", "CUSTOMIZE"],
   "require": {
-    "typo3/cms-core": "~7.6.0|<8.0"
+    "typo3/cms-core": "~6.2.0|<7.0"
   },
   "support": {
     "issues": "https://github.com/typo3-themes/themes/issues"

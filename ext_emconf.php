@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => '',
 	'category' => 'fe',
 	'shy' => 0,
-	'version' => '2.5.0',
+	'version' => '2.5.1',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
@@ -32,7 +32,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance_note' => '',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '7.6.0-7.6.99',
+			'typo3' => '6.2.0-6.2.99',
 			'static_info_tables' => '6.3.0-6.3.99',
 			'yaml_parser' => '1.0.0-1.0.99',
 		),
