@@ -1,14 +1,12 @@
 <f:be.container
-		pageTitle="paalimm!"
-		loadJQuery="1"
+		pageTitle="TYPO3-THEMES"
 		includeCssFiles="{
-			0: '../typo3conf/ext/themes/Resources/Public/Contrib/colorpicker/css/colorpicker.css',
-			2: '../typo3conf/ext/themes/Resources/Public/Stylesheet/BackendModule.css'
+			0: '../typo3conf/ext/themes/Resources/Public/Stylesheet/BackendModule.css'
+			1: '../typo3conf/ext/themes/Resources/Public/Contrib/colorpicker/css/colorpicker.css'
 		}"
-		includeJsFiles="{
-			0: '../typo3conf/ext/themes/Resources/Public/Contrib/colorpicker/js/colorpicker.js',
-			1: '../typo3conf/ext/themes/Resources/Public/JavaScript/BackendModule.js',
-			2: '../typo3conf/ext/themes/Resources/Public/Contrib/unSlider/unslider.min.js'
+		includeRequireJsModules="{
+			0: 'TYPO3/CMS/Themes/Colorpicker',
+			1: 'TYPO3/CMS/Themes/ThemesBackendModule'
 		}"
 		>
 	<div class="typo3-fullDoc">

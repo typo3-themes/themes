@@ -44,9 +44,16 @@
 tr.constantLine {
 	height: 40px;
 }
+
+/* Colorpicker styles */
 .colorpicker {
 	z-index: 99999;
 }
+.colorpicker input {
+	height: 15px !important;
+	color: #fff !important;
+}
+
 .theme-clearfix:before,
 .theme-clearfix:after {
 	content: " ";
