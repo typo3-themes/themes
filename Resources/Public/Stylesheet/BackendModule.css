@@ -2,6 +2,12 @@
 .typo3-themes-module .carousel {
 	border: 1px solid #ccc;
 }
+.typo3-themes-module .carousel .item {
+	text-align: center;
+}
+.typo3-themes-module .carousel .item img {
+	display: inline-block;
+}
 .typo3-themes-module ol.carousel-indicators li {
 	border: 1px solid #ccc;
 }
@@ -19,22 +25,61 @@
 }
 .typo3-themes-module .hideOnDefault {
 	display: inline-block;
-	width: 90%;
 }
 
-
+/* Edit toggle button and field */
 .typo3-themes-module .showOnDefault img,
 .typo3-themes-module .hideOnDefault img {
 	cursor: pointer;
-}
-.typo3-themes-module .hideOnDefault input[type=text] {
-	width: 80%;
 }
 .typo3-themes-module .defaultValueIsSelected .showOnDefault {
 	display: inline-block;
 }
 .typo3-themes-module .defaultValueIsSelected .hideOnDefault {
 	display: none;
+}
+
+/* Categories filter styles */
+#categoriesFilter label {
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+.typo3-themes-module section.constants-group thead td {
+	font-weight: bold;
+}
+.typo3-themes-module section.constants-group td.title {
+	width: 30%;
+}
+.typo3-themes-module section.constants-group td.title label {
+	font-weight: normal;
+}
+.typo3-themes-module section.constants-group td.editToggle,
+.typo3-themes-module section.constants-group td.editToggle .showOnDefault,
+.typo3-themes-module section.constants-group td.editToggle .hideOnDefault {
+	width: 30px;
+	padding-left: 8px;
+}
+.typo3-themes-module section.constants-group td.value {
+	width: auto;
+}
+.typo3-themes-module section.constants-group td.value .hideOnDefault {
+	width: 100%;
+}
+.typo3-themes-module section.constants-group td.value .hideOnDefault input[type=text] {
+	width: 99%;
+}
+.typo3-themes-module section.constants-group td.value .showOnDefault div.field_default,
+.typo3-themes-module section.constants-group td.value .hideOnDefault input[type="text"].colorselector,
+.typo3-themes-module section.constants-group td.value .showOnDefault .typo3-tstemplate-ceditor-colorblock,
+.typo3-themes-module section.constants-group td.value .hideOnDefault .typo3-tstemplate-ceditor-colorblock {
+	width: 100px;
+	display: inline-block;
+	height: 19px;
+}
+.typo3-themes-module section.constants-group td.value .showOnDefault div.field_default {
+	border: 1px solid #ccc;
+	color: #333;
 }
 
 /**
@@ -53,6 +98,8 @@ tr.constantLine {
 	height: 15px !important;
 	color: #fff !important;
 }
+
+
 
 .theme-clearfix:before,
 .theme-clearfix:after {
@@ -92,15 +139,16 @@ tr.constantLine {
 }
 
 .theme-tag {
-	padding: 3px;
+	padding: 2px 6px;
 	background-color: gray;
-	border: 1px solid gray;
-	font-weight: bold;
+	border: 0 solid;
+	font-weight: normal;
 	color: white;
-	margin-right: 4px;
-	margin-bottom: 6px;
+	margin: 4px;
 	border-radius: 4px;
-	display: inline-block;
+	display: block;
+	font-size: 10px;
+	float: left;
 }
 
 .theme-categorie {
@@ -111,11 +159,9 @@ tr.constantLine {
 	border: 1px solid green;
 	color: white;
 }
-
 .carousel-inner .item {
 	height: 270px;
 }
-
 .carousel-control.left, .carousel-control.right{
 	background-image: none;
 }
@@ -124,9 +170,6 @@ tr.constantLine {
 	margin-top: 0;
 }
 
-.hideOnDefault input[type="text"].colorselector {
-	width: 100px;
-}
 
 /*****************************************************************************/
 
