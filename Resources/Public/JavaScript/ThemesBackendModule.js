@@ -26,6 +26,19 @@ define(['jquery'], function (jQuery) {
 		ThemesEditor.bindCategoriesFilterEvents();
 		// Filter initially
 		ThemesEditor.categoriesFilterSearch();
+		// Display a notice when user tried to edit the default valueQ
+		ThemesEditor.bindNoticeForChangingValues();
+	};
+	
+	ThemesEditor.bindNoticeForChangingValues = function() {
+		/**
+		 * @todo: add translation
+		 */
+		jQuery('div.field_default').mousedown(function() {
+			alert('Enable this field in order to change this value!');
+			return false;
+		});
+		
 	};
 
 	ThemesEditor.bindEditToggleEvents = function() {
