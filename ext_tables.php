@@ -13,6 +13,7 @@ $extensionConfiguration = $configurationUtility->getCurrentConfiguration('themes
 
 /** allow inclusion of static typoscript file */
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Themes');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/FluidStyledContent', 'Themes (Experimental: Additional add this for using fluid_styled_content)');
 
 unset($extensionConfiguration);
 
