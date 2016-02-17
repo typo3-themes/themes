@@ -13,6 +13,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 	width: 190px;
+	font-weight: normal;
 }
 .themes-hidden-admin-field {
 	border: 1px solid #bbbbbb;
@@ -22,6 +23,14 @@
 .themes-column {
 	border:0 solid;
 	border-right: 1px solid #ccc;
+}
+.contentVariant .form-control-wrap,
+.contentBehaviour .form-control-wrap {
+	margin-top:0;
+}
+.contentVariant .form-control-wrap select,
+.contentBehaviour .form-control-wrap select {
+	width: 100%;
 }
 .contentResponsive label {
 	width: 100%;

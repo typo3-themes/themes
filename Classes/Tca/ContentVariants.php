@@ -57,13 +57,13 @@ class ContentVariants extends AbstractContentRow {
 					// Variant for all GridElements
 					if ($contentElementKey == 'default' && !empty($label)) {
 						foreach ($label as $gridLayoutKey => $gridLayoutVariantLabel) {
-							$this->createCheckbox($gridLayoutKey, $gridLayoutVariantLabel, 'ctype');
+							$this->createElement($gridLayoutKey, $gridLayoutVariantLabel, 'ctype');
 						}
 					}
 					// Variant only for selected GridElement
 					else if ($contentElementKey == $gridLayout && !empty($label)) {
 						foreach ($label as $gridLayoutKey => $gridLayoutVariantLabel) {
-							$this->createCheckbox($gridLayoutKey, $gridLayoutVariantLabel, 'gridLayout');
+							$this->createElement($gridLayoutKey, $gridLayoutVariantLabel, 'gridLayout');
 						}
 					}
 
@@ -72,11 +72,11 @@ class ContentVariants extends AbstractContentRow {
 				else {
 					// Is default property!?
 					if (array_key_exists($contentElementKey, $this->defaultProperties)) {
-						$this->createCheckbox($contentElementKey, $label, 'default');
+						$this->createElement($contentElementKey, $label, 'default');
 					}
 					// Is ctype specific!
 					else {
-						$this->createCheckbox($contentElementKey, $label, 'ctype');
+						$this->createElement($contentElementKey, $label, 'ctype');
 					}
 				}
 
@@ -114,6 +114,22 @@ class ContentVariants extends AbstractContentRow {
 	}
 
 	/**
+	 * Creates a checkbox/select box
+	 *
+	 * @param $key \string Key/name of the element
+	 * @param $label \string|\array Label of the element
+	 * @param $type \string Type of the element property
+	 */
+	protected function createElement($key, $label, $type) {
+		if(is_array($label) && !empty($label)) {
+			$this->createSelectbox($key, $label, $type);
+		}
+		else if(is_string($label)) {
+			$this->createCheckbox($key, $label, $type);
+		}
+	}
+
+	/**
 	 * Creates a checkbox
 	 *
 	 * @param $key \string Key/name of the checkbox
@@ -130,6 +146,39 @@ class ContentVariants extends AbstractContentRow {
 		$checkbox .= $this->getLanguageService()->sL($label) . '</label>' . LF;
 		$checkbox .= '</div>' . LF;
 		$this->checkboxesArray[$type][] = $checkbox;
+	}
+
+	/**
+	 * Creates a select box
+	 *
+	 * @param $key \string Key/name of the select box
+	 * @param $label \array Array with items of the select box
+	 * @param $type \string Type of the select box property
+	 */
+	protected function createSelectbox($key, $items, $type) {
+		// Remove dot
+		$key = substr($key, 0, -1);
+		$selectbox = '<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">' . LF;
+		$selectbox .= '<div class="form-control-wrap">' . LF;
+		$selectbox .= '<select name="' . $key . '" class="form-control form-control-adapt input-sm">' . LF;
+		$activeKey = '';
+		foreach($items as $itemKey=>$itemValue) {
+			if($activeKey=='') {
+				$activeKey = $key . '-' . $itemKey;
+			}
+			$selected = '';
+			if(isset($this->valuesFlipped[$key . '-' . $itemKey])) {
+				$activeKey = $key . '-' . $itemKey;
+				$selected = 'selected="selected"';
+			}
+			$label = $this->getLanguageService()->sL($itemValue);
+			$selectbox .= '<option value="' . $key . '-' . $itemKey . '" ' . $selected . '>' . $label . '</option>' . LF;
+		}
+		$selectbox .= '</select>' . LF;
+		$selectbox .= '</div>' . LF;
+		$selectbox .= '</div>' . LF;
+		$this->valuesAvailable[] = $activeKey;
+		$this->checkboxesArray[$type][] = $selectbox;
 	}
 
 	/**
