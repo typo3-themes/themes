@@ -29,6 +29,10 @@ class ContentBehaviour extends AbstractContentRow {
 		$value = $parameters['itemFormElValue'];
 		$cType = $parameters['row']['CType'];
 		$gridLayout = $parameters['row']['tx_gridelements_backend_layout'];
+		// In case of new content elements, pid might be negative
+		if($pid<1) {
+			$pid = $this->getPidFromParentContentElement($pid);
+		}
 		// C-Type could be an array or a string
 		if(is_array($cType) && isset($cType[0])) {
 			$cType = $cType[0];
