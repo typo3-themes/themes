@@ -36,8 +36,8 @@ $EM_CONF[$_EXTKEY] = array(
 			'static_info_tables' => '6.3.0-6.3.99',
 		),
 		'conflicts' => array(
-			'belayout_tsprovider' => '',
-			'yaml_parser' => ''
+			'belayout_tsprovider' => '0.0.0-1.99.99',
+			'yaml_parser' => '0.0.0-1.99.99'
 		),
 		'suggests' => array(
 		),

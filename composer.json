@@ -21,5 +21,8 @@
   "replace": {
     "themes": "self.version",
     "typo3-ter/themes": "self.version"
+  },
+  "conflict": {
+    "typo3-ter/yaml-parser": "*"
   }
 }
