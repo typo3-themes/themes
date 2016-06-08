@@ -43,6 +43,14 @@ class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
             if(property_exists($object, $index)) {
                 return $object->$index;
             }
+            try {
+                $reflectionClass = new \ReflectionClass($object);
+                $reflectionProperty = $reflectionClass->getProperty($index);
+                $reflectionProperty->setAccessible(true);
+                return $reflectionProperty->getValue($object);
+            } catch(\Exception $e) {
+                // we want a silent fail here, as the default will return null
+            }
         }
         elseif(is_array($object)) {
             if(array_key_exists($index, $object)) {
