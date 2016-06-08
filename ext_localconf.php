@@ -73,3 +73,10 @@ if (!defined('TYPO3_MODE'))
 		$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_cache']['backend'] = 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend';
 		$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_cache']['options']['compression'] = 1;
 	}
+
+/**
+ * Get YAML parser
+ */
+if(!class_exists('\Symfony\Component\Yaml\Parser')) {
+	include_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('themes') . '/Resources/Private/PHP/vendor/autoload.php');
+}

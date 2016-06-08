@@ -41,6 +41,17 @@ abstract class AbstractContentRow {
 		$config = ArrayUtility::arrayMergeRecursiveOverrule($cTypeConfig, $defaultConfig);
 		return $config;
 	}
+	
+	protected function getPidFromParentContentElement($pid) {
+		$parentPid = 0;
+		// negative uid_pid values indicate that the element has been inserted after an existing element
+		// so there is no pid to get the backendLayout for and we have to get that first
+		$existingElement = $this->getDb()->exec_SELECTgetSingleRow('pid', 'tt_content', 'uid=' . -((int)$pid));
+		if ($existingElement['pid'] > 0) {
+			$parentPid = $existingElement['pid'];
+		}
+		return $parentPid;
+	}
 
 	/**
 	 * Checks if a backend user is an admin user
@@ -55,6 +66,13 @@ abstract class AbstractContentRow {
 	 */
 	protected function getBeUser() {
 		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDb() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 	/**

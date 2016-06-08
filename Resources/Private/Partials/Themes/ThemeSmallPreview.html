@@ -2,7 +2,7 @@
 <div class="theme {additionalClass}">
 	<div class="theme-image">
 		<f:if condition="{theme.previewImage} != '../typo3conf/ext/themes/Resources/Public/Images/screenshot.gif'">
-			<f:image src="{theme.previewImage}"  alt="{screenshot.caption}" width="300" />
+			<f:image src="{theme.previewImage}"  alt="{screenshot.caption}" width="298" style="width:298px" />
 		</f:if>
 		<div class="theme-hover">
 			<div class="theme-hover-inner">
@@ -25,19 +25,19 @@
 			</f:link.action>
 		</h2>
 		<div class="theme-install">
-			<f:link.action action="showThemeDetails" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme">
+			<f:link.action action="showThemeDetails" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme btn btn-default btn-sm">
 				<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-info">&nbsp;</span>
 				Details
 			</f:link.action>
 
 			<themes:ThemeEnabledCondition theme="{theme.extensionname}">
 				<f:then>
-					<span class="theme-tag theme-activated">
+					<a href="#" onclick="return false" class=" btn btn-success btn-sm" style="cursor:not-allowed">
 						Active
-					</span>
+					</a>
 				</f:then>
 				<f:else>
-					<f:link.action action="setTheme" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme">
+					<f:link.action action="setTheme" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme btn btn-default btn-sm">
 						<span class="t3-icon t3-icon-status t3-icon-status-dialog t3-icon-dialog-ok">&nbsp;</span>
 						Activate
 					</f:link.action>

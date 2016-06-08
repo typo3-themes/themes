@@ -64,45 +64,39 @@ class EditorController extends ActionController {
 	protected function initializeAction() {
 		$this->id = intval(GeneralUtility::_GET('id'));
 		$this->tsParser = new TsParserUtility();
-
-		// extension configuration
-
+		// Get extension configuration
 		/** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
 		$configurationUtility = $this->objectManager->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
 		$extensionConfiguration = $configurationUtility->getCurrentConfiguration('themes');
-		#$extensionConfiguration['categoriesToShow'] = GeneralUtility::trimExplode(',', $extensionConfiguration['categoriesToShow']);
-		#$extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(',', $extensionConfiguration['constantsToHide']);
-
+		// Initially, get configuration from extension manager!
+		$extensionConfiguration['categoriesToShow'] = GeneralUtility::trimExplode(',', $extensionConfiguration['categoriesToShow']['value']);
+		$extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(',', $extensionConfiguration['constantsToHide']['value']);
 		// mod.tx_themes.constantCategoriesToShow.value
+		// Get value from page/user typoscript
 		$externalConstantCategoriesToShow = $this->getBackendUser()->getTSConfig(
 			'mod.tx_themes.constantCategoriesToShow', BackendUtility::getPagesTSconfig($this->id)
 		);
-
 		if ($externalConstantCategoriesToShow['value']) {
 			$this->externalConfig['constantCategoriesToShow'] = GeneralUtility::trimExplode(',', $externalConstantCategoriesToShow['value']);
-			$categoriesToShow = GeneralUtility::trimExplode(',', $extensionConfiguration['categoriesToShow']['value']);
 			ArrayUtility::mergeRecursiveWithOverrule(
-					$categoriesToShow,
-					$this->externalConfig['constantCategoriesToShow']
+				$extensionConfiguration['categoriesToShow'],
+				$this->externalConfig['constantCategoriesToShow']
 			);
-		} else {
-			$this->externalConfig['constantCategoriesToShow'] = array();
 		}
-
 		// mod.tx_themes.constantsToHide.value
+		// Get value from page/user typoscript
 		$externalConstantsToHide = $this->getBackendUser()->getTSConfig(
 			'mod.tx_themes.constantsToHide', BackendUtility::getPagesTSconfig($this->id)
 		);
 		if ($externalConstantsToHide['value']) {
 			$this->externalConfig['constantsToHide'] = GeneralUtility::trimExplode(',', $externalConstantsToHide['value']);
-			ArrayUtility::mergeRecursiveWithOverrule($extensionConfiguration['constantsToHide'], $this->externalConfig['constantsToHide']);
-		} else {
-			$this->externalConfig['constantsToHide'] = array();
+			ArrayUtility::mergeRecursiveWithOverrule(
+				$extensionConfiguration['constantsToHide'], 
+				$this->externalConfig['constantsToHide']
+			);
 		}
-
-		$this->allowedCategories = $categoriesToShow;
+		$this->allowedCategories = $extensionConfiguration['categoriesToShow'];
 		$this->deniedFields = $extensionConfiguration['constantsToHide'];
-
 		// initialize normally used values
 	}
 

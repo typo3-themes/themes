@@ -1,0 +1,70 @@
+lib.fluidContent {
+	templateRootPaths {
+		#300 = EXT:theme_bootstrap_taurus/Resources/Private/Extensions/FluidStyledContent/Templates/
+		400 = {$themes.resourcesPrivatePath}Extensions/FluidStyledContent/Templates/
+	}
+	partialRootPaths {
+		#300 = EXT:theme_bootstrap_taurus/Resources/Private/Extensions/FluidStyledContent/Partials/
+		400 = {$themes.resourcesPrivatePath}Extensions/FluidStyledContent/Partials/
+	}
+	layoutRootPaths {
+		#300 = EXT:theme_bootstrap_taurus/Resources/Private/Extensions/FluidStyledContent/Layouts/
+		400 = {$themes.resourcesPrivatePath}Extensions/FluidStyledContent/Layouts/
+	}
+}
+
+tt_content {
+	# Be sure there is no standard inner wrap,
+	# otherwise there is are html-ids used twice
+	stdWrap.innerWrap >
+	# Add themes data processoring
+	bullets {
+		dataProcessing {
+			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
+			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
+			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+		}
+	}
+	header {
+		dataProcessing {
+			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
+			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
+			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+		}
+	}
+	list {
+		dataProcessing {
+			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
+			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
+			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+		}
+	}
+	menu {
+		dataProcessing {
+			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
+			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
+			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+		}
+	}
+	table {
+		dataProcessing {
+			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
+			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
+			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+		}
+	}
+	textmedia {
+		dataProcessing {
+			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
+			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
+			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+		}
+	}
+	uploads {
+		dataProcessing {
+			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
+			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
+			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+		}
+	}
+}
