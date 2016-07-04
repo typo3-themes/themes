@@ -110,6 +110,13 @@ $iconRegistry->registerIcon(
 		'source' => 'EXT:themes/Resources/Public/Icons/overlay_theme.svg'
 	)
 );
+$iconRegistry->registerIcon(
+	'contains-theme',
+	\TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+	array(
+		'source' => 'EXT:themes/ext_icon.png'
+	)
+);
 
 $GLOBALS['TCA']['pages']['columns']['module']['config']['items'][] =
 		array(

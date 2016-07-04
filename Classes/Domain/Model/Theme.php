@@ -114,7 +114,7 @@ class Theme extends AbstractTheme {
 	 * @param object $pObj Reference back to parent object, t3lib_tstemplate or one of its subclasses.
 	 * @return void
 	 */
-	public function addTypoScriptForFe(&$params, &$pObj) {
+	public function addTypoScriptForFe(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj) {
 		// @codingStandardsIgnoreStart
 		$themeItem = array(
 			'constants' => @is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptConstantsAbsPath()) : '',
