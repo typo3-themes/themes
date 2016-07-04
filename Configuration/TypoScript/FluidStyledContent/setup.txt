@@ -23,6 +23,7 @@ tt_content {
 			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
 			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
 			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+			60 = KayStrobach\Themes\DataProcessing\ThemesIconDataProcessor
 		}
 	}
 	header {
@@ -30,6 +31,7 @@ tt_content {
 			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
 			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
 			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+			60 = KayStrobach\Themes\DataProcessing\ThemesIconDataProcessor
 		}
 	}
 	list {
@@ -37,6 +39,7 @@ tt_content {
 			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
 			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
 			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+			60 = KayStrobach\Themes\DataProcessing\ThemesIconDataProcessor
 		}
 	}
 	menu {
@@ -44,6 +47,7 @@ tt_content {
 			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
 			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
 			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+			60 = KayStrobach\Themes\DataProcessing\ThemesIconDataProcessor
 		}
 	}
 	table {
@@ -51,6 +55,7 @@ tt_content {
 			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
 			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
 			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+			60 = KayStrobach\Themes\DataProcessing\ThemesIconDataProcessor
 		}
 	}
 	textmedia {
@@ -58,6 +63,7 @@ tt_content {
 			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
 			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
 			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+			60 = KayStrobach\Themes\DataProcessing\ThemesIconDataProcessor
 		}
 	}
 	uploads {
@@ -65,6 +71,7 @@ tt_content {
 			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
 			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
 			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+			60 = KayStrobach\Themes\DataProcessing\ThemesIconDataProcessor
 		}
 	}
 }

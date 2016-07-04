@@ -45,8 +45,27 @@ class ThemesResponsiveDataProcessor implements DataProcessorInterface {
 			$setup = $this->getFrontendController()->tmpl->setup;
 			foreach($keys as $key) {
 				if(isset($setup['lib.']['content.']['cssMap.']['responsive.'][$key])) {
-					$cssClass = trim($setup['lib.']['content.']['cssMap.']['responsive.'][$key]);
-					$processedData['themes']['responsive']['css'][$cssClass] = $cssClass;
+					// Special handling for column width
+					if(strstr($key, '-column-width-')) {
+						$keyParts = explode('-', $key);
+						$columns = array_slice($keyParts, 3);
+						if(!empty($columns)) {
+							foreach($columns as $no=>$column) {
+								$cssClass = trim($setup['lib.']['content.']['cssMap.']['responsive.'][$key]);
+								$value = sprintf($cssClass, $column);
+								$processedData['themes']['responsive']['column'][$no]['css'][$value] = $value;
+								if(isset($processedData['themes']['responsive']['column'][$no]['css'])) {
+									$processedData['themes']['responsive']['column'][$no]['cssClasses'] = implode(' ', $processedData['themes']['responsive']['column'][$no]['css']);
+								}
+							}
+						}
+					}
+					else {
+						$cssClass = trim($setup['lib.']['content.']['cssMap.']['responsive.'][$key]);
+						if($cssClass !== '') {
+							$processedData['themes']['responsive']['css'][$cssClass] = $cssClass;
+						}
+					}
 				}
 			}
 			$processedData['themes']['responsive']['cssClasses'] = implode(' ', $processedData['themes']['responsive']['css']);

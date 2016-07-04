@@ -20,9 +20,9 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
  * DataProcessor for Fluid Styled Content
  * @author Thomas Deuling <typo3@coding.ms>
  */
-class ThemesVariantsDataProcessor implements DataProcessorInterface {
+class ThemesIconDataProcessor implements DataProcessorInterface {
 	/**
-	 * Process data for the Themes variants
+	 * Process data for the Themes icons
 	 *
 	 * @param ContentObjectRenderer $cObj                       The content object renderer, which contains data of the content element
 	 * @param array                 $contentObjectConfiguration The configuration of Content Object
@@ -32,35 +32,9 @@ class ThemesVariantsDataProcessor implements DataProcessorInterface {
 	 * @throws ContentRenderingException
 	 */
 	public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData) {
-		$keys = GeneralUtility::trimExplode(',', $processedData['data']['tx_themes_variants'], TRUE);
-		$processedData['themes']['variants']['css'] = array();
-		$processedData['themes']['variants']['css2key'] = array();
-		if(!empty($keys)) {
+		if(isset($processedData['data']['tx_themes_icon']) && $processedData['data']['tx_themes_icon']!='') {
 			$setup = $this->getFrontendController()->tmpl->setup;
-			if(isset($setup['lib.']['content.']['cssMap.']['variants.']) && !empty($setup['lib.']['content.']['cssMap.']['variants.'])) {
-				foreach($setup['lib.']['content.']['cssMap.']['variants.'] as $key => $cssClass) {
-					if(is_array($cssClass)) {
-						$key = substr($key, 0, -1);
-						if(!empty($cssClass)) {
-							foreach($cssClass as $subKey => $setting) {
-								if(in_array($key . '-' . $subKey, $keys)) {
-									$processedData['themes']['variants']['css'][$key] = $setting;
-									$processedData['themes']['variants']['css2key'][$setting] = $key;
-									break;
-								}
-							}
-						}
-					}
-					else if(in_array($key, $keys)) {
-						if($cssClass !== '') {
-							$processedData['themes']['variants']['css'][$cssClass] = $cssClass;
-							$processedData['themes']['variants']['css2key'][$cssClass] = $key;
-						}
-					}
-				}
-			}
-			$processedData['themes']['variants']['key2css'] = array_flip($processedData['themes']['variants']['css2key']);
-			$processedData['themes']['variants']['cssClasses'] = implode(' ', $processedData['themes']['variants']['css']);
+			$processedData['themes']['icon'] = $setup['lib.']['icons.']['cssMap.'][$processedData['data']['tx_themes_icon']];
 		}
 		return $processedData;
 	}

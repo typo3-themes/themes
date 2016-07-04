@@ -46,17 +46,14 @@ class ContentBehaviour extends AbstractContentRow {
 		$this->valuesAvailable = array();
 		// Get configuration
 		$behaviours = $this->getMergedConfiguration($pid, 'behaviour', $cType);
-
 		// Build checkboxes
 		$this->checkboxesArray['default'] = array();
 		$this->checkboxesArray['ctype'] = array();
 		$this->checkboxesArray['gridLayout'] = array();
 		if (isset($behaviours['properties']) && is_array($behaviours['properties'])) {
-
 			foreach ($behaviours['properties'] as $contentElementKey => $label) {
-
 				// GridElements: are able to provide grid-specific behaviours
-				if (is_array($label) && $cType === 'gridelements_pi1') {
+				if (is_array($label) && $cType === 'gridelements_pi1' && !array_key_exists($contentElementKey, $this->defaultProperties)) {
 					$contentElementKey = substr($contentElementKey, 0, -1);
 
 					// Behaviour for all GridElements
@@ -71,7 +68,6 @@ class ContentBehaviour extends AbstractContentRow {
 							$this->createElement($gridLayoutKey, $gridLayoutBehaviourLabel, 'gridLayout');
 						}
 					}
-
 				}
 				// Normal CEs
 				else {
@@ -84,7 +80,6 @@ class ContentBehaviour extends AbstractContentRow {
 						$this->createElement($contentElementKey, $label, 'ctype');
 					}
 				}
-
 			}
 		}
 		// Merge checkbox groups

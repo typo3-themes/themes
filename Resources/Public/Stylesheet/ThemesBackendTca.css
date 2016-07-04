@@ -33,8 +33,17 @@
 	width: 100%;
 }
 .contentResponsive label {
-	width: 100%;
+	font-weight: normal;
 }
+.contentResponsive label.t3js-formengine-label {
+	font-weight: bold;
+}
+.contentResponsive label.sub-label {
+	font-weight: normal;
+	border: none;
+	margin-bottom: 0;
+}
+
 .contentResponsive .t3js-formengine-label,
 .contentColumnSettings .t3js-formengine-label,
 .contentEnforceEqualColumnHeight .t3js-formengine-label {

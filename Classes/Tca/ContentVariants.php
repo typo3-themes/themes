@@ -55,7 +55,7 @@ class ContentVariants extends AbstractContentRow {
 			foreach ($variants['properties'] as $contentElementKey => $label) {
 
 				// GridElements: are able to provide grid-specific variants
-				if (is_array($label) && $cType === 'gridelements_pi1') {
+				if (is_array($label) && $cType === 'gridelements_pi1' && !array_key_exists($contentElementKey, $this->defaultProperties)) {
 					$contentElementKey = substr($contentElementKey, 0, -1);
 
 					// Variant for all GridElements

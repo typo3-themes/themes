@@ -14,8 +14,8 @@ define(['jquery'], function (jQuery) {
 		jQuery('.contentVariant input[type=\'checkbox\']').change(function() {
 			Themes.contentVariantChangeCheckbox(this);
 		});
-		jQuery('.contentResponsive input[type=\'radio\']').change(function() {
-			Themes.contentResponsiveChange(this);
+		jQuery('.contentResponsive select').change(function() {
+			Themes.contentResponsiveChangeSelectbox(this);
 		});
 		jQuery('.contentBehaviour select').change(function() {
 			Themes.contentBehaviourChangeSelectbox(this);
@@ -56,6 +56,19 @@ define(['jquery'], function (jQuery) {
 			if(!alreadySelected) {
 				jQuery(this).find('option:first-child').attr('selected', 'selected');
 				Themes.contentVariantChangeSelectbox(jQuery(this));
+			}
+		});
+		jQuery.each(jQuery('.contentResponsive select'), function() {
+			// Is already a value selected?
+			var alreadySelected = false;
+			jQuery.each(jQuery(this).find('option'), function() {
+				if(jQuery(this).attr('selected') == 'selected') {
+					alreadySelected = true;
+				}
+			});
+			if(!alreadySelected) {
+				jQuery(this).find('option:first-child').attr('selected', 'selected');
+				Themes.contentResponsiveChangeSelectbox(jQuery(this));
 			}
 		});
 	};
@@ -146,17 +159,25 @@ define(['jquery'], function (jQuery) {
 		jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").attr("value", values);
 	};
 
-	Themes.contentResponsiveChange = function(field) {
+	Themes.contentResponsiveChangeSelectbox = function(field) {
 		var itemselector = "";
 		if(jQuery(field).closest(".t3-form-field-item").index() > 0) {
 			itemselector = ".t3-form-field-item";
 		}
 		else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0) {
-			itemselector = ".t3js-formengine-field-item";}
-			jQuery.each(jQuery(".contentResponsive input[name=\'"+field.name+"\']"), function(index, node) {
-			jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").removeClass(node.value);
-		});
-		jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").addClass(field.value);
+			itemselector = ".t3js-formengine-field-item";
+		}
+		var value = jQuery(field).val();
+		var prefix = jQuery(field).attr('name');
+		var classes = jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").attr('class').split(' ');
+		// Remove all classes with the same prefix
+		for (var i=0; i<classes.length; i++) {
+			if(classes[i].substr(0, prefix.length+1) == prefix + '-') {
+				jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").removeClass(classes[i]);
+			}
+		}
+		// Add the selected value
+		jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").addClass(value);
 		var values = jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").attr("class");
 		values = Themes.convertClassesForInputValue(values);
 		jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").attr("value", values);

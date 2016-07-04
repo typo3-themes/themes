@@ -68,7 +68,7 @@ class ContentColumnSettings extends AbstractContentRow {
 						for ($i = $start; $i <= 12; $i++) {
 							// set the selected value
 							$selected = (isset($valuesFlipped[$tempKey . '-' . $i])) ? 'selected="selected"' : '';
-							$selectboxes .= '<option value="' . $tempKey . '-' . $i . '" ' . $selected .  '>' . $visibilityKey . '-' . $i . '</option>' . LF;
+							$selectboxes .= '<option value="' . $tempKey . '-' . $i . '" ' . $selected .  '>' . $i . ' columns of 12<!-- '  . $visibilityKey . ' ' . $i . '--></option>' . LF;
 						}
 						$selectboxes .= '</select>' . LF;
 						$selectboxes .= '</div>' . LF;

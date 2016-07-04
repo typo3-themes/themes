@@ -71,10 +71,26 @@ class ThemeController extends ActionController {
 			$this->view->setTemplatePathAndFilename($templateFile);
 		}
 		$this->view->assign('templateName', $this->templateName);
-		$this->view->assign('theme', $this->themeRepository->findByPageOrRootline($GLOBALS['TSFE']->id));
-		$this->view->assign('page', $this->pageRepository->getPage($GLOBALS['TSFE']->id));
-		$this->view->assign('data', $this->pageRepository->getPage($GLOBALS['TSFE']->id));
-		$this->view->assign('TSFE', $GLOBALS['TSFE']);
+		$frontendController = $this->getFrontendController();
+		$this->view->assign('theme', $this->themeRepository->findByPageOrRootline($frontendController->id));
+		// Get page data
+		$pageArray = $this->pageRepository->getPage($frontendController->id);
+		$pageArray['icon'] = '';
+		// Map page icon
+		if(isset($pageArray['tx_themes_icon']) && $pageArray['tx_themes_icon']!='') {
+			$setup = $frontendController->tmpl->setup;
+			$pageArray['icon'] = $setup['lib.']['icons.']['cssMap.'][$pageArray['tx_themes_icon']];
+		}
+		$this->view->assign('page', $pageArray);
+		$this->view->assign('data', $pageArray);
+		$this->view->assign('TSFE', $frontendController);
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 */
+	protected function getFrontendController() {
+		return $GLOBALS['TSFE'];
 	}
 
 	/**

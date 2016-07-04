@@ -52,8 +52,10 @@ class ThemesBehaviourDataProcessor implements DataProcessorInterface {
 						}
 					}
 					else if(in_array($key, $keys)) {
-						$processedData['themes']['behaviour']['css'][$cssClass] = $cssClass;
-						$processedData['themes']['behaviour']['css2key'][$cssClass] = $key;
+						if($cssClass !== '') {
+							$processedData['themes']['behaviour']['css'][$cssClass] = $cssClass;
+							$processedData['themes']['behaviour']['css2key'][$cssClass] = $key;
+						}
 					}
 				}
 			}
