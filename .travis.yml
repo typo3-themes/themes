@@ -17,10 +17,6 @@ env:
     - TYPO3_BRANCH=TYPO3_7-6 COVERAGE=0
 matrix:
   exclude:
-    - php: 5.3
-      env: TYPO3_BRANCH=master
-    - php: 5.4
-      env: TYPO3_BRANCH=master
     - php: 5.5
       env: TYPO3_BRANCH=master
     - php: 5.6
