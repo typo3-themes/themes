@@ -1,4 +1,5 @@
 <?php
+
 namespace KayStrobach\Themes\ViewHelpers;
 
 /***************************************************************
@@ -24,40 +25,40 @@ namespace KayStrobach\Themes\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
- 
- 
+
+
 /**
- * can be used to access array keys or object properties dynamically
+ * can be used to access array keys or object properties dynamically.
  *
  * {themes:arrayIndex(object: results, index: 'key')}
  */
-class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
- 
+class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+{
     /**
      * @param $object  Object|array Array or Object
      * @param $index string Index or property
+     *
      * @return mixed
      */
-    public function render($object, $index = '') {
-        if(is_object($object)) {
-            if(property_exists($object, $index)) {
+    public function render($object, $index = '')
+    {
+        if (is_object($object)) {
+            if (property_exists($object, $index)) {
                 return $object->$index;
             }
             try {
                 $reflectionClass = new \ReflectionClass($object);
                 $reflectionProperty = $reflectionClass->getProperty($index);
                 $reflectionProperty->setAccessible(true);
+
                 return $reflectionProperty->getValue($object);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 // we want a silent fail here, as the default will return null
             }
-        }
-        elseif(is_array($object)) {
-            if(array_key_exists($index, $object)) {
+        } elseif (is_array($object)) {
+            if (array_key_exists($index, $object)) {
                 return $object[$index];
             }
         }
-        return NULL;
     }
 }
-?>

@@ -5,30 +5,27 @@ namespace KayStrobach\Themes\Utilities;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
- * Class FindParentPageWithThemeUtility
- *
- * @package KayStrobach\Themes\Utilities
+ * Class FindParentPageWithThemeUtility.
  */
-class FindParentPageWithThemeUtility {
+class FindParentPageWithThemeUtility
+{
+    /**
+     * @todo missing docblock
+     */
+    public static function find($pid)
+    {
+        // Check the own page first
+        if (CheckPageUtility::hasThemeableSysTemplateRecord($pid)) {
+            return $pid;
+        }
 
-	/**
-	 * @todo missing docblock
-	 */
-	public static function find($pid) {
-		// Check the own page first
-		if (CheckPageUtility::hasThemeableSysTemplateRecord($pid)) {
-			return $pid;
-		}
-
-		// ..then the rootline pages
-		$rootLineUtility = new RootlineUtility($pid);
-		$pages = $rootLineUtility->get();
-		foreach ($pages as $page) {
-			if (CheckPageUtility::hasThemeableSysTemplateRecord($page['pid'])) {
-				return $page['pid'];
-			}
-		}
-		return NULL;
-	}
-
+        // ..then the rootline pages
+        $rootLineUtility = new RootlineUtility($pid);
+        $pages = $rootLineUtility->get();
+        foreach ($pages as $page) {
+            if (CheckPageUtility::hasThemeableSysTemplateRecord($page['pid'])) {
+                return $page['pid'];
+            }
+        }
+    }
 }
