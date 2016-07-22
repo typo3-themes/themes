@@ -1,10 +1,9 @@
 language: php
 
 php:
-  - 5.3
-  - 5.4
   - 5.5
   - 5.6
+  - 7.0
   - hhvm
 
 cache:
@@ -15,18 +14,20 @@ env:
     - EXTENSIONKEY=themes
   matrix:
     - TYPO3_BRANCH=master COVERAGE=0
-    - TYPO3_BRANCH=TYPO3_6-2 COVERAGE=0
+    - TYPO3_BRANCH=TYPO3_7-6 COVERAGE=0
 matrix:
   exclude:
     - php: 5.3
       env: TYPO3_BRANCH=master
     - php: 5.4
       env: TYPO3_BRANCH=master
+    - php: 5.5
+      env: TYPO3_BRANCH=master
+    - php: 5.6
+      env: TYPO3_BRANCH=master
 
 before_script:
   - sudo apt-get install parallel
-  - npm install csslint
-  - npm -g install jshint
   - composer self-update
   - cd ..
   - git clone --single-branch --branch $TYPO3_BRANCH --depth 1 https://github.com/TYPO3/TYPO3.CMS.git typo3_core
@@ -37,33 +38,6 @@ before_script:
   - mv $EXTENSIONKEY typo3conf/ext/
 
 script:
-  - >
-    echo;
-    echo "Running php lint";
-    /bin/bash -c "
-        if ! find typo3conf/ext/$EXTENSIONKEY -name \*.php | parallel --gnu 'php -l {}' > /tmp/errors 2>&1; then
-            grep -v \"No syntax errors detected in\" /tmp/errors;
-            exit 99;
-        fi
-    "
-  - >
-    ./bin/phpcs --standard=TYPO3CMS -n typo3conf/ext/$EXTENSIONKEY/Classes/
-  - >
-    echo;
-    echo "Running css lint";
-    /bin/bash -c "
-      if [ -d typo3conf/ext/$EXTENSIONKEY/Resources/Public/Css/ ]; then
-        csslint typo3conf/ext/$EXTENSIONKEY/Resources/Public/Css/
-      fi
-    "
-  - >
-    echo;
-    echo "Running jshint";
-    /bin/bash -c "
-      if [ -d typo3conf/ext/$EXTENSIONKEY/Resources/Public/JavaScript/ ]; then
-        jshint typo3conf/ext/$EXTENSIONKEY/Resources/Public/JavaScript/
-      fi
-    "
   - >
     echo;
     echo "Running unit tests";
