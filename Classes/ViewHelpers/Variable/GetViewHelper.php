@@ -1,4 +1,5 @@
 <?php
+
 namespace KayStrobach\Themes\ViewHelpers\Variable;
 
 /*
@@ -12,7 +13,7 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * ### Variable: Get
+ * ### Variable: Get.
  *
  * ViewHelper used to read the value of a current template
  * variable. Can be used with dynamic indices in arrays:
@@ -47,56 +48,55 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * ```
  *
  * @author Claus Due <claus@namelesscoder.net>
- * @package Vhs
- * @subpackage ViewHelpers\Var
  */
-class GetViewHelper extends AbstractViewHelper {
+class GetViewHelper extends AbstractViewHelper
+{
+    /**
+     * @param string $name
+     * @param bool   $useRawKeys
+     *
+     * @return mixed
+     */
+    public function render($name, $useRawKeys = false)
+    {
+        if (false === strpos($name, '.')) {
+            if (true === $this->templateVariableContainer->exists($name)) {
+                return $this->templateVariableContainer->get($name);
+            }
+        } else {
+            $segments = explode('.', $name);
+            $lastSegment = array_shift($segments);
+            $templateVariableRootName = $lastSegment;
+            if (true === $this->templateVariableContainer->exists($templateVariableRootName)) {
+                $templateVariableRoot = $this->templateVariableContainer->get($templateVariableRootName);
+                if (true === $useRawKeys) {
+                    return ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
+                }
+                try {
+                    $value = $templateVariableRoot;
+                    foreach ($segments as $segment) {
+                        if (true === ctype_digit($segment)) {
+                            $segment = intval($segment);
+                            $index = 0;
+                                // Note: this loop approach is not a stupid solution. If you doubt this,
+                                // attempt to feth a number at a numeric index from ObjectStorage ;)
+                            foreach ($value as $possibleValue) {
+                                if ($index === $segment) {
+                                    $value = $possibleValue;
+                                    break;
+                                }
+                                ++$index;
+                            }
+                            continue;
+                        }
+                        $value = ObjectAccess::getProperty($value, $segment);
+                    }
 
-	/**
-	 * @param string $name
-	 * @param boolean $useRawKeys
-	 * @return mixed
-	 */
-	public function render($name, $useRawKeys = FALSE) {
-		if (FALSE === strpos($name, '.')) {
-			if (TRUE === $this->templateVariableContainer->exists($name)) {
-				return $this->templateVariableContainer->get($name);
-			}
-		} else {
-			$segments = explode('.', $name);
-			$lastSegment = array_shift($segments);
-			$templateVariableRootName = $lastSegment;
-			if (TRUE === $this->templateVariableContainer->exists($templateVariableRootName)) {
-				$templateVariableRoot = $this->templateVariableContainer->get($templateVariableRootName);
-				if (TRUE === $useRawKeys) {
-					return ObjectAccess::getPropertyPath($templateVariableRoot, implode('.', $segments));
-				}
-				try {
-					$value = $templateVariableRoot;
-					foreach ($segments as $segment) {
-						if (TRUE === ctype_digit($segment)) {
-							$segment = intval($segment);
-							$index = 0;
-								// Note: this loop approach is not a stupid solution. If you doubt this,
-								// attempt to feth a number at a numeric index from ObjectStorage ;)
-							foreach ($value as $possibleValue) {
-								if ($index === $segment) {
-									$value = $possibleValue;
-									break;
-								}
-								++ $index;
-							}
-							continue;
-						}
-						$value = ObjectAccess::getProperty($value, $segment);
-					}
-					return $value;
-				} catch (\Exception $e) {
-					return NULL;
-				}
-			}
-		}
-		return NULL;
-	}
-
+                    return $value;
+                } catch (\Exception $e) {
+                    return;
+                }
+            }
+        }
+    }
 }

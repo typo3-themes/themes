@@ -1,5 +1,7 @@
 <?php
+
 namespace KayStrobach\Themes\DataProcessing;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -12,38 +14,44 @@ namespace KayStrobach\Themes\DataProcessing;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
+
 /**
- * DataProcessor for Fluid Styled Content
+ * DataProcessor for Fluid Styled Content.
+ *
  * @author Thomas Deuling <typo3@coding.ms>
  */
-class ThemesIconDataProcessor implements DataProcessorInterface {
-	/**
-	 * Process data for the Themes icons
-	 *
-	 * @param ContentObjectRenderer $cObj                       The content object renderer, which contains data of the content element
-	 * @param array                 $contentObjectConfiguration The configuration of Content Object
-	 * @param array                 $processorConfiguration     The configuration of this processor
-	 * @param array                 $processedData              Key/value store of processed data (e.g. to be passed to a Fluid View)
-	 * @return array the processed data as key/value store
-	 * @throws ContentRenderingException
-	 */
-	public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData) {
-		if(isset($processedData['data']['tx_themes_icon']) && $processedData['data']['tx_themes_icon']!='') {
-			$setup = $this->getFrontendController()->tmpl->setup;
-			$processedData['themes']['icon'] = $setup['lib.']['icons.']['cssMap.'][$processedData['data']['tx_themes_icon']];
-		}
-		return $processedData;
-	}
+class ThemesIconDataProcessor implements DataProcessorInterface
+{
+    /**
+     * Process data for the Themes icons.
+     *
+     * @param ContentObjectRenderer $cObj                       The content object renderer, which contains data of the content element
+     * @param array                 $contentObjectConfiguration The configuration of Content Object
+     * @param array                 $processorConfiguration     The configuration of this processor
+     * @param array                 $processedData              Key/value store of processed data (e.g. to be passed to a Fluid View)
+     *
+     * @throws ContentRenderingException
+     *
+     * @return array the processed data as key/value store
+     */
+    public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData)
+    {
+        if (isset($processedData['data']['tx_themes_icon']) && $processedData['data']['tx_themes_icon'] != '') {
+            $setup = $this->getFrontendController()->tmpl->setup;
+            $processedData['themes']['icon'] = $setup['lib.']['icons.']['cssMap.'][$processedData['data']['tx_themes_icon']];
+        }
 
-	/**
-	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-	 */
-	protected function getFrontendController() {
-		return $GLOBALS['TSFE'];
-	}
+        return $processedData;
+    }
 
+    /**
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    protected function getFrontendController()
+    {
+        return $GLOBALS['TSFE'];
+    }
 }
