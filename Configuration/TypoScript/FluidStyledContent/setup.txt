@@ -18,6 +18,14 @@ tt_content {
 	# otherwise there is are html-ids used twice
 	stdWrap.innerWrap >
 	# Add themes data processoring
+	div {
+		dataProcessing {
+			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
+			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
+			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+			60 = KayStrobach\Themes\DataProcessing\ThemesIconDataProcessor
+		}
+	}
 	bullets {
 		dataProcessing {
 			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
