@@ -76,7 +76,7 @@ class EditorController extends ActionController
         );
         if ($externalConstantCategoriesToShow['value']) {
             $this->externalConfig['constantCategoriesToShow'] = GeneralUtility::trimExplode(',', $externalConstantCategoriesToShow['value']);
-            ArrayUtility::mergeRecursiveWithOverrule(
+            $extensionConfiguration['categoriesToShow'] = array_merge(
                 $extensionConfiguration['categoriesToShow'],
                 $this->externalConfig['constantCategoriesToShow']
             );
@@ -88,7 +88,7 @@ class EditorController extends ActionController
         );
         if ($externalConstantsToHide['value']) {
             $this->externalConfig['constantsToHide'] = GeneralUtility::trimExplode(',', $externalConstantsToHide['value']);
-            ArrayUtility::mergeRecursiveWithOverrule(
+            $extensionConfiguration['constantsToHide'] = array_merge(
                 $extensionConfiguration['constantsToHide'],
                 $this->externalConfig['constantsToHide']
             );
