@@ -39,7 +39,7 @@
 					<input type="hidden" name="categoriesFilterSettingsSaveUrl" value="{f:uri.action(action: 'saveCategoriesFilterSettings')}" id="categoriesFilterSettingsSaveUrl">
 					<div class="row">
 						<div class="col-xs-12 col-md-6">
-							<form class="form-inline">
+							<form class="form-inline"onsubmit="return false;">
 								<label for="categoriesFilterSearchField"><f:translate key="categoriesFilterSearch" /></label>
 								<div class="form-group">
 									<input id="categoriesFilterSearchField" name="search" type="text" value="" class="form-control">
@@ -60,7 +60,7 @@
 							</form>
 						</div>
 						<div class="col-xs-12 col-md-6">
-							<form class="form-inline">
+							<form class="form-inline"onsubmit="return false;">
 								<span style="font-weight:bold">
 									<f:translate key="categoriesFilterDisplay" />:
 								</span>
