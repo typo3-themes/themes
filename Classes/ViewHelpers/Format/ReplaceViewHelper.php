@@ -16,12 +16,11 @@ class ReplaceViewHelper extends AbstractViewHelper
      * @param integer $count
      * @return string
      */
-    public function render($substring, $content = NULL, $replacement = '', $count = NULL)
+    public function render($substring, $content = null, $replacement = '', $count = null)
     {
-        if (NULL === $content) {
+        if (null === $content) {
             $content = $this->renderChildren();
         }
         return str_replace($substring, $replacement, $content, $count);
     }
-
 }
