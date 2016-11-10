@@ -8,7 +8,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class ThemeEnabledCondition
  * @package KayStrobach\Themes\Utilities
  */
-class ThemeEnabledCondition {
+class ThemeEnabledCondition
+{
 
     /**
      * Check if theme is enabled
@@ -16,7 +17,7 @@ class ThemeEnabledCondition {
      * @param string $theme
      * @return boolean
      */
-    static public function isThemeEnabled($theme = '')
+    public static function isThemeEnabled($theme = '')
     {
         $pageId = intval(GeneralUtility::_GET('id'));
         /** @var \KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository */
@@ -26,4 +27,5 @@ class ThemeEnabledCondition {
 
         return ($themeOfPage !== null) && ($themeOfPage->getExtensionName() === $theme);
     }
+
 }
