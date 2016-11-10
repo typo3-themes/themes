@@ -108,9 +108,14 @@ class ThemeController extends ActionController
         $vh->setRenderChildrenClosure(function () {
             return '';
         });
-        $vh->setArguments(['typoscriptObjectPath' => $path]);
 
-        return $vh->render();
+        if (version_compare(TYPO3_version, '8.0', '<')) {
+            return $vh->render($path);
+        } else {
+            $vh->setArguments(['typoscriptObjectPath' => $path]);
+
+            return $vh->render();
+        }
     }
 
     /**
