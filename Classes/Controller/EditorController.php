@@ -12,6 +12,7 @@ use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -342,7 +343,7 @@ class EditorController extends ActionController
             $tce->process_datamap();
             $tce->clear_cacheCmd('pages');
         } else {
-            $this->flashMessageContainer->add('Problem selecting theme');
+            $this->addFlashMessage('Problem selecting theme', '', FlashMessage::ERROR);
         }
         $this->redirect('index');
     }
