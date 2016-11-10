@@ -117,8 +117,8 @@ class EditorController extends ActionController
 
         $buttons = [];
 
-        switch ($this->actionMethodName) {
-            case 'indexAction': {
+        switch ($this->request->getControllerActionName() ) {
+            case 'index': {
                 $buttons[] = $buttonBar->makeInputButton()
                     ->setName('save')
                     ->setValue('1')
@@ -132,8 +132,8 @@ class EditorController extends ActionController
                     ->setIcon($this->iconFactory->getIcon('actions-system-options-view', Icon::SIZE_SMALL));
                 break;
             }
-            case 'showThemeAction':
-            case 'showThemeDetailsAction': {
+            case 'showTheme':
+            case 'showThemeDetails': {
                 $buttons[] = $buttonBar->makeLinkButton()
                     ->setHref($uriBuilder->reset()->setRequest($this->request)->uriFor('index', [], 'Editor'))
                     ->setTitle('Go back')
