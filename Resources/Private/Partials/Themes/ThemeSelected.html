@@ -1,4 +1,5 @@
 {namespace themes=KayStrobach\Themes\ViewHelpers}
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 <div class="row">
 	<div class="col-xs-12 col-md-6">
 
@@ -91,7 +92,7 @@
 		</div>
 		
 		<f:form action="update" enctype="multipart/form-data" id="saveableForm">
-			
+
 			<f:form.hidden name="pid" value="{pid}" />
 			<f:for each="{themes:iterator.sort(subject: categories, key: 'title')}" as="category">
 				<section data-category="{category.key}" class="constants-group visible">
@@ -99,7 +100,7 @@
 						<h2><f:translate key="{category.title}" default="{category.title}" /></h2>
 					</f:if>
 					<f:groupedFor each="{category.items}" as="subcategory" groupBy="subcat_name" groupKey="subcat_name">
-						<table border="0" cellpadding="0" cellspacing="0" class="t3-table" style="max-width: 100%;">
+						<table border="0" cellpadding="0" cellspacing="0" class="table table-striped table-hover" style="max-width: 100%;">
 							<thead>
 								<tr>
 									<f:if condition="{subcat_name}">
@@ -118,18 +119,18 @@
 										<td nowrap="nowrap" class="editToggle">
 											<div class="showOnDefault">
 												<span class="showEditForm">
-													<f:be.buttons.icon icon="switch-off" title="Overwrite with custom value" />
+													<core:icon identifier="switch-off" />
 												</span>
 											</div>
 											<div class="hideOnDefault">
 												<span class="hideEditForm">
-													<f:be.buttons.icon icon="switch-on" title="Deactivate custom value and use default" />
+													<core:icon identifier="switch-on"/>
 												</span>
 											</div>
 											<f:form.hidden name="check[{item.name}]" value="{f:if(condition:'{item.isDefault}', then:'', else:'checked')}" class="hidden"/>
 										</td>
 										<td class="title">
-											<label for="{item.name}"><f:format.htmlSpecialChars><f:translate key="{item.label}" default="{item.label}"/></f:format.htmlSpecialChars></label>
+											<label for="{item.name}"><f:translate key="{item.label}" default="{item.label}"/></label>
 										</td>
 										<td class="value">
 											<f:render partial="FormFields/{item.typeCleaned}" arguments="{field: item}"/>

@@ -70,6 +70,7 @@ class ThemeController extends ActionController
             $this->view->setTemplatePathAndFilename($templateFile);
         }
         $this->view->assign('templateName', $this->templateName);
+
         $frontendController = $this->getFrontendController();
         $this->view->assign('theme', $this->themeRepository->findByPageOrRootline($frontendController->id));
         // Get page data
@@ -107,8 +108,9 @@ class ThemeController extends ActionController
         $vh->setRenderChildrenClosure(function () {
             return '';
         });
+        $vh->setArguments(['typoscriptObjectPath' => $path]);
 
-        return $vh->render($path);
+        return $vh->render();
     }
 
     /**

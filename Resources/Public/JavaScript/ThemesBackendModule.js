@@ -55,11 +55,11 @@ define(['jquery'], function (jQuery) {
 		});
 	};
 
-	ThemesEditor.bindSaveIconEvent = function() {
+	/*ThemesEditor.bindSaveIconEvent = function() {
 		jQuery('#saveIcon').click(function() {
 			jQuery('#saveableForm').submit();
 		});
-	};
+	};*/
 
 	ThemesEditor.bindCategoriesFilterEvents = function() {
 
