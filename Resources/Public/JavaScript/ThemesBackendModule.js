@@ -21,7 +21,7 @@ define(['jquery'], function (jQuery) {
 		// toggle constant editor
 		ThemesEditor.bindEditToggleEvents();
 		// make form submittable
-		ThemesEditor.bindSaveIconEvent();
+		//ThemesEditor.bindSaveIconEvent();
 		// Bind events
 		ThemesEditor.bindCategoriesFilterEvents();
 		// Filter initially

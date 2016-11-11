@@ -94,8 +94,8 @@ class EditorController extends ActionController
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/Colorpicker');
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendModule');
 
-            $pageRenderer->addCssFile('/typo3conf/ext/themes/Resources/Public/Stylesheet/BackendModule.css');
-            $pageRenderer->addCssFile('/typo3conf/ext/themes/Resources/Public/Contrib/colorpicker/css/colorpicker.css');
+            $pageRenderer->addCssFile('../typo3conf/ext/themes/Resources/Public/Stylesheet/BackendModule.css');
+            $pageRenderer->addCssFile('../typo3conf/ext/themes/Resources/Public/Contrib/colorpicker/css/colorpicker.css');
 
             $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
