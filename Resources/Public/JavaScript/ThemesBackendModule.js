@@ -20,8 +20,6 @@ define(['jquery'], function (jQuery) {
 	ThemesEditor.initialize = function() {
 		// toggle constant editor
 		ThemesEditor.bindEditToggleEvents();
-		// make form submittable
-		//ThemesEditor.bindSaveIconEvent();
 		// Bind events
 		ThemesEditor.bindCategoriesFilterEvents();
 		// Filter initially
@@ -54,12 +52,6 @@ define(['jquery'], function (jQuery) {
 
 		});
 	};
-
-	/*ThemesEditor.bindSaveIconEvent = function() {
-		jQuery('#saveIcon').click(function() {
-			jQuery('#saveableForm').submit();
-		});
-	};*/
 
 	ThemesEditor.bindCategoriesFilterEvents = function() {
 
