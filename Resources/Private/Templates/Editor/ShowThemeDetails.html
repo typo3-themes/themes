@@ -4,20 +4,6 @@
 
 <f:layout name="Backend"/>
 
-<f:section name="Buttons">
-	<f:link.action action="index">
-		<span class="t3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-go-back">&nbsp;</span>
-	</f:link.action>
-	<themes:ThemeEnabledCondition theme="{theme.extensionname}">
-		<f:then></f:then>
-		<f:else>
-			<f:link.action action="setTheme" arguments="{theme:theme.extensionName}">
-				<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save">&nbsp;</span>
-			</f:link.action>
-		</f:else>
-	</themes:ThemeEnabledCondition>
-</f:section>
-
 <f:section name="Content">
 	
 	
@@ -78,7 +64,7 @@
 				<div class="panel-heading">Authors</div>
 				<div class="panel-body">
 								
-					<table class="t3-table">
+					<table class="table table-striped table-hover">
 						<f:if condition="{theme.metaInformation.authors -> f:count()} > 0">
 
 							<thead>
@@ -122,7 +108,7 @@
 						<div class="panel-heading">License Information</div>
 						<div class="panel-body">
 							
-							<table class="t3-table">
+							<table class="table table-striped table-hover">
 								<thead>
 									<tr>
 										<th>License</th>
@@ -162,7 +148,7 @@
 						<div class="panel-heading">Supported Extensions</div>
 						<div class="panel-body">
 
-							<table class="t3-table">
+							<table class="table table-striped table-hover">
 								<thead>
 									<tr>
 										<th>Extension</th>
