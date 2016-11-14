@@ -49,16 +49,16 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
             $link['text'] = $row['linktext'];
             $link['linkParts'] = explode(' ', $row['linktarget']);
             $link['link'] = $link['linkParts'][0];
-            if(isset($link['linkParts'][1]) && $link['linkParts'][1] !== '-') {
+            if (isset($link['linkParts'][1]) && $link['linkParts'][1] !== '-') {
                 $link['linkTarget'] = $link['linkParts'][1];
             }
-            if(isset($link['linkParts'][2]) && $link['linkParts'][2] !== '-') {
+            if (isset($link['linkParts'][2]) && $link['linkParts'][2] !== '-') {
                 $link['linkCssClass'] = $link['linkParts'][2];
             }
-            if(isset($link['linkParts'][3]) && $link['linkParts'][3] !== '-') {
+            if (isset($link['linkParts'][3]) && $link['linkParts'][3] !== '-') {
                 $link['linkTitle'] = $link['linkParts'][3];
             }
-            if(ctype_digit($link['link'])) {
+            if (ctype_digit($link['link'])) {
                 $link['linkPageUid'] = (int)$link['link'];
             }
             $link['title'] = $row['linktitle'];
