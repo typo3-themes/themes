@@ -41,7 +41,7 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
     {
         $db = $this->getDb();
         $processedData['themes']['buttons'] = array();
-        $where = 'tt_content=' . (int)$processedData['data']['uid'] . ' AND deleted=0 AND hidden=0'; 
+        $where = 'tt_content=' . (int)$processedData['data']['uid'] . ' AND deleted=0 AND hidden=0';
         $result = $db->exec_SELECTquery('*', 'tx_themes_buttoncontent', $where, '', 'sorting');
         while ($row = $db->sql_fetch_assoc($result)) {
             $link = array();
