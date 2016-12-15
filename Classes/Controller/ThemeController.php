@@ -80,6 +80,10 @@ class ThemeController extends ActionController
             $setup = $frontendController->tmpl->setup;
             $pageArray['icon'] = $setup['lib.']['icons.']['cssMap.'][$pageArray['tx_themes_icon']];
         }
+        // Get settings, because they aren't available
+        $configuration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'Themes');
+        unset($configuration['settings']['templateName']);
+        $this->view->assign('settings', $configuration['settings']);
         $this->view->assign('page', $pageArray);
         $this->view->assign('data', $pageArray);
         $this->view->assign('TSFE', $frontendController);
