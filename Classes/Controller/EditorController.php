@@ -95,7 +95,7 @@ class EditorController extends ActionController
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/Colorpicker');
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendModule');
 
-            $extRealPath = ExtensionManagementUtility::siteRelPath('themes');
+            $extRealPath = '../' . ExtensionManagementUtility::siteRelPath('themes');
 
             $pageRenderer->addCssFile($extRealPath . 'Resources/Public/Stylesheet/BackendModule.css');
             $pageRenderer->addCssFile($extRealPath . 'Resources/Public/Contrib/colorpicker/css/colorpicker.css');
