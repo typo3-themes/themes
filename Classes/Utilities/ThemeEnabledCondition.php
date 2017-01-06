@@ -2,6 +2,7 @@
 
 
 namespace KayStrobach\Themes\Utilities;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -27,5 +28,4 @@ class ThemeEnabledCondition
 
         return ($themeOfPage !== null) && ($themeOfPage->getExtensionName() === $theme);
     }
-
 }

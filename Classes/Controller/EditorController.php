@@ -90,7 +90,7 @@ class EditorController extends ActionController
         /** @var BackendTemplateView $view */
         parent::initializeView($view);
 
-        if ($this->view->getModuleTemplate() !== NULL) {
+        if ($this->view->getModuleTemplate() !== null) {
             $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/Colorpicker');
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendModule');
@@ -120,7 +120,7 @@ class EditorController extends ActionController
 
         $buttons = [];
 
-        switch ($this->request->getControllerActionName() ) {
+        switch ($this->request->getControllerActionName()) {
             case 'index': {
                 $buttons[] = $buttonBar->makeInputButton()
                     ->setName('save')
