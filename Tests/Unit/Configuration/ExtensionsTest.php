@@ -5,7 +5,6 @@ namespace KayStrobach\Tests\Unit\Configuration;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
-
 /**
  * Class ExtensionsTest.
  */
