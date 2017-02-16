@@ -16,6 +16,9 @@ return [
         'rootLevel'          => -1,
         'thumbnail'          => 'resources',
         'dividers2tabs'      => true,
+        'languageField'      => 'sys_language_uid',
+        'transOrigDiffSourceField' => 'l18n_diffsource',
+        'transOrigPointerField' => 'l18n_parent',
         'enablecolumns'      => [
             'disabled' => 'hidden',
         ],
@@ -27,6 +30,8 @@ return [
     'columns' => [
         'linktext' => [
             'label'  => $l10n.'linktext',
+            'l10n_cat' => 'text',
+            'l10n_mode' => 'prefixLangTitle',
             'config' => [
                 'type' => 'input',
                 'size' => 50,
