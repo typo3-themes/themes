@@ -60,9 +60,10 @@ page {
 		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
 		extensionName = Themes
 		vendorName = KayStrobach
+		pluginKey = Theme
 		pluginName = Theme
 		controller = Theme
-		action = MenuContent
+		action = Index
 		settings =< plugin.tx_themes.settings
 		persistence =< plugin.tx_themes.persistence
 		view =< plugin.tx_themes.view
