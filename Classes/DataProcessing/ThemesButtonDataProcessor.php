@@ -14,9 +14,12 @@ namespace KayStrobach\Themes\DataProcessing;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
+use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
  * DataProcessor for Fluid Styled Content.
@@ -28,17 +31,21 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
     /**
      * Process data for the Themes icons.
      *
-     * @param ContentObjectRenderer $cObj                       The content object renderer, which contains data of the content element
-     * @param array                 $contentObjectConfiguration The configuration of Content Object
-     * @param array                 $processorConfiguration     The configuration of this processor
-     * @param array                 $processedData              Key/value store of processed data (e.g. to be passed to a Fluid View)
+     * @param ContentObjectRenderer $cObj The content object renderer, which contains data of the content element
+     * @param array $contentObjectConfiguration The configuration of Content Object
+     * @param array $processorConfiguration The configuration of this processor
+     * @param array $processedData Key/value store of processed data (e.g. to be passed to a Fluid View)
      *
      * @throws ContentRenderingException
      *
      * @return array the processed data as key/value store
      */
-    public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData)
-    {
+    public function process(
+        ContentObjectRenderer $cObj,
+        array $contentObjectConfiguration,
+        array $processorConfiguration,
+        array $processedData
+    ) {
         $db = $this->getDb();
         $processedData['themes']['buttons'] = array();
         $where = 'tt_content=' . (int)$processedData['data']['uid'] . ' AND deleted=0 AND hidden=0';
@@ -47,20 +54,8 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
             $link = array();
             $link['uid'] = $row['uid'];
             $link['text'] = $row['linktext'];
-            $link['linkParts'] = explode(' ', $row['linktarget']);
-            $link['link'] = $link['linkParts'][0];
-            if (isset($link['linkParts'][1]) && $link['linkParts'][1] !== '-') {
-                $link['linkTarget'] = $link['linkParts'][1];
-            }
-            if (isset($link['linkParts'][2]) && $link['linkParts'][2] !== '-') {
-                $link['linkCssClass'] = $link['linkParts'][2];
-            }
-            if (isset($link['linkParts'][3]) && $link['linkParts'][3] !== '-') {
-                $link['linkTitle'] = $link['linkParts'][3];
-            }
-            if (ctype_digit($link['link'])) {
-                $link['linkPageUid'] = (int)$link['link'];
-            }
+            $link['link'] = $row['linktarget'];
+            $link['linkParameter'] = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($row['linktarget']);
             $link['title'] = $row['linktitle'];
             $link['icon'] = '';
             if ($row['icon'] != '') {
@@ -69,7 +64,7 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
             }
             $processedData['themes']['buttons'][] = $link;
         }
-        $db->sql_free_result($res);
+        $db->sql_free_result($result);
         return $processedData;
     }
 
