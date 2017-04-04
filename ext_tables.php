@@ -40,9 +40,10 @@ if (TYPO3_MODE === 'BE') {
 /*
  * add themes overlay
  */
+if (is_array($GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'])) {
     array_push($GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'], 'themefound');
     $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['themefound'] = 'extensions-themes-overlay-theme';
-
+}
 /*
  * add sprites
     \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
