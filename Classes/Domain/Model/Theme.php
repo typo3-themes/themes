@@ -20,22 +20,18 @@ class Theme extends AbstractTheme
     public function __construct($extensionName)
     {
         parent::__construct($extensionName);
-
         if (ExtensionManagementUtility::isLoaded($extensionName, false)) {
             // set needed path variables
             $path = ExtensionManagementUtility::extPath($this->getExtensionName());
             $this->pathTyposcript = $path.'Configuration/TypoScript/setup.txt';
             $this->pathTyposcriptConstants = $path.'Configuration/TypoScript/constants.txt';
             $this->pathTsConfig = $path.'Configuration/PageTS/tsconfig.txt';
-
             $this->importExtEmConf();
-
             if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()).'Meta/Screenshots/screenshot.png')) {
-                $this->previewImage = ExtensionManagementUtility::extRelPath($this->getExtensionName()).'Meta/Screenshots/screenshot.png';
+                $this->previewImage = ExtensionManagementUtility::siteRelPath($this->getExtensionName()).'Meta/Screenshots/screenshot.png';
             } else {
-                $this->previewImage = ExtensionManagementUtility::extRelPath('themes').'Resources/Public/Images/screenshot.gif';
+                $this->previewImage = ExtensionManagementUtility::siteRelPath('themes').'Resources/Public/Images/screenshot.gif';
             }
-
             if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()).'Meta/theme.yaml')) {
                 if (class_exists('\Symfony\Component\Yaml\Yaml')) {
                     $this->metaInformation = \Symfony\Component\Yaml\Yaml::parse(

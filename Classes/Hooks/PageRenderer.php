@@ -3,6 +3,7 @@
 namespace KayStrobach\Themes\Hooks;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class/Function which adds the necessary ExtJS and pure JS stuff for themes.
@@ -24,7 +25,9 @@ class PageRenderer
         // Add javascript
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendTca');
         // Add css
-        $filename = $pageRenderer->backPath.ExtensionManagementUtility::extRelPath('themes').'Resources/Public/Stylesheet/ThemesBackendTca.css';
+        $extensionFile = 'Resources/Public/Stylesheet/ThemesBackendTca.css';
+        $absolutePath = ExtensionManagementUtility::extPath('themes', $extensionFile);
+        $filename = PathUtility::getAbsoluteWebPath($absolutePath);
         $pageRenderer->addCssFile($filename, 'stylesheet', 'screen');
     }
 }

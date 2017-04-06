@@ -53,7 +53,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['themefo
     [
         'LLL:EXT:themes/Resources/Private/Language/ButtonContent.xlf:tt_content.CType_pi1',
         $_EXTKEY.'_buttoncontent_pi1',
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'buttoncontent_icon.gif',
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($_EXTKEY).'buttoncontent_icon.gif',
     ],
     'CType'
 );
