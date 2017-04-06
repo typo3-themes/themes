@@ -10,7 +10,7 @@
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
 .idea/modules.xml
-.idea/themes.xml
+.idea/themes.iml
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
