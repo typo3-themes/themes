@@ -125,7 +125,7 @@ class EditorController extends ActionController
         switch ($this->request->getControllerActionName()) {
             case 'index': {
                 // Only show save button, in case of a theme is selected
-                if($this->selectedTheme !== null) {
+                if ($this->selectedTheme !== null) {
                     $buttons[] = $buttonBar->makeInputButton()
                         ->setName('save')
                         ->setValue('1')
