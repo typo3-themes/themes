@@ -37,26 +37,12 @@ return [
             'exclude' => 1,
             'label'   => $l10n.'linktarget',
             'config'  => [
-                'eval'    => trim,
+                'renderType' => 'inputLink',
+                'eval'    => 'trim',
                 'max'     => 1024,
                 'size'    => 50,
                 'softref' => 'typolink',
                 'type'    => 'input',
-                'wizards' => [
-                    'link' => [
-                        'icon'         => 'link_popup.gif',
-                        'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-                        'module'       => [
-                            'name'          => 'wizard_element_browser',
-                            'urlParameters' => [
-                                'mode' => 'wizard',
-                            ],
-                        ],
-                        'title' => 'LLL:EXT:cms/locallang_ttc.xlf:header_link_formlabel',
-                        'type'  => 'popup',
-                    ],
-                    '_PADDING' => 2,
-                ],
             ],
         ],
         'linktitle' => [
