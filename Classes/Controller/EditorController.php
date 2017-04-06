@@ -81,6 +81,11 @@ class EditorController extends ActionController
     protected $defaultViewObjectName = BackendTemplateView::class;
 
     /**
+     * @var \KayStrobach\Themes\Domain\Model\Theme
+     */
+    protected $selectedTheme = null;
+
+    /**
      * Set up the doc header properly here
      *
      * @param ViewInterface $view
@@ -89,19 +94,18 @@ class EditorController extends ActionController
     {
         /** @var BackendTemplateView $view */
         parent::initializeView($view);
-
         if ($this->view->getModuleTemplate() !== null) {
             $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/Colorpicker');
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendModule');
-
             $extRealPath = '../' . ExtensionManagementUtility::siteRelPath('themes');
-
             $pageRenderer->addCssFile($extRealPath . 'Resources/Public/Stylesheet/BackendModule.css');
             $pageRenderer->addCssFile($extRealPath . 'Resources/Public/Contrib/colorpicker/css/colorpicker.css');
-
+            // Initialize icon factory
             $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
+            // Try to load the selected theme
+            $this->selectedTheme = $this->themeRepository->findByPageId($this->id);
+            // Create menu and buttons
             $this->createMenu();
             $this->createButtons();
         }
@@ -117,18 +121,18 @@ class EditorController extends ActionController
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
-
         $buttons = [];
-
         switch ($this->request->getControllerActionName()) {
             case 'index': {
-                $buttons[] = $buttonBar->makeInputButton()
-                    ->setName('save')
-                    ->setValue('1')
-                    ->setForm('saveableForm')
-                    ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
-                    ->setTitle('Save');
-
+                // Only show save button, in case of a theme is selected
+                if($this->selectedTheme !== null) {
+                    $buttons[] = $buttonBar->makeInputButton()
+                        ->setName('save')
+                        ->setValue('1')
+                        ->setForm('saveableForm')
+                        ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                        ->setTitle('Save');
+                }
                 $buttons[] = $buttonBar->makeLinkButton()
                     ->setHref($uriBuilder->reset()->setRequest($this->request)->uriFor('showTheme', [], 'Editor'))
                     ->setTitle('Show theme')
@@ -148,11 +152,9 @@ class EditorController extends ActionController
                         ->setTitle('Save theme')
                         ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
                 }
-
                 break;
             }
         }
-
         foreach ($buttons as $button) {
             $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT);
         }
@@ -241,10 +243,9 @@ class EditorController extends ActionController
     public function indexAction()
     {
         $this->view->assign('selectableThemes', $this->themeRepository->findAll());
-        $selectedTheme = $this->themeRepository->findByPageId($this->id);
-        if ($selectedTheme !== null) {
+        if ($this->selectedTheme !== null) {
             $nearestPageWithTheme = $this->id;
-            $this->view->assign('selectedTheme', $selectedTheme);
+            $this->view->assign('selectedTheme', $this->selectedTheme);
             $this->view->assign('categories', $this->renderFields($this->tsParser, $this->id, $this->allowedCategories, $this->deniedFields));
             $categoriesFilterSettings = $this->getBackendUser()->getModuleData('mod-web_ThemesMod1/Categories/Filter/Settings', 'ses');
             if ($categoriesFilterSettings === null) {
@@ -299,7 +300,7 @@ class EditorController extends ActionController
     {
         $this->view->assignMultiple(
             [
-                'selectedTheme'     => $this->themeRepository->findByPageId($this->id),
+                'selectedTheme'     => $this->selectedTheme,
                 'selectableThemes'  => $this->themeRepository->findAll(),
                 'themeIsSelectable' => CheckPageUtility::hasThemeableSysTemplateRecord($this->id),
                 'pid'               => $this->id,
