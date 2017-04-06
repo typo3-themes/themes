@@ -2,15 +2,23 @@
 
 namespace KayStrobach\Themes\Controller;
 
-use KayStrobach\Themes\Domain\Model\Theme;
 use KayStrobach\Themes\Utilities\CheckPageUtility;
 use KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility;
+use KayStrobach\Themes\Utilities\ThemeEnabledCondition;
 use KayStrobach\Themes\Utilities\TsParserUtility;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Class EditorController.
@@ -52,6 +60,133 @@ class EditorController extends ActionController
      * @var array
      */
     protected $allowedCategories = [];
+
+    /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
+     * BackendTemplateContainer
+     *
+     * @var BackendTemplateView
+     */
+    protected $view;
+
+    /**
+     * Backend Template Container
+     *
+     * @var BackendTemplateView
+     */
+    protected $defaultViewObjectName = BackendTemplateView::class;
+
+    /**
+     * Set up the doc header properly here
+     *
+     * @param ViewInterface $view
+     */
+    protected function initializeView(ViewInterface $view)
+    {
+        /** @var BackendTemplateView $view */
+        parent::initializeView($view);
+
+        if ($this->view->getModuleTemplate() !== null) {
+            $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/Colorpicker');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendModule');
+
+            $extRealPath = '../' . ExtensionManagementUtility::siteRelPath('themes');
+
+            $pageRenderer->addCssFile($extRealPath . 'Resources/Public/Stylesheet/BackendModule.css');
+            $pageRenderer->addCssFile($extRealPath . 'Resources/Public/Contrib/colorpicker/css/colorpicker.css');
+
+            $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
+            $this->createMenu();
+            $this->createButtons();
+        }
+    }
+
+    /**
+     * Add menu buttons for specific actions
+     *
+     * @return void
+     */
+    protected function createButtons()
+    {
+        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $uriBuilder->setRequest($this->request);
+
+        $buttons = [];
+
+        switch ($this->request->getControllerActionName()) {
+            case 'index': {
+                $buttons[] = $buttonBar->makeInputButton()
+                    ->setName('save')
+                    ->setValue('1')
+                    ->setForm('saveableForm')
+                    ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                    ->setTitle('Save');
+
+                $buttons[] = $buttonBar->makeLinkButton()
+                    ->setHref($uriBuilder->reset()->setRequest($this->request)->uriFor('showTheme', [], 'Editor'))
+                    ->setTitle('Show theme')
+                    ->setIcon($this->iconFactory->getIcon('actions-system-options-view', Icon::SIZE_SMALL));
+                break;
+            }
+            case 'showTheme':
+            case 'showThemeDetails': {
+                $buttons[] = $buttonBar->makeLinkButton()
+                    ->setHref($uriBuilder->reset()->setRequest($this->request)->uriFor('index', [], 'Editor'))
+                    ->setTitle('Go back')
+                    ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+
+                if ($this->request->hasArgument('theme') && !ThemeEnabledCondition::isThemeEnabled($this->request->getArgument('theme'))) {
+                    $buttons[] = $buttonBar->makeLinkButton()
+                        ->setHref($uriBuilder->reset()->setRequest($this->request)->uriFor('setTheme', ['theme' => $this->request->getArgument('theme')], 'Editor'))
+                        ->setTitle('Save theme')
+                        ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
+                }
+
+                break;
+            }
+        }
+
+        foreach ($buttons as $button) {
+            $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT);
+        }
+    }
+
+    /**
+     * Create action menu
+     *
+     *@return void
+     */
+    protected function createMenu()
+    {
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $uriBuilder->setRequest($this->request);
+
+        $menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu->setIdentifier('themes');
+
+        $actions = [
+            ['action' => 'index',       'label' => LocalizationUtility::translate('setConstants', $this->extensionName)],
+            ['action' => 'showTheme',   'label' => LocalizationUtility::translate('setTheme', $this->extensionName)]
+        ];
+
+        foreach ($actions as $action) {
+            $item = $menu->makeMenuItem()
+                ->setTitle($action['label'])
+                ->setHref($uriBuilder->reset()->uriFor($action['action'], [], 'Editor'))
+                ->setActive($this->request->getControllerActionName() === $action['action']);
+            $menu->addMenuItem($item);
+        }
+
+        $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+    }
 
     /**
      * Initializes the controller before invoking an action method.
@@ -211,7 +346,7 @@ class EditorController extends ActionController
             $tce->process_datamap();
             $tce->clear_cacheCmd('pages');
         } else {
-            $this->flashMessageContainer->add('Problem selecting theme');
+            $this->addFlashMessage('Problem selecting theme', '', FlashMessage::ERROR);
         }
         $this->redirect('index');
     }

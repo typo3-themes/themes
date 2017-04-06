@@ -18,9 +18,11 @@ env:
 matrix:
   exclude:
     - php: 5.5
-      env: TYPO3_BRANCH=master
+      env: TYPO3_BRANCH=master COVERAGE=0
     - php: 5.6
-      env: TYPO3_BRANCH=master
+      env: TYPO3_BRANCH=master COVERAGE=0
+    - php: hhvm
+      env: TYPO3_BRANCH=master COVERAGE=0
 
 before_script:
   - sudo apt-get install parallel

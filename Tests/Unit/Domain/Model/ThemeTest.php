@@ -2,12 +2,12 @@
 
 namespace KayStrobach\Tests\Unit\Domain\Model;
 
-use TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Class ThemeTest.
  */
-class ThemeTest extends BaseTestCase
+class ThemeTest extends UnitTestCase
 {
     /**
      * @var \KayStrobach\Themes\Domain\Model\Theme

@@ -44,6 +44,7 @@ if (is_array($GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPri
     array_push($GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'], 'themefound');
     $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['themefound'] = 'extensions-themes-overlay-theme';
 }
+
 /*
  * add sprites
     \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(

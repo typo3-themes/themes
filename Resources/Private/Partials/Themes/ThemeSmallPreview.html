@@ -1,4 +1,6 @@
 {namespace themes=KayStrobach\Themes\ViewHelpers}
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
 <div class="theme {additionalClass}">
 	<div class="theme-image">
 		<f:if condition="{theme.previewImage} != '../typo3conf/ext/themes/Resources/Public/Images/screenshot.gif'">
@@ -26,7 +28,7 @@
 		</h2>
 		<div class="theme-install">
 			<f:link.action action="showThemeDetails" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme btn btn-default btn-sm">
-				<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-info">&nbsp;</span>
+                <core:icon identifier="overlay-info"/>
 				Details
 			</f:link.action>
 
@@ -38,7 +40,7 @@
 				</f:then>
 				<f:else>
 					<f:link.action action="setTheme" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme btn btn-default btn-sm">
-						<span class="t3-icon t3-icon-status t3-icon-status-dialog t3-icon-dialog-ok">&nbsp;</span>
+                        <core:icon identifier="overlay-approved"/>
 						Activate
 					</f:link.action>
 				</f:else>

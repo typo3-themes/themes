@@ -3,12 +3,12 @@
 namespace KayStrobach\Tests\Unit\Configuration;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Class ExtensionsTest.
  */
-class ExtensionsTest extends BaseTestCase
+class ExtensionsTest extends UnitTestCase
 {
     /**
      * @test

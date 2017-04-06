@@ -20,8 +20,6 @@ define(['jquery'], function (jQuery) {
 	ThemesEditor.initialize = function() {
 		// toggle constant editor
 		ThemesEditor.bindEditToggleEvents();
-		// make form submittable
-		ThemesEditor.bindSaveIconEvent();
 		// Bind events
 		ThemesEditor.bindCategoriesFilterEvents();
 		// Filter initially
@@ -52,12 +50,6 @@ define(['jquery'], function (jQuery) {
 			jQuery(this).parents('tr').find('input[type="hidden"]').attr('value', '');
 			jQuery(this).parents('tr').find('input[type="hidden"]').attr('disabled','disabled');
 
-		});
-	};
-
-	ThemesEditor.bindSaveIconEvent = function() {
-		jQuery('#saveIcon').click(function() {
-			jQuery('#saveableForm').submit();
 		});
 	};
 
