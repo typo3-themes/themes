@@ -7,9 +7,7 @@ $tempColumn = [
     'tx_themes_skin' => [
         'exclude'     => 1,
         'label'       => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:themes',
-        'displayCond' => [
-            'FIELD:root:REQ:true',
-        ],
+        'displayCond' => 'FIELD:root:REQ:true',
         'config' => [
             'type'          => 'select',
             'renderType'    => 'selectSingle',
