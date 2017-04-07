@@ -125,7 +125,7 @@ class EditorController extends ActionController
         switch ($this->request->getControllerActionName()) {
             case 'index': {
                 // Only show save button, in case of a theme is selected
-                if($this->selectedTheme !== null) {
+                if ($this->selectedTheme !== null) {
                     $buttons[] = $buttonBar->makeInputButton()
                         ->setName('save')
                         ->setValue('1')
@@ -135,7 +135,7 @@ class EditorController extends ActionController
                 }
                 $buttons[] = $buttonBar->makeLinkButton()
                     ->setHref($uriBuilder->reset()->setRequest($this->request)->uriFor('showTheme', [], 'Editor'))
-                    ->setTitle('Show theme')
+                    ->setTitle('Choose theme')
                     ->setIcon($this->iconFactory->getIcon('actions-system-options-view', Icon::SIZE_SMALL));
                 break;
             }
