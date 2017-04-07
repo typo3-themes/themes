@@ -4,7 +4,6 @@ namespace KayStrobach\Themes\Domain\Model;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class Theme.
@@ -35,8 +34,6 @@ class Theme extends AbstractTheme
             }
             $yamlFile = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml';
             if (file_exists($yamlFile)) {
-
-
                 if (version_compare(TYPO3_version, '8.7', '<')) {
                     if (class_exists('\Symfony\Component\Yaml\Yaml')) {
                         $this->metaInformation = \Symfony\Component\Yaml\Yaml::parse($yamlFile);

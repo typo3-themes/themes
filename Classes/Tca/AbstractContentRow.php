@@ -2,8 +2,6 @@
 
 namespace KayStrobach\Themes\Tca;
 
-use TYPO3\CMS\Extbase\Utility\ArrayUtility;
-
 /**
  * Abstract for ContentRow.
  */
@@ -40,7 +38,7 @@ abstract class AbstractContentRow
         );
         $this->defaultProperties = $defaultConfig['properties'];
         // Merge configurations
-        $config = ArrayUtility::arrayMergeRecursiveOverrule($cTypeConfig, $defaultConfig);
+        $config = array_replace_recursive($cTypeConfig, $defaultConfig);
 
         return $config;
     }
