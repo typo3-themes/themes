@@ -14,7 +14,11 @@ $tempColumn = [
             'size'          => 1,
             'maxitems'      => 1,
             'itemsProcFunc' => 'KayStrobach\\Themes\\Tca\\ThemeSelector->items',
-            'showIconTable' => 1,
+            'fieldWizard' => [
+                'selectIcons' => [
+                    'disabled' => false
+                ]
+            ]
         ],
     ],
 ];

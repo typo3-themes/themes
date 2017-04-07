@@ -60,7 +60,6 @@ return [
             'label'   => $l10n.'icon',
             'config'  => [
                 'type'         => 'select',
-                'selicon_cols' => 14,
                 'items'        => [
                     ['', ''],
                 ],
@@ -68,7 +67,7 @@ return [
         ],
         'hidden' => [
             'exclude' => 1,
-            'label'   => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
+            'label'   => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config'  => [
                 'type'  => 'check',
                 'items' => [
@@ -80,12 +79,11 @@ return [
         ],
         'starttime' => [
             'exclude' => 1,
-            'label'   => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
+            'label'   => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config'  => [
                 'type'    => 'input',
                 'renderType' => 'inputDateTime',
                 'size'    => 13,
-                'max'     => 20,
                 'eval'    => 'datetime',
                 'default' => 0,
             ],
@@ -94,12 +92,11 @@ return [
         ],
         'endtime' => [
             'exclude' => 1,
-            'label'   => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
+            'label'   => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config'  => [
                 'type'    => 'input',
                 'renderType' => 'inputDateTime',
                 'size'    => 13,
-                'max'     => 20,
                 'eval'    => 'datetime',
                 'default' => 0,
                 'range'   => [
@@ -111,18 +108,18 @@ return [
         ],
         'sys_language_uid' => [
             'exclude' => 1,
-            'label'   => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
+            'label'   => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config'  => [
                 'type'                => 'select',
                 'foreign_table'       => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items'               => [
                     [
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages',
+                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
                         -1,
                     ],
                     [
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
+                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value',
                         0,
                     ],
                 ],
@@ -143,15 +140,15 @@ return [
         ],
         'fe_group' => [
             'exclude' => 1,
-            'label'   => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
+            'label'   => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
             'config'  => [
                 'type'     => 'select',
                 'size'     => 5,
                 'maxitems' => 20,
                 'items'    => [
-                    ['LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login', -1],
-                    ['LLL:EXT:lang/locallang_general.xlf:LGL.any_login', -2],
-                    ['LLL:EXT:lang/locallang_general.xlf:LGL.usergroups', '--div--'],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login', -1],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login', -2],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups', '--div--'],
                 ],
                 'exclusiveKeys'       => '-1,-2',
                 'foreign_table'       => 'fe_groups',

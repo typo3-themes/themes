@@ -9,7 +9,7 @@ $tempColumn = [
         'label'   => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:icon',
         'config'  => [
             'type'         => 'select',
-            'selicon_cols' => 14,
+            'renderType'   => 'selectSingle',
             'items'        => [
                 ['', ''],
             ],
