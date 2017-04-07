@@ -14,10 +14,6 @@
     width: 190px;
     font-weight: normal;
 }
-.contentResponsive .themes-checkbox-label {
-    margin-left: 7px;
-    width: calc(100% - 15px);
-}
 
 .themes-hidden-admin-field {
     border: 1px solid #bbbbbb;
@@ -27,6 +23,10 @@
     height: 20px;
     margin-left: 15px;
     width: calc(100% - 22px);
+}
+.contentResponsive .themes-hidden-admin-field {
+    margin-left: 7px;
+    width: calc(100% - 15px);
 }
 
 .themes-column {
