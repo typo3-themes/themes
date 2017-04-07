@@ -1,12 +1,9 @@
-{namespace themes=KayStrobach\Themes\ViewHelpers}
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en"
-      xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers">
-
+      xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:themes="http://typo3.org/ns/KayStrobach/Themes/ViewHelpers">
 <f:layout name="Backend"/>
-
 <f:section name="Content">
-	
-	
+
 	<div class="row">
 		<div class="col-xs-12 col-md-6">
 
@@ -58,15 +55,12 @@
 	</div>
 
 	<div class="row">
-
 		<div class="col-xs-12 col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-heading">Authors</div>
 				<div class="panel-body">
-								
 					<table class="table table-striped table-hover">
 						<f:if condition="{theme.metaInformation.authors -> f:count()} > 0">
-
 							<thead>
 								<tr>
 									<th>Author name</th>
@@ -95,7 +89,6 @@
 							</tbody>
 						</f:if>
 					</table>
-
 				</div>
 			</div>
 		</div>
@@ -160,8 +153,7 @@
 										<tr class="db_list_normal">
 											<td>
 												<f:link.external uri="http://typo3.org/extensions/repository/view/{extensionName}" target="_blank">
-													{extensionName}
-													({extension.version})
+													{extensionName} ({extension.version})
 												</f:link.external>
 											</td>
 											<td>
@@ -178,11 +170,8 @@
 
 			</f:then>
 		</f:if>
-		
-		
+
 	</div>
-
-
 
 </f:section>
 </html>

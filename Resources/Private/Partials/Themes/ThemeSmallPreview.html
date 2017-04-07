@@ -1,50 +1,51 @@
-{namespace themes=KayStrobach\Themes\ViewHelpers}
-{namespace core=TYPO3\CMS\Core\ViewHelpers}
+<html data-namespace-typo3-fluid="true"
+	  xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+	  xmlns:themes="http://typo3.org/ns/KayStrobach/Themes/ViewHelpers">
+	<div class="theme {additionalClass}">
+		<div class="theme-image">
+			<f:if condition="{theme.previewImage} != '../typo3conf/ext/themes/Resources/Public/Images/screenshot.gif'">
+				<f:image src="{theme.previewImage}"  alt="{screenshot.caption}" width="298" style="width:298px" />
+			</f:if>
+			<div class="theme-hover">
+				<div class="theme-hover-inner">
+					<dl class="description-horizontal">
+						<dt>Title:</dt>
+						<dd>{theme.title}</dd>
+						<dt>Key:</dt>
+						<dd>{theme.extensionname}</dd>
+						<dt>Version:</dt>
+						<dd>{theme.version}</dd>
+					</dl>
+					<div class="themeDescription"></div>
+				</div>
+			</div>
+		</div>
+		<div class="theme-meta">
+			<h2 class="theme-title">
+				<f:link.action action="showThemeDetails" arguments="{theme:theme.extensionname}">
+					{theme.title}
+				</f:link.action>
+			</h2>
+			<div class="theme-install">
+				<f:link.action action="showThemeDetails" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme btn btn-default btn-sm">
+					<core:icon identifier="overlay-info"/>
+					Details
+				</f:link.action>
 
-<div class="theme {additionalClass}">
-	<div class="theme-image">
-		<f:if condition="{theme.previewImage} != '../typo3conf/ext/themes/Resources/Public/Images/screenshot.gif'">
-			<f:image src="{theme.previewImage}"  alt="{screenshot.caption}" width="298" style="width:298px" />
-		</f:if>
-		<div class="theme-hover">
-			<div class="theme-hover-inner">
-				<dl class="description-horizontal">
-					<dt>Title:</dt>
-					<dd>{theme.title}</dd>
-					<dt>Key:</dt>
-					<dd>{theme.extensionname}</dd>
-					<dt>Version:</dt>
-					<dd>{theme.version}</dd>
-				</dl>
-				<div class="themeDescription"></div>
+				<themes:ThemeEnabledCondition theme="{theme.extensionname}">
+					<f:then>
+						<a href="#" onclick="return false" class=" btn btn-success btn-sm" style="cursor:not-allowed">
+							Active
+						</a>
+					</f:then>
+					<f:else>
+						<f:link.action action="setTheme" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme btn btn-default btn-sm">
+							<core:icon identifier="overlay-approved"/>
+							Activate
+						</f:link.action>
+					</f:else>
+				</themes:ThemeEnabledCondition>
 			</div>
 		</div>
 	</div>
-	<div class="theme-meta">
-		<h2 class="theme-title">
-			<f:link.action action="showThemeDetails" arguments="{theme:theme.extensionname}">
-				{theme.title}
-			</f:link.action>
-		</h2>
-		<div class="theme-install">
-			<f:link.action action="showThemeDetails" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme btn btn-default btn-sm">
-                <core:icon identifier="overlay-info"/>
-				Details
-			</f:link.action>
-
-			<themes:ThemeEnabledCondition theme="{theme.extensionname}">
-				<f:then>
-					<a href="#" onclick="return false" class=" btn btn-success btn-sm" style="cursor:not-allowed">
-						Active
-					</a>
-				</f:then>
-				<f:else>
-					<f:link.action action="setTheme" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme btn btn-default btn-sm">
-                        <core:icon identifier="overlay-approved"/>
-						Activate
-					</f:link.action>
-				</f:else>
-			</themes:ThemeEnabledCondition>
-		</div>
-	</div>
-</div>
+</html>
