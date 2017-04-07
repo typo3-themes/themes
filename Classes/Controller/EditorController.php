@@ -145,13 +145,6 @@ class EditorController extends ActionController
                     ->setHref($uriBuilder->reset()->setRequest($this->request)->uriFor('index', [], 'Editor'))
                     ->setTitle('Go back')
                     ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
-
-                if ($this->request->hasArgument('theme') && !ThemeEnabledCondition::isThemeEnabled($this->request->getArgument('theme'))) {
-                    $buttons[] = $buttonBar->makeLinkButton()
-                        ->setHref($uriBuilder->reset()->setRequest($this->request)->uriFor('setTheme', ['theme' => $this->request->getArgument('theme')], 'Editor'))
-                        ->setTitle('Save theme')
-                        ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
-                }
                 break;
             }
         }
