@@ -1,5 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en"
-      xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
 	  xmlns:themes="http://typo3.org/ns/KayStrobach/Themes/ViewHelpers">
 <f:layout name="Backend"/>
 <f:section name="Content">
@@ -34,12 +35,13 @@
 						<themes:ThemeEnabledCondition theme="{theme.extensionname}">
 							<f:then>
 								<a href="#" onclick="return false" class=" btn btn-success btn-sm pull-right" style="cursor:not-allowed">
-									Active
+									<core:icon identifier="status-status-checked" />
+									Activated
 								</a>
 							</f:then>
 							<f:else>
 								<f:link.action action="setTheme" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme btn btn-success btn-sm pull-right">
-									<span class="t3-icon t3-icon-status t3-icon-status-dialog t3-icon-dialog-ok">&nbsp;</span>
+									<core:icon identifier="status-status-checked" />
 									Activate Theme
 								</f:link.action>
 							</f:else>

@@ -28,20 +28,21 @@
 			</h2>
 			<div class="theme-install">
 				<f:link.action action="showThemeDetails" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme btn btn-default btn-sm">
-					<core:icon identifier="overlay-info"/>
+					<core:icon identifier="actions-document-info"/>
 					Details
 				</f:link.action>
 
 				<themes:ThemeEnabledCondition theme="{theme.extensionname}">
 					<f:then>
 						<a href="#" onclick="return false" class=" btn btn-success btn-sm" style="cursor:not-allowed">
-							Active
+							<core:icon identifier="status-status-checked" />
+							Activated
 						</a>
 					</f:then>
 					<f:else>
 						<f:link.action action="setTheme" arguments="{theme:theme.extensionname}" class="t3-button t3-button-action-installtheme btn btn-default btn-sm">
-							<core:icon identifier="overlay-approved"/>
-							Activate
+							<core:icon identifier="status-status-checked" />
+							Activate Theme
 						</f:link.action>
 					</f:else>
 				</themes:ThemeEnabledCondition>
