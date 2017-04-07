@@ -68,24 +68,30 @@
 								</tr>
 							</thead>
 							<tbody>
-								<f:for each="{theme.metaInformation.authors}" as="author">
-									<tr class="db_list_normal">
-										<td>
-											<f:render partial="Meta/Author" arguments="{author:author}"/>
-										</td>
-										<td>
-											<f:render partial="Meta/Company" arguments="{uri:author.companyWebsite, name:author.company, logo: author.companyLogo}"/>
-										</td>
-									</tr>
-								</f:for>
-								<tr class="db_list_normal">
-									<td>
-										<f:render partial="Meta/Author" arguments="{author:theme.author}"/>
-									</td>
-									<td>
-										{theme.author.company}
-									</td>
-								</tr>
+								<f:if condition="{f:count(subject: theme.metaInformation.authors)">
+									<f:then>
+										<f:for each="{theme.metaInformation.authors}" as="author">
+											<tr class="db_list_normal">
+												<td>
+													<f:render partial="Meta/Author" arguments="{author:author}"/>
+												</td>
+												<td>
+													<f:render partial="Meta/Company" arguments="{uri:author.companyWebsite, name:author.company, logo: author.companyLogo}"/>
+												</td>
+											</tr>
+										</f:for>
+									</f:then>
+									<f:else>
+										<tr class="db_list_normal">
+											<td>
+												<f:render partial="Meta/Author" arguments="{author:theme.author}"/>
+											</td>
+											<td>
+												{theme.author.company}
+											</td>
+										</tr>
+									</f:else>
+								</f:if>
 							</tbody>
 						</f:if>
 					</table>
