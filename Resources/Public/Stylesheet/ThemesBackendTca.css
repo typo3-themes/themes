@@ -58,3 +58,9 @@
 .contentColumnSettings .themes-select-label {
 	margin-bottom: 0;
 }
+/* Enlarge icons for backendlayouts */
+.table-icons span.icon[data-identifier^='themes-backendlayout-'], /* TYPO3 7.6 */
+.form-wizards-items-bottom span.icon[data-identifier^='themes-backendlayout-'] { /* TYPO3 8.7 */
+    width: 50px;
+    height: 50px;
+}
