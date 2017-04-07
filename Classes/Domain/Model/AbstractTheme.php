@@ -188,7 +188,6 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         if (file_exists($this->getTypoScriptConfigAbsPath()) && is_file($this->getTypoScriptConfigAbsPath())) {
             return file_get_contents($this->getTypoScriptConfigAbsPath());
         }
-
         return '';
     }
 
@@ -233,8 +232,8 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Includes static template records (from static_template table) and static template files (from extensions) for the input template record row.
      *
-     * @param array Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
-     * @param \TYPO3\CMS\Core\TypoScript\TemplateService Reference back to parent object, t3lib_tstemplate or one of its subclasses.
+     * @param array $params Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
+     * @param \TYPO3\CMS\Core\TypoScript\TemplateService $pObj Reference back to parent object, t3lib_tstemplate or one of its subclasses.
      *
      * @return void
      */
@@ -264,7 +263,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @param $params
+     * @param array $params
      * @param \TYPO3\CMS\Core\TypoScript\TemplateService $pObj
      *
      * @return string
@@ -319,7 +318,6 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $buffer .= LF.'themes.mode.context = '.ApplicationContext::getApplicationContext();
         $buffer .= LF.'themes.mode.isDevelopment = '.(int) ApplicationContext::isDevelopmentModeActive();
         $buffer .= LF.'themes.mode.isProduction = '.(int) !ApplicationContext::isDevelopmentModeActive();
-
         return $buffer;
     }
 }

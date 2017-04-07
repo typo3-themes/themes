@@ -79,6 +79,6 @@ if (!is_array($TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['themes_
 /*
  * Get YAML parser
  */
-if (!class_exists('\Symfony\Component\Yaml\Parser')) {
+if (!class_exists('\Symfony\Component\Yaml\Parser') && version_compare(TYPO3_version, '8.7', '<')) {
     include_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('themes') . '/Resources/Private/PHP/vendor/autoload.php';
 }
