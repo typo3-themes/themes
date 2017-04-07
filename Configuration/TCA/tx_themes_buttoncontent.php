@@ -19,7 +19,7 @@ return [
         'enablecolumns'      => [
             'disabled' => 'hidden',
         ],
-        'iconfile'           => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('themes').'Resources/Public/Icons/new_content_el_ButtonContent.gif',
+        'iconfile'           => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('themes').'Resources/Public/Icons/button_content.svg',
     ],
     'interface' => [
         'showRecordFieldList' => 'linktext,linktarget,linktitle,icon',
@@ -60,6 +60,7 @@ return [
             'label'   => $l10n.'icon',
             'config'  => [
                 'type'         => 'select',
+                'renderType'   => 'selectSingle',
                 'items'        => [
                     ['', ''],
                 ],
@@ -111,6 +112,7 @@ return [
             'label'   => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config'  => [
                 'type'                => 'select',
+                'renderType'          => 'selectSingle',
                 'foreign_table'       => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items'               => [
@@ -142,10 +144,10 @@ return [
             'exclude' => 1,
             'label'   => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
             'config'  => [
-                'type'     => 'select',
-                'size'     => 5,
-                'maxitems' => 20,
-                'items'    => [
+                'type'       => 'select',
+                'size'       => 5,
+                'maxitems'   => 20,
+                'items'      => [
                     ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login', -1],
                     ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login', -2],
                     ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups', '--div--'],
@@ -163,8 +165,7 @@ return [
     ],
     'types'     => [
         '1' => [
-            'showitem' => 'linktext,linktarget,linktitle,icon,--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,hidden,starttime,endtime,fe_group',
+            'showitem' => 'linktext,linktarget,linktitle,icon,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,hidden,starttime,endtime,fe_group',
         ],
     ],
-
 ];

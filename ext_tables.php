@@ -53,11 +53,10 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['themefo
     [
         'LLL:EXT:themes/Resources/Private/Language/ButtonContent.xlf:tt_content.CType_pi1',
         $_EXTKEY.'_buttoncontent_pi1',
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($_EXTKEY).'buttoncontent_icon.gif',
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($_EXTKEY).'Resources/Public/Icons/button_content.svg',
     ],
     'CType'
 );
-
 
 
 // register svg icons: identifier and filename
@@ -69,6 +68,7 @@ $iconsSvg = [
     'switch-disable' => 'Resources/Public/Icons/power_orange.svg',
     'overlay-theme' => 'Resources/Public/Icons/overlay_theme.svg',
     'contains-theme' => 'ext_icon.png',
+    'new_content_el_buttoncontent' => 'Resources/Public/Icons/new_content_el_ButtonContent.svg',
 ];
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 foreach ($iconsSvg as $identifier => $path) {
