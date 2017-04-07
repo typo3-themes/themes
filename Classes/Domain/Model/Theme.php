@@ -40,8 +40,7 @@ class Theme extends AbstractTheme
                     } else {
                         throw new \Exception('No Yaml Parser!');
                     }
-                }
-                else {
+                } else {
                     $yamlSource = GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Mvc\\Configuration\\YamlSource');
                     $this->metaInformation = $yamlSource->load(array($yamlFile));
                 }
