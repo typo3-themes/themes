@@ -29,7 +29,7 @@ $tempColumn = [
                 'inlineNewButtonStyle' => 'display: inline-block;',
             ],
             'behaviour'      => [
-                'localizationMode'                     => 'select',
+                'allowLanguageSynchronization'         => true,
                 'localizeChildrenAtParentLocalization' => true,
             ],
             'foreign_table'  => 'tx_themes_buttoncontent',
