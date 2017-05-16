@@ -4,6 +4,7 @@ namespace KayStrobach\Themes\Domain\Model;
 
 use KayStrobach\Themes\Utilities\ApplicationContext;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -270,21 +271,24 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getTypoScriptForLanguage(&$params, &$pObj)
     {
-        if (!is_object($GLOBALS['TYPO3_DB'])) {
-            return '';
-        }
-
-        $languages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-            'sys.uid as uid, sys.title as title, sys.flag as flag,static.lg_name_local as lg_name_local,static.lg_name_en as lg_name_en, static.lg_collate_locale as lg_collate_locale',
-            'sys_language sys,static_languages static', 'sys.static_lang_isocode = static.uid AND sys.hidden=0'
-        );
-
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_language');
+        $queryBuilder->select('sys_language.*', 'static_languages.lg_name_local', 'static_languages.lg_name_en', 'static_languages.lg_collate_locale')
+            ->from('sys_language')
+            ->from('static_languages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'sys_language.static_lang_isocode', 'static_languages.uid'
+                )
+            );
+        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+        $languages = $queryBuilder->execute();
         $outputBuffer = '';
         $languageUids = [];
         $key = 'themes.languages';
-
-        if (is_array($languages)) {
-            foreach ($languages as $language) {
+        if ($languages->rowCount()>0) {
+            while ($language = $languages->fetch()) {
                 $languageUids[] = $language['uid'];
                 $buffer = '[globalVar = GP:L='.$language['uid'].']'.LF;
                 $buffer .= $key.'.current {'.LF;
@@ -304,11 +308,14 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         } else {
             $outputBuffer .= $key.'.available='.LF;
         }
-
-        /* @var \TYPO3\CMS\Lang\Domain\Model\Language $language */
         return $outputBuffer;
     }
 
+    /**
+     * Returns the basic TypoScript constants
+     * @param $pid
+     * @return string
+     */
     protected function getBasicConstants($pid)
     {
         $buffer = '';

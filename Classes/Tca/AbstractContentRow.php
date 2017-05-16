@@ -2,6 +2,10 @@
 
 namespace KayStrobach\Themes\Tca;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Abstract for ContentRow.
  */
@@ -28,13 +32,13 @@ abstract class AbstractContentRow
         // Get configuration ctype specific configuration
         $cTypeConfig = $this->getBeUser()->getTSConfig(
             'themes.content.'.$node.'.'.$cType,
-            \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pid)
+            BackendUtility::getPagesTSconfig($pid)
         );
         $this->ctypeProperties = $cTypeConfig['properties'];
         // Get default configuration
         $defaultConfig = $this->getBeUser()->getTSConfig(
             'themes.content.'.$node.'.default',
-            \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pid)
+            BackendUtility::getPagesTSconfig($pid)
         );
         $this->defaultProperties = $defaultConfig['properties'];
         // Merge configurations
@@ -46,13 +50,26 @@ abstract class AbstractContentRow
     protected function getPidFromParentContentElement($pid)
     {
         $parentPid = 0;
+        //
         // negative uid_pid values indicate that the element has been inserted after an existing element
         // so there is no pid to get the backendLayout for and we have to get that first
-        $existingElement = $this->getDb()->exec_SELECTgetSingleRow('pid', 'tt_content', 'uid='.-((int) $pid));
-        if ($existingElement['pid'] > 0) {
-            $parentPid = $existingElement['pid'];
+        //
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_content');
+        $queryBuilder->select('pid')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid', $queryBuilder->createNamedParameter(-((int) $pid), \PDO::PARAM_INT)
+                )
+            );
+        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+        $statement = $queryBuilder->execute();
+        if($statement->rowCount()>0) {
+            $row = $statement->fetch();
+            $parentPid = $row['pid'];
         }
-
         return $parentPid;
     }
 
@@ -72,14 +89,6 @@ abstract class AbstractContentRow
     protected function getBeUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDb()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
