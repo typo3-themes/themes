@@ -85,5 +85,4 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
     {
         return $GLOBALS['TSFE'];
     }
-
 }

@@ -41,7 +41,7 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
                 );
             /** @var  \Doctrine\DBAL\Driver\Statement $statement */
             $statement = $queryBuilder->execute();
-            if($statement->rowCount()>0) {
+            if ($statement->rowCount()>0) {
                 $tRow = $statement->fetch();
                 $themeIdentifier = $tRow['tx_themes_skin'];
                 //
