@@ -130,7 +130,7 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */
         $statement = $queryBuilder->execute();
-        if($statement->rowCount()>0) {
+        if ($statement->rowCount()>0) {
             $sysLanguage = $statement->fetch();
         }
         return $sysLanguage;
@@ -163,7 +163,7 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */
         $statement = $queryBuilder->execute();
-        if($statement->rowCount()>0) {
+        if ($statement->rowCount()>0) {
             $hasTranslation = true;
         }
         return $hasTranslation;

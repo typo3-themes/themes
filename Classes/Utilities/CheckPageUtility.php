@@ -36,7 +36,7 @@ class CheckPageUtility
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */
         $statement = $queryBuilder->execute();
-        if($statement->rowCount()>0) {
+        if ($statement->rowCount()>0) {
             $hasTheme = true;
         }
         return $hasTheme;
@@ -66,7 +66,7 @@ class CheckPageUtility
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */
         $statement = $queryBuilder->execute();
-        if($statement->rowCount()>0) {
+        if ($statement->rowCount()>0) {
             $themeable = true;
         }
         return $themeable;
@@ -95,7 +95,7 @@ class CheckPageUtility
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */
         $statement = $queryBuilder->execute();
-        if($statement->rowCount()>0) {
+        if ($statement->rowCount()>0) {
             $row = $statement->fetch();
             $themeable = $row['uid'];
         }
