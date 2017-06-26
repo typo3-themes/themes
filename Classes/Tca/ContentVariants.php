@@ -101,7 +101,7 @@ class ContentVariants extends AbstractContentRow
             $inputType = 'text';
         }
         // Build hidden field structure
-        $hiddenField = '<div class="t3js-formengine-field-item">'.LF;
+        $hiddenField = '<div>'.LF;
         $hiddenField .= '<div class="form-control-wrap">'.LF;
         $hiddenField .= '<input class="form-control themes-hidden-admin-field '.$setClass.'" ';
         $hiddenField .= 'readonly="readonly" type="'.$inputType.'" ';
