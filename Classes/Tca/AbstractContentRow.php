@@ -66,7 +66,7 @@ abstract class AbstractContentRow
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */
         $statement = $queryBuilder->execute();
-        if($statement->rowCount()>0) {
+        if ($statement->rowCount()>0) {
             $row = $statement->fetch();
             $parentPid = $row['pid'];
         }
