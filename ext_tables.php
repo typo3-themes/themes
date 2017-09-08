@@ -28,6 +28,7 @@ if (TYPO3_MODE === 'BE') {
             'Editor' => 'index,update,showTheme,setTheme,showThemeDetails,saveCategoriesFilterSettings',
         ], [// Additional configuration
             'access'         => 'user,group',
+            'icon' => 'EXT:' . $_EXTKEY . '/ext_icon.svg',
             'iconIdentifier' => 'module-themes',
             'labels'         => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf',
         ]
