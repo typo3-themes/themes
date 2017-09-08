@@ -124,7 +124,7 @@ define(['jquery'], function (jQuery) {
 				var constantsTitle = jQuery(value).find('td.title label').html();
 				jQuery(value).addClass('hidden');
 				jQuery(value).removeClass('visible');
-				if(constantsKey.indexOf(ThemesEditor.categoriesFilterSearchField) >= 0 || constantsTitle.indexOf(ThemesEditor.categoriesFilterSearchField) >= 0) {
+				if(constantsKey.toLowerCase().indexOf(ThemesEditor.categoriesFilterSearchField.toLowerCase()) >= 0 || constantsTitle.toLowerCase().indexOf(ThemesEditor.categoriesFilterSearchField.toLowerCase()) >= 0) {
 					jQuery(value).removeClass('hidden');
 					jQuery(value).addClass('visible');
 				}
