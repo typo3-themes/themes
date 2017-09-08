@@ -29,7 +29,7 @@ if (TYPO3_MODE === 'BE') {
         ], [// Additional configuration
             'access'         => 'user,group',
             'iconIdentifier' => 'module-themes',
-            'labels'         => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xml',
+            'labels'         => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf',
         ]
     );
     // Add some backend stylesheets and javascript
