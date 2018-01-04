@@ -49,7 +49,8 @@
 									</div>
 									<div class="form-group">
 										<select id="categoriesFilterSearchScope" name="scope" class="form-control input-sm">
-											<option value="all"><f:translate key="categoriesFilterAll" /></option>
+											<!-- Don't display all categories once, because of duplicated constants -->
+											<!--option value="all"><f:translate key="categoriesFilterAll" /></option-->
 											<f:for each="{themes:iterator.sort(subject: categories, key: 'title')}" as="category">
 												<f:if condition="{category.items}">
 													<option value="{category.key}" {f:if(condition:'{category.key} == {categoriesFilterSettings.searchScope}', then:'selected="selected"')}>
