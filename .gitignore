@@ -28,6 +28,10 @@
 # Mongo Explorer plugin:
 .idea/mongoSettings.xml
 
+# Markdown Navigator plugin:
+.idea/markdown-navigator.xml
+.idea/markdown-navigator/profiles_settings.xml
+
 ## File-based project format:
 *.iws
 

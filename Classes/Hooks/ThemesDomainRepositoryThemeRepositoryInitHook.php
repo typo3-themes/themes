@@ -66,7 +66,7 @@ class ThemesDomainRepositoryThemeRepositoryInitHook
         // check extensions, which are worth to check
         foreach ($extensionsToCheck as $extensionName) {
             $extPath = ExtensionManagementUtility::extPath($extensionName);
-            if (file_exists($extPath.'Meta/theme.yaml') && file_exists($extPath.'Configuration/TypoScript/setup.txt')) {
+            if (file_exists($extPath . 'Meta/theme.yaml') && (file_exists($extPath . 'Configuration/TypoScript/setup.txt') || file_exists($extPath . 'Configuration/TypoScript/setup.typoscript'))) {
                 $pObj->add(new Theme($extensionName));
             }
         }

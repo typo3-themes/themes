@@ -23,9 +23,30 @@ class Theme extends AbstractTheme
         if (ExtensionManagementUtility::isLoaded($extensionName, false)) {
             // set needed path variables
             $path = ExtensionManagementUtility::extPath($this->getExtensionName());
-            $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.txt';
-            $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.txt';
-            $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.txt';
+            //
+            // Get TypoScript setup (setup.txt | setup.typoscript)
+            if(file_exists($path . 'Configuration/TypoScript/setup.txt')) {
+                $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.txt';
+            }
+            else {
+                $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.typoscript';
+            }
+            //
+            // Get TypoScript constants (constants.txt | constants.typoscript)
+            if(file_exists($path . 'Configuration/TypoScript/constants.txt')) {
+                $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.txt';
+            }
+            else {
+                $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.typoscript';
+            }
+            //
+            // Get TypoScript tsconfig (tsconfig.txt | tsconfig.typoscript)
+            if(file_exists($path . 'Configuration/PageTS/tsconfig.txt')) {
+                $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.txt';
+            }
+            else {
+                $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.typoscript';
+            }
             $this->importExtEmConf();
             if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png')) {
                 $this->previewImage = ExtensionManagementUtility::siteRelPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png';
