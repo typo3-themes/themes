@@ -1,10 +1,7 @@
 <f:if condition="{f:count(subject: screenshots)}">
-
-
 	<div class="panel panel-default">
 		<div class="panel-heading">Screenshots ({f:count(subject: screenshots)})</div>
 		<div class="panel-body">
-	
 			<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
 				<ol class="carousel-indicators">
 					<f:for each="{screenshots}" as="screenshot" iteration="iteration">
@@ -14,12 +11,7 @@
 				<div class="carousel-inner">
 					<f:for each="{screenshots}" as="screenshot" iteration="iteration">
 						<div class="item {f:if(condition:iteration.isFirst, then:'active')}" data-interval="3000" data-pause="hover" title="{screenshot.caption}">
-							<f:image src="{screenshot.file}"  alt="{screenshot.caption}" maxWidth="500" />
-							<!--
-							<div class="carousel-caption">
-								<h3>{screenshot.caption}</h3>
-							</div>
-							-->
+							<f:image src="{screenshot.file}"  alt="{screenshot.caption}" width="600" />
 						</div>
 					</f:for>
 				</div>

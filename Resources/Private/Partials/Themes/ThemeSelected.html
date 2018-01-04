@@ -44,11 +44,11 @@
 								<form class="form-inline"onsubmit="return false;">
 									<label for="categoriesFilterSearchField"><f:translate key="categoriesFilterSearch" /></label>
 									<div class="form-group">
-										<input id="categoriesFilterSearchField" name="search" type="text" value="" class="form-control">
+										<input id="categoriesFilterSearchField" name="search" type="text" value="" class="form-control input-sm">
 										<label for="categoriesFilterSearchScope"><f:translate key="categoriesFilterIn" /></label>
 									</div>
 									<div class="form-group">
-										<select id="categoriesFilterSearchScope" name="scope" class="form-control">
+										<select id="categoriesFilterSearchScope" name="scope" class="form-control input-sm">
 											<option value="all"><f:translate key="categoriesFilterAll" /></option>
 											<f:for each="{themes:iterator.sort(subject: categories, key: 'title')}" as="category">
 												<f:if condition="{category.items}">
