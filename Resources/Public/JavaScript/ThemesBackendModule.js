@@ -18,14 +18,16 @@ define(['jquery'], function (jQuery) {
 	})();
 
 	ThemesEditor.initialize = function() {
-		// toggle constant editor
-		ThemesEditor.bindEditToggleEvents();
-		// Bind events
-		ThemesEditor.bindCategoriesFilterEvents();
-		// Filter initially
-		ThemesEditor.categoriesFilterSearch();
-		// Display a notice when user tried to edit the default valueQ
-		ThemesEditor.bindNoticeForChangingValues();
+		jQuery(document).ready(function () {
+			// toggle constant editor
+			ThemesEditor.bindEditToggleEvents();
+			// Bind events
+			ThemesEditor.bindCategoriesFilterEvents();
+			// Filter initially
+			ThemesEditor.categoriesFilterSearch();
+			// Display a notice when user tried to edit the default valueQ
+			ThemesEditor.bindNoticeForChangingValues();
+		});
 	};
 	
 	ThemesEditor.bindNoticeForChangingValues = function() {
@@ -33,7 +35,7 @@ define(['jquery'], function (jQuery) {
 		 * @todo: add translation
 		 */
 		jQuery('div.field_default').mousedown(function() {
-			alert('Enable this field in order to change this value!');
+			alert('Enable this row in order to change this value!');
 			return false;
 		});
 		
@@ -89,7 +91,7 @@ define(['jquery'], function (jQuery) {
 
 		// Switch scope
 		jQuery.each(jQuery("section.constants-group"), function(index, value) {
-			if(ThemesEditor.categoriesFilterSearchScope == jQuery(value).attr('data-category') || ThemesEditor.categoriesFilterSearchScope == 'all') {
+			if(ThemesEditor.categoriesFilterSearchScope === jQuery(value).attr('data-category') || ThemesEditor.categoriesFilterSearchScope === 'all') {
 				jQuery(value).removeClass('hidden');
 				jQuery(value).addClass('visible');
 			}
@@ -103,15 +105,15 @@ define(['jquery'], function (jQuery) {
 		jQuery.each(jQuery("section.constants-group tbody tr"), function(index, value) {
 			jQuery(value).addClass('hidden');
 			jQuery(value).removeClass('visible');
-			if(ThemesEditor.categoriesFilterShowBasic && jQuery(value).attr('data-userscope') == 'basic') {
+			if(ThemesEditor.categoriesFilterShowBasic && jQuery(value).attr('data-userscope') === 'basic') {
 				jQuery(value).removeClass('hidden');
 				jQuery(value).addClass('visible');
 			}
-			if(ThemesEditor.categoriesFilterShowAdvanced && jQuery(value).attr('data-userscope') == 'advanced') {
+			if(ThemesEditor.categoriesFilterShowAdvanced && jQuery(value).attr('data-userscope') === 'advanced') {
 				jQuery(value).removeClass('hidden');
 				jQuery(value).addClass('visible');
 			}
-			if(ThemesEditor.categoriesFilterShowExpert && jQuery(value).attr('data-userscope') == 'expert') {
+			if(ThemesEditor.categoriesFilterShowExpert && jQuery(value).attr('data-userscope') === 'expert') {
 				jQuery(value).removeClass('hidden');
 				jQuery(value).addClass('visible');
 			}
@@ -119,7 +121,7 @@ define(['jquery'], function (jQuery) {
 
 		// Filter by search word, but only visible items
 		jQuery.each(jQuery("section.constants-group tbody tr.visible"), function(index, value) {
-			if(ThemesEditor.categoriesFilterSearchField != '') {
+			if(ThemesEditor.categoriesFilterSearchField !== '') {
 				var constantsKey = jQuery(value).find('td.title label').attr('for');
 				var constantsTitle = jQuery(value).find('td.title label').html();
 				jQuery(value).addClass('hidden');
@@ -134,7 +136,7 @@ define(['jquery'], function (jQuery) {
 
 		// Hide empty Tables
 		jQuery.each(jQuery('section.constants-group.visible table'), function(index, value) {
-			if(jQuery(value).find('tbody tr.hidden').length == jQuery(value).find('tbody tr').length) {
+			if(jQuery(value).find('tbody tr.hidden').length === jQuery(value).find('tbody tr').length) {
 				jQuery(value).addClass('hidden');
 				jQuery(value).removeClass('visible');
 			}
@@ -146,7 +148,7 @@ define(['jquery'], function (jQuery) {
 
 		// Hide empty Headlines
 		jQuery.each(jQuery('section.constants-group'), function(index, value) {
-			if(jQuery(value).find('table.hidden').length == jQuery(value).find('table').length) {
+			if(jQuery(value).find('table.hidden').length === jQuery(value).find('table').length) {
 				jQuery(value).addClass('hidden');
 				jQuery(value).removeClass('visible');
 			}
