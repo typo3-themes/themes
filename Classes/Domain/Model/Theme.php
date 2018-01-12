@@ -25,26 +25,23 @@ class Theme extends AbstractTheme
             $path = ExtensionManagementUtility::extPath($this->getExtensionName());
             //
             // Get TypoScript setup (setup.txt | setup.typoscript)
-            if(file_exists($path . 'Configuration/TypoScript/setup.txt')) {
+            if (file_exists($path . 'Configuration/TypoScript/setup.txt')) {
                 $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.txt';
-            }
-            else {
+            } else {
                 $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.typoscript';
             }
             //
             // Get TypoScript constants (constants.txt | constants.typoscript)
-            if(file_exists($path . 'Configuration/TypoScript/constants.txt')) {
+            if (file_exists($path . 'Configuration/TypoScript/constants.txt')) {
                 $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.txt';
-            }
-            else {
+            } else {
                 $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.typoscript';
             }
             //
             // Get TypoScript tsconfig (tsconfig.txt | tsconfig.typoscript)
-            if(file_exists($path . 'Configuration/PageTS/tsconfig.txt')) {
+            if (file_exists($path . 'Configuration/PageTS/tsconfig.txt')) {
                 $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.txt';
-            }
-            else {
+            } else {
                 $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.typoscript';
             }
             $this->importExtEmConf();
