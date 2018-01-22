@@ -92,12 +92,14 @@ define(['jquery'], function (jQuery) {
 		// Switch scope
 		jQuery.each(jQuery("section.constants-group"), function(index, value) {
 			var inputs = jQuery('input', value);
+			var selects = jQuery('select', value);
 			if(ThemesEditor.categoriesFilterSearchScope === jQuery(value).attr('data-category') || ThemesEditor.categoriesFilterSearchScope === 'all') {
 				jQuery(value).removeClass('hidden');
 				jQuery(value).addClass('visible');
 				// Enable/Disable fields that are not visible,
 				// because otherwise some field may send twice to server!
 				inputs.removeAttr('disabled');
+				selects.removeAttr('disabled');
 			}
 			else {
 				jQuery(value).addClass('hidden');
@@ -105,6 +107,7 @@ define(['jquery'], function (jQuery) {
 				// Enable/Disable fields that are not visible,
 				// because otherwise some field may send twice to server!
 				inputs.attr('disabled', 'disabled');
+				selects.attr('disabled', 'disabled');
 			}
 		});
 
