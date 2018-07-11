@@ -4,6 +4,8 @@ namespace KayStrobach\Themes\Domain\Model;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 
 /**
  * Class Theme.
@@ -15,6 +17,8 @@ class Theme extends AbstractTheme
     /**
      * Constructs a new Theme.
      *
+     * @param $extensionName
+     * @throws \Exception
      * @api
      */
     public function __construct($extensionName)
@@ -99,11 +103,15 @@ class Theme extends AbstractTheme
     public function getAllPreviewImages()
     {
         $buffer = $this->metaInformation['screenshots'];
-        $buffer[] = [
-                'file'    => $this->getPreviewImage(),
-                'caption' => '',
-            ];
-
+        if(count($buffer) > 0) {
+            foreach($buffer as $key => $image) {
+                // We need to use a real image file path, because in case of using a file
+                // reference, a non admin backend user might not have access to the storage!
+                $previewImage = GeneralUtility::getFileAbsFileName($image['file']);
+                $previewImage = PathUtility::getAbsoluteWebPath($previewImage);
+                $buffer[$key]['file'] = $previewImage;
+            }
+        }
         return $buffer;
     }
 
@@ -138,10 +146,12 @@ class Theme extends AbstractTheme
      *
      * @param array  $params Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
      * @param object $pObj   Reference back to parent object, t3lib_tstemplate or one of its subclasses.
+     * @param array $extensions Array of additional TypoScript for extensions
+     * @param array $features Array of additional TypoScript for features
      *
      * @return void
      */
-    public function addTypoScriptForFe(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj)
+    public function addTypoScriptForFe(&$params, TemplateService &$pObj, $extensions=[], $features=[])
     {
         // @codingStandardsIgnoreStart
         $themeItem = [
@@ -166,5 +176,32 @@ class Theme extends AbstractTheme
             $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
             $params['templateId']
         );
+        //
+        // Additional TypoScript for extensions
+        if(count($extensions) > 0) {
+            foreach($extensions as $extension) {
+                $themeItem = $this->getTypoScriptDataForProcessing($extension, 'extension');
+                $pObj->processTemplate(
+                    $themeItem,
+                    $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['templateId']
+                );
+            }
+        }
+        //
+        // Additional TypoScript for features
+        if(count($features) > 0) {
+            foreach($features as $feature) {
+                $themeItem = $this->getTypoScriptDataForProcessing($feature, 'feature');
+                $pObj->processTemplate(
+                    $themeItem,
+                    $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['templateId']
+                );
+            }
+        }
     }
+
 }

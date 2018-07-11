@@ -11,6 +11,14 @@
 				<source>Themes</source>
 				<target>Themes</target>
 			</trans-unit>
+			<trans-unit id="theme_extensions" xml:space="preserve">
+				<source>Theme extensions</source>
+				<target>Theme-Extensions</target>
+			</trans-unit>
+			<trans-unit id="theme_features" xml:space="preserve">
+				<source>Theme features</source>
+				<target>Theme-Features</target>
+			</trans-unit>
 			<trans-unit id="setConstants" xml:space="preserve">
 				<source>Configure Theme</source>
 				<target>Theme anpassen</target>

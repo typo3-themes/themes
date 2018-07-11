@@ -6,13 +6,16 @@ use KayStrobach\Themes\Utilities\ApplicationContext;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * Class AbstractTheme.
  *
  * @todo get rid of getExtensionname, use EXT:extname as theme name to avoid conflicts in the database
  */
-class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class AbstractTheme extends AbstractEntity
 {
     /**
      * @var string
@@ -67,6 +70,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Constructs a new Theme.
      *
+     * @param string $extensionName
      * @api
      */
     public function __construct($extensionName)
@@ -107,7 +111,11 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getPreviewImage()
     {
-        return $this->previewImage;
+        // We need to use a real image file path, because in case of using a file
+        // reference, a non admin backend user might not have access to the storage!
+        $previewImage = GeneralUtility::getFileAbsFileName($this->previewImage);
+        $previewImage = PathUtility::getAbsoluteWebPath($previewImage);
+        return $previewImage;
     }
 
     /**
@@ -162,7 +170,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @todo missing docblock
+     * @return array
      */
     public function getAuthor()
     {
@@ -186,10 +194,15 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getTypoScriptConfig()
     {
-        if (file_exists($this->getTypoScriptConfigAbsPath()) && is_file($this->getTypoScriptConfigAbsPath())) {
-            return file_get_contents($this->getTypoScriptConfigAbsPath());
+        $typoScriptConfig = '';
+        $typoScriptConfigAbsPath = $this->getTypoScriptConfigAbsPath();
+        if (file_exists($typoScriptConfigAbsPath) && is_file($typoScriptConfigAbsPath)) {
+            $typoScriptConfig = file_get_contents($typoScriptConfigAbsPath);
         }
-        return '';
+
+
+
+        return $typoScriptConfig;
     }
 
     /**
@@ -235,10 +248,12 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param array $params Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
      * @param \TYPO3\CMS\Core\TypoScript\TemplateService $pObj Reference back to parent object, t3lib_tstemplate or one of its subclasses.
+     * @param array $extensions Array of additional TypoScript for extensions
+     * @param array $features Array of additional TypoScript for features
      *
      * @return void
      */
-    public function addTypoScriptForFe(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj)
+    public function addTypoScriptForFe(&$params, TemplateService &$pObj, $extensions=[], $features=[])
     {
         // @codingStandardsIgnoreStart
         $themeItem = [
@@ -261,6 +276,79 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
             'ext_themes'.str_replace('_', '', $this->getExtensionName()),
             $params['templateId']
         );
+        //
+        // Additional TypoScript for extensions
+        if(count($extensions) > 0) {
+            foreach($extensions as $extension) {
+                $themeItem = $this->getTypoScriptDataForProcessing($extension, 'extension');
+                $pObj->processTemplate(
+                    $themeItem,
+                    $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['templateId']
+                );
+            }
+        }
+        //
+        // Additional TypoScript for features
+        if(count($features) > 0) {
+            foreach($features as $feature) {
+                $themeItem = $this->getTypoScriptDataForProcessing($feature, 'feature');
+                $pObj->processTemplate(
+                    $themeItem,
+                    $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['templateId']
+                );
+            }
+        }
+    }
+
+    /**
+     * @param $key string Key of the Extension or Feature
+     * @param $type string Typ can be either extension or feature.
+     * @return array
+     */
+    protected function getTypoScriptDataForProcessing($key, $type='extension') {
+        $relPath = '';
+        $keyParts = explode('_', $key);
+        $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($keyParts[0]);
+        $extensionPath = ExtensionManagementUtility::extPath($extensionKey);
+        if($type === 'feature') {
+            $relPath = $extensionPath . 'Configuration/TypoScript/Features/' . $keyParts[1] . '/';
+        }
+        else if($type === 'extension') {
+            $relPath = $extensionPath . 'Resources/Private/Extensions/' . $keyParts[1] . '/TypoScript/';
+        }
+        $themeItem = [
+            'constants' => '',
+            'config' => '',
+            'include_static' => '',
+            'include_static_file' => '',
+            'title' => 'themes:' . $this->getExtensionName() . ':' . $relPath,
+            'uid' => md5($this->getExtensionName() . ':' . $relPath),
+        ];
+        $setupFile = GeneralUtility::getFileAbsFileName($relPath . 'setup.txt');
+        if(file_exists($setupFile)) {
+            $themeItem['config'] = file_get_contents($setupFile);
+        }
+        else {
+            $setupFile = GeneralUtility::getFileAbsFileName($relPath . 'setup.typoscript');
+            if(file_exists($setupFile)) {
+                $themeItem['config'] = file_get_contents($setupFile);
+            }
+        }
+        $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'constants.txt');
+        if(file_exists($constantsFile)) {
+            $themeItem['constants'] = file_get_contents($constantsFile);
+        }
+        else {
+            $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'constants.typoscript');
+            if(file_exists($constantsFile)) {
+                $themeItem['constants'] = file_get_contents($constantsFile);
+            }
+        }
+        return $themeItem;
     }
 
     /**

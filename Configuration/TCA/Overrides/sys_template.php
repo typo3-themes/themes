@@ -21,8 +21,32 @@ $tempColumn = [
             ]
         ],
     ],
+    'tx_themes_extensions' => [
+        'label'       => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:theme_extensions',
+        'config' => [
+            'type' => 'select',
+            'renderType' => 'selectMultipleSideBySide',
+            'size' => 10,
+            'maxitems' => 100,
+            'items' => [],
+            'enableMultiSelectFilterTextfield' => true,
+            'softref' => 'ext_fileref'
+        ]
+    ],
+    'tx_themes_features' => [
+        'label'       => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:theme_features',
+        'config' => [
+            'type' => 'select',
+            'renderType' => 'selectMultipleSideBySide',
+            'size' => 10,
+            'maxitems' => 100,
+            'items' => [],
+            'enableMultiSelectFilterTextfield' => true,
+            'softref' => 'ext_fileref'
+        ]
+    ],
 ];
 
 // Add the skin selector for backend users.
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_template', $tempColumn);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('sys_template', '--div--;Themes,tx_themes_skin');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('sys_template', '--div--;Themes,tx_themes_skin,tx_themes_extensions,tx_themes_features');

@@ -6,6 +6,7 @@ namespace KayStrobach\Themes\Hooks;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 
 /**
  * Class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.
@@ -22,12 +23,11 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
      *
      * @return void
      */
-    public static function main(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj)
+    public static function main(&$params, TemplateService &$pObj)
     {
         $idList = $params['idList'];
         $templateId = $params['templateId'];
         $pid = $params['pid'];
-        $row = $params['row'];
         if ($templateId === $idList) {
             /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -64,7 +64,9 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
                     $theme = $themeRepository->findByUid($tRow['tx_themes_skin']);
                 }
                 if ($theme !== null) {
-                    $theme->addTypoScriptForFe($params, $pObj);
+                    $themeExtensions = GeneralUtility::trimExplode(',', $tRow['tx_themes_extensions'], true);
+                    $themeFeatures = GeneralUtility::trimExplode(',', $tRow['tx_themes_features'], true);
+                    $theme->addTypoScriptForFe($params, $pObj, $themeExtensions, $themeFeatures);
                 }
                 // @todo add hook to inject template overlays, e.g. for previewed constants before save ...
                 // Call hook for possible manipulation of current skin. constants
