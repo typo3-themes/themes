@@ -55,20 +55,20 @@ class BackendUtilitySlot extends TsConfigParser
         $this->fetchThemeExtensionsAndFeatures($pageUid);
         //
         // Additional TypoScript for extensions
-        if(count($this->themeExtensions) > 0) {
-            foreach($this->themeExtensions as $extension) {
+        if (count($this->themeExtensions) > 0) {
+            foreach ($this->themeExtensions as $extension) {
                 $tsconfig = $this->getTypoScriptDataForProcessing($extension, 'extension');
-                if($tsconfig !== '') {
+                if ($tsconfig !== '') {
                     array_unshift($typoscriptDataArray, $tsconfig);
                 }
             }
         }
         //
         // Additional TypoScript for features
-        if(count($this->themeFeatures) > 0) {
+        if (count($this->themeFeatures) > 0) {
             foreach ($this->themeFeatures as $feature) {
                 $tsconfig = $this->getTypoScriptDataForProcessing($feature, 'feature');
-                if($tsconfig !== '') {
+                if ($tsconfig !== '') {
                     array_unshift($typoscriptDataArray, $tsconfig);
                 }
             }
@@ -88,7 +88,8 @@ class BackendUtilitySlot extends TsConfigParser
      * Fetches the selected Extensions and Features by the Theme
      * @param $pageUid
      */
-    protected function fetchThemeExtensionsAndFeatures($pageUid) {
+    protected function fetchThemeExtensionsAndFeatures($pageUid)
+    {
         /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_template');
@@ -113,30 +114,28 @@ class BackendUtilitySlot extends TsConfigParser
      * @param $type string Typ can be either extension or feature.
      * @return array
      */
-    protected function getTypoScriptDataForProcessing($key, $type='extension') {
+    protected function getTypoScriptDataForProcessing($key, $type='extension')
+    {
         $relPath = '';
         $keyParts = explode('_', $key);
         $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($keyParts[0]);
         $extensionPath = ExtensionManagementUtility::extPath($extensionKey);
-        if($type === 'feature') {
+        if ($type === 'feature') {
             $relPath = $extensionPath . 'Configuration/PageTS/Features/' . $keyParts[1] . '/';
-        }
-        else if($type === 'extension') {
+        } elseif ($type === 'extension') {
             $relPath = $extensionPath . 'Resources/Private/Extensions/' . $keyParts[1] . '/PageTS/';
         }
         //
         $tsconfig = '';
         $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'tsconfig.txt');
-        if(file_exists($constantsFile)) {
+        if (file_exists($constantsFile)) {
             $tsconfig = file_get_contents($constantsFile);
-        }
-        else {
+        } else {
             $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'tsconfig.typoscript');
-            if(file_exists($constantsFile)) {
+            if (file_exists($constantsFile)) {
                 $tsconfig = file_get_contents($constantsFile);
             }
         }
         return $tsconfig;
     }
-
 }
