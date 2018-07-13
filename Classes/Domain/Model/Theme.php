@@ -29,26 +29,23 @@ class Theme extends AbstractTheme
             $path = ExtensionManagementUtility::extPath($this->getExtensionName());
             //
             // Get TypoScript setup (setup.txt | setup.typoscript)
-            if(file_exists($path . 'Configuration/TypoScript/setup.txt')) {
+            if (file_exists($path . 'Configuration/TypoScript/setup.txt')) {
                 $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.txt';
-            }
-            else {
+            } else {
                 $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.typoscript';
             }
             //
             // Get TypoScript constants (constants.txt | constants.typoscript)
-            if(file_exists($path . 'Configuration/TypoScript/constants.txt')) {
+            if (file_exists($path . 'Configuration/TypoScript/constants.txt')) {
                 $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.txt';
-            }
-            else {
+            } else {
                 $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.typoscript';
             }
             //
             // Get TypoScript tsconfig (tsconfig.txt | tsconfig.typoscript)
-            if(file_exists($path . 'Configuration/PageTS/tsconfig.txt')) {
+            if (file_exists($path . 'Configuration/PageTS/tsconfig.txt')) {
                 $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.txt';
-            }
-            else {
+            } else {
                 $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.typoscript';
             }
             $this->importExtEmConf();
@@ -103,8 +100,8 @@ class Theme extends AbstractTheme
     public function getAllPreviewImages()
     {
         $buffer = $this->metaInformation['screenshots'];
-        if(count($buffer) > 0) {
-            foreach($buffer as $key => $image) {
+        if (count($buffer) > 0) {
+            foreach ($buffer as $key => $image) {
                 // We need to use a real image file path, because in case of using a file
                 // reference, a non admin backend user might not have access to the storage!
                 $previewImage = GeneralUtility::getFileAbsFileName($image['file']);
@@ -178,8 +175,8 @@ class Theme extends AbstractTheme
         );
         //
         // Additional TypoScript for extensions
-        if(count($extensions) > 0) {
-            foreach($extensions as $extension) {
+        if (count($extensions) > 0) {
+            foreach ($extensions as $extension) {
                 $themeItem = $this->getTypoScriptDataForProcessing($extension, 'extension');
                 $pObj->processTemplate(
                     $themeItem,
@@ -191,8 +188,8 @@ class Theme extends AbstractTheme
         }
         //
         // Additional TypoScript for features
-        if(count($features) > 0) {
-            foreach($features as $feature) {
+        if (count($features) > 0) {
+            foreach ($features as $feature) {
                 $themeItem = $this->getTypoScriptDataForProcessing($feature, 'feature');
                 $pObj->processTemplate(
                     $themeItem,
@@ -203,5 +200,4 @@ class Theme extends AbstractTheme
             }
         }
     }
-
 }
