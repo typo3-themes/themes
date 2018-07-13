@@ -2,10 +2,15 @@
 
 namespace KayStrobach\Themes\Slots;
 
+use KayStrobach\Themes\Domain\Model\Theme;
+use KayStrobach\Themes\Domain\Repository\ThemeRepository;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Backend\Configuration\TsConfigParser;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * This class automatically adds the theme TSConfig for the current page
@@ -89,22 +94,28 @@ class BackendUtilitySlot extends TsConfigParser
      * @param $pageUid
      */
     protected function fetchThemeExtensionsAndFeatures($pageUid) {
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_template');
-        $queryBuilder->select('*')
-            ->from('sys_template')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'pid', $queryBuilder->createNamedParameter((int)$pageUid, \PDO::PARAM_INT)
-                )
-            );
-        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
-        $statement = $queryBuilder->execute();
-        if ($statement->rowCount()>0) {
-            $tRow = $statement->fetch();
-            $this->themeExtensions = GeneralUtility::trimExplode(',', $tRow['tx_themes_extensions'], true);
-            $this->themeFeatures = GeneralUtility::trimExplode(',', $tRow['tx_themes_features'], true);
+        //
+        // Find sys_template recursive
+        $rootline = BackendUtility::BEgetRootLine($pageUid);
+        foreach ($rootline as $page) {
+            /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_template');
+            $queryBuilder->select('*')
+                ->from('sys_template')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid', $queryBuilder->createNamedParameter((int)$page['uid'], \PDO::PARAM_INT)
+                    )
+                );
+            /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+            $statement = $queryBuilder->execute();
+            if ($statement->rowCount()>0) {
+                $tRow = $statement->fetch();
+                $this->themeExtensions = GeneralUtility::trimExplode(',', $tRow['tx_themes_extensions'], true);
+                $this->themeFeatures = GeneralUtility::trimExplode(',', $tRow['tx_themes_features'], true);
+                break;
+            }
         }
     }
 
