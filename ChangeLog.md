@@ -1,6 +1,15 @@
 # Themes Change-Log
 
-## 2018-07-??  Release of version 8.7.2
+
+## 2018-07-14  Release of version 8.7.4
+
+### 2018-08-07  Thomas Deuling  <typo3@coding.ms>
+
+*   [BUGFIX] Fixing theme selection icons in sys_template.
+
+
+
+## 2018-07-14  Release of version 8.7.3
 
 ### 2018-07-13  Thomas Deuling  <typo3@coding.ms>
 
