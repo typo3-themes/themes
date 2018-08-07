@@ -63,8 +63,8 @@ class LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
         $this->registerArgument('defaultLanguageIsoCodeShort', 'string', 'IsoCode of the default language', false, 'en');
         $this->registerArgument('defaultLanguageLabel', 'string', 'Label of the default language', false, 'English');
         $this->registerArgument('defaultLanguageFlag', 'string', 'Flag of the default language', false, 'gb');
-        $this->registerArgument('flagIconPath', 'string', 'directory containing the flags', false, '/typo3/sysext/t3skin/images/flags/');
-        $this->registerArgument('flagIconFileExtension', 'string', 'file extension of the flag files', false, 'png');
+        $this->registerArgument('flagIconPath', 'string', 'directory containing the flags', false, '/typo3/sysext/core/Resources/Public/Icons/Flags/SVG/');
+        $this->registerArgument('flagIconFileExtension', 'string', 'file extension of the flag files', false, 'svg');
     }
 
     /**
