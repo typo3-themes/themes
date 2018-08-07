@@ -118,7 +118,7 @@ class AbstractTheme extends AbstractEntity
         $previewImage = PathUtility::getAbsoluteWebPath($previewImage);
         // Since 8.7.x we need to prefix with EXT:
         $replacement = '/typo3conf/ext/';
-        if(substr($previewImage, 0, strlen($replacement)) === $replacement) {
+        if (substr($previewImage, 0, strlen($replacement)) === $replacement) {
             $previewImage = str_replace('/typo3conf/ext/', 'EXT:', $previewImage);
         }
         return $previewImage;
@@ -284,8 +284,8 @@ class AbstractTheme extends AbstractEntity
         );
         //
         // Additional TypoScript for extensions
-        if(count($extensions) > 0) {
-            foreach($extensions as $extension) {
+        if (count($extensions) > 0) {
+            foreach ($extensions as $extension) {
                 $themeItem = $this->getTypoScriptDataForProcessing($extension, 'extension');
                 $pObj->processTemplate(
                     $themeItem,
@@ -297,8 +297,8 @@ class AbstractTheme extends AbstractEntity
         }
         //
         // Additional TypoScript for features
-        if(count($features) > 0) {
-            foreach($features as $feature) {
+        if (count($features) > 0) {
+            foreach ($features as $feature) {
                 $themeItem = $this->getTypoScriptDataForProcessing($feature, 'feature');
                 $pObj->processTemplate(
                     $themeItem,
@@ -315,15 +315,15 @@ class AbstractTheme extends AbstractEntity
      * @param $type string Typ can be either extension or feature.
      * @return array
      */
-    protected function getTypoScriptDataForProcessing($key, $type='extension') {
+    protected function getTypoScriptDataForProcessing($key, $type='extension')
+    {
         $relPath = '';
         $keyParts = explode('_', $key);
         $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($keyParts[0]);
         $extensionPath = ExtensionManagementUtility::extPath($extensionKey);
-        if($type === 'feature') {
+        if ($type === 'feature') {
             $relPath = $extensionPath . 'Configuration/TypoScript/Features/' . $keyParts[1] . '/';
-        }
-        else if($type === 'extension') {
+        } elseif ($type === 'extension') {
             $relPath = $extensionPath . 'Resources/Private/Extensions/' . $keyParts[1] . '/TypoScript/';
         }
         $themeItem = [
@@ -335,22 +335,20 @@ class AbstractTheme extends AbstractEntity
             'uid' => md5($this->getExtensionName() . ':' . $relPath),
         ];
         $setupFile = GeneralUtility::getFileAbsFileName($relPath . 'setup.txt');
-        if(file_exists($setupFile)) {
+        if (file_exists($setupFile)) {
             $themeItem['config'] = file_get_contents($setupFile);
-        }
-        else {
+        } else {
             $setupFile = GeneralUtility::getFileAbsFileName($relPath . 'setup.typoscript');
-            if(file_exists($setupFile)) {
+            if (file_exists($setupFile)) {
                 $themeItem['config'] = file_get_contents($setupFile);
             }
         }
         $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'constants.txt');
-        if(file_exists($constantsFile)) {
+        if (file_exists($constantsFile)) {
             $themeItem['constants'] = file_get_contents($constantsFile);
-        }
-        else {
+        } else {
             $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'constants.typoscript');
-            if(file_exists($constantsFile)) {
+            if (file_exists($constantsFile)) {
                 $themeItem['constants'] = file_get_contents($constantsFile);
             }
         }
