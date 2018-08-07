@@ -9,6 +9,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class AbstractTheme.
@@ -115,6 +116,11 @@ class AbstractTheme extends AbstractEntity
         // reference, a non admin backend user might not have access to the storage!
         $previewImage = GeneralUtility::getFileAbsFileName($this->previewImage);
         $previewImage = PathUtility::getAbsoluteWebPath($previewImage);
+        // Since 8.7.x we need to prefix with EXT:
+        $replacement = '/typo3conf/ext/';
+        if(substr($previewImage, 0, strlen($replacement)) === $replacement) {
+            $previewImage = str_replace('/typo3conf/ext/', 'EXT:', $previewImage);
+        }
         return $previewImage;
     }
 
