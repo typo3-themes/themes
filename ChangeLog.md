@@ -1,7 +1,14 @@
 # Themes Change-Log
 
 
-## 2018-07-14  Release of version 8.7.4
+## 2018-08-09  Release of version 8.7.5
+
+### 2018-08-09  Thomas Deuling  <typo3@coding.ms>
+
+*   [BUGFIX] Fixing adding page TypoScript for Theme features and extensions, when using extension templates.
+
+
+## 2018-09-07  Release of version 8.7.4
 
 ### 2018-08-07  Thomas Deuling  <typo3@coding.ms>
 

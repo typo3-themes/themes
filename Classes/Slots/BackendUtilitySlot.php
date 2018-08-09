@@ -104,8 +104,11 @@ class BackendUtilitySlot extends TsConfigParser
             $queryBuilder->select('*')
                 ->from('sys_template')
                 ->where(
-                    $queryBuilder->expr()->eq(
-                        'pid', $queryBuilder->createNamedParameter((int)$page['uid'], \PDO::PARAM_INT)
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->eq(
+                            'pid', $queryBuilder->createNamedParameter((int)$page['uid'], \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq('root', '1')
                     )
                 );
             /** @var  \Doctrine\DBAL\Driver\Statement $statement */
