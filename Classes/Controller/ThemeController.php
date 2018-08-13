@@ -2,7 +2,6 @@
 
 namespace KayStrobach\Themes\Controller;
 
-use KayStrobach\Themes\Domain\Model\Theme;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -107,18 +106,38 @@ class ThemeController extends ActionController
      */
     protected function evaluateTypoScript($path)
     {
-        /** @var \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper $vh */
-        $vh = $this->objectManager->get('TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper');
-        $vh->setRenderChildrenClosure(function () {
+        if (version_compare(TYPO3_version, '9.0', '>=')) {
+            $pathSegments = GeneralUtility::trimExplode('.', $path);
+            $lastSegment = array_pop($pathSegments);
+
+            if (!empty($pathSegments) && is_array($pathSegments)) {
+                $setup = $this->typoScriptSetup;
+
+                foreach ($pathSegments as $segment) {
+                    if (!array_key_exists($segment . '.', $setup)) {
+                        return '';
+                    }
+                    $setup = $setup[$segment . '.'];
+                }
+
+                return $GLOBALS['TSFE']->cObj->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
+            }
+
             return '';
-        });
-
-        if (version_compare(TYPO3_version, '8.0', '<')) {
-            return $vh->render($path);
         } else {
-            $vh->setArguments(['typoscriptObjectPath' => $path]);
+            /** @var \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper $vh */
+            $vh = $this->objectManager->get('TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper');
+            $closure = function () {
+                return '';
+            };
+            $vh->setRenderChildrenClosure($closure);
+            if (version_compare(TYPO3_version, '8.0', '<')) {
+                return $vh->render($path);
+            } else {
+                $vh->setArguments(['typoscriptObjectPath' => $path]);
 
-            return $vh->render();
+                return $vh->render();
+            }
         }
     }
 
