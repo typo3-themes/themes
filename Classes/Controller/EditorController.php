@@ -194,7 +194,7 @@ class EditorController extends ActionController
         $this->id = intval(GeneralUtility::_GET('id'));
         $this->tsParser = new TsParserUtility();
         // Get extension configuration
-        $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('themes');
+        $extensionConfiguration = $this->getExtensionConfiguration();
         // Initially, get configuration from extension manager!
         $extensionConfiguration['categoriesToShow'] = GeneralUtility::trimExplode(',', $extensionConfiguration['categoriesToShow']);
         $extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(',', $extensionConfiguration['constantsToHide']);
@@ -441,5 +441,28 @@ class EditorController extends ActionController
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Return extension configuration
+     *
+     * @return array
+     */
+    protected function getExtensionConfiguration()
+    {
+        if (version_compare(TYPO3_version, '9.0', '>=')) {
+            return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('themes');
+        } else {
+            /** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
+            $configurationUtility = $this->objectManager->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
+            $extensionConfiguration = $configurationUtility->getCurrentConfiguration('themes');
+
+            return array_map(
+                function ($item) {
+                    return $item['value'];
+                },
+                $extensionConfiguration
+            );
+        }
     }
 }
