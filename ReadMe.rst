@@ -1,6 +1,9 @@
 .. image:: https://badge.waffle.io/typo3-themes/themes.png?label=ready&title=Ready 
  :target: https://waffle.io/typo3-themes/themes
  :alt: 'Stories in Ready'
+
+.. image:: https://api.codacy.com/project/badge/Grade/ac66c1e47d194cb6b97dcfa3a0caa826    :target: https://www.codacy.com/app/github_130/themes?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=typo3-themes/themes&amp;utm_campaign=Badge_Grade
+
 .. include:: Documentation/Index.rst
 
 
