@@ -15,7 +15,7 @@ define(["jquery"], function (jQuery) {
 			clearTimeout (timer);
 			timer = setTimeout(callback, ms);
 		};
-	})();
+	}());
 
 	ThemesEditor.initialize = function() {
 		// toggle constant editor
@@ -127,7 +127,7 @@ define(["jquery"], function (jQuery) {
 
 		// Filter by search word, but only visible items
 		jQuery.each(jQuery("section.constants-group tbody tr.visible"), function(index, value) {
-			if(ThemesEditor.categoriesFilterSearchField != "") {
+			if(ThemesEditor.categoriesFilterSearchField !== "") {
 				var constantsKey = jQuery(value).find("td.title label").attr("for");
 				var constantsTitle = jQuery(value).find("td.title label").html();
 				jQuery(value).addClass("hidden");
