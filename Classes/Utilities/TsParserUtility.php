@@ -214,14 +214,12 @@ class TsParserUtility implements SingletonInterface
             $this->tsParser->init();
 
             $this->tsParser->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate');
-            $this->tsParser->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'].ExtensionManagementUtility::extRelPath('tstemplate');
+            $this->tsParser->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'].ExtensionManagementUtility::siteRelPath('tstemplate');
 
             $this->tsParserTplRow = $this->tsParser->ext_getFirstTemplate($pageId, $templateUid);
 
             if (is_array($this->tsParserTplRow)) {
-                /**
-                 * @var t3lib_pageSelect
-                 */
+                /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageRepository */
                 $sysPageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
                 $rootLine = $sysPageRepository->getRootLine($pageId);
                 // This generates the constants/config + hierarchy info for the template.

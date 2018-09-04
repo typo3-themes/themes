@@ -3,12 +3,12 @@
 namespace KayStrobach\Tests\Unit\Domain\Repository;
 
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
-use TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Class ThemeRepositoryTest.
  */
-class ThemeRepositoryTest extends BaseTestCase
+class ThemeRepositoryTest extends UnitTestCase
 {
     /**
      * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository

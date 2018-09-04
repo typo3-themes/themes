@@ -70,6 +70,7 @@ class ThemeController extends ActionController
             $this->view->setTemplatePathAndFilename($templateFile);
         }
         $this->view->assign('templateName', $this->templateName);
+
         $frontendController = $this->getFrontendController();
         $this->view->assign('theme', $this->themeRepository->findByPageOrRootline($frontendController->id));
         // Get page data
@@ -112,7 +113,13 @@ class ThemeController extends ActionController
             return '';
         });
 
-        return $vh->render($path);
+        if (version_compare(TYPO3_version, '8.0', '<')) {
+            return $vh->render($path);
+        } else {
+            $vh->setArguments(['typoscriptObjectPath' => $path]);
+
+            return $vh->render();
+        }
     }
 
     /**

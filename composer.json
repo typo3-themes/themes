@@ -2,13 +2,14 @@
   "name": "typo3-themes/themes",
   "type": "typo3-cms-extension",
   "description": "TYPO3 THEMES",
-  "version": "7.0.3",
+  "version": "8.7.5",
   "homepage": "http://typo3-themes.org",
   "license": ["GPL-2.0+"],
   "keywords": ["TYPO3 CMS", "TYPO3 THEMES", "THEMES", "THEMES", "FLUID", "CUSTOMIZE"],
   "require": {
-    "typo3/cms-core": "~7.6.0|<8.0",
-    "sjbr/static-info-tables": ">=6.4.0,<6.5"
+    "typo3/cms-core": "~8.7.0|<9.0",
+    "sjbr/static-info-tables": ">=6.4.0,<6.6",
+    "gridelementsteam/gridelements": ">=8.0.0,<8.8"
   },
   "support": {
     "issues": "https://github.com/typo3-themes/themes/issues"

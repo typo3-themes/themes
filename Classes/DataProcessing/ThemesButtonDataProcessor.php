@@ -15,6 +15,7 @@ namespace KayStrobach\Themes\DataProcessing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
@@ -46,11 +47,21 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
         array $processorConfiguration,
         array $processedData
     ) {
-        $db = $this->getDb();
         $processedData['themes']['buttons'] = array();
-        $where = 'tt_content=' . (int)$processedData['data']['uid'] . ' AND deleted=0 AND hidden=0';
-        $result = $db->exec_SELECTquery('*', 'tx_themes_buttoncontent', $where, '', 'sorting');
-        while ($row = $db->sql_fetch_assoc($result)) {
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_themes_buttoncontent');
+        $queryBuilder->select('*')
+            ->from('tx_themes_buttoncontent')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'tt_content', $queryBuilder->createNamedParameter((int)$processedData['data']['uid'], \PDO::PARAM_INT)
+                )
+            )
+            ->orderBy('sorting');
+        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+        $statement = $queryBuilder->execute();
+        while ($row = $statement->fetch()) {
             $link = array();
             $link['uid'] = $row['uid'];
             $link['text'] = $row['linktext'];
@@ -64,7 +75,6 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
             }
             $processedData['themes']['buttons'][] = $link;
         }
-        $db->sql_free_result($result);
         return $processedData;
     }
 
@@ -74,13 +84,5 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
     protected function getFrontendController()
     {
         return $GLOBALS['TSFE'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDb()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

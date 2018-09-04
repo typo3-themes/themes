@@ -4,6 +4,8 @@ namespace KayStrobach\Themes\Domain\Model;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 
 /**
  * Class Theme.
@@ -15,35 +17,60 @@ class Theme extends AbstractTheme
     /**
      * Constructs a new Theme.
      *
+     * @param $extensionName
+     * @throws \Exception
      * @api
      */
     public function __construct($extensionName)
     {
         parent::__construct($extensionName);
-
         if (ExtensionManagementUtility::isLoaded($extensionName, false)) {
             // set needed path variables
             $path = ExtensionManagementUtility::extPath($this->getExtensionName());
-            $this->pathTyposcript = $path.'Configuration/TypoScript/setup.txt';
-            $this->pathTyposcriptConstants = $path.'Configuration/TypoScript/constants.txt';
-            $this->pathTsConfig = $path.'Configuration/PageTS/tsconfig.txt';
-
-            $this->importExtEmConf();
-
-            if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()).'Meta/Screenshots/screenshot.png')) {
-                $this->previewImage = ExtensionManagementUtility::extRelPath($this->getExtensionName()).'Meta/Screenshots/screenshot.png';
-            } else {
-                $this->previewImage = ExtensionManagementUtility::extRelPath('themes').'Resources/Public/Images/screenshot.gif';
+            //
+            // Get TypoScript setup (setup.txt | setup.typoscript)
+            if(file_exists($path . 'Configuration/TypoScript/setup.txt')) {
+                $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.txt';
             }
-
-            if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()).'Meta/theme.yaml')) {
-                if (class_exists('\Symfony\Component\Yaml\Yaml')) {
-                    $this->metaInformation = \Symfony\Component\Yaml\Yaml::parse(
-                        ExtensionManagementUtility::extPath($this->getExtensionName()).'Meta/theme.yaml'
-                    );
+            else {
+                $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.typoscript';
+            }
+            //
+            // Get TypoScript constants (constants.txt | constants.typoscript)
+            if(file_exists($path . 'Configuration/TypoScript/constants.txt')) {
+                $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.txt';
+            }
+            else {
+                $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.typoscript';
+            }
+            //
+            // Get TypoScript tsconfig (tsconfig.txt | tsconfig.typoscript)
+            if(file_exists($path . 'Configuration/PageTS/tsconfig.txt')) {
+                $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.txt';
+            }
+            else {
+                $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.typoscript';
+            }
+            $this->importExtEmConf();
+            if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png')) {
+                $this->previewImage = ExtensionManagementUtility::siteRelPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png';
+            } else {
+                $this->previewImage = ExtensionManagementUtility::siteRelPath('themes') . 'Resources/Public/Images/screenshot.gif';
+            }
+            $yamlFile = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml';
+            if (file_exists($yamlFile)) {
+                if (version_compare(TYPO3_version, '8.7', '<')) {
+                    if (class_exists('\Symfony\Component\Yaml\Yaml')) {
+                        $this->metaInformation = \Symfony\Component\Yaml\Yaml::parse($yamlFile);
+                    } else {
+                        throw new \Exception('No Yaml Parser!');
+                    }
                 } else {
-                    throw new \Exception('No Yaml Parser ...');
+                    $yamlSource = GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Mvc\\Configuration\\YamlSource');
+                    $this->metaInformation = $yamlSource->load(array($yamlFile));
                 }
+            } else {
+                throw new \Exception('No Yaml meta information found!');
             }
         }
     }
@@ -55,14 +82,11 @@ class Theme extends AbstractTheme
      */
     protected function importExtEmConf()
     {
-        /**
-         * @var array
-         * @var $_EXTKEY string
-         */
-
         // @codingStandardsIgnoreStart
+        $EM_CONF = array();
+        /** @var string $_EXTKEY */
         $_EXTKEY = $this->extensionName;
-        include ExtensionManagementUtility::extPath($this->getExtensionName()).'ext_emconf.php';
+        include ExtensionManagementUtility::extPath($this->getExtensionName()) . 'ext_emconf.php';
         // @codingStandardsIgnoreEnd
         $this->title = $EM_CONF[$this->getExtensionName()]['title'];
         $this->description = $EM_CONF[$this->getExtensionName()]['description'];
@@ -73,16 +97,21 @@ class Theme extends AbstractTheme
     }
 
     /**
+     * Returns an array of preview images
      * @return array
      */
     public function getAllPreviewImages()
     {
         $buffer = $this->metaInformation['screenshots'];
-        $buffer[] = [
-                'file'    => $this->getPreviewImage(),
-                'caption' => '',
-            ];
-
+        if(count($buffer) > 0) {
+            foreach($buffer as $key => $image) {
+                // We need to use a real image file path, because in case of using a file
+                // reference, a non admin backend user might not have access to the storage!
+                $previewImage = GeneralUtility::getFileAbsFileName($image['file']);
+                $previewImage = PathUtility::getAbsoluteWebPath($previewImage);
+                $buffer[$key]['file'] = $previewImage;
+            }
+        }
         return $buffer;
     }
 
@@ -96,7 +125,6 @@ class Theme extends AbstractTheme
         if (file_exists($this->getTypoScriptConfigAbsPath()) && is_file($this->getTypoScriptConfigAbsPath())) {
             return file_get_contents($this->getTypoScriptConfigAbsPath());
         }
-
         return '';
     }
 
@@ -110,7 +138,6 @@ class Theme extends AbstractTheme
         if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
             return ExtensionManagementUtility::siteRelPath($this->getExtensionName());
         }
-
         return '';
     }
 
@@ -119,10 +146,12 @@ class Theme extends AbstractTheme
      *
      * @param array  $params Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
      * @param object $pObj   Reference back to parent object, t3lib_tstemplate or one of its subclasses.
+     * @param array $extensions Array of additional TypoScript for extensions
+     * @param array $features Array of additional TypoScript for features
      *
      * @return void
      */
-    public function addTypoScriptForFe(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj)
+    public function addTypoScriptForFe(&$params, TemplateService &$pObj, $extensions=[], $features=[])
     {
         // @codingStandardsIgnoreStart
         $themeItem = [
@@ -147,5 +176,32 @@ class Theme extends AbstractTheme
             $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
             $params['templateId']
         );
+        //
+        // Additional TypoScript for extensions
+        if(count($extensions) > 0) {
+            foreach($extensions as $extension) {
+                $themeItem = $this->getTypoScriptDataForProcessing($extension, 'extension');
+                $pObj->processTemplate(
+                    $themeItem,
+                    $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['templateId']
+                );
+            }
+        }
+        //
+        // Additional TypoScript for features
+        if(count($features) > 0) {
+            foreach($features as $feature) {
+                $themeItem = $this->getTypoScriptDataForProcessing($feature, 'feature');
+                $pObj->processTemplate(
+                    $themeItem,
+                    $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['templateId']
+                );
+            }
+        }
     }
+
 }

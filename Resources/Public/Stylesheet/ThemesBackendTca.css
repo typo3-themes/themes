@@ -1,60 +1,88 @@
-.themes-label-default {
-	
-}
 .themes-label-ctype {
-	margin-top: 10px;
+    margin-top: 10px;
 }
+
 .themes-label-gridLayout {
-	margin-top: 10px;
+    margin-top: 10px;
 }
+
 .themes-checkbox-label {
-	display: inline-block;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	width: 190px;
-	font-weight: normal;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 190px;
+    font-weight: normal;
 }
+
 .themes-hidden-admin-field {
-	border: 1px solid #bbbbbb;
-	background-color: #f5f5f5;
-	color: #333;
+    border: 1px solid #bbbbbb;
+    border-radius: 0;
+    padding: 2px;
+    line-height: 20px;
+    height: 20px;
+    margin-left: 15px;
+    width: calc(100% - 22px);
 }
+.contentResponsive .themes-hidden-admin-field {
+    margin-left: 7px;
+    width: calc(100% - 15px);
+}
+
 .themes-column {
-	border:0 solid;
-	border-right: 1px solid #ccc;
+    border: 0 solid;
+    border-right: 1px solid #ccc;
 }
+
 .contentVariant .form-control-wrap,
 .contentBehaviour .form-control-wrap {
-	margin-top:0;
+    margin-top: 0;
 }
+
 .contentVariant .form-control-wrap select,
 .contentBehaviour .form-control-wrap select {
-	width: 100%;
+    width: 100%;
 }
+
 .contentResponsive label {
-	font-weight: normal;
+    font-weight: normal;
 }
+
 .contentResponsive label.t3js-formengine-label {
-	font-weight: bold;
+    font-weight: bold;
 }
+
 .contentResponsive label.sub-label {
-	font-weight: normal;
-	border: none;
-	margin-bottom: 0;
+    font-weight: normal;
+    border: none;
+    margin-bottom: 0;
 }
 
 .contentResponsive .t3js-formengine-label,
 .contentColumnSettings .t3js-formengine-label,
 .contentEnforceEqualColumnHeight .t3js-formengine-label {
-	border-bottom: 1px solid #bbbbbb;
-	width: 100%;
+    border-bottom: 1px solid #bbbbbb;
+    width: 100%;
 }
+
 .contentColumnSettings select {
-	width: 100%;
-	min-width: 100px;
-	margin-bottom: 5px;
+    width: 100%;
+    min-width: 100px;
+    margin-bottom: 5px;
 }
+
 .contentColumnSettings .themes-select-label {
-	margin-bottom: 0;
+    margin-bottom: 0;
+}
+
+/* Enlarge icons for backendlayouts */
+.table-icons span.icon[data-identifier^='themes-backendlayout-'], /* TYPO3 7.6 */
+.form-wizards-items-bottom span.icon[data-identifier^='themes-backendlayout-'] { /* TYPO3 8.7 */
+    width: 50px;
+    height: 50px;
+}
+/* Enlarge icons for gridelements */
+.form-wizards-items-bottom span.icon[data-identifier^='new-content-el-'] {
+    width: 32px;
+    height: 32px;
 }

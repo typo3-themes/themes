@@ -2,6 +2,9 @@
 
 namespace KayStrobach\Themes\Utilities;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class CheckPageUtility.
  */
@@ -14,16 +17,29 @@ class CheckPageUtility
      */
     public static function hasTheme($pid)
     {
-        $templateCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
-            '*',
-            'sys_template',
-            'pid = '.(int) $pid.' AND deleted=0 AND hidden=0 AND root=1 AND tx_themes_skin <> ""'
-        );
-        if ($templateCount > 0) {
-            return true;
+        $hasTheme = false;
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_template');
+        $queryBuilder->select('*')
+            ->from('sys_template')
+            ->andWhere(
+                $queryBuilder->expr()->eq(
+                    'pid', $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'root', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->neq(
+                    'tx_themes_skin', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                )
+            );
+        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+        $statement = $queryBuilder->execute();
+        if ($statement->rowCount()>0) {
+            $hasTheme = true;
         }
-
-        return false;
+        return $hasTheme;
     }
 
     /**
@@ -33,16 +49,27 @@ class CheckPageUtility
      */
     public static function hasThemeableSysTemplateRecord($pid)
     {
-        $templateCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
-            '*',
-            'sys_template',
-            'pid = '.(int) $pid.' AND deleted=0 AND hidden=0 AND root=1'
-        );
-        if ($templateCount > 0) {
-            return true;
+        self::hasTheme($pid);
+        $themeable = false;
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_template');
+        $queryBuilder->select('*')
+            ->from('sys_template')
+            ->andWhere(
+                $queryBuilder->expr()->eq(
+                    'pid', $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'root', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                )
+            );
+        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+        $statement = $queryBuilder->execute();
+        if ($statement->rowCount()>0) {
+            $themeable = true;
         }
-
-        return false;
+        return $themeable;
     }
 
     /**
@@ -52,17 +79,26 @@ class CheckPageUtility
      */
     public static function getThemeableSysTemplateRecord($pid)
     {
-        $templates = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-            '*',
-            'sys_template',
-            'pid = '.(int) $pid.' AND deleted=0 AND hidden=0 AND root=1',
-            '',
-            'sorting ASC'
-        );
-        if (is_array($templates)) {
-            return $templates['uid'];
+        $themeable = false;
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_template');
+        $queryBuilder->select('*')
+            ->from('sys_template')
+            ->andWhere(
+                $queryBuilder->expr()->eq(
+                    'pid', $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'root', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                )
+            );
+        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+        $statement = $queryBuilder->execute();
+        if ($statement->rowCount()>0) {
+            $row = $statement->fetch();
+            $themeable = $row['uid'];
         }
-
-        return false;
+        return $themeable;
     }
 }

@@ -19,7 +19,7 @@ return [
         'enablecolumns'      => [
             'disabled' => 'hidden',
         ],
-        'iconfile'           => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('themes').'Resources/Public/Icons/new_content_el_ButtonContent.gif',
+        'iconfile'           => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('themes').'Resources/Public/Icons/button_content.svg',
     ],
     'interface' => [
         'showRecordFieldList' => 'linktext,linktarget,linktitle,icon',
@@ -37,26 +37,12 @@ return [
             'exclude' => 1,
             'label'   => $l10n.'linktarget',
             'config'  => [
-                'eval'    => trim,
+                'renderType' => 'inputLink',
+                'eval'    => 'trim',
                 'max'     => 1024,
                 'size'    => 50,
                 'softref' => 'typolink',
                 'type'    => 'input',
-                'wizards' => [
-                    'link' => [
-                        'icon'         => 'link_popup.gif',
-                        'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-                        'module'       => [
-                            'name'          => 'wizard_element_browser',
-                            'urlParameters' => [
-                                'mode' => 'wizard',
-                            ],
-                        ],
-                        'title' => 'LLL:EXT:cms/locallang_ttc.xlf:header_link_formlabel',
-                        'type'  => 'popup',
-                    ],
-                    '_PADDING' => 2,
-                ],
             ],
         ],
         'linktitle' => [
@@ -74,7 +60,7 @@ return [
             'label'   => $l10n.'icon',
             'config'  => [
                 'type'         => 'select',
-                'selicon_cols' => 14,
+                'renderType'   => 'selectSingle',
                 'items'        => [
                     ['', ''],
                 ],
@@ -82,7 +68,7 @@ return [
         ],
         'hidden' => [
             'exclude' => 1,
-            'label'   => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
+            'label'   => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config'  => [
                 'type'  => 'check',
                 'items' => [
@@ -94,11 +80,11 @@ return [
         ],
         'starttime' => [
             'exclude' => 1,
-            'label'   => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
+            'label'   => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config'  => [
                 'type'    => 'input',
+                'renderType' => 'inputDateTime',
                 'size'    => 13,
-                'max'     => 20,
                 'eval'    => 'datetime',
                 'default' => 0,
             ],
@@ -107,11 +93,11 @@ return [
         ],
         'endtime' => [
             'exclude' => 1,
-            'label'   => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
+            'label'   => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config'  => [
                 'type'    => 'input',
+                'renderType' => 'inputDateTime',
                 'size'    => 13,
-                'max'     => 20,
                 'eval'    => 'datetime',
                 'default' => 0,
                 'range'   => [
@@ -123,18 +109,19 @@ return [
         ],
         'sys_language_uid' => [
             'exclude' => 1,
-            'label'   => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
+            'label'   => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config'  => [
                 'type'                => 'select',
+                'renderType'          => 'selectSingle',
                 'foreign_table'       => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items'               => [
                     [
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages',
+                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
                         -1,
                     ],
                     [
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
+                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value',
                         0,
                     ],
                 ],
@@ -155,15 +142,16 @@ return [
         ],
         'fe_group' => [
             'exclude' => 1,
-            'label'   => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
+            'label'   => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
             'config'  => [
-                'type'     => 'select',
-                'size'     => 5,
-                'maxitems' => 20,
-                'items'    => [
-                    ['LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login', -1],
-                    ['LLL:EXT:lang/locallang_general.xlf:LGL.any_login', -2],
-                    ['LLL:EXT:lang/locallang_general.xlf:LGL.usergroups', '--div--'],
+                'type'       => 'select',
+                'renderType' => 'selectSingle',
+                'size'       => 5,
+                'maxitems'   => 20,
+                'items'      => [
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login', -1],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login', -2],
+                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups', '--div--'],
                 ],
                 'exclusiveKeys'       => '-1,-2',
                 'foreign_table'       => 'fe_groups',
@@ -178,8 +166,7 @@ return [
     ],
     'types'     => [
         '1' => [
-            'showitem' => 'linktext,linktarget,linktitle,icon,--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,hidden,starttime,endtime,fe_group',
+            'showitem' => 'linktext,linktarget,linktitle,icon,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,hidden,starttime,endtime,fe_group',
         ],
     ],
-
 ];

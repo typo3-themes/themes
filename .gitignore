@@ -7,8 +7,11 @@
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/dictionaries
+.idea/php.xml
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
+.idea/modules.xml
+.idea/themes.iml
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
@@ -24,6 +27,10 @@
 
 # Mongo Explorer plugin:
 .idea/mongoSettings.xml
+
+# Markdown Navigator plugin:
+.idea/markdown-navigator.xml
+.idea/markdown-navigator/profiles_settings.xml
 
 ## File-based project format:
 *.iws

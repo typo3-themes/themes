@@ -1,14 +1,30 @@
+# TYPO3 7.6
 lib.fluidContent {
 	templateRootPaths {
-		#300 = EXT:theme_bootstrap_taurus/Resources/Private/Extensions/FluidStyledContent/Templates/
+		#300 = EXT:theme_bootstrap4/Resources/Private/Extensions/FluidStyledContent/Templates/
 		400 = {$themes.resourcesPrivatePath}Extensions/FluidStyledContent/Templates/
 	}
 	partialRootPaths {
-		#300 = EXT:theme_bootstrap_taurus/Resources/Private/Extensions/FluidStyledContent/Partials/
+		#300 = EXT:theme_bootstrap4/Resources/Private/Extensions/FluidStyledContent/Partials/
 		400 = {$themes.resourcesPrivatePath}Extensions/FluidStyledContent/Partials/
 	}
 	layoutRootPaths {
-		#300 = EXT:theme_bootstrap_taurus/Resources/Private/Extensions/FluidStyledContent/Layouts/
+		#300 = EXT:theme_bootstrap4/Resources/Private/Extensions/FluidStyledContent/Layouts/
+		400 = {$themes.resourcesPrivatePath}Extensions/FluidStyledContent/Layouts/
+	}
+}
+# TYPO3 8.7 or higher
+lib.contentElement {
+	templateRootPaths {
+		#300 = EXT:theme_bootstrap4/Resources/Private/Extensions/FluidStyledContent/Templates/
+		400 = {$themes.resourcesPrivatePath}Extensions/FluidStyledContent/Templates/
+	}
+	partialRootPaths {
+		#300 = EXT:theme_bootstrap4/Resources/Private/Extensions/FluidStyledContent/Partials/
+		400 = {$themes.resourcesPrivatePath}Extensions/FluidStyledContent/Partials/
+	}
+	layoutRootPaths {
+		#300 = EXT:theme_bootstrap4/Resources/Private/Extensions/FluidStyledContent/Layouts/
 		400 = {$themes.resourcesPrivatePath}Extensions/FluidStyledContent/Layouts/
 	}
 }

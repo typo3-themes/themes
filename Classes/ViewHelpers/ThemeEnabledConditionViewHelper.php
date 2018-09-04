@@ -2,7 +2,7 @@
 
 namespace KayStrobach\Themes\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use KayStrobach\Themes\Utilities\ThemeEnabledCondition;
 
 /**
  * Is a theme enabled?
@@ -30,12 +30,6 @@ class ThemeEnabledConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
      */
     protected static function evaluateCondition($arguments = null)
     {
-        $pageId = intval(GeneralUtility::_GET('id'));
-        /** @var \KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository */
-        $themeRepository = GeneralUtility::makeInstance('KayStrobach\Themes\Domain\Repository\ThemeRepository');
-        /** @var \KayStrobach\Themes\Domain\Model\Theme $themeOfPage */
-        $themeOfPage = $themeRepository->findByPageOrRootline($pageId);
-
-        return ($themeOfPage !== null) && ($themeOfPage->getExtensionName() === $arguments['theme']);
+        return ThemeEnabledCondition::isThemeEnabled($arguments['theme']);
     }
 }

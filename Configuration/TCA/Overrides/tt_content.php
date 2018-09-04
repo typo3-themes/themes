@@ -29,7 +29,7 @@ $tempColumn = [
                 'inlineNewButtonStyle' => 'display: inline-block;',
             ],
             'behaviour'      => [
-                'localizationMode'                     => 'select',
+                'allowLanguageSynchronization'         => true,
                 'localizeChildrenAtParentLocalization' => true,
             ],
             'foreign_table'  => 'tx_themes_buttoncontent',
@@ -44,7 +44,7 @@ $tempColumn = [
         'label'   => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:icon',
         'config'  => [
             'type'         => 'select',
-            'selicon_cols' => 14,
+            'renderType'   => 'selectSingle',
             'items'        => [
                 ['', ''],
             ],

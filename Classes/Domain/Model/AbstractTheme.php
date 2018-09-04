@@ -4,14 +4,18 @@ namespace KayStrobach\Themes\Domain\Model;
 
 use KayStrobach\Themes\Utilities\ApplicationContext;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * Class AbstractTheme.
  *
  * @todo get rid of getExtensionname, use EXT:extname as theme name to avoid conflicts in the database
  */
-class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class AbstractTheme extends AbstractEntity
 {
     /**
      * @var string
@@ -66,6 +70,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Constructs a new Theme.
      *
+     * @param string $extensionName
      * @api
      */
     public function __construct($extensionName)
@@ -106,7 +111,16 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getPreviewImage()
     {
-        return $this->previewImage;
+        // We need to use a real image file path, because in case of using a file
+        // reference, a non admin backend user might not have access to the storage!
+        $previewImage = GeneralUtility::getFileAbsFileName($this->previewImage);
+        $previewImage = PathUtility::getAbsoluteWebPath($previewImage);
+        // Since 8.7.x we need to prefix with EXT:
+        $replacement = '/typo3conf/ext/';
+        if(substr($previewImage, 0, strlen($replacement)) === $replacement) {
+            $previewImage = str_replace('/typo3conf/ext/', 'EXT:', $previewImage);
+        }
+        return $previewImage;
     }
 
     /**
@@ -161,7 +175,7 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @todo missing docblock
+     * @return array
      */
     public function getAuthor()
     {
@@ -185,11 +199,15 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getTypoScriptConfig()
     {
-        if (file_exists($this->getTypoScriptConfigAbsPath()) && is_file($this->getTypoScriptConfigAbsPath())) {
-            return file_get_contents($this->getTypoScriptConfigAbsPath());
+        $typoScriptConfig = '';
+        $typoScriptConfigAbsPath = $this->getTypoScriptConfigAbsPath();
+        if (file_exists($typoScriptConfigAbsPath) && is_file($typoScriptConfigAbsPath)) {
+            $typoScriptConfig = file_get_contents($typoScriptConfigAbsPath);
         }
 
-        return '';
+
+
+        return $typoScriptConfig;
     }
 
     /**
@@ -233,12 +251,14 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Includes static template records (from static_template table) and static template files (from extensions) for the input template record row.
      *
-     * @param array Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
-     * @param \TYPO3\CMS\Core\TypoScript\TemplateService Reference back to parent object, t3lib_tstemplate or one of its subclasses.
+     * @param array $params Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
+     * @param \TYPO3\CMS\Core\TypoScript\TemplateService $pObj Reference back to parent object, t3lib_tstemplate or one of its subclasses.
+     * @param array $extensions Array of additional TypoScript for extensions
+     * @param array $features Array of additional TypoScript for features
      *
      * @return void
      */
-    public function addTypoScriptForFe(&$params, \TYPO3\CMS\Core\TypoScript\TemplateService &$pObj)
+    public function addTypoScriptForFe(&$params, TemplateService &$pObj, $extensions=[], $features=[])
     {
         // @codingStandardsIgnoreStart
         $themeItem = [
@@ -261,31 +281,107 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
             'ext_themes'.str_replace('_', '', $this->getExtensionName()),
             $params['templateId']
         );
+        //
+        // Additional TypoScript for extensions
+        if(count($extensions) > 0) {
+            foreach($extensions as $extension) {
+                $themeItem = $this->getTypoScriptDataForProcessing($extension, 'extension');
+                $pObj->processTemplate(
+                    $themeItem,
+                    $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['templateId']
+                );
+            }
+        }
+        //
+        // Additional TypoScript for features
+        if(count($features) > 0) {
+            foreach($features as $feature) {
+                $themeItem = $this->getTypoScriptDataForProcessing($feature, 'feature');
+                $pObj->processTemplate(
+                    $themeItem,
+                    $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['templateId']
+                );
+            }
+        }
     }
 
     /**
-     * @param $params
+     * @param $key string Key of the Extension or Feature
+     * @param $type string Typ can be either extension or feature.
+     * @return array
+     */
+    protected function getTypoScriptDataForProcessing($key, $type='extension') {
+        $relPath = '';
+        $keyParts = explode('_', $key);
+        $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($keyParts[0]);
+        $extensionPath = ExtensionManagementUtility::extPath($extensionKey);
+        if($type === 'feature') {
+            $relPath = $extensionPath . 'Configuration/TypoScript/Features/' . $keyParts[1] . '/';
+        }
+        else if($type === 'extension') {
+            $relPath = $extensionPath . 'Resources/Private/Extensions/' . $keyParts[1] . '/TypoScript/';
+        }
+        $themeItem = [
+            'constants' => '',
+            'config' => '',
+            'include_static' => '',
+            'include_static_file' => '',
+            'title' => 'themes:' . $this->getExtensionName() . ':' . $relPath,
+            'uid' => md5($this->getExtensionName() . ':' . $relPath),
+        ];
+        $setupFile = GeneralUtility::getFileAbsFileName($relPath . 'setup.txt');
+        if(file_exists($setupFile)) {
+            $themeItem['config'] = file_get_contents($setupFile);
+        }
+        else {
+            $setupFile = GeneralUtility::getFileAbsFileName($relPath . 'setup.typoscript');
+            if(file_exists($setupFile)) {
+                $themeItem['config'] = file_get_contents($setupFile);
+            }
+        }
+        $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'constants.txt');
+        if(file_exists($constantsFile)) {
+            $themeItem['constants'] = file_get_contents($constantsFile);
+        }
+        else {
+            $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'constants.typoscript');
+            if(file_exists($constantsFile)) {
+                $themeItem['constants'] = file_get_contents($constantsFile);
+            }
+        }
+        return $themeItem;
+    }
+
+    /**
+     * @param array $params
      * @param \TYPO3\CMS\Core\TypoScript\TemplateService $pObj
      *
      * @return string
      */
     public function getTypoScriptForLanguage(&$params, &$pObj)
     {
-        if (!is_object($GLOBALS['TYPO3_DB'])) {
-            return '';
-        }
-
-        $languages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-            'sys.uid as uid, sys.title as title, sys.flag as flag,static.lg_name_local as lg_name_local,static.lg_name_en as lg_name_en, static.lg_collate_locale as lg_collate_locale',
-            'sys_language sys,static_languages static', 'sys.static_lang_isocode = static.uid AND sys.hidden=0'
-        );
-
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_language');
+        $queryBuilder->select('sys_language.*', 'static_languages.lg_name_local', 'static_languages.lg_name_en', 'static_languages.lg_collate_locale')
+            ->from('sys_language')
+            ->from('static_languages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'sys_language.static_lang_isocode', 'static_languages.uid'
+                )
+            );
+        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+        $languages = $queryBuilder->execute();
         $outputBuffer = '';
         $languageUids = [];
         $key = 'themes.languages';
-
-        if (is_array($languages)) {
-            foreach ($languages as $language) {
+        if ($languages->rowCount()>0) {
+            while ($language = $languages->fetch()) {
                 $languageUids[] = $language['uid'];
                 $buffer = '[globalVar = GP:L='.$language['uid'].']'.LF;
                 $buffer .= $key.'.current {'.LF;
@@ -305,11 +401,14 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         } else {
             $outputBuffer .= $key.'.available='.LF;
         }
-
-        /* @var \TYPO3\CMS\Lang\Domain\Model\Language $language */
         return $outputBuffer;
     }
 
+    /**
+     * Returns the basic TypoScript constants
+     * @param $pid
+     * @return string
+     */
     protected function getBasicConstants($pid)
     {
         $buffer = '';
@@ -319,7 +418,6 @@ class AbstractTheme extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $buffer .= LF.'themes.mode.context = '.ApplicationContext::getApplicationContext();
         $buffer .= LF.'themes.mode.isDevelopment = '.(int) ApplicationContext::isDevelopmentModeActive();
         $buffer .= LF.'themes.mode.isProduction = '.(int) !ApplicationContext::isDevelopmentModeActive();
-
         return $buffer;
     }
 }

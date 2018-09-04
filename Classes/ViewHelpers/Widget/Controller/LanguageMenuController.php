@@ -9,6 +9,8 @@ namespace KayStrobach\Themes\ViewHelpers\Widget\Controller;
  * @package themes
  */
 use SJBR\StaticInfoTables\Domain\Repository\LanguageRepository;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -115,12 +117,22 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
      */
     protected function getSysLanguage($uid = 0)
     {
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-                'uid, title, flag, static_lang_isocode', 'sys_language', 'uid='.((int) $uid)
-        );
-        $sysLanguage = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
-
+        $sysLanguage = array();
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_language');
+        $queryBuilder->select('uid', 'title', 'flag', 'static_lang_isocode')
+            ->from('sys_language')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid', $queryBuilder->createNamedParameter((int) $uid, \PDO::PARAM_INT)
+                )
+            );
+        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+        $statement = $queryBuilder->execute();
+        if ($statement->rowCount()>0) {
+            $sysLanguage = $statement->fetch();
+        }
         return $sysLanguage;
     }
 
@@ -134,17 +146,26 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
      */
     protected function hasTranslation($pid, $languageUid)
     {
-        $enableFieldsSql = $this->contentObjectRenderer->enableFields('pages_language_overlay');
-        //$visibleSql  = ' deleted=0 AND t3ver_state<=0 AND hidden=0 ';
-        //$startEndSql = ' AND (starttime<=' . time() . ' AND (endtime=0 OR endtime >=' . time() . ')) ';
-        $languageSql = ' pid='.((int) $pid).' AND `sys_language_uid` ='.((int) $languageUid).' ';
-        $where = $languageSql.$enableFieldsSql;
-        //$visibleSql.$startEndSql;
-
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COUNT(uid)', 'pages_language_overlay', $where);
-        $row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
-
-        return $row[0] > 0;
+        $hasTranslation = false;
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages_language_overlay');
+        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+        $queryBuilder->select('uid')
+            ->from('pages_language_overlay')
+            ->andWhere(
+                $queryBuilder->expr()->eq(
+                    'pid', $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid', $queryBuilder->createNamedParameter((int) $languageUid, \PDO::PARAM_INT)
+                )
+            );
+        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+        $statement = $queryBuilder->execute();
+        if ($statement->rowCount()>0) {
+            $hasTranslation = true;
+        }
+        return $hasTranslation;
     }
 }

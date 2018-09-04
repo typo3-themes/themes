@@ -44,9 +44,17 @@
 	padding-right: 10px;
 	padding-left: 10px;
 }
+#categoriesFilter select,
+#categoriesFilter select option {
+    text-transform: capitalize;
+}
 
+.typo3-themes-module section.constants-group h2 {
+    text-transform: capitalize;
+}
 .typo3-themes-module section.constants-group thead td {
 	font-weight: bold;
+    text-transform: capitalize;
 }
 .typo3-themes-module section.constants-group td.title {
 	width: 30%;

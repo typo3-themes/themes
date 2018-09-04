@@ -28,8 +28,9 @@ if (TYPO3_MODE === 'BE') {
             'Editor' => 'index,update,showTheme,setTheme,showThemeDetails,saveCategoriesFilterSettings',
         ], [// Additional configuration
             'access'         => 'user,group',
+            'icon' => 'EXT:' . $_EXTKEY . '/ext_icon.svg',
             'iconIdentifier' => 'module-themes',
-            'labels'         => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xml',
+            'labels'         => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf',
         ]
     );
     // Add some backend stylesheets and javascript
@@ -40,22 +41,12 @@ if (TYPO3_MODE === 'BE') {
 /*
  * add themes overlay
  */
-if (is_array($GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'])) {
-    array_push($GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'], 'themefound');
-    $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['themefound'] = 'extensions-themes-overlay-theme';
+if (!isset($GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'])) {
+    $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array();
 }
-/*
- * add sprites
-    \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
-        array(
-            //'switch-off' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_orange.png',
-            'switch-disable' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_grey.png',
-            'switch-on' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/power_green.png',
-            'contains-theme' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'ext_icon.png',
-        ),
-        $_EXTKEY
-    );
- */
+array_push($GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'], 'themefound');
+$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['themefound'] = 'extensions-themes-overlay-theme';
+
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_themes_buttoncontent');
 
@@ -63,68 +54,38 @@ if (is_array($GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPri
     [
         'LLL:EXT:themes/Resources/Private/Language/ButtonContent.xlf:tt_content.CType_pi1',
         $_EXTKEY.'_buttoncontent_pi1',
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'buttoncontent_icon.gif',
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($_EXTKEY).'Resources/Public/Icons/button_content.svg',
     ],
     'CType'
 );
 
-// Register module icon
+
+// register svg icons: identifier and filename
+$iconsSvg = [
+    'module-themes' => 'ext_icon.svg',
+    'content-button' => 'Resources/Public/Icons/new_content_el_ButtonContent.svg',
+    'switch-off' => 'Resources/Public/Icons/power_grey.svg',
+    'switch-on' => 'Resources/Public/Icons/power_green.svg',
+    'switch-disable' => 'Resources/Public/Icons/power_orange.svg',
+    'overlay-theme' => 'Resources/Public/Icons/overlay_theme.svg',
+    'contains-theme' => 'ext_icon.png',
+    'new_content_el_buttoncontent' => 'Resources/Public/Icons/new_content_el_ButtonContent.svg',
+];
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-$iconRegistry->registerIcon(
-    'module-themes',
-    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-    [
-        'source' => 'EXT:themes/ext_icon.svg',
-    ]
-);
-$iconRegistry->registerIcon(
-    'content-button',
-    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-    [
-        'source' => 'EXT:themes/Resources/Public/Icons/new_content_el_ButtonContent.svg',
-    ]
-);
-$iconRegistry->registerIcon(
-    'switch-off',
-    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-    [
-        'source' => 'EXT:themes/Resources/Public/Icons/power_grey.svg',
-    ]
-);
-$iconRegistry->registerIcon(
-    'switch-on',
-    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-    [
-        'source' => 'EXT:themes/Resources/Public/Icons/power_green.svg',
-    ]
-);
-$iconRegistry->registerIcon(
-    'switch-disable',
-    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-    [
-        'source' => 'EXT:themes/Resources/Public/Icons/power_orange.svg',
-    ]
-);
-$iconRegistry->registerIcon(
-    'overlay-theme',
-    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-    [
-        'source' => 'EXT:themes/Resources/Public/Icons/overlay_theme.svg',
-    ]
-);
-$iconRegistry->registerIcon(
-    'contains-theme',
-    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-    [
-        'source' => 'EXT:themes/ext_icon.png',
-    ]
-);
+foreach ($iconsSvg as $identifier => $path) {
+    $iconRegistry->registerIcon(
+        $identifier,
+        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        ['source' => 'EXT:' . $_EXTKEY . '/' . $path]
+    );
+}
+
 
 $GLOBALS['TCA']['pages']['columns']['module']['config']['items'][] =
-        [
-                0 => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:contains-theme',
-                1 => 'themes',
-                2 => 'extensions-themes-contains-theme',
-        ];
+    [
+        0 => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:contains-theme',
+        1 => 'themes',
+        2 => 'extensions-themes-contains-theme',
+    ];
 
 $GLOBALS['TCA']['pages']['ctrl']['typeicon_classes']['contains-themes'] = 'extensions-themes-contains-theme';
