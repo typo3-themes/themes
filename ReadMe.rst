@@ -32,7 +32,7 @@ To achieve that goal and to be highly flexible configurable at the same time we 
 +---------------------+-------------------------------------------------+ 
 | dyncss*             | less and scss rendering                         |
 +---------------------+-------------------------------------------------+ 
-| t3jquery            | standardized way of including javascript        |
+| t3jquery            | standardized way of including javascript - not recommend anymore |
 +---------------------+-------------------------------------------------+ 
 
 Having the base packages and also ready made themes like:
