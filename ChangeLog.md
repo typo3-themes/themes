@@ -1,6 +1,13 @@
 # Themes Change-Log
 
 
+
+### 2018-09-17  Thomas Deuling  <typo3@coding.ms>
+
+*   [FEATURE] Adding data processor for header link in content elements.
+
+
+
 ## 2018-08-09  Release of version 8.7.5
 
 ### 2018-08-09  Thomas Deuling  <typo3@coding.ms>
