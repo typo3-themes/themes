@@ -1,6 +1,7 @@
 # Themes Change-Log
 
 
+## 2018-09-17  Release of version 8.7.6
 
 ### 2018-09-17  Thomas Deuling  <typo3@coding.ms>
 
