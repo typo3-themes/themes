@@ -1,6 +1,12 @@
 # Themes Change-Log
 
 
+### 2018-09-19  Thomas Deuling  <typo3@coding.ms>
+
+*   [BUGFIX] Fixing MySQL database definition for sys_template table.
+
+
+
 ## 2018-09-17  Release of version 8.7.6
 
 ### 2018-09-17  Thomas Deuling  <typo3@coding.ms>
