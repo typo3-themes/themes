@@ -1,6 +1,10 @@
 # Themes Change-Log
 
 
+### 2018-10-29  Thomas Deuling  <typo3@coding.ms>
+
+*   [FEATURE] Adding a files data processor for getting more file link information.
+
 ### 2018-09-19  Thomas Deuling  <typo3@coding.ms>
 
 *   [BUGFIX] Fixing MySQL database definition for sys_template table.
