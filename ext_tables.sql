@@ -1,5 +1,5 @@
 CREATE TABLE sys_template (
-	tx_themes_skin tinytext NOT NULL,
+	tx_themes_skin VARCHAR(50) DEFAULT '' NOT NULL,
 	tx_themes_extensions text,
 	tx_themes_features text,
 );

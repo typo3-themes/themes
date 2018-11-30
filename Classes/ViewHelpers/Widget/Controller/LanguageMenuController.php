@@ -97,7 +97,7 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 
                 $menuEntry['label'] = $label;
                 $menuEntry['class'] = strtolower($class);
-                $menuEntry['flag'] = $flag;
+                $menuEntry['flag'] = strtoupper($flag);
                 $menuEntry['hasTranslation'] = $hasTranslation;
                 $menu[] = $menuEntry;
             }
