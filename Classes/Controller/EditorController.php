@@ -38,7 +38,6 @@ class EditorController extends ActionController
 
     /**
      * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository
-     * @inject
      */
     protected $themeRepository;
 
@@ -110,6 +109,14 @@ class EditorController extends ActionController
             $this->createMenu();
             $this->createButtons();
         }
+    }
+
+    /**
+     * @param \KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository
+     * @return void
+     */
+    public function injectThemeRepository(\KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository) {
+        $this->themeRepository = $themeRepository;
     }
 
     /**
