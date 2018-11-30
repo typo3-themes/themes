@@ -27,13 +27,11 @@ class ThemeController extends ActionController
 
     /**
      * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository
-     * @inject
      */
     protected $themeRepository;
 
     /**
      * @var \TYPO3\CMS\Frontend\Page\PageRepository
-     * @inject
      */
     protected $pageRepository;
 
@@ -46,6 +44,22 @@ class ThemeController extends ActionController
     {
         $this->configurationManager = $configurationManager;
         $this->typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+    }
+
+    /**
+     * @param \KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository
+     * @return void
+     */
+    public function injectThemeRepository(\KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository) {
+        $this->themeRepository = $themeRepository;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Frontend\Page\PageRepository $pageRepository
+     * @return void
+     */
+    public function injectPageRepository(\TYPO3\CMS\Frontend\Page\PageRepository $pageRepository) {
+        $this->pageRepository = $pageRepository;
     }
 
     /**
