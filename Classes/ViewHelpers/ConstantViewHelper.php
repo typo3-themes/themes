@@ -2,21 +2,29 @@
 
 namespace KayStrobach\Themes\ViewHelpers;
 
+use KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Access constants.
  *
  * @author Thomas Deuling <typo3@coding.ms>
  */
-class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class ConstantViewHelper extends AbstractViewHelper
 {
+    /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('constant', 'string', 'Constant name', true);
+    }
+
     /**
      * Gets a constant.
      *
-     * @param string $constant The name of the constant
-     *
-     * @return string Constant-Value
      *
      * = Examples =
      *
@@ -27,26 +35,36 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
      * http://yourdomain.tld/
      * (depending on your domain)
      * </output>
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string Constant-Value
      */
-    public function render($constant = '')
-    {
-        $pageWithTheme = \KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility::find($this->getFrontendController()->id);
-        $pageLanguage = (int) GeneralUtility::_GP('L');
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $constant = $arguments['constant'];
+
+        $pageWithTheme = FindParentPageWithThemeUtility::find(self::getFrontendController()->id);
+        $pageLanguage = (int)GeneralUtility::_GP('L');
         // instantiate the cache
         /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
         $cache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('themes_cache');
         $cacheLifeTime = 60 * 60 * 24 * 7 * 365 * 20;
-        $cacheIdentifierString = 'theme-of-page-'.$pageWithTheme.'-of-language-'.$pageLanguage;
+        $cacheIdentifierString = 'theme-of-page-' . $pageWithTheme . '-of-language-' . $pageLanguage;
         $cacheIdentifier = sha1($cacheIdentifierString);
 
         // If flatSetup is available, cache it
-        $flatSetup = $this->getFrontendController()->tmpl->flatSetup;
+        $flatSetup = self::getFrontendController()->tmpl->flatSetup;
         if ((isset($flatSetup) && (is_array($flatSetup)) && (count($flatSetup) > 0))) {
             $cache->set(
                 $cacheIdentifier,
                 $flatSetup,
                 [
-                        'page-'.$this->getFrontendController()->id,
+                    'page-' . self::getFrontendController()->id,
                 ],
                 $cacheLifeTime
             );
@@ -56,13 +74,13 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 
         // If flatSetup not available and not cached, generate it!
         if (!isset($flatSetup) || !is_array($flatSetup)) {
-            $this->getFrontendController()->tmpl->generateConfig();
-            $flatSetup = $this->getFrontendController()->tmpl->flatSetup;
+            self::getFrontendController()->tmpl->generateConfig();
+            $flatSetup = self::getFrontendController()->tmpl->flatSetup;
             $cache->set(
                 $cacheIdentifier,
                 $flatSetup,
                 [
-                    'page-'.$this->getFrontendController()->id,
+                    'page-' . self::getFrontendController()->id,
                 ],
                 $cacheLifeTime
             );
@@ -70,14 +88,14 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 
         // check if there is a value and return it
         if ((is_array($flatSetup)) && (array_key_exists($constant, $flatSetup))) {
-            return $this->getFrontendController()->tmpl->substituteConstants($flatSetup[$constant]);
+            return self::getFrontendController()->tmpl->substituteConstants($flatSetup[$constant]);
         }
     }
 
     /**
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
-    public function getFrontendController()
+    public static function getFrontendController()
     {
         return $GLOBALS['TSFE'];
     }
