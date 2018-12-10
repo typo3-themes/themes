@@ -7,8 +7,7 @@
   "keywords": ["TYPO3 CMS", "TYPO3 THEMES", "THEMES", "THEMES", "FLUID", "CUSTOMIZE"],
   "require": {
     "typo3/cms-core": ">=8.7.0,<10.0.0",
-    "sjbr/static-info-tables": ">=6.4.0,<6.7.99",
-    "gridelementsteam/gridelements": "dev-master"
+    "sjbr/static-info-tables": ">=6.4.0,<6.7.99"
   },
   "support": {
     "issues": "https://github.com/typo3-themes/themes/issues"
