@@ -9,6 +9,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Backend\Configuration\TsConfigParser;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
@@ -151,5 +152,41 @@ class BackendUtilitySlot extends TsConfigParser
             }
         }
         return $tsconfig;
+    }
+
+    /**
+     * Splits the unparsed TypoScript content into import statements
+     *
+     * @param string $typoScript unparsed TypoScript
+     * @param int $cycleCounter counter to stop recursion
+     * @param bool $returnFiles whether to populate the included Files or not
+     * @param array $includedFiles - by reference - if any included files are added, they are added here
+     * @param string $parentFilenameOrPath the current imported file to resolve relative paths - handled by reference
+     * @return string the unparsed TypoScript with included external files
+     */
+    protected static function addImportsFromExternalFiles($typoScript, $cycleCounter, $returnFiles, &$includedFiles, &$parentFilenameOrPath)
+    {
+        // Check for new syntax "@import 'EXT:bennilove/Configuration/TypoScript/*'"
+        if (strpos($typoScript, '@import \'') !== false || strpos($typoScript, '@import "') !== false) {
+            $splitRegEx = '/\r?\n\s*@import\s[\'"]([^\'"]*)[\'"][\ \t]?/';
+            $parts = preg_split($splitRegEx, LF . $typoScript . LF, -1, PREG_SPLIT_DELIM_CAPTURE);
+            // First text part goes through
+            $newString = $parts[0] . LF;
+            $partCount = count($parts);
+            for ($i = 1; $i + 2 <= $partCount; $i += 2) {
+                $filename = $parts[$i];
+                $tsContentsTillNextInclude = $parts[$i + 1];
+                // Resolve a possible relative paths if a parent file is given
+                if ($parentFilenameOrPath !== '' && $filename[0] === '.') {
+                    $filename = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($parentFilenameOrPath, $filename);
+                }
+                $newString .= self::importExternalTypoScriptFile($filename, $cycleCounter, $returnFiles, $includedFiles);
+                // Prepend next normal (not file) part to output string
+                $newString .= $tsContentsTillNextInclude;
+            }
+            // Add a line break before and after the included code in order to make sure that the parser always has a LF.
+            $typoScript = LF . trim($newString) . LF;
+        }
+        return $typoScript;
     }
 }
