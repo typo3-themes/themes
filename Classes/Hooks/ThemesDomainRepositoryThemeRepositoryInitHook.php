@@ -60,7 +60,7 @@ class ThemesDomainRepositoryThemeRepositoryInitHook
         $extensionsToCheck = array_diff(
             ExtensionManagementUtility::getLoadedExtensionListArray(),
             $this->ignoredExtensions,
-            scandir(PATH_typo3.'sysext')
+            scandir(\TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3/sysext')
         );
 
         // check extensions, which are worth to check
