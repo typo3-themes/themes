@@ -27,7 +27,6 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
      * Language Repository.
      *
      * @var \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository
-     * @inject
      */
     protected $languageRepository;
 
@@ -35,7 +34,6 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
      * ContentObjectRenderer.
      *
      * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-     * @inject
      */
     protected $contentObjectRenderer;
 
@@ -47,6 +45,16 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
     public function injectLanguageRepository(LanguageRepository $languageRepository)
     {
         $this->languageRepository = $languageRepository;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer
+     *
+     * @return void
+     */
+    public function injectContentObjectRenderer(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer)
+    {
+        $this->contentObjectRenderer = $contentObjectRenderer;
     }
 
     /**

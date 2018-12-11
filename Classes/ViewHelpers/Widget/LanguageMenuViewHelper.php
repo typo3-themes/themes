@@ -11,7 +11,6 @@ class LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 {
     /**
      * @var \KayStrobach\Themes\ViewHelpers\Widget\Controller\LanguageMenuController
-     * @inject
      */
     protected $controller;
 
@@ -29,7 +28,6 @@ class LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
      * Language Repository.
      *
      * @var \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository
-     * @inject
      */
     protected $languageRepository;
 
