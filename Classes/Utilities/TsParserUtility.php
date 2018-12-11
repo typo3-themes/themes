@@ -222,7 +222,8 @@ class TsParserUtility implements SingletonInterface
             if (is_array($this->tsParserTplRow)) {
                 /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageRepository */
                 $sysPageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-                $rootLine = $sysPageRepository->getRootLine($pageId);
+                $rootLineUtility = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\RootlineUtility::class, $pageId);
+                $rootLine = $rootLineUtility->get();
                 // This generates the constants/config + hierarchy info for the template.
                 $this->tsParser->runThroughTemplates($rootLine, $templateUid);
                 // The editable constants are returned in an array.
