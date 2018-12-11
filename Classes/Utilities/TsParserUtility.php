@@ -5,6 +5,7 @@ namespace KayStrobach\Themes\Utilities;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class TsParserUtility.
@@ -214,7 +215,7 @@ class TsParserUtility implements SingletonInterface
             $this->tsParser->init();
 
             $this->tsParser->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate');
-            $this->tsParser->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'].ExtensionManagementUtility::siteRelPath('tstemplate');
+            $this->tsParser->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'].PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('tstemplate'));
 
             $this->tsParserTplRow = $this->tsParser->ext_getFirstTemplate($pageId, $templateUid);
 

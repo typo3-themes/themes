@@ -50,9 +50,9 @@ class Theme extends AbstractTheme
             }
             $this->importExtEmConf();
             if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png')) {
-                $this->previewImage = ExtensionManagementUtility::siteRelPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png';
+                $this->previewImage = PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->getExtensionName())) . 'Meta/Screenshots/screenshot.png';
             } else {
-                $this->previewImage = ExtensionManagementUtility::siteRelPath('themes') . 'Resources/Public/Images/screenshot.gif';
+                $this->previewImage = PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('themes')) . 'Resources/Public/Images/screenshot.gif';
             }
             $yamlFile = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml';
             if (file_exists($yamlFile)) {
@@ -133,7 +133,7 @@ class Theme extends AbstractTheme
     public function getRelativePath()
     {
         if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
-            return ExtensionManagementUtility::siteRelPath($this->getExtensionName());
+            return PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->getExtensionName()));
         }
         return '';
     }

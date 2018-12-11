@@ -16,6 +16,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -98,7 +99,7 @@ class EditorController extends ActionController
             $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/Colorpicker');
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendModule');
-            $extRealPath = '../' . ExtensionManagementUtility::siteRelPath('themes');
+            $extRealPath = '../' . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('themes'));
             $pageRenderer->addCssFile($extRealPath . 'Resources/Public/Stylesheet/BackendModule.css');
             $pageRenderer->addCssFile($extRealPath . 'Resources/Public/Contrib/colorpicker/css/colorpicker.css');
             // Initialize icon factory

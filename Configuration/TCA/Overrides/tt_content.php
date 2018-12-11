@@ -88,7 +88,7 @@ $GLOBALS['TCA']['tt_content']['types']['themes_buttoncontent_pi1']['showitem'] =
     [
         'LLL:EXT:themes/Resources/Private/Language/ButtonContent.xlf:tt_content.CType_pi1',
         'themes_buttoncontent_pi1',
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('themes').'Resources/Public/Icons/button_content.svg',
+        \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('themes')).'Resources/Public/Icons/button_content.svg',
     ],
     'CType',
     'themes'

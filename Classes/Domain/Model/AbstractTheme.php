@@ -242,7 +242,7 @@ class AbstractTheme extends AbstractEntity
     public function getRelativePath()
     {
         if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
-            return ExtensionManagementUtility::siteRelPath($this->getExtensionName());
+            return PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->getExtensionName()));
         }
 
         return '';
