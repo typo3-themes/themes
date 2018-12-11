@@ -24,7 +24,7 @@ class Theme extends AbstractTheme
     public function __construct($extensionName)
     {
         parent::__construct($extensionName);
-        if (ExtensionManagementUtility::isLoaded($extensionName, false)) {
+        if (ExtensionManagementUtility::isLoaded($extensionName)) {
             // set needed path variables
             $path = ExtensionManagementUtility::extPath($this->getExtensionName());
             //
