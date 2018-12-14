@@ -16,6 +16,12 @@ class ApplicationContext
      */
     protected $featureManager;
 
+    public function __construct()
+    {
+        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        $this->featureManager = $objectManager->get('TYPO3\CMS\Install\Configuration\FeatureManager');
+    }
+
     /**
      * @param \TYPO3\CMS\Install\Configuration\FeatureManager $featureManager
      *
