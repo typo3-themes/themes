@@ -8,6 +8,8 @@
 namespace KayStrobach\Themes\Utilities;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Install\Configuration\FeatureManager;
 
 class ApplicationContext
 {
@@ -18,17 +20,7 @@ class ApplicationContext
 
     public function __construct()
     {
-        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        $this->featureManager = $objectManager->get('TYPO3\CMS\Install\Configuration\FeatureManager');
-    }
-
-    /**
-     * @param \TYPO3\CMS\Install\Configuration\FeatureManager $featureManager
-     *
-     * @return void
-     */
-    public function injectFeatureManager(\TYPO3\CMS\Install\Configuration\FeatureManager $featureManager) {
-        $this->featureManager = $featureManager;
+        $this->featureManager = GeneralUtility::makeInstance(ObjectManager::class)->get(FeatureManager::class);
     }
 
     /**
