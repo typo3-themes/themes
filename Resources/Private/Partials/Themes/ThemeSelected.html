@@ -51,6 +51,12 @@
 										<select id="categoriesFilterSearchScope" name="scope" class="form-control input-sm">
 											<!-- Don't display all categories once, because of duplicated constants -->
 											<!--option value="all"><f:translate key="categoriesFilterAll" /></option-->
+
+											<f:comment>
+											Andriy Oprysko
+											Without "All" category editor doesn't work properly
+											</f:comment>
+											<option value="all"><f:translate key="categoriesFilterAll" /></option>
 											<f:for each="{themes:iterator.sort(subject: categories, key: 'title')}" as="category">
 												<f:if condition="{category.items}">
 													<option value="{category.key}" {f:if(condition:'{category.key} == {categoriesFilterSettings.searchScope}', then:'selected="selected"')}>
