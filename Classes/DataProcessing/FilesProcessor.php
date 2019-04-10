@@ -114,13 +114,13 @@ class FilesProcessor implements DataProcessorInterface
         // Extract link data
         $files = $fileCollector->getFiles();
         $filesWithLinkData = [];
-        if(count($files) > 0) {
+        if (count($files) > 0) {
             /** @var FileReference $file */
-            foreach($files as $file) {
+            foreach ($files as $file) {
                 $fileProperties = $file->getProperties();
                 $link = trim($fileProperties['link']);
                 $linkData = [];
-                if($link !== '') {
+                if ($link !== '') {
                     $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
                     $linkData = $typoLinkCodecService->decode($link);
                 }
