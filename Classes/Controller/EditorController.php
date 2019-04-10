@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -183,6 +184,23 @@ class EditorController extends ActionController
         $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 
+    protected function getExtensionConfiguration(string $extensionKey) {
+        $configuration = [];
+        if((int)TYPO3_version === 9) {
+            // Attention: Full namespace required!
+            $configuration = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($extensionKey);
+        }
+        if((int)TYPO3_version === 8) {
+            if(isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey])) {
+                $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
+                // Attention: Full namespace required!
+                $typoScriptService = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
+                $configuration = $typoScriptService->convertTypoScriptArrayToPlainArray($configuration);
+            }
+        }
+        return $configuration;
+    }
+
     /**
      * Initializes the controller before invoking an action method.
      *
@@ -193,12 +211,10 @@ class EditorController extends ActionController
         $this->id = intval(GeneralUtility::_GET('id'));
         $this->tsParser = new TsParserUtility();
         // Get extension configuration
-        /** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
-        $configurationUtility = $this->objectManager->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
-        $extensionConfiguration = $configurationUtility->getCurrentConfiguration('themes');
+        $extensionConfiguration = $this->getExtensionConfiguration('themes');
         // Initially, get configuration from extension manager!
-        $extensionConfiguration['categoriesToShow'] = GeneralUtility::trimExplode(',', $extensionConfiguration['categoriesToShow']['value']);
-        $extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(',', $extensionConfiguration['constantsToHide']['value']);
+        $extensionConfiguration['categoriesToShow'] = GeneralUtility::trimExplode(',', $extensionConfiguration['categoriesToShow']);
+        $extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(',', $extensionConfiguration['constantsToHide']);
         // mod.tx_themes.constantCategoriesToShow.value
         // Get value from page/user typoscript
         $externalConstantCategoriesToShow = $this->getBackendUser()->getTSConfig(

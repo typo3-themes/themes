@@ -19,7 +19,7 @@ return [
         'enablecolumns'      => [
             'disabled' => 'hidden',
         ],
-        'iconfile'           => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('themes').'Resources/Public/Icons/button_content.svg',
+        'iconfile'           => 'EXT:themes/Resources/Public/Icons/button_content.svg',
     ],
     'interface' => [
         'showRecordFieldList' => 'linktext,linktarget,linktitle,icon',

@@ -15,11 +15,15 @@ if (!defined('TYPO3_MODE')) {
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'][]
     = 'KayStrobach\\Themes\\Hooks\\ThemesDomainRepositoryThemeRepositoryInitHook->init';
 
+// Add some backend stylesheets and javascript
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][]
+    = \KayStrobach\Themes\Hooks\PageRenderer::class . '->addJSCSS';
+
 /*
  * register used hooks to inject the TS
  */
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'][]
-    = 'KayStrobach\\Themes\\Hooks\\T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook->main';
+    = \KayStrobach\Themes\Hooks\T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook::class . '->main';
 
 /*
  * register hook to manipulate the template module
@@ -61,8 +65,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = '
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'KayStrobach.' . $_EXTKEY,
     'Theme', [
-    'Theme' => 'index',
-],
+        'Theme' => 'index',
+    ],
     []
 );
 

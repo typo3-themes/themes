@@ -3,8 +3,8 @@
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
     [
         'LLL:EXT:themes/Resources/Private/Language/ButtonContent.xlf:tt_content.CType_pi1',
-        $_EXTKEY.'_buttoncontent_pi1',
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($_EXTKEY).'Resources/Public/Icons/button_content.svg',
+        'themes_buttoncontent_pi1',
+        'EXT:themes/Resources/Public/Icons/button_content.svg',
     ],
     'CType',
     'themes'

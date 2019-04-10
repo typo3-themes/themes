@@ -26,9 +26,6 @@ if (TYPO3_MODE === 'BE') {
             'labels'         => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf',
         ]
     );
-    // Add some backend stylesheets and javascript
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][]
-        = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Classes/Hooks/PageRenderer.php:KayStrobach\\Themes\\Hooks\\PageRenderer->addJSCSS';
 }
 
 /*
