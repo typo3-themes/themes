@@ -4,19 +4,12 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-
-/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-
-/** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
-$configurationUtility = $objectManager->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
-$extensionConfiguration = $configurationUtility->getCurrentConfiguration('themes');
-
-/* allow inclusion of static typoscript file */
+/**
+ * Static templates
+ */
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Themes');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/FluidStyledContent', 'Themes (Experimental: Additional add this for using fluid_styled_content)');
 
-unset($extensionConfiguration);
 
 
 if (TYPO3_MODE === 'BE') {
