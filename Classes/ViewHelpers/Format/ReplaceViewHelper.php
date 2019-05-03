@@ -1,4 +1,5 @@
 <?php
+
 namespace KayStrobach\Themes\ViewHelpers\Format;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -9,18 +10,29 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class ReplaceViewHelper extends AbstractViewHelper
 {
 
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('substring', 'string', 'Substring', true);
+        $this->registerArgument('content', 'string', 'Content');
+        $this->registerArgument('replacement', 'string', 'Replacement');
+        $this->registerArgument('count', 'integer', 'Count');
+    }
+
     /**
-     * @param string $substring
-     * @param string $content
-     * @param string $replacement
-     * @param integer $count
      * @return string
      */
-    public function render($substring, $content = null, $replacement = '', $count = null)
+    public function render(): string
     {
+        $substring = $this->arguments['substring'];
+        $content = $this->arguments['content'];
+        $replacement = $this->arguments['replacement'];
+        $count = $this->arguments['count'];
+
         if (null === $content) {
             $content = $this->renderChildren();
         }
         return str_replace($substring, $replacement, $content, $count);
     }
+
 }

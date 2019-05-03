@@ -2,7 +2,7 @@
 
 namespace KayStrobach\Themes\ViewHelpers;
 
-/***************************************************************
+/* * *************************************************************
  *  Copyright notice
  *
  *  (c) 2014 Thomas Deuling <typo3@coding.ms>
@@ -24,8 +24,7 @@ namespace KayStrobach\Themes\ViewHelpers;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
-
+ * ************************************************************* */
 
 /**
  * can be used to access array keys or object properties dynamically.
@@ -34,14 +33,22 @@ namespace KayStrobach\Themes\ViewHelpers;
  */
 class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('object', 'mixed', 'Array or Object', true);
+        $this->registerArgument('index', 'string', 'Index or property');
+    }
+
     /**
-     * @param $object  Object|array Array or Object
-     * @param $index string Index or property
      *
      * @return mixed
      */
-    public function render($object, $index = '')
+    public function render()
     {
+        $object = $this->arguments['object'];
+        $index = $this->arguments['index'];
         if (is_object($object)) {
             if (property_exists($object, $index)) {
                 return $object->$index;
@@ -50,7 +57,6 @@ class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
                 $reflectionClass = new \ReflectionClass($object);
                 $reflectionProperty = $reflectionClass->getProperty($index);
                 $reflectionProperty->setAccessible(true);
-
                 return $reflectionProperty->getValue($object);
             } catch (\Exception $e) {
                 // we want a silent fail here, as the default will return null
@@ -60,5 +66,7 @@ class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
                 return $object[$index];
             }
         }
+        return false;
     }
+
 }

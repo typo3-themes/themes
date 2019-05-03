@@ -15,10 +15,6 @@ if (!defined('TYPO3_MODE')) {
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'][]
     = 'KayStrobach\\Themes\\Hooks\\ThemesDomainRepositoryThemeRepositoryInitHook->init';
 
-// Add some backend stylesheets and javascript
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][]
-    = \KayStrobach\Themes\Hooks\PageRenderer::class . '->addJSCSS';
-
 /*
  * register used hooks to inject the TS
  */

@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'description'        => '',
     'category'           => 'fe',
     'shy'                => 0,
-    'version'            => '9.0.0',
+    'version'            => '9.0.1',
     'dependencies'       => '',
     'conflicts'          => '',
     'priority'           => '',
@@ -32,13 +32,13 @@ $EM_CONF[$_EXTKEY] = [
     'CGLcompliance_note' => '',
     'constraints'        => [
         'depends' => [
-            'typo3'              => '8.7.0-9.5.99',
+            'typo3' => '8.7.0-9.5.99',
             'static_info_tables' => '6.4.0-6.8.99',
             'gridelements' => '8.0.0-9.2.99',
         ],
         'conflicts' => [
             'belayout_tsprovider' => '0.0.0-1.99.99',
-            'yaml_parser'         => '0.0.0-1.99.99',
+            'yaml_parser' => '0.0.0-1.99.99',
         ],
         'suggests' => [
         ],

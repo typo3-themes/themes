@@ -9,15 +9,22 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class PopVariantViewHelper extends AbstractViewHelper
 {
+
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('name', 'string', 'Name', true);
+    }
+
     /**
      * Pop the variant with the variable in $name.
      *
-     * @param string $name
-     *
      * @return void
      */
-    public function render($name)
+    public function render()
     {
+        $name = $this->arguments['name'];
+
         if (false === $this->templateVariableContainer->exists('themes')) {
             return;
         } else {
@@ -43,4 +50,5 @@ class PopVariantViewHelper extends AbstractViewHelper
             }
         }
     }
+
 }

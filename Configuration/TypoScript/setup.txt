@@ -8,7 +8,7 @@ config {
 	sys_language_overlay = hideNonTranslated
 	sys_language_mode = content_fallback
 	doctype = html5
-	metaCharset = UTF-8
+	metaCharset = utf-8
 }
 
 # Plugin configuration

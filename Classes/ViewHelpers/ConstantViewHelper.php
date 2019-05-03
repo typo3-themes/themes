@@ -11,6 +11,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('constant', 'string', 'The constant to process');
+    }
+
     /**
      * Gets a constant.
      *
@@ -28,27 +35,26 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
      * (depending on your domain)
      * </output>
      */
-    public function render($constant = '')
+    public function render(): string
     {
+        $constant = $this->arguments['constant'];
+
         $pageWithTheme = \KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility::find($this->getFrontendController()->id);
-        $pageLanguage = (int) GeneralUtility::_GP('L');
+        $pageLanguage = (int)GeneralUtility::_GP('L');
         // instantiate the cache
         /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
         $cache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('themes_cache');
         $cacheLifeTime = 60 * 60 * 24 * 7 * 365 * 20;
-        $cacheIdentifierString = 'theme-of-page-'.$pageWithTheme.'-of-language-'.$pageLanguage;
+        $cacheIdentifierString = 'theme-of-page-' . $pageWithTheme . '-of-language-' . $pageLanguage;
         $cacheIdentifier = sha1($cacheIdentifierString);
 
         // If flatSetup is available, cache it
         $flatSetup = $this->getFrontendController()->tmpl->flatSetup;
         if ((isset($flatSetup) && (is_array($flatSetup)) && (count($flatSetup) > 0))) {
             $cache->set(
-                $cacheIdentifier,
-                $flatSetup,
-                [
-                        'page-'.$this->getFrontendController()->id,
-                ],
-                $cacheLifeTime
+                $cacheIdentifier, $flatSetup, [
+                'page-' . $this->getFrontendController()->id,
+            ], $cacheLifeTime
             );
         } else {
             $flatSetup = $cache->get($cacheIdentifier);
@@ -59,12 +65,9 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
             $this->getFrontendController()->tmpl->generateConfig();
             $flatSetup = $this->getFrontendController()->tmpl->flatSetup;
             $cache->set(
-                $cacheIdentifier,
-                $flatSetup,
-                [
-                    'page-'.$this->getFrontendController()->id,
-                ],
-                $cacheLifeTime
+                $cacheIdentifier, $flatSetup, [
+                'page-' . $this->getFrontendController()->id,
+            ], $cacheLifeTime
             );
         }
 
@@ -81,4 +84,5 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
     {
         return $GLOBALS['TSFE'];
     }
+
 }

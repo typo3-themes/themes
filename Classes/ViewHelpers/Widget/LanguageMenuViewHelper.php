@@ -48,7 +48,7 @@ class LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
      */
     public function initialize()
     {
-        $this->controllerContext->getRequest()->setControllerExtensionName('Themes');
+        //$this->controllerContext->getRequest()->setControllerExtensionName('Themes');
     }
 
     /**

@@ -149,10 +149,10 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
         $hasTranslation = false;
         /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages_language_overlay');
+            ->getQueryBuilderForTable('pages');
         $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
         $queryBuilder->select('uid')
-            ->from('pages_language_overlay')
+            ->from('pages')
             ->andWhere(
                 $queryBuilder->expr()->eq(
                     'pid', $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)

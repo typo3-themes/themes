@@ -17,15 +17,20 @@ if (TYPO3_MODE === 'BE') {
         'KayStrobach.'.$_EXTKEY, 'web', // Main area
         'mod1', // Name of the module
         '', // Position of the module
-        [// Allowed controller action combinations
+        [
+            // Allowed controller action combinations
             'Editor' => 'index,update,showTheme,setTheme,showThemeDetails,saveCategoriesFilterSettings',
-        ], [// Additional configuration
+        ], [
+            // Additional configuration
             'access'         => 'user,group',
             'icon' => 'EXT:' . $_EXTKEY . '/ext_icon.svg',
             'iconIdentifier' => 'module-themes',
             'labels'         => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf',
         ]
     );
+    // Add some backend stylesheets and javascript
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][]
+        = \KayStrobach\Themes\Hooks\PageRenderer::class . '->addJSCSS';
 }
 
 /*

@@ -100,7 +100,7 @@ class Theme extends AbstractTheme
     public function getAllPreviewImages()
     {
         $buffer = $this->metaInformation['screenshots'];
-        if (count($buffer) > 0) {
+        if (is_array($buffer) && count($buffer) > 0) {
             foreach ($buffer as $key => $image) {
                 // We need to use a real image file path, because in case of using a file
                 // reference, a non admin backend user might not have access to the storage!

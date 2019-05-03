@@ -2,7 +2,6 @@
 
 namespace KayStrobach\Themes\Controller;
 
-use KayStrobach\Themes\Domain\Model\Theme;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -107,17 +106,18 @@ class ThemeController extends ActionController
      */
     protected function evaluateTypoScript($path)
     {
-        /** @var \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper $vh */
-        $vh = $this->objectManager->get('TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper');
+        /** @var $vh \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper */
+        $vh = $this->objectManager->get(\TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper::class);
         $vh->setRenderChildrenClosure(function () {
             return '';
         });
-
         if (version_compare(TYPO3_version, '8.0', '<')) {
             return $vh->render($path);
         } else {
             $vh->setArguments(['typoscriptObjectPath' => $path]);
-
+            /** @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext $renderingContext */
+            $renderingContext = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class);
+            $vh->setRenderingContext($renderingContext);
             return $vh->render();
         }
     }
@@ -136,10 +136,10 @@ class ThemeController extends ActionController
         $pathSegments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $typoscriptObjectPath);
         $setup = $this->typoScriptSetup;
         foreach ($pathSegments as $segment) {
-            if (!array_key_exists(($segment.'.'), $setup)) {
-                throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('TypoScript object path "'.htmlspecialchars($typoscriptObjectPath).'" does not exist', 1253191023);
+            if (!array_key_exists(($segment . '.'), $setup)) {
+                throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist', 1253191023);
             }
-            $setup = $setup[$segment.'.'];
+            $setup = $setup[$segment . '.'];
         }
 
         return $setup;
@@ -155,10 +155,11 @@ class ThemeController extends ActionController
         $templatePaths = $this->getTsArrayByPath('plugin.tx_themes.view.templateRootPaths');
         krsort($templatePaths);
         foreach ($templatePaths as $templatePath) {
-            $cleanedPath = GeneralUtility::getFileAbsFileName($templatePath).'Theme/'.$this->templateName.'.html';
+            $cleanedPath = GeneralUtility::getFileAbsFileName($templatePath) . 'Theme/' . $this->templateName . '.html';
             if (is_file($cleanedPath)) {
                 return $cleanedPath;
             }
         }
+        return null;
     }
 }

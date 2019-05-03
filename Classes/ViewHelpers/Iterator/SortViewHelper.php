@@ -11,14 +11,23 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class SortViewHelper extends AbstractViewHelper
 {
+
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('subject', 'array', 'Subject');
+        $this->registerArgument('key', 'string', 'Key');
+    }
+
     /**
-     * @param array  $subject
-     * @param string $key
      *
      * @return array|null
      */
-    public function render($subject = null, $key = 'label')
+    public function render()
     {
+        $subject = $this->arguments['subject'];
+        $key = $this->arguments['key'];
+
         $this->arguments['key'] = $key;
         if (null === $subject) {
             $subject = $this->renderChildren();
@@ -27,7 +36,6 @@ class SortViewHelper extends AbstractViewHelper
         if (true === is_array($subject)) {
             $sorted = $this->sortArray($subject);
         }
-
         return $sorted;
     }
 
@@ -41,7 +49,6 @@ class SortViewHelper extends AbstractViewHelper
     protected function sortArray($array)
     {
         usort($array, [$this, 'compare']);
-
         return $array;
     }
 
@@ -49,4 +56,5 @@ class SortViewHelper extends AbstractViewHelper
     {
         return strcasecmp($a[$this->arguments['key']], $b[$this->arguments['key']]);
     }
+
 }

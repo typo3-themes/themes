@@ -1,0 +1,39 @@
+# Last change: 2019-02-26
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# XML
+[*.{xml,html,xlf}]
+indent_style = tab
+
+# Stylesheets
+[*.{css,scss,less}]
+indent_style = tab
+indent_size = 4
+
+# Markdown
+[*.md]
+indent_style = tab
+indent_size = 4
+
+# PHP
+[*.php]
+indent_style = space
+indent_size = 4
+
+# JavaScript
+[*.js]
+indent_style = space
+indent_size = 4
+
+# TypoScript
+[*.{ts,typoscript,pagets,constantsts,setupts,txt}]
+indent_style = tab

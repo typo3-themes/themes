@@ -1,5 +1,4 @@
 <?php
-
 namespace KayStrobach\Themes\ViewHelpers\Variable;
 
 /*
@@ -56,42 +55,51 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * @author Claus Due <claus@namelesscoder.net>
  */
-class SetViewHelper extends AbstractViewHelper
-{
-    /**
-     * Set (override) the variable in $name.
-     *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return void
-     */
-    public function render($name, $value = null)
-    {
-        if (null === $value) {
-            $value = $this->renderChildren();
-        }
-        if (false === strpos($name, '.')) {
-            if (true === $this->templateVariableContainer->exists($name)) {
-                $this->templateVariableContainer->remove($name);
-            }
-            $this->templateVariableContainer->add($name, $value);
-        } elseif (1 === substr_count($name, '.')) {
-            $parts = explode('.', $name);
-            $objectName = array_shift($parts);
-            $path = implode('.', $parts);
-            if (false === $this->templateVariableContainer->exists($objectName)) {
-                return;
-            }
-            $object = $this->templateVariableContainer->get($objectName);
-            try {
-                ObjectAccess::setProperty($object, $path, $value);
-                // Note: re-insert the variable to ensure unreferenced values like arrays also get updated
-                $this->templateVariableContainer->remove($objectName);
-                $this->templateVariableContainer->add($objectName, $object);
-            } catch (\Exception $error) {
-                return;
-            }
-        }
-    }
+class SetViewHelper extends AbstractViewHelper {
+
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('name', 'string', 'Name', true);
+		$this->registerArgument('value', 'mixes', 'Value');
+	}
+
+	/**
+	 * Set (override) the variable in $name.
+	 *
+	 * @param string $name
+	 * @param mixed  $value
+	 *
+	 * @return void
+	 */
+	public function render() {
+		$name = $this->arguments['name'];
+		$value = $this->arguments['value'];
+		
+		if (null === $value) {
+			$value = $this->renderChildren();
+		}
+		if (false === strpos($name, '.')) {
+			if (true === $this->templateVariableContainer->exists($name)) {
+				$this->templateVariableContainer->remove($name);
+			}
+			$this->templateVariableContainer->add($name, $value);
+		} elseif (1 === substr_count($name, '.')) {
+			$parts = explode('.', $name);
+			$objectName = array_shift($parts);
+			$path = implode('.', $parts);
+			if (false === $this->templateVariableContainer->exists($objectName)) {
+				return;
+			}
+			$object = $this->templateVariableContainer->get($objectName);
+			try {
+				ObjectAccess::setProperty($object, $path, $value);
+				// Note: re-insert the variable to ensure unreferenced values like arrays also get updated
+				$this->templateVariableContainer->remove($objectName);
+				$this->templateVariableContainer->add($objectName, $object);
+			} catch (\Exception $error) {
+				return;
+			}
+		}
+	}
+
 }

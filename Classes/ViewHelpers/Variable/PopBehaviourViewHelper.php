@@ -9,15 +9,21 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class PopBehaviourViewHelper extends AbstractViewHelper
 {
+
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('name', 'string', 'Name', true);
+    }
+
     /**
      * Pop the behaviour with the variable in $name.
      *
-     * @param string $name
-     *
      * @return void
      */
-    public function render($name)
+    public function render()
     {
+        $name = $this->arguments['name'];
         if (false === $this->templateVariableContainer->exists('themes')) {
             return;
         } else {
@@ -43,4 +49,5 @@ class PopBehaviourViewHelper extends AbstractViewHelper
             }
         }
     }
+
 }
