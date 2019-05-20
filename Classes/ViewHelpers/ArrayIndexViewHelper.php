@@ -33,7 +33,6 @@ namespace KayStrobach\Themes\ViewHelpers;
  */
 class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -68,5 +67,4 @@ class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
         }
         return false;
     }
-
 }

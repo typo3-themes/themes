@@ -184,14 +184,15 @@ class EditorController extends ActionController
         $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 
-    protected function getExtensionConfiguration(string $extensionKey) {
+    protected function getExtensionConfiguration(string $extensionKey)
+    {
         $configuration = [];
-        if((int)TYPO3_version === 9) {
+        if ((int)TYPO3_version === 9) {
             // Attention: Full namespace required!
             $configuration = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($extensionKey);
         }
-        if((int)TYPO3_version === 8) {
-            if(isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey])) {
+        if ((int)TYPO3_version === 8) {
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey])) {
                 $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
                 // Attention: Full namespace required!
                 $typoScriptService = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);

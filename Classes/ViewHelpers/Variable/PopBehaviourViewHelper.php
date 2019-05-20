@@ -9,7 +9,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class PopBehaviourViewHelper extends AbstractViewHelper
 {
-
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -49,5 +48,4 @@ class PopBehaviourViewHelper extends AbstractViewHelper
             }
         }
     }
-
 }
