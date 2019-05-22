@@ -28,7 +28,6 @@ class ReplaceViewHelper extends AbstractViewHelper
         $content = $this->arguments['content'];
         $replacement = $this->arguments['replacement'];
         $count = $this->arguments['count'];
-
         if (null === $content) {
             $content = $this->renderChildren();
         }

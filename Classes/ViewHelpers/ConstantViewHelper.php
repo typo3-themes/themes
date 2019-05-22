@@ -1,5 +1,4 @@
 <?php
-
 namespace KayStrobach\Themes\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;

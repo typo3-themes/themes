@@ -2,15 +2,12 @@
 
 namespace KayStrobach\Themes\Slots;
 
-use KayStrobach\Themes\Domain\Model\Theme;
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Backend\Configuration\TsConfigParser;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * This class automatically adds the theme TSConfig for the current page
@@ -43,7 +40,7 @@ class BackendUtilitySlot extends TsConfigParser
      */
     public function getPagesTsConfigPreInclude($typoscriptDataArray, $pageUid, $rootLine, $returnPartArray)
     {
-        $pageUid = (int) $pageUid;
+        $pageUid = (int)$pageUid;
         if ($pageUid === 0) {
             return [];
         }

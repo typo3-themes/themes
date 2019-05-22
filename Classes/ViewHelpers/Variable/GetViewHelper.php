@@ -1,5 +1,4 @@
 <?php
-
 namespace KayStrobach\Themes\ViewHelpers\Variable;
 
 /*
@@ -51,6 +50,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class GetViewHelper extends AbstractViewHelper
 {
+
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -66,7 +66,6 @@ class GetViewHelper extends AbstractViewHelper
     {
         $name = $this->arguments['name'];
         $useRawKeys = $this->arguments['useRawKeys'];
-
         if (false === strpos($name, '.')) {
             if (true === $this->templateVariableContainer->exists($name)) {
                 return $this->templateVariableContainer->get($name);

@@ -10,8 +10,6 @@ if (!defined('TYPO3_MODE')) {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Themes');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/FluidStyledContent', 'Themes (Experimental: Additional add this for using fluid_styled_content)');
 
-
-
 if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'KayStrobach.'.$_EXTKEY, 'web', // Main area
@@ -42,10 +40,7 @@ if (!isset($GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPrior
 array_push($GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'], 'themefound');
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['themefound'] = 'extensions-themes-overlay-theme';
 
-
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_themes_buttoncontent');
-
-
 
 // register svg icons: identifier and filename
 $iconsSvg = [
@@ -61,18 +56,14 @@ $iconsSvg = [
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 foreach ($iconsSvg as $identifier => $path) {
     $iconRegistry->registerIcon(
-        $identifier,
-        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-        ['source' => 'EXT:' . $_EXTKEY . '/' . $path]
+        $identifier, \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class, ['source' => 'EXT:' . $_EXTKEY . '/' . $path]
     );
 }
 
-
-$GLOBALS['TCA']['pages']['columns']['module']['config']['items'][] =
-    [
-        0 => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:contains-theme',
-        1 => 'themes',
-        2 => 'extensions-themes-contains-theme',
-    ];
+$GLOBALS['TCA']['pages']['columns']['module']['config']['items'][] = [
+    0 => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:contains-theme',
+    1 => 'themes',
+    2 => 'extensions-themes-contains-theme',
+];
 
 $GLOBALS['TCA']['pages']['ctrl']['typeicon_classes']['contains-themes'] = 'extensions-themes-contains-theme';
