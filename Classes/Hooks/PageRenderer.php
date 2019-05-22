@@ -22,7 +22,7 @@ class PageRenderer implements SingletonInterface
      * @return void
      */
     public function addJSCSS(array $parameters, \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer)
-    {	
+    {
         // Add javascript
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendTca');
         // Add css

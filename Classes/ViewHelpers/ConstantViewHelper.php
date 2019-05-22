@@ -10,7 +10,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -83,5 +82,4 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
     {
         return $GLOBALS['TSFE'];
     }
-
 }
