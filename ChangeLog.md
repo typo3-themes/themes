@@ -12,6 +12,8 @@
 *   [TASK] Remove deprecated doc/manual.sxw.
 *   [TASK] Remove command controller for creating Font Awesome 4 configuration - keep Themes simple!
 *   [TASK] PHP code cleanup and remove @inject annotations.
+*   [TASK] Refactor of the language menu widget.
+*   [TASK] Remove static info tables dependency.
 
 
 

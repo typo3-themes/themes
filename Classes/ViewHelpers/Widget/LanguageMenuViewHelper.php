@@ -2,8 +2,6 @@
 
 namespace KayStrobach\Themes\ViewHelpers\Widget;
 
-use KayStrobach\Themes\ViewHelpers\Widget\Controller\LanguageMenuController;
-
 /***************************************************************
  *
  * Copyright notice
@@ -29,12 +27,15 @@ use KayStrobach\Themes\ViewHelpers\Widget\Controller\LanguageMenuController;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
+use KayStrobach\Themes\ViewHelpers\Widget\Controller\LanguageMenuController;
+
 /**
  * Provides a Language Menu.
  *
  * @author Thomas Deuling <typo3@coding.ms>
  */
-class LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
+class LanguageMenuViewHelper extends AbstractWidgetViewHelper
 {
     /**
      * @var \KayStrobach\Themes\ViewHelpers\Widget\Controller\LanguageMenuController
@@ -46,43 +47,9 @@ class LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
      *
      * @return void
      */
-    public function injectController(\KayStrobach\Themes\ViewHelpers\Widget\Controller\LanguageMenuController $controller)
+    public function injectController(LanguageMenuController $controller)
     {
         $this->controller = $controller;
-    }
-
-    /**
-     * Language Repository.
-     *
-     * @var \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository
-     * @inject
-     */
-    protected $languageRepository;
-
-    /**
-     * @param \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository $languageRepository
-     *
-     * @return void
-     */
-    public function injectLanguageRepository(\SJBR\StaticInfoTables\Domain\Repository\LanguageRepository $languageRepository)
-    {
-        $this->languageRepository = $languageRepository;
-    }
-
-    /**
-     * @param \KayStrobach\Themes\ViewHelpers\Widget\Controller\LanguageMenuController $languageController
-     */
-    public function injectLanguageController(LanguageMenuController $languageController)
-    {
-        $this->languageController = $languageController;
-    }
-
-    /**
-     * @return void
-     */
-    public function initialize()
-    {
-        //$this->controllerContext->getRequest()->setControllerExtensionName('Themes');
     }
 
     /**
@@ -92,11 +59,15 @@ class LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
      */
     public function initializeArguments()
     {
-        $this->registerArgument('availableLanguages', 'string', 'Commaseperated list of integers of the languages', false, '');
+        /**
+         * @todo Remove deprecated arguments
+         */
+        $this->registerArgument('availableLanguages', 'string', 'Comma separated list of integers of the languages', false, '');
         $this->registerArgument('currentLanguageUid', 'int', 'Id of the current language', false, 0);
         $this->registerArgument('defaultLanguageIsoCodeShort', 'string', 'IsoCode of the default language', false, 'en');
         $this->registerArgument('defaultLanguageLabel', 'string', 'Label of the default language', false, 'English');
         $this->registerArgument('defaultLanguageFlag', 'string', 'Flag of the default language', false, 'gb');
+        //
         $this->registerArgument('flagIconPath', 'string', 'directory containing the flags', false, '/typo3/sysext/core/Resources/Public/Icons/Flags/SVG/');
         $this->registerArgument('flagIconFileExtension', 'string', 'file extension of the flag files', false, 'svg');
     }
@@ -106,10 +77,6 @@ class LanguageMenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
      */
     public function render()
     {
-        try {
-            return ($this->arguments['availableLanguages'] == '') ? '' : $this->initiateSubRequest();
-        } catch (\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $e) {
-            return 'ERROR: Problem loading image files, flag folder is missing ...';
-        }
+        return $this->initiateSubRequest();
     }
 }
