@@ -2,8 +2,36 @@
 
 namespace KayStrobach\Themes\Controller;
 
+/***************************************************************
+ *
+ * Copyright notice
+ *
+ * (c) 2019 TYPO3 Themes-Team <team@typo3-themes.org>
+ *
+ * All rights reserved
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
+use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class ThemeController.
@@ -27,13 +55,11 @@ class ThemeController extends ActionController
 
     /**
      * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository
-     * @inject
      */
     protected $themeRepository;
 
     /**
      * @var \TYPO3\CMS\Frontend\Page\PageRepository
-     * @inject
      */
     protected $pageRepository;
 
@@ -42,10 +68,27 @@ class ThemeController extends ActionController
      *
      * @return void
      */
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
-        $this->typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT;
+        $this->typoScriptSetup = $this->configurationManager->getConfiguration($configurationType);
+    }
+
+    /**
+     * @param \KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository
+     */
+    public function injectThemeRepository(ThemeRepository $themeRepository)
+    {
+        $this->themeRepository = $themeRepository;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Frontend\Page\PageRepository $pageRepository
+     */
+    public function injectPageRepository(PageRepository $pageRepository)
+    {
+        $this->pageRepository = $pageRepository;
     }
 
     /**
@@ -53,7 +96,10 @@ class ThemeController extends ActionController
      */
     public function initializeAction()
     {
-        $this->themeRepository = new \KayStrobach\Themes\Domain\Repository\ThemeRepository();
+        /**
+         * @todo solve by inject method?!
+         */
+        //$this->themeRepository = new \KayStrobach\Themes\Domain\Repository\ThemeRepository();
     }
 
     /**

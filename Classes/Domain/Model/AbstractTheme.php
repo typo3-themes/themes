@@ -2,6 +2,31 @@
 
 namespace KayStrobach\Themes\Domain\Model;
 
+/***************************************************************
+ *
+ * Copyright notice
+ *
+ * (c) 2019 TYPO3 Themes-Team <team@typo3-themes.org>
+ *
+ * All rights reserved
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
 use KayStrobach\Themes\Utilities\ApplicationContext;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -130,7 +155,7 @@ class AbstractTheme extends AbstractEntity
     {
         return [
             [
-                'file'    => $this->getPreviewImage(),
+                'file' => $this->getPreviewImage(),
                 'caption' => '',
             ],
         ];
@@ -204,9 +229,6 @@ class AbstractTheme extends AbstractEntity
         if (file_exists($typoScriptConfigAbsPath) && is_file($typoScriptConfigAbsPath)) {
             $typoScriptConfig = file_get_contents($typoScriptConfigAbsPath);
         }
-
-
-
         return $typoScriptConfig;
     }
 
@@ -244,7 +266,6 @@ class AbstractTheme extends AbstractEntity
         if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
             return ExtensionManagementUtility::siteRelPath($this->getExtensionName());
         }
-
         return '';
     }
 
@@ -256,29 +277,30 @@ class AbstractTheme extends AbstractEntity
      * @param array $extensions Array of additional TypoScript for extensions
      * @param array $features Array of additional TypoScript for features
      *
+     * @throws \TYPO3\CMS\Install\Configuration\Exception
      * @return void
      */
-    public function addTypoScriptForFe(&$params, TemplateService &$pObj, $extensions=[], $features=[])
+    public function addTypoScriptForFe(&$params, TemplateService &$pObj, $extensions = [], $features = [])
     {
         // @codingStandardsIgnoreStart
         $themeItem = [
-            'constants'           => @is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptConstantsAbsPath()) : '',
-            'config'              => @is_file($this->getTypoScriptAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptAbsPath()) : '',
-            'include_static'      => '',
+            'constants' => @is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptConstantsAbsPath()) : '',
+            'config' => @is_file($this->getTypoScriptAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptAbsPath()) : '',
+            'include_static' => '',
             'include_static_file' => '',
-            'title'               => 'themes:'.$this->getExtensionName(),
-            'uid'                 => md5($this->getExtensionName()),
+            'title' => 'themes:' . $this->getExtensionName(),
+            'uid' => md5($this->getExtensionName()),
         ];
         // @codingStandardsIgnoreEnd
-
+        //
         $themeItem['constants'] .= $this->getBasicConstants($params['pid']);
-        $themeItem['constants'] .= LF.$this->getTypoScriptForLanguage($params, $pObj);
-
+        $themeItem['constants'] .= LF . $this->getTypoScriptForLanguage($params, $pObj);
+        //
         $pObj->processTemplate(
             $themeItem,
-            $params['idList'].',ext_themes'.str_replace('_', '', $this->getExtensionName()),
+            $params['idList'] . ',ext_themes' . str_replace('_', '', $this->getExtensionName()),
             $params['pid'],
-            'ext_themes'.str_replace('_', '', $this->getExtensionName()),
+            'ext_themes' . str_replace('_', '', $this->getExtensionName()),
             $params['templateId']
         );
         //
@@ -288,8 +310,8 @@ class AbstractTheme extends AbstractEntity
                 $themeItem = $this->getTypoScriptDataForProcessing($extension, 'extension');
                 $pObj->processTemplate(
                     $themeItem,
-                    $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
-                    $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['idList'] . ',ext_theme' . str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'], 'ext_theme' . str_replace('_', '', $this->getExtensionName()),
                     $params['templateId']
                 );
             }
@@ -301,8 +323,8 @@ class AbstractTheme extends AbstractEntity
                 $themeItem = $this->getTypoScriptDataForProcessing($feature, 'feature');
                 $pObj->processTemplate(
                     $themeItem,
-                    $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
-                    $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['idList'] . ',ext_theme' . str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'], 'ext_theme' . str_replace('_', '', $this->getExtensionName()),
                     $params['templateId']
                 );
             }
@@ -314,7 +336,7 @@ class AbstractTheme extends AbstractEntity
      * @param $type string Typ can be either extension or feature.
      * @return array
      */
-    protected function getTypoScriptDataForProcessing($key, $type='extension')
+    protected function getTypoScriptDataForProcessing($key, $type = 'extension')
     {
         $relPath = '';
         $keyParts = explode('_', $key);
@@ -378,44 +400,47 @@ class AbstractTheme extends AbstractEntity
         $outputBuffer = '';
         $languageUids = [];
         $key = 'themes.languages';
-        if ($languages->rowCount()>0) {
+        if ($languages->rowCount() > 0) {
             while ($language = $languages->fetch()) {
                 $languageUids[] = $language['uid'];
-                $buffer = '[globalVar = GP:L='.$language['uid'].']'.LF;
-                $buffer .= $key.'.current {'.LF;
-                $buffer .= ' uid = '.$language['uid'].LF;
-                $buffer .= ' label = '.$language['title'].LF;
-                $buffer .= ' labelLocalized = '.$language['lg_name_local'].LF;
-                $buffer .= ' labelEnglish = '.$language['lg_name_en'].LF;
-                $buffer .= ' flag = '.$language['flag'].LF;
-                $buffer .= ' isoCode = '.$language['lg_collate_locale'].LF;
-                $buffer .= ' isoCodeShort = '.array_shift(explode('_', $language['lg_collate_locale'])).LF;
-                $buffer .= ' isoCodeHtml = '.str_replace('_', '-', $language['lg_collate_locale']).LF;
-                $buffer .= '} '.LF;
-                $buffer .= '[global]'.LF;
+                $buffer = '[globalVar = GP:L=' . $language['uid'] . ']' . LF;
+                $buffer .= $key . '.current {' . LF;
+                $buffer .= ' uid = ' . $language['uid'] . LF;
+                $buffer .= ' label = ' . $language['title'] . LF;
+                $buffer .= ' labelLocalized = ' . $language['lg_name_local'] . LF;
+                $buffer .= ' labelEnglish = ' . $language['lg_name_en'] . LF;
+                $buffer .= ' flag = ' . $language['flag'] . LF;
+                $buffer .= ' isoCode = ' . $language['lg_collate_locale'] . LF;
+                $buffer .= ' isoCodeShort = ' . array_shift(explode('_', $language['lg_collate_locale'])) . LF;
+                $buffer .= ' isoCodeHtml = ' . str_replace('_', '-', $language['lg_collate_locale']) . LF;
+                $buffer .= '} ' . LF;
+                $buffer .= '[global]' . LF;
                 $outputBuffer .= $buffer;
             }
-            $outputBuffer .= $key.'.available='.implode(',', $languageUids).LF;
+            $outputBuffer .= $key . '.available=' . implode(',', $languageUids) . LF;
         } else {
-            $outputBuffer .= $key.'.available='.LF;
+            $outputBuffer .= $key . '.available=' . LF;
         }
         return $outputBuffer;
     }
 
     /**
      * Returns the basic TypoScript constants
+     *
      * @param $pid
      * @return string
+     * @throws \TYPO3\CMS\Install\Configuration\Exception
      */
     protected function getBasicConstants($pid)
     {
         $buffer = '';
-        $buffer .= LF.'themes.relativePath = '.$this->getRelativePath();
-        $buffer .= LF.'themes.name = '.$this->getExtensionName();
-        $buffer .= LF.'themes.templatePageId = '.$pid;
-        $buffer .= LF.'themes.mode.context = '.ApplicationContext::getApplicationContext();
-        $buffer .= LF.'themes.mode.isDevelopment = '.(int) ApplicationContext::isDevelopmentModeActive();
-        $buffer .= LF.'themes.mode.isProduction = '.(int) !ApplicationContext::isDevelopmentModeActive();
+        $buffer .= LF . 'themes.relativePath = ' . $this->getRelativePath();
+        $buffer .= LF . 'themes.name = ' . $this->getExtensionName();
+        $buffer .= LF . 'themes.templatePageId = ' . $pid;
+        $buffer .= LF . 'themes.mode.context = ' . ApplicationContext::getApplicationContext();
+        $buffer .= LF . 'themes.mode.isDevelopment = ' . (int)ApplicationContext::isDevelopmentModeActive();
+        $buffer .= LF . 'themes.mode.isProduction = ' . (int)!ApplicationContext::isDevelopmentModeActive();
         return $buffer;
     }
+
 }

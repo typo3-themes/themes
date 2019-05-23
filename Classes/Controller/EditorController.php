@@ -2,6 +2,32 @@
 
 namespace KayStrobach\Themes\Controller;
 
+/***************************************************************
+ *
+ * Copyright notice
+ *
+ * (c) 2019 TYPO3 Themes-Team <team@typo3-themes.org>
+ *
+ * All rights reserved
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
+use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use KayStrobach\Themes\Utilities\CheckPageUtility;
 use KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility;
 use KayStrobach\Themes\Utilities\ThemeEnabledCondition;
@@ -38,7 +64,6 @@ class EditorController extends ActionController
 
     /**
      * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository
-     * @inject
      */
     protected $themeRepository;
 
@@ -85,6 +110,14 @@ class EditorController extends ActionController
      * @var \KayStrobach\Themes\Domain\Model\Theme
      */
     protected $selectedTheme = null;
+
+    /**
+     * @param \KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository
+     */
+    public function injectThemeRepository(ThemeRepository $themeRepository)
+    {
+        $this->themeRepository = $themeRepository;
+    }
 
     /**
      * Set up the doc header properly here
@@ -208,7 +241,7 @@ class EditorController extends ActionController
      */
     protected function initializeAction()
     {
-        $this->id = intval(GeneralUtility::_GET('id'));
+        $this->id = (int)GeneralUtility::_GET('id');
         $this->tsParser = new TsParserUtility();
         // Get extension configuration
         $extensionConfiguration = $this->getExtensionConfiguration('themes');
@@ -442,14 +475,14 @@ class EditorController extends ActionController
         }
         // Save settings
         $this->getBackendUser()->pushModuleData('mod-web_ThemesMod1/Categories/Filter/Settings', $categoriesFilterSettings);
+        //
         // Create JSON-String
-        $response = [];
-        $response['success'] = '';
-        $response['error'] = '';
-        $response['data'] = $categoriesFilterSettings;
-        $json = json_encode($response);
-
-        return $json;
+        $response = [
+            'success' => '',
+            'error' => '',
+            'data' => $categoriesFilterSettings,
+        ];
+        return json_encode($response);
     }
 
     /**

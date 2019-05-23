@@ -83,7 +83,7 @@ class GetViewHelper extends AbstractViewHelper
                     $value = $templateVariableRoot;
                     foreach ($segments as $segment) {
                         if (true === ctype_digit($segment)) {
-                            $segment = intval($segment);
+                            $segment = (int)$segment;
                             $index = 0;
                             // Note: this loop approach is not a stupid solution. If you doubt this,
                             // attempt to feth a number at a numeric index from ObjectStorage ;)

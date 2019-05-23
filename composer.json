@@ -8,7 +8,9 @@
   "require": {
     "typo3/cms-core": ">=9.5.7|<9.6",
     "sjbr/static-info-tables": ">=6.4.0,<6.8",
-    "gridelementsteam/gridelements": ">=9.2.1,<9.9"
+    "gridelementsteam/gridelements": ">=9.2.1,<9.9",
+    "ext-json": "*",
+    "ext-pdo": "*"
   },
   "support": {
     "issues": "https://github.com/typo3-themes/themes/issues"

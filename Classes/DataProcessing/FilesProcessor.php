@@ -1,22 +1,34 @@
 <?php
+
 namespace KayStrobach\Themes\DataProcessing;
 
-/*
- * This file is part of the TYPO3 CMS project.
+/***************************************************************
  *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * Copyright notice
  *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
+ * (c) 2019 TYPO3 Themes-Team <team@typo3-themes.org>
  *
- * The TYPO3 project - inspiring people to share!
- */
+ * All rights reserved
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 use TYPO3\CMS\Frontend\Resource\FileCollector;
@@ -55,16 +67,16 @@ class FilesProcessor implements DataProcessorInterface
         if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) {
             return $processedData;
         }
-
+        //
         // gather data
         /** @var FileCollector $fileCollector */
         $fileCollector = GeneralUtility::makeInstance(FileCollector::class);
-
+        //
         // references / relations
         if (!empty($processorConfiguration['references.'])) {
             $referenceConfiguration = $processorConfiguration['references.'];
             $relationField = $cObj->stdWrapValue('fieldName', $referenceConfiguration);
-
+            //
             // If no reference fieldName is set, there's nothing to do
             if (!empty($relationField)) {
                 // Fetch the references of the default element
@@ -74,28 +86,28 @@ class FilesProcessor implements DataProcessorInterface
                 }
             }
         }
-
+        //
         // files
         $files = $cObj->stdWrapValue('files', $processorConfiguration);
         if ($files) {
             $files = GeneralUtility::intExplode(',', $files, true);
             $fileCollector->addFiles($files);
         }
-
+        //
         // collections
         $collections = $cObj->stdWrapValue('collections', $processorConfiguration);
         if (!empty($collections)) {
             $collections = GeneralUtility::trimExplode(',', $collections, true);
             $fileCollector->addFilesFromFileCollections($collections);
         }
-
+        //
         // folders
         $folders = $cObj->stdWrapValue('folders', $processorConfiguration);
         if (!empty($folders)) {
             $folders = GeneralUtility::trimExplode(',', $folders, true);
             $fileCollector->addFilesFromFolders($folders, !empty($processorConfiguration['folders.']['recursive']));
         }
-
+        //
         // make sure to sort the files
         $sortingProperty = $cObj->stdWrapValue('sorting', $processorConfiguration);
         if ($sortingProperty) {
@@ -104,23 +116,22 @@ class FilesProcessor implements DataProcessorInterface
                 isset($processorConfiguration['sorting.']) ? $processorConfiguration['sorting.'] : [],
                 'ascending'
             );
-
             $fileCollector->sort($sortingProperty, $sortingDirection);
         }
-
+        //
         // set the files into a variable, default "files"
         $targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, 'files');
-
+        //
         // Extract link data
         $files = $fileCollector->getFiles();
         $filesWithLinkData = [];
-        if(count($files) > 0) {
+        if (count($files) > 0) {
             /** @var FileReference $file */
-            foreach($files as $file) {
+            foreach ($files as $file) {
                 $fileProperties = $file->getProperties();
                 $link = trim($fileProperties['link']);
                 $linkData = [];
-                if($link !== '') {
+                if ($link !== '') {
                     $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
                     $linkData = $typoLinkCodecService->decode($link);
                 }
@@ -130,10 +141,10 @@ class FilesProcessor implements DataProcessorInterface
                 ];
             }
         }
-
+        //
         $processedData[$targetVariableName] = $files;
         $processedData[$targetVariableName . 'WithLinkData'] = $filesWithLinkData;
-
         return $processedData;
     }
+
 }
