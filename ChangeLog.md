@@ -1,6 +1,17 @@
 # Themes Change-Log
 
 
+
+### 2019-05-23  Thomas Deuling  <typo3@coding.ms>
+
+*   [TASK] Rise version for TYPO3 9.5 only.
+*   [TASK] Remove ext_icon.png.
+*   [TASK] Remove command controller for creating Font Awesome 4 configuration - keep Themes simple!
+
+
+
+
+
 ### 2018-10-29  Thomas Deuling  <typo3@coding.ms>
 
 *   [FEATURE] Adding a files data processor for getting more file link information.

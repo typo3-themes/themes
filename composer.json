@@ -6,9 +6,9 @@
   "license": ["GPL-2.0+"],
   "keywords": ["TYPO3 CMS", "TYPO3 THEMES", "THEMES", "THEMES", "FLUID", "CUSTOMIZE"],
   "require": {
-    "typo3/cms-core": "~8.7.0|<9.6",
+    "typo3/cms-core": ">=9.5.7|<9.6",
     "sjbr/static-info-tables": ">=6.4.0,<6.8",
-    "gridelementsteam/gridelements": ">=8.0.0,<9.3"
+    "gridelementsteam/gridelements": ">=9.2.1,<9.9"
   },
   "support": {
     "issues": "https://github.com/typo3-themes/themes/issues"
