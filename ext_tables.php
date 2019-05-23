@@ -50,7 +50,7 @@ $iconsSvg = [
     'switch-on' => 'Resources/Public/Icons/power_green.svg',
     'switch-disable' => 'Resources/Public/Icons/power_orange.svg',
     'overlay-theme' => 'Resources/Public/Icons/overlay_theme.svg',
-    'contains-theme' => 'ext_icon.png',
+    'contains-theme' => 'ext_icon.svg',
     'new_content_el_buttoncontent' => 'Resources/Public/Icons/new_content_el_ButtonContent.svg',
 ];
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
