@@ -20,3 +20,7 @@ For performance reasons Themes tries to read only extensions which extension key
 ### TypoScript file extensions
 
 The TypoScript file extension must be *typoscript* - for example *setup.typoscript*, *constants.typoscript*, *tsconfig.typoscript* - otherwise Themes won't load show up your theme!
+
+### Constants-ViewHelper
+
+The constants view helper is removed for achieving a better performance and less complexity. For migration just pass your constants by using `plugin.tx_themes.settings.`
