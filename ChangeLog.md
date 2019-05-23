@@ -4,6 +4,7 @@
 
 ### 2019-05-23  Thomas Deuling  <typo3@coding.ms>
 
+*   [TASK] Remove YAML parse, because it's already shipped by TYPO3 itself.
 *   [TASK] Rise version for TYPO3 9.5 only.
 *   [TASK] Remove ext_icon.png.
 *   [TASK] Remove command controller for creating Font Awesome 4 configuration - keep Themes simple!
