@@ -51,11 +51,6 @@ if (TYPO3_MODE === 'BE') {
 }
 
 /*
- * register command controller
- */
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'KayStrobach\Themes\Command\ThemesCommandController';
-
-/*
  * register frontend plugin to allow usage of extbase controller
  */
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(

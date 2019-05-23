@@ -1,9 +1,0 @@
-TCEFORM.tt_content.tx_themes_icon.addItems {
-
-	# This is the list of available icons for all bootstrap based themes
-	# you can add items for your own font icons in your theme of course
-
-	<f:for each="{icons}" as="icon">
-	    {icon} = LLL:EXT:theme_bootstrap/Resources/Private/Language/locallang.xlf:icon.{icon}
-    </f:for>
-}
