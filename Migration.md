@@ -12,3 +12,11 @@ Which configuration can be removed from your theme:
 *   The `availableLanguages` setting must be completely removed. This setting/parameter is not longer available in the LanguageMenu widget. This configuration is solved simply by activating or deactivating languages in your site configuration.
 *   The `currentLanguageUid` setting is no longer required and will be fetched immediately from the *TSFE*.
 *   The default values for `defaultLanguageIsoCodeShort`, `defaultLanguageLabel` and `defaultLanguageFlag` are no longer required and will be read from the site configuration.
+
+### Extension names of theme extensions
+
+For performance reasons Themes tries to read only extensions which extension key starts with *theme_*. If you've named your theme extension with an different name, you need to modify the extension configuration (you might change or remove the *themeExtensionsStartWith* setting).
+
+### TypoScript file extensions
+
+The TypoScript file extension must be *typoscript* - for example *setup.typoscript*, *constants.typoscript*, *tsconfig.typoscript* - otherwise Themes won't load show up your theme!

@@ -74,7 +74,7 @@ class BackendUtilitySlot extends TsConfigParser
         if (!isset($theme)) {
             return [];
         }
-        // Append Theme tsconfig.txt
+        // Append Theme tsconfig.typoscript
         $defaultDataArray['defaultPageTSconfig'] = array_shift($typoscriptDataArray);
         //
         // Fetch Theme Extensions and Features
@@ -161,16 +161,13 @@ class BackendUtilitySlot extends TsConfigParser
             $relPath = $extensionPath . 'Resources/Private/Extensions/' . $keyParts[1] . '/PageTS/';
         }
         //
+        // Get page TypoScript
         $tsconfig = '';
-        $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'tsconfig.txt');
-        if (file_exists($constantsFile)) {
-            $tsconfig = file_get_contents($constantsFile);
-        } else {
-            $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'tsconfig.typoscript');
-            if (file_exists($constantsFile)) {
-                $tsconfig = file_get_contents($constantsFile);
-            }
+        $tsconfigFile = GeneralUtility::getFileAbsFileName($relPath . 'tsconfig.typoscript');
+        if (file_exists($tsconfigFile)) {
+            $tsconfig = file_get_contents($tsconfigFile);
         }
         return $tsconfig;
     }
+
 }

@@ -50,7 +50,6 @@ $EM_CONF[$_EXTKEY] = [
     'constraints' => [
         'depends' => [
             'typo3' => '9.5.7-9.5.99',
-            'static_info_tables' => '6.4.0-6.8.99',
             'gridelements' => '9.2.1-9.99.99',
         ],
         'conflicts' => [

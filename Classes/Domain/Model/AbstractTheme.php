@@ -355,24 +355,19 @@ class AbstractTheme extends AbstractEntity
             'title' => 'themes:' . $this->getExtensionName() . ':' . $relPath,
             'uid' => md5($this->getExtensionName() . ':' . $relPath),
         ];
-        $setupFile = GeneralUtility::getFileAbsFileName($relPath . 'setup.txt');
+        //
+        // TypoScript setup, if available
+        $setupFile = GeneralUtility::getFileAbsFileName($relPath . 'setup.typoscript');
         if (file_exists($setupFile)) {
             $themeItem['config'] = file_get_contents($setupFile);
-        } else {
-            $setupFile = GeneralUtility::getFileAbsFileName($relPath . 'setup.typoscript');
-            if (file_exists($setupFile)) {
-                $themeItem['config'] = file_get_contents($setupFile);
-            }
         }
-        $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'constants.txt');
+        //
+        // TypoScript constants, if available
+        $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'constants.typoscript');
         if (file_exists($constantsFile)) {
             $themeItem['constants'] = file_get_contents($constantsFile);
-        } else {
-            $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'constants.typoscript');
-            if (file_exists($constantsFile)) {
-                $themeItem['constants'] = file_get_contents($constantsFile);
-            }
         }
+        //
         return $themeItem;
     }
 
@@ -384,6 +379,11 @@ class AbstractTheme extends AbstractEntity
      */
     public function getTypoScriptForLanguage(&$params, &$pObj)
     {
+
+        /**
+         * @todo refactor
+         */
+
         /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_language');

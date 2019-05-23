@@ -91,7 +91,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     /**
      * Adds an object to this repository.
      *
-     * @param \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme $object The object to add
+     * @param \KayStrobach\Themes\Domain\Model\AbstractTheme $object The object to add
      *
      * @return void
      *
@@ -105,7 +105,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     /**
      * Removes an object from this repository.
      *
-     * @param \TYPO3\CMS\ThemesManager\Domain\Model\AbstractTheme $object The object to remove
+     * @param \KayStrobach\Themes\Domain\Model\AbstractTheme $object The object to remove
      *
      * @throws \TYPO3\CMS\Extbase\Object\Exception
      *

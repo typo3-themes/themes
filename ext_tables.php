@@ -8,7 +8,7 @@ if (!defined('TYPO3_MODE')) {
  * Static templates
  */
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Themes');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/FluidStyledContent', 'Themes (Experimental: Additional add this for using fluid_styled_content)');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/FluidStyledContent', 'Themes (For backward compatibility: Additional add this for using fluid_styled_content)');
 
 if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(

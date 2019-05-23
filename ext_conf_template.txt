@@ -2,3 +2,5 @@
 categoriesToShow = theme,languages,socialmedia,forms,extension,bootstrap,colors,font,meta,metaDefaults,pages,container,menu,header,footer
 # cat=basic; type=string; label=constants to hide
 constantsToHide = dateFormat,timeFormat,dateTimeFormat
+# cat=basic; type=string; label=Contains the string with which all theme extensions have to start.:If you leave it blank, all extensions will be checked if they are selectable themes (bad idea if you like good performance!)
+themeExtensionsStartWith = theme_

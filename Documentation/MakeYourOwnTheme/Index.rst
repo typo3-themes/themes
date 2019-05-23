@@ -22,16 +22,16 @@ A theme is basicly a set of TYPOScript files stored in an extension with some ad
 
 .. table:: Minimum set of files for a theme
 
-	================================= ======================================================================
-	 File                             Function of the file
-	================================= ======================================================================
-	ext_emconf.php                    Needed for every extension in TYPO3
-	ext_icon.gif                      Icon for the extensionmanager
-	Meta/theme.yaml                   contains some meta data
-	Configuration/Theme/constants.txt contains constants to easily configure a theme
-	Configuration/Theme/setup.txt     contains the needed TYPOScript to render the frontend
-	Configuration/Theme/tsconfig.txt  contains the PageTS to configure the pagebranch of a selected theme
-	================================= ======================================================================
+	======================================== ======================================================================
+	 File                                    Function of the file
+	======================================== ======================================================================
+	ext_emconf.php                           Needed for every extension in TYPO3
+	ext_icon.gif                             Icon for the extensionmanager
+	Meta/theme.yaml                          contains some meta data
+	Configuration/Theme/constants.typoscript contains constants to easily configure a theme
+	Configuration/Theme/setup.typoscript     contains the needed TYPOScript to render the frontend
+	Configuration/Theme/tsconfig.typoscript  contains the PageTS to configure the pagebranch of a selected theme
+	======================================== ======================================================================
 
 Additionally there are some files, which are useful to achieve some higher goals.
 
@@ -43,7 +43,6 @@ Additionally there are some files, which are useful to achieve some higher goals
 	Resources/Private/*               contains resources, which are not served to the user
 	Resources/Public/*                contains resources, which are normally served to the user
 	Documentation/*                   contains theme documentation
-	Configuration/t3jquery.txt        contains the t3jquery configuration
 	ext_tables.php                    usually contains backwards compat stuff to use a theme standalone
 	Configuration/TypoScript          used for compatibility with ext_tables.php
 	================================= ======================================================================
