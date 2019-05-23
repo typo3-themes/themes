@@ -8,6 +8,7 @@
 *   [TASK] Rise version for TYPO3 9.5 only.
 *   [TASK] Remove ext_icon.png.
 *   [TASK] Remove ext_autoload.php.
+*   [TASK] Remove deprecated doc/manual.sxw.
 *   [TASK] Remove command controller for creating Font Awesome 4 configuration - keep Themes simple!
 
 
