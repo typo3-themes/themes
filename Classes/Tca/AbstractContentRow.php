@@ -109,6 +109,16 @@ abstract class AbstractContentRow
     }
 
     /**
+     * Checks if a backend user is an admin user and debug mode is enabled.
+     *
+     * @return bool
+     */
+    protected function isAdminAndDebug()
+    {
+        return $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBeUser()->isAdmin();
+    }
+
+    /**
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
     protected function getBeUser()

@@ -14,6 +14,7 @@
 *   [TASK] PHP code cleanup and remove @inject annotations.
 *   [TASK] Refactor of the language menu widget.
 *   [TASK] Remove static info tables dependency.
+*   [TASK] Backend information for variants, behaviour and responsives are only visible if user is admin and debug mode is enabled.
 *   [BREAKING] Remove logic for setup.txt/constants.txt/tsconfig.txt - only *.typoscript files will be recognized.
 
 

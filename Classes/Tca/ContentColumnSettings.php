@@ -106,7 +106,7 @@ class ContentColumnSettings extends AbstractContentRow
         $setValue = htmlspecialchars(implode(',', $setClasses));
         // Allow admins to see the internal identifiers
         $inputType = 'hidden';
-        if ($this->isAdmin()) {
+        if ($this->isAdminAndDebug()) {
             $inputType = 'text';
         }
         // Build hidden field structure
