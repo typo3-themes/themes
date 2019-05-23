@@ -17,6 +17,7 @@
 *   [TASK] Backend information for variants, behaviour and responsives are only visible if user is admin and debug mode is enabled.
 *   [BREAKING] Remove logic for setup.txt/constants.txt/tsconfig.txt - only *.typoscript files will be recognized.
 *   [BREAKING] Remove constant view helper including cache logic - please pass your constants by plugin settings for achieving better performance.
+*   [TASK] Remove t3jquery.txt configuration.
 
 
 
