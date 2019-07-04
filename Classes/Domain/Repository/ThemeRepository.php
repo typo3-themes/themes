@@ -30,6 +30,7 @@ namespace KayStrobach\Themes\Domain\Repository;
 use KayStrobach\Themes\Domain\Model\AbstractTheme;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
@@ -50,38 +51,15 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     protected $addedObjects = [];
 
     /**
-     * creates the repo.
-     *
      * @return void
-     *
-     * @todo missing detailed description
      */
     public function __construct()
     {
-        /**
-         * @var \TYPO3\CMS\Core\Log\LogManager
-         */
-        $logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
-
-        // hook to recognize themes, this is the magic point, why it's possible to support so many theme formats and types :D
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'])) {
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'])) {
-                $hookParameters = [];
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'] as $hookFunction) {
-                    $logger->getLogger()->warning(
-                        'Theme loader found '.$hookFunction.
-                        ' - sadly this loader uses the old hook, please fix this, should be KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository nowThem'
-                    );
-                    GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-                }
-            }
-        }
-
+        // Hook to recognize themes, this is the magic point, why it's possible to support so many theme formats and types.
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'])) {
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'])) {
                 $hookParameters = [];
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'] as $hookFunction) {
-                    $logger->getLogger()->warning('Theme loader found '.$hookFunction);
                     GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
                 }
             }
@@ -92,9 +70,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * Adds an object to this repository.
      *
      * @param \KayStrobach\Themes\Domain\Model\AbstractTheme $object The object to add
-     *
      * @return void
-     *
      * @api
      */
     public function add($object)
@@ -106,54 +82,44 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * Removes an object from this repository.
      *
      * @param \KayStrobach\Themes\Domain\Model\AbstractTheme $object The object to remove
-     *
      * @throws \TYPO3\CMS\Extbase\Object\Exception
-     *
      * @return void
-     *
      * @api
      */
     public function remove($object)
     {
-        throw new Exception('The method '.__FUNCTION__.' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
 
     /**
      * Replaces an object by another.
      *
      * @param AbstractTheme $existingObject The existing object
-     * @param AbstractTheme $newObject      The new object
-     *
+     * @param AbstractTheme $newObject The new object
      * @throws \TYPO3\CMS\Extbase\Object\Exception
-     *
      * @return void
-     *
      * @api
      */
     public function replace($existingObject, $newObject)
     {
-        throw new Exception('The method '.__FUNCTION__.' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
 
     /**
      * Replaces an existing object with the same identifier by the given object.
      *
      * @param AbstractTheme $modifiedObject The modified object
-     *
      * @throws \TYPO3\CMS\Extbase\Object\Exception
-     *
      * @return void
-     *
      * @api
      */
     public function update($modifiedObject)
     {
-        throw new Exception('The method '.__FUNCTION__.' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
 
     /**
-     * Returns all objects of this repository add()ed but not yet persisted to
-     * the storage layer.
+     * Returns all objects of this repository add()ed but not yet persisted to the storage layer.
      *
      * @return array An array of objects
      */
@@ -163,23 +129,20 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     }
 
     /**
-     * Returns an array with objects remove()d from the repository that
-     * had been persisted to the storage layer before.
+     * Returns an array with objects remove()d from the repository that had been persisted to the storage layer before.
      *
      * @throws \TYPO3\CMS\Extbase\Object\Exception
-     *
      * @return void
      */
     public function getRemovedObjects()
     {
-        throw new Exception('The method '.__FUNCTION__.' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
 
     /**
      * Returns all objects of this repository.
      *
      * @return array An array of objects, empty if no objects found
-     *
      * @api
      */
     public function findAll()
@@ -191,7 +154,6 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * Returns the total number objects of this repository.
      *
      * @return int The object count
-     *
      * @api
      */
     public function countAll()
@@ -200,11 +162,9 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     }
 
     /**
-     * Removes all objects of this repository as if remove() was called for
-     * all of them.
+     * Removes all objects of this repository as if remove() was called for all of them.
      *
      * @return void
-     *
      * @api
      */
     public function removeAll()
@@ -216,9 +176,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * Finds an object matching the given identifier.
      *
      * @param int $uid The identifier of the object to find
-     *
      * @return AbstractTheme The matching object if found, otherwise NULL
-     *
      * @api
      */
     public function findByUid($uid)
@@ -230,7 +188,6 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
 
     /**
      * @param mixed $uid
-     *
      * @return AbstractTheme
      */
     public function findByIdentifier($uid)
@@ -240,28 +197,24 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
 
     /**
      * @param int $pid id of the Page
-     *
      * @return mixed
      */
     public function findByPageId($pid)
     {
-        $template = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+        $template = GeneralUtility::makeInstance(ExtendedTemplateService::class);
         $template->tt_track = 0;
         $template->init();
         $templateRow = $template->ext_getFirstTemplate($pid);
-
         return $this->findByUid($templateRow['tx_themes_skin']);
     }
 
     /**
      * @param int $pid
-     *
      * @return \KayStrobach\Themes\Domain\Model\Theme
      */
     public function findByPageOrRootline($pid)
     {
         $rootline = BackendUtility::BEgetRootLine($pid);
-
         foreach ($rootline as $page) {
             $theme = $this->findByPageId($page['uid']);
             if ($theme !== null) {
@@ -279,45 +232,38 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * ).
      *
      * @param array $defaultOrderings The property names to order by
-     *
      * @throws \TYPO3\CMS\Extbase\Object\Exception
-     *
      * @return void
-     *
      * @api
      */
     public function setDefaultOrderings(array $defaultOrderings)
     {
-        throw new Exception('The method '.__FUNCTION__.' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
 
     /**
      * Sets the default query settings to be used in this repository.
      *
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
-     *
      * @throws \TYPO3\CMS\Extbase\Object\Exception
-     *
      * @return void
-     *
      * @api
      */
     public function setDefaultQuerySettings(QuerySettingsInterface $defaultQuerySettings)
     {
-        throw new Exception('The method '.__FUNCTION__.' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
 
     /**
      * Returns a query for objects of this repository.
      *
      * @throws \TYPO3\CMS\Extbase\Object\Exception
-     *
      * @return void
-     *
      * @api
      */
     public function createQuery()
     {
-        throw new Exception('The method '.__FUNCTION__.' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
+
 }

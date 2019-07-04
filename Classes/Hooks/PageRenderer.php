@@ -30,6 +30,7 @@ namespace KayStrobach\Themes\Hooks;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Page\PageRenderer as PageRendererCore;
 
 /**
  * Class/Function which adds the necessary ExtJS and pure JS stuff for themes.
@@ -38,22 +39,23 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class PageRenderer implements SingletonInterface
 {
+
     /**
-     * wrapper function called by hook (\TYPO3\CMS\Core\Page\PageRenderer->render-preProcess).
+     * Wrapper function called by hook (\TYPO3\CMS\Core\Page\PageRenderer->render-preProcess).
      *
      * @param array $parameters An array of available parameters
      * @param \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer The parent object that triggered this hook
-     *
      * @return void
      */
-    public function addJSCSS(array $parameters, \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer)
-    {	
-        // Add javascript
+    public function addJSCSS(array $parameters, PageRendererCore $pageRenderer)
+    {
+        // Add JavaScript
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendTca');
-        // Add css
+        // Add CSS
         $extensionFile = 'Resources/Public/Stylesheet/ThemesBackendTca.css';
         $absolutePath = ExtensionManagementUtility::extPath('themes', $extensionFile);
         $filename = PathUtility::getAbsoluteWebPath($absolutePath);
         $pageRenderer->addCssFile($filename, 'stylesheet', 'screen');
     }
+
 }

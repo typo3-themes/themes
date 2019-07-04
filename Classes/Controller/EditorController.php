@@ -44,14 +44,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
 /**
  * Class EditorController.
  */
 class EditorController extends ActionController
 {
+
     /**
      * @var string Key of the extension this controller belongs to
      */
@@ -192,20 +193,23 @@ class EditorController extends ActionController
      *
      *@return void
      */
-    protected function createMenu()
+    protected function createMenu(): void
     {
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
-
         $menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('themes');
-
         $actions = [
-            ['action' => 'index',       'label' => LocalizationUtility::translate('setConstants', $this->extensionName)],
-            ['action' => 'showTheme',   'label' => LocalizationUtility::translate('setTheme', $this->extensionName)]
+            [
+                'action' => 'index',
+                'label' => LocalizationUtility::translate('setConstants', $this->extensionName)
+            ],
+            [
+                'action' => 'showTheme',
+                'label' => LocalizationUtility::translate('setTheme', $this->extensionName)
+            ],
         ];
-
         foreach ($actions as $action) {
             $item = $menu->makeMenuItem()
                 ->setTitle($action['label'])
@@ -213,24 +217,21 @@ class EditorController extends ActionController
                 ->setActive($this->request->getControllerActionName() === $action['action']);
             $menu->addMenuItem($item);
         }
-
         $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 
-    protected function getExtensionConfiguration(string $extensionKey) {
-        $configuration = [];
-        if((int)TYPO3_version === 9) {
-            // Attention: Full namespace required!
-            $configuration = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($extensionKey);
-        }
-        if((int)TYPO3_version === 8) {
-            if(isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey])) {
-                $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
-                // Attention: Full namespace required!
-                $typoScriptService = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
-                $configuration = $typoScriptService->convertTypoScriptArrayToPlainArray($configuration);
-            }
-        }
+    /**
+     * @param string $extensionKey
+     * @return array
+     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
+     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
+     */
+    protected function getExtensionConfiguration(string $extensionKey): array
+    {
+        /** @var ExtensionConfiguration $extensionConfiguration */
+        $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+        /** @var array $configuration */
+        $configuration = $extensionConfiguration->get($extensionKey);
         return $configuration;
     }
 
@@ -304,13 +305,10 @@ class EditorController extends ActionController
             $nearestPageWithTheme = 0;
         }
 
-        $this->view->assignMultiple(
-            [
-                'pid'                  => $this->id,
-                'nearestPageWithTheme' => $nearestPageWithTheme,
-                'themeIsSelectable'    => CheckPageUtility::hasThemeableSysTemplateRecord($this->id),
-            ]
-        );
+
+        $this->view->assign('pid', $this->id);
+        $this->view->assign('nearestPageWithTheme', $nearestPageWithTheme);
+        $this->view->assign('themeIsSelectable', CheckPageUtility::hasThemeableSysTemplateRecord($this->id));
     }
 
     /**

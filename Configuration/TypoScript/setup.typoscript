@@ -13,7 +13,7 @@ config {
 
 # Plugin configuration
 plugin.tx_themes {
-	settings {
+	view {
 		templateName = TEXT
 		templateName {
 			cObject = TEXT

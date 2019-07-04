@@ -28,12 +28,15 @@ namespace KayStrobach\Themes\Domain\Model;
  ***************************************************************/
 
 use KayStrobach\Themes\Utilities\ApplicationContext;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class AbstractTheme.
@@ -136,16 +139,16 @@ class AbstractTheme extends AbstractEntity
      */
     public function getPreviewImage()
     {
-        // We need to use a real image file path, because in case of using a file
-        // reference, a non admin backend user might not have access to the storage!
-        $previewImage = GeneralUtility::getFileAbsFileName($this->previewImage);
-        $previewImage = PathUtility::getAbsoluteWebPath($previewImage);
-        // Since 8.7.x we need to prefix with EXT:
-        $replacement = '/typo3conf/ext/';
-        if (substr($previewImage, 0, strlen($replacement)) === $replacement) {
-            $previewImage = str_replace('/typo3conf/ext/', 'EXT:', $previewImage);
-        }
-        return $previewImage;
+        return $this->previewImage;
+    }
+
+    /**
+     * Check if the previewImage exists.
+     * @return bool
+     */
+    public function getPreviewImageExists(): bool
+    {
+        return file_exists(GeneralUtility::getFileAbsFileName($this->previewImage));
     }
 
     /**
@@ -379,46 +382,38 @@ class AbstractTheme extends AbstractEntity
      */
     public function getTypoScriptForLanguage(&$params, &$pObj)
     {
-
-        /**
-         * @todo refactor
-         */
-
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_language');
-        $queryBuilder->select('sys_language.*', 'static_languages.lg_name_local', 'static_languages.lg_name_en', 'static_languages.lg_collate_locale')
-            ->from('sys_language')
-            ->from('static_languages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'sys_language.static_lang_isocode', 'static_languages.uid'
-                )
-            );
-        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
-        $languages = $queryBuilder->execute();
         $outputBuffer = '';
-        $languageUids = [];
         $key = 'themes.languages';
-        if ($languages->rowCount() > 0) {
-            while ($language = $languages->fetch()) {
-                $languageUids[] = $language['uid'];
-                $buffer = '[globalVar = GP:L=' . $language['uid'] . ']' . LF;
-                $buffer .= $key . '.current {' . LF;
-                $buffer .= ' uid = ' . $language['uid'] . LF;
-                $buffer .= ' label = ' . $language['title'] . LF;
-                $buffer .= ' labelLocalized = ' . $language['lg_name_local'] . LF;
-                $buffer .= ' labelEnglish = ' . $language['lg_name_en'] . LF;
-                $buffer .= ' flag = ' . $language['flag'] . LF;
-                $buffer .= ' isoCode = ' . $language['lg_collate_locale'] . LF;
-                $buffer .= ' isoCodeShort = ' . array_shift(explode('_', $language['lg_collate_locale'])) . LF;
-                $buffer .= ' isoCodeHtml = ' . str_replace('_', '-', $language['lg_collate_locale']) . LF;
-                $buffer .= '} ' . LF;
-                $buffer .= '[global]' . LF;
-                $outputBuffer .= $buffer;
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        $site = $request ? $request->getAttribute('site') : null;
+        if ($site instanceof Site) {
+            $languages = ArrayUtility::getValueByPath($site->getConfiguration(), 'languages', '.');
+            if (count($languages) > 0) {
+                $languageUids = [];
+                foreach ($languages as $key => $language) {
+                    $languageUid = (int)$language['languageId'];
+                    $languageUids[] = $languageUid;
+                    $buffer = '[globalVar = GP:L=' . $languageUid . ']' . LF;
+                    $buffer .= $key . '.current {' . LF;
+                    $buffer .= ' uid = ' . $languageUid . LF;
+                    $buffer .= ' label = ' . $language['title'] . LF;
+                    $buffer .= ' labelLocalized = ' . $language['navigationTitle'] . LF;
+                    $buffer .= ' labelEnglish = ' . $language['navigationTitle'] . LF;
+                    $buffer .= ' flag = ' . $language['flag'] . LF;
+                    $buffer .= ' isoCode = ' . $language['locale'] . LF;
+                    $buffer .= ' isoCodeShort = ' . $language['iso-639-1'] . LF;
+                    $buffer .= ' isoCodeHtml = ' . $language['hreflang'] . LF;
+                    $buffer .= '} ' . LF;
+                    $buffer .= '[global]' . LF;
+                    $outputBuffer .= $buffer;
+                }
+                $outputBuffer .= $key . '.available=' . implode(',', $languageUids) . LF;
             }
-            $outputBuffer .= $key . '.available=' . implode(',', $languageUids) . LF;
-        } else {
+            else {
+                $outputBuffer .= $key . '.available=' . LF;
+            }
+        }
+        else {
             $outputBuffer .= $key . '.available=' . LF;
         }
         return $outputBuffer;

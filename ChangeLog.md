@@ -19,8 +19,8 @@
 *   [BREAKING] Remove constant view helper including cache logic - please pass your constants by plugin settings for achieving better performance.
 *   [TASK] Remove t3jquery.txt configuration.
 *   [TASK] Remove of the moduleBodyPostProcess Hook which is no longer available in TYPO3 9.5.
-
-
+*   [TASK] Remove pageTsBackendLayoutDataProvider because it's part of the code since TYPO3 7.6.
+*   [TASK] Migrate the language TypoScript constants to site configuration settings.
 
 ### 2018-10-29  Thomas Deuling  <typo3@coding.ms>
 

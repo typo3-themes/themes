@@ -7,12 +7,13 @@ if (!defined('TYPO3_MODE')) {
 /*
  * Add page typoscript for new content element wizard
  */
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/PageTS/tsconfig.typoscript">');
+$tsconfig = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/PageTS/tsconfig.typoscript">';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig($tsconfig);
 
 /*
  * Register hook to inject themes
  */
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init'][]
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'][]
     = 'KayStrobach\\Themes\\Hooks\\ThemesDomainRepositoryThemeRepositoryInitHook->init';
 
 /*
@@ -37,19 +38,11 @@ $signalSlotDispatcher->connect(
 unset($signalSlotDispatcher);
 
 /*
- * register hook to inject BeLayoutTsprovider
- */
-if (TYPO3_MODE === 'BE') {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']['pagets']
-        = 'KayStrobach\\Themes\\Provider\\PageTsBackendLayoutDataProvider';
-}
-
-/*
  * register frontend plugin to allow usage of extbase controller
  */
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'KayStrobach.' . $_EXTKEY,
     'Theme',
-    ['Theme' => 'index',],
+    ['Theme' => 'index'],
     []
 );

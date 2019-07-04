@@ -92,24 +92,13 @@ class ThemeController extends ActionController
     }
 
     /**
-     * @return void
-     */
-    public function initializeAction()
-    {
-        /**
-         * @todo solve by inject method?!
-         */
-        //$this->themeRepository = new \KayStrobach\Themes\Domain\Repository\ThemeRepository();
-    }
-
-    /**
      * renders the given theme.
      *
      * @return void
      */
     public function indexAction()
     {
-        $this->templateName = $this->evaluateTypoScript('plugin.tx_themes.settings.templateName');
+        $this->templateName = $this->evaluateTypoScript('plugin.tx_themes.view.templateName');
         $templateFile = $this->getTemplateFile();
         if ($templateFile !== null) {
             $this->view->setTemplatePathAndFilename($templateFile);
@@ -127,7 +116,8 @@ class ThemeController extends ActionController
             $pageArray['icon'] = $setup['lib.']['icons.']['cssMap.'][$pageArray['tx_themes_icon']];
         }
         // Get settings, because they aren't available
-        $configuration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'Themes');
+        $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
+        $configuration = $this->configurationManager->getConfiguration($configurationType, 'Themes');
         unset($configuration['settings']['templateName']);
         $this->view->assign('settings', $configuration['settings']);
         $this->view->assign('page', $pageArray);
@@ -157,15 +147,12 @@ class ThemeController extends ActionController
         $vh->setRenderChildrenClosure(function () {
             return '';
         });
-        if (version_compare(TYPO3_version, '8.0', '<')) {
-            return $vh->render($path);
-        } else {
-            $vh->setArguments(['typoscriptObjectPath' => $path]);
-            /** @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext $renderingContext */
-            $renderingContext = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class);
-            $vh->setRenderingContext($renderingContext);
-            return $vh->render();
-        }
+
+        $vh->setArguments(['typoscriptObjectPath' => $path]);
+        /** @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext $renderingContext */
+        $renderingContext = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class);
+        $vh->setRenderingContext($renderingContext);
+        return $vh->render();
     }
 
     /**

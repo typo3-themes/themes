@@ -66,16 +66,8 @@ class Theme extends AbstractTheme
             }
             $yamlFile = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml';
             if (file_exists($yamlFile)) {
-                if (version_compare(TYPO3_version, '8.7', '<')) {
-                    if (class_exists('\Symfony\Component\Yaml\Yaml')) {
-                        $this->metaInformation = \Symfony\Component\Yaml\Yaml::parse($yamlFile);
-                    } else {
-                        throw new \Exception('No Yaml Parser!');
-                    }
-                } else {
-                    $yamlSource = GeneralUtility::makeInstance(YamlSource::class);
-                    $this->metaInformation = $yamlSource->load(array($yamlFile));
-                }
+                $yamlSource = GeneralUtility::makeInstance(YamlSource::class);
+                $this->metaInformation = $yamlSource->load(array($yamlFile));
             } else {
                 throw new \Exception('No Yaml meta information found!');
             }
