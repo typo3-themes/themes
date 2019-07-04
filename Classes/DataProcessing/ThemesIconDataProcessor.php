@@ -64,5 +64,4 @@ class ThemesIconDataProcessor implements DataProcessorInterface
     {
         return $GLOBALS['TSFE'];
     }
-
 }
