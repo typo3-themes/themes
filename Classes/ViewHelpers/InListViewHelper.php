@@ -38,7 +38,7 @@ class InListViewHelper extends AbstractViewHelper
         parent::initializeArguments();
         $this->registerArgument('string', 'string', 'String', true);
         $this->registerArgument('value', 'string', 'Value', true);
-        $this->registerArgument('delimiter', 'string', 'Delimiter');
+        $this->registerArgument('delimiter', 'string', 'Delimiter', false, ' ');
     }
 
     /**
@@ -49,6 +49,7 @@ class InListViewHelper extends AbstractViewHelper
         $string = $this->arguments['string'];
         $value = $this->arguments['value'];
         $delimiter = $this->arguments['delimiter'];
+        if(trim($delimiter) ===)
         $array = GeneralUtility::trimExplode($delimiter, $string);
         $array = array_flip($array);
         return array_key_exists($value, $array);
