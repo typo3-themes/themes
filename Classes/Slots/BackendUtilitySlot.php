@@ -169,5 +169,4 @@ class BackendUtilitySlot extends TsConfigParser
         }
         return $tsconfig;
     }
-
 }

@@ -126,5 +126,4 @@ class CheckPageUtility
         }
         return $themeable;
     }
-
 }
