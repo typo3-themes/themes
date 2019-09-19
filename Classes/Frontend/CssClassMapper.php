@@ -44,26 +44,22 @@ class CssClassMapper
     public function mapGenericToFramework($content = '', $conf = [])
     {
         if ($content) {
-            $hashKey = md5($content.serialize($conf));
-            if (!isset($GLOBALS['TSFE']->themesCssClassMapperCache[$hashKey])) {
-                $frameworkClasses = [];
-                $genericClasses = array_flip(explode(',', $content));
-                foreach ($conf as $checkConfKey => $checkConfValue) {
-                    if (!is_array($conf[$checkConfValue]) && $checkConfValue && strpos($checkConfValue, '<') === 0) {
-                        $checkConfArray = explode('.', ltrim($checkConfValue, '< '));
-                        $conf[$checkConfKey] = $GLOBALS['TSFE']->tmpl->setup[array_shift($checkConfArray).'.'];
-                        foreach ($checkConfArray as $checkConfArrayKey) {
-                            $conf[$checkConfKey] = $conf[$checkConfKey][$checkConfArrayKey.'.'];
-                        }
-                    }
-                    if (is_array($conf[$checkConfKey])) {
-                        $frameworkClasses = array_merge($frameworkClasses, $conf[$checkConfKey]);
+            $frameworkClasses = [];
+            $genericClasses = array_flip(explode(',', $content));
+            foreach ($conf as $checkConfKey => $checkConfValue) {
+                if (!is_array($conf[$checkConfValue]) && $checkConfValue && strpos($checkConfValue, '<') === 0) {
+                    $checkConfArray = explode('.', ltrim($checkConfValue, '< '));
+                    $conf[$checkConfKey] = $GLOBALS['TSFE']->tmpl->setup[array_shift($checkConfArray).'.'];
+                    foreach ($checkConfArray as $checkConfArrayKey) {
+                        $conf[$checkConfKey] = $conf[$checkConfKey][$checkConfArrayKey.'.'];
                     }
                 }
-                $mappedClasses = array_intersect_key($frameworkClasses, $genericClasses);
-                $GLOBALS['TSFE']->themesCssClassMapperCache[$hashKey] = implode(' ', $mappedClasses);
+                if (is_array($conf[$checkConfKey])) {
+                    $frameworkClasses = array_merge($frameworkClasses, $conf[$checkConfKey]);
+                }
             }
-            return $GLOBALS['TSFE']->themesCssClassMapperCache[$hashKey];
+            $mappedClasses = array_intersect_key($frameworkClasses, $genericClasses);
+            return implode(' ', $mappedClasses);
         } else {
             return '';
         }
