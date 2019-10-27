@@ -118,7 +118,8 @@ class ThemeController extends ActionController
         // Get settings, because they aren't available
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
         $configuration = $this->configurationManager->getConfiguration($configurationType, 'Themes');
-        unset($configuration['settings']['templateName']);
+        if(isset($configuration['settings']['templateName']))
+            unset($configuration['settings']['templateName']);
         $this->view->assign('settings', $configuration['settings']);
         $this->view->assign('page', $pageArray);
         $this->view->assign('data', $pageArray);

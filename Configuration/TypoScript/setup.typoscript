@@ -1,5 +1,5 @@
 config {
-	linkVars = L(1-99) 
+	linkVars = L(1-99)
 	uniqueLinkVars = 1
 	sys_language_uid = {$themes.languages.current.uid}
 	language = {$themes.languages.current.isoCodeShort}
@@ -64,7 +64,7 @@ page {
 		pluginName = Theme
 		controller = Theme
 		action = Index
-		settings =< plugin.tx_themes.settings
+		settings =< plugin.tx_themes.view
 		persistence =< plugin.tx_themes.persistence
 		view =< plugin.tx_themes.view
 	}
