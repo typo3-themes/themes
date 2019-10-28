@@ -52,5 +52,4 @@ class ThemeEnabledCondition
         $themeOfPage = $themeRepository->findByPageOrRootline($pageId);
         return ($themeOfPage !== null) && ($themeOfPage->getExtensionName() === $theme);
     }
-
 }
