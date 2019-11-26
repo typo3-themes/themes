@@ -25,7 +25,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['themes'] = [
     'title' => 'THEMES - The theme engine',
     'description' => '',
     'category' => 'fe',

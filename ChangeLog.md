@@ -2,6 +2,10 @@
 
 
 
+### 2019-11-26  Thomas Deuling  <typo3@coding.ms>
+
+*   [BUGFIX] Fixing InList ViewHelper for TYPO3 9.5
+
 ### 2019-05-23  Thomas Deuling  <typo3@coding.ms>
 
 *   [TASK] Remove YAML parse, because it's already shipped by TYPO3 itself.

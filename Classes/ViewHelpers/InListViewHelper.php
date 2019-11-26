@@ -49,7 +49,6 @@ class InListViewHelper extends AbstractViewHelper
         $string = $this->arguments['string'];
         $value = $this->arguments['value'];
         $delimiter = $this->arguments['delimiter'];
-        if(trim($delimiter) ===)
         $array = GeneralUtility::trimExplode($delimiter, $string);
         $array = array_flip($array);
         return array_key_exists($value, $array);

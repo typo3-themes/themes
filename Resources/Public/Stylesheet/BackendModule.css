@@ -343,3 +343,8 @@ tr.constantLine {
 	border: 0;
 	border-top: 1px solid #d4d4d4
 }
+
+
+.CodeMirror {
+	height: calc(100vh - 250px);
+}
