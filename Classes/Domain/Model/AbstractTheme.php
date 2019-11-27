@@ -408,12 +408,10 @@ class AbstractTheme extends AbstractEntity
                     $outputBuffer .= $buffer;
                 }
                 $outputBuffer .= $key . '.available=' . implode(',', $languageUids) . LF;
-            }
-            else {
+            } else {
                 $outputBuffer .= $key . '.available=' . LF;
             }
-        }
-        else {
+        } else {
             $outputBuffer .= $key . '.available=' . LF;
         }
         return $outputBuffer;
@@ -437,5 +435,4 @@ class AbstractTheme extends AbstractEntity
         $buffer .= LF . 'themes.mode.isProduction = ' . (int)!ApplicationContext::isDevelopmentModeActive();
         return $buffer;
     }
-
 }

@@ -75,8 +75,8 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
         /** @var Site $siteConfiguration */
         $siteConfiguration = $this->siteFinder->getSiteByPageId($pageUid);
         /** @var SiteLanguage $language */
-        foreach($siteConfiguration->getAllLanguages() as $language) {
-            if($language->isEnabled()) {
+        foreach ($siteConfiguration->getAllLanguages() as $language) {
+            if ($language->isEnabled()) {
                 //
                 $item = [
                     'L' => $language->getLanguageId(),
@@ -94,7 +94,7 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
                 //
                 // Has translation?
                 $item['hasTranslation'] = true;
-                if($language->getLanguageId() > 0) {
+                if ($language->getLanguageId() > 0) {
                     $item['hasTranslation'] = $this->hasTranslation($pageUid, $language->getLanguageId());
                 }
                 //

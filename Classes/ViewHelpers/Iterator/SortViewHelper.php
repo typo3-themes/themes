@@ -36,7 +36,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class SortViewHelper extends AbstractViewHelper
 {
-
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -81,5 +80,4 @@ class SortViewHelper extends AbstractViewHelper
     {
         return strcasecmp($a[$this->arguments['key']], $b[$this->arguments['key']]);
     }
-
 }
