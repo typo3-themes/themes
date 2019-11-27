@@ -74,6 +74,14 @@ tt_content {
 			60 = KayStrobach\Themes\DataProcessing\ThemesIconDataProcessor
 		}
 	}
+	menu_subpages {
+		dataProcessing {
+			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor
+			40 = KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor
+			50 = KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor
+			60 = KayStrobach\Themes\DataProcessing\ThemesIconDataProcessor
+		}
+	}
 	table {
 		dataProcessing {
 			30 = KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor

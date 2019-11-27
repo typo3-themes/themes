@@ -1,6 +1,9 @@
 # Themes Change-Log
 
 
+### 2019-11-27  Thomas Deuling  <typo3@coding.ms>
+
+*   [TASK] Add data processing for menu content element
 
 ### 2019-11-26  Thomas Deuling  <typo3@coding.ms>
 
