@@ -27,12 +27,14 @@ namespace KayStrobach\Themes\ViewHelpers;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * can be used to access array keys or object properties dynamically.
  *
  * {themes:arrayIndex(object: results, index: 'key')}
  */
-class ArrayIndexViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class ArrayIndexViewHelper extends AbstractViewHelper
 {
 
     public function initializeArguments()
