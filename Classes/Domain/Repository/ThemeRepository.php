@@ -272,5 +272,4 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     {
         throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
-
 }

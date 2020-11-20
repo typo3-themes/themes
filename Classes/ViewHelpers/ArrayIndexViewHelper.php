@@ -36,7 +36,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class ArrayIndexViewHelper extends AbstractViewHelper
 {
-
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -71,5 +70,4 @@ class ArrayIndexViewHelper extends AbstractViewHelper
         }
         return false;
     }
-
 }
