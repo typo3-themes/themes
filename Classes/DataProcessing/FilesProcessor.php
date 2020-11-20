@@ -146,5 +146,4 @@ class FilesProcessor implements DataProcessorInterface
         $processedData[$targetVariableName . 'WithLinkData'] = $filesWithLinkData;
         return $processedData;
     }
-
 }

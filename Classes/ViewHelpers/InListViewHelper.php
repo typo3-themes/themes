@@ -32,7 +32,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class InListViewHelper extends AbstractViewHelper
 {
-
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -53,5 +52,4 @@ class InListViewHelper extends AbstractViewHelper
         $array = array_flip($array);
         return array_key_exists($value, $array);
     }
-
 }
