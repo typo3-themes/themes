@@ -437,5 +437,4 @@ class AbstractTheme extends AbstractEntity
         $buffer .= LF . 'themes.mode.isProduction = ' . (int)!ApplicationContext::isDevelopmentModeActive();
         return $buffer;
     }
-
 }
