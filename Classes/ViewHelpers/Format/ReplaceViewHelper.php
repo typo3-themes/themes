@@ -34,7 +34,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class ReplaceViewHelper extends AbstractViewHelper
 {
-
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -58,5 +57,4 @@ class ReplaceViewHelper extends AbstractViewHelper
         }
         return str_replace($substring, $replacement, $content, $count);
     }
-
 }

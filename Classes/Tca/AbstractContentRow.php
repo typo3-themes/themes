@@ -86,7 +86,8 @@ abstract class AbstractContentRow
             ->from('tt_content')
             ->where(
                 $queryBuilder->expr()->eq(
-                    'uid', $queryBuilder->createNamedParameter(-((int) $pid), \PDO::PARAM_INT)
+                    'uid',
+                    $queryBuilder->createNamedParameter(-((int) $pid), \PDO::PARAM_INT)
                 )
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */

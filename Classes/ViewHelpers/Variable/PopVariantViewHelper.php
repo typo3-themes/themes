@@ -34,7 +34,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class PopVariantViewHelper extends AbstractViewHelper
 {
-
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -75,5 +74,4 @@ class PopVariantViewHelper extends AbstractViewHelper
             }
         }
     }
-
 }

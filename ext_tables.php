@@ -12,13 +12,15 @@ if (!defined('TYPO3_MODE')) {
 
 if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'KayStrobach.themes', 'web', // Main area
+        'KayStrobach.themes',
+        'web', // Main area
         'mod1', // Name of the module
         '', // Position of the module
         [
             // Allowed controller action combinations
             'Editor' => 'index,update,showTheme,setTheme,showThemeDetails,saveCategoriesFilterSettings',
-        ], [
+        ],
+        [
             // Additional configuration
             'access'         => 'user,group',
             'icon' => 'EXT:themes/ext_icon.svg',
@@ -56,7 +58,9 @@ $iconsSvg = [
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 foreach ($iconsSvg as $identifier => $path) {
     $iconRegistry->registerIcon(
-        $identifier, \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class, ['source' => 'EXT:themes/' . $path]
+        $identifier,
+        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        ['source' => 'EXT:themes/' . $path]
     );
 }
 
