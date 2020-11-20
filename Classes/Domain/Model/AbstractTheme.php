@@ -314,7 +314,8 @@ class AbstractTheme extends AbstractEntity
                 $pObj->processTemplate(
                     $themeItem,
                     $params['idList'] . ',ext_theme' . str_replace('_', '', $this->getExtensionName()),
-                    $params['pid'], 'ext_theme' . str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'],
+                    'ext_theme' . str_replace('_', '', $this->getExtensionName()),
                     $params['templateId']
                 );
             }
@@ -327,7 +328,8 @@ class AbstractTheme extends AbstractEntity
                 $pObj->processTemplate(
                     $themeItem,
                     $params['idList'] . ',ext_theme' . str_replace('_', '', $this->getExtensionName()),
-                    $params['pid'], 'ext_theme' . str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'],
+                    'ext_theme' . str_replace('_', '', $this->getExtensionName()),
                     $params['templateId']
                 );
             }
@@ -408,12 +410,10 @@ class AbstractTheme extends AbstractEntity
                     $outputBuffer .= $buffer;
                 }
                 $outputBuffer .= $key . '.available=' . implode(',', $languageUids) . LF;
-            }
-            else {
+            } else {
                 $outputBuffer .= $key . '.available=' . LF;
             }
-        }
-        else {
+        } else {
             $outputBuffer .= $key . '.available=' . LF;
         }
         return $outputBuffer;
@@ -437,5 +437,4 @@ class AbstractTheme extends AbstractEntity
         $buffer .= LF . 'themes.mode.isProduction = ' . (int)!ApplicationContext::isDevelopmentModeActive();
         return $buffer;
     }
-
 }

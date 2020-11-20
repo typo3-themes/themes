@@ -60,5 +60,4 @@ class FindParentPageWithThemeUtility
         }
         return $pageUid;
     }
-
 }
