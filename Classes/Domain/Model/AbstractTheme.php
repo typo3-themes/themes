@@ -12,7 +12,7 @@ namespace KayStrobach\Themes\Domain\Model;
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU General Public License as published byl
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -267,7 +267,7 @@ class AbstractTheme extends AbstractEntity
     public function getRelativePath()
     {
         if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
-            return PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->getExtensionName()));
+            return ExtensionManagementUtility::siteRelPath($this->getExtensionName());
         }
         return '';
     }
@@ -395,7 +395,7 @@ class AbstractTheme extends AbstractEntity
                 foreach ($languages as $key => $language) {
                     $languageUid = (int)$language['languageId'];
                     $languageUids[] = $languageUid;
-                    $buffer = '[siteLanguage("languageId") == ' . $languageUid . ']' . LF;
+                    $buffer = '[globalVar = GP:L=' . $languageUid . ']' . LF;
                     $buffer .= $key . '.current {' . LF;
                     $buffer .= ' uid = ' . $languageUid . LF;
                     $buffer .= ' label = ' . $language['title'] . LF;
@@ -406,7 +406,7 @@ class AbstractTheme extends AbstractEntity
                     $buffer .= ' isoCodeShort = ' . $language['iso-639-1'] . LF;
                     $buffer .= ' isoCodeHtml = ' . $language['hreflang'] . LF;
                     $buffer .= '} ' . LF;
-                    $buffer .= '[end]' . LF;
+                    $buffer .= '[global]' . LF;
                     $outputBuffer .= $buffer;
                 }
                 $outputBuffer .= $key . '.available=' . implode(',', $languageUids) . LF;
@@ -437,4 +437,5 @@ class AbstractTheme extends AbstractEntity
         $buffer .= LF . 'themes.mode.isProduction = ' . (int)!ApplicationContext::isDevelopmentModeActive();
         return $buffer;
     }
+
 }

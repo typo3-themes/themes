@@ -57,7 +57,7 @@ class ThemesDomainRepositoryThemeRepositoryInitHook
         // Get all available extensions, excluding system extensions
         $extensionsToCheck = array_diff(
             ExtensionManagementUtility::getLoadedExtensionListArray(),
-            scandir(Environment::getBackendPath() . '/sysext')
+            scandir(Environment::getPublicPath() . '/typo3/sysext')
         );
         //
         // Check extensions, which are worth to check

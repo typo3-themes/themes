@@ -128,6 +128,19 @@ class Theme extends AbstractTheme
     }
 
     /**
+     * Calculates the relative path to the theme directory for frontend usage.
+     *
+     * @return string
+     */
+    public function getRelativePath()
+    {
+        if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
+            return PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->getExtensionName()));
+        }
+        return '';
+    }
+
+    /**
      * Includes static template records (from static_template table) and static template files (from extensions) for the input template record row.
      *
      * @param array  $params Array of parameters from the parent class.  Includes idList, templateId, pid, and row.

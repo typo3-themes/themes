@@ -65,7 +65,7 @@ $tempColumn = [
         'label'   => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants',
         'config'  => [
             'type'     => 'user',
-            'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentVariants->renderField',
+            'renderType' => 'contentVariants',
         ],
     ],
     'tx_themes_behaviour' => [
@@ -73,7 +73,7 @@ $tempColumn = [
         'label'   => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:behaviour',
         'config'  => [
             'type'     => 'user',
-            'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentBehaviour->renderField',
+            'renderType' => 'contentBehaviour',
         ],
     ],
     'tx_themes_responsive' => [
@@ -81,7 +81,7 @@ $tempColumn = [
         'label'   => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:responsive_settings',
         'config'  => [
             'type'     => 'user',
-            'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentResponsive->renderField',
+            'renderType' => 'contentResponsive',
         ],
     ],
 ];

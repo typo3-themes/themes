@@ -45,6 +45,7 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
      * @param \TYPO3\CMS\Core\TypoScript\TemplateService Reference back to parent object, t3lib_tstemplate or one of its subclasses.
      *
      * @return void
+     * @throws \TYPO3\CMS\Install\Configuration\Exception
      */
     public static function main(&$params, TemplateService &$pObj)
     {

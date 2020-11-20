@@ -27,6 +27,8 @@ namespace KayStrobach\Themes\Tca;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -37,13 +39,13 @@ class ContentResponsive extends AbstractContentRow
     /**
      * Render a Content Variant row.
      *
-     * @param array $parameters
-     * @param mixed $parentObject
-     *
-     * @return string
+     * @return mixed
      */
-    public function renderField(array &$parameters, &$parentObject)
+    public function render()
     {
+        $parameters = $this->data['parameterArray'];
+        $parameters['row'] = $this->data['databaseRow'];
+
         // Vars
         $uid = $parameters['row']['uid'];
         $pid = $parameters['row']['pid'];
@@ -68,15 +70,12 @@ class ContentResponsive extends AbstractContentRow
         $valuesAvailable = [];
 
         // Get responsive settings
-        $responsiveSettings = $this->getBeUser()->getTSConfig(
-            'themes.content.responsive.settings',
-            \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pid)
-        );
+        $responsiveSettings['properties'] = BackendUtility::getPagesTSconfig($pid)['themes.']['content.']['responsive.']['settings.'];
         $cssStyles = '';
         $cssClasses = 'themes-column';
         if (isset($responsiveSettings['properties'])) {
-            /** @var \TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService */
-            $typoScriptService = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
+            /** @var TypoScriptService $typoScriptService */
+            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
             $responsiveSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($responsiveSettings['properties']);
             if (count($responsiveSettings['sizes']) > 0) {
                 $cssStyles = 'width: '.(100 / count($responsiveSettings['sizes']) - 1).'%; float:left;margin-left:0.5%;margin-right:0.5%;margin-bottom:8px;border:none';
@@ -239,6 +238,7 @@ class ContentResponsive extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $valuesAvailable);
 
-        return '<div class="contentResponsive">'.$selectboxes.$hiddenField.$missedField.'</div>';
+        $result['html'] = '<div class="contentResponsive">'.$selectboxes.$hiddenField.$missedField.'</div>';
+        return $result;
     }
 }
