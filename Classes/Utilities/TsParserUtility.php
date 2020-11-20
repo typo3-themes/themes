@@ -240,17 +240,15 @@ class TsParserUtility implements SingletonInterface
             $this->tsParser->tt_track = 0;
 
             $this->tsParser->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate');
-            $this->tsParser->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'] . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('tstemplate'));
+            $this->tsParser->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'].PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('tstemplate'));
 
             $this->tsParserTplRow = $this->tsParser->ext_getFirstTemplate($pageId, $templateUid);
 
             if (is_array($this->tsParserTplRow)) {
+                /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageRepository */
+                $sysPageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
                 $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId);
-                try {
-                    $rootLine = $rootlineUtility->get();
-                } catch (\RuntimeException $e) {
-                    return false;
-                }
+                $rootLine = $rootlineUtility->get();
                 // This generates the constants/config + hierarchy info for the template.
                 $this->tsParser->runThroughTemplates($rootLine, $templateUid);
                 // The editable constants are returned in an array.

@@ -64,4 +64,5 @@ class CssClassMapper
             return '';
         }
     }
+
 }

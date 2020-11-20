@@ -45,6 +45,7 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
      * @param \TYPO3\CMS\Core\TypoScript\TemplateService Reference back to parent object, t3lib_tstemplate or one of its subclasses.
      *
      * @return void
+     * @throws \TYPO3\CMS\Install\Configuration\Exception
      */
     public static function main(&$params, TemplateService &$pObj)
     {
@@ -59,8 +60,7 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
                 ->from('sys_template')
                 ->where(
                     $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter((int)$pid, \PDO::PARAM_INT)
+                        'pid', $queryBuilder->createNamedParameter((int)$pid, \PDO::PARAM_INT)
                     )
                 );
             /** @var  \Doctrine\DBAL\Driver\Statement $statement */

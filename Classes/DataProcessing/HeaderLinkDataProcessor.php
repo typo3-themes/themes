@@ -55,11 +55,13 @@ class HeaderLinkDataProcessor implements DataProcessorInterface
         array $contentObjectConfiguration,
         array $processorConfiguration,
         array $processedData
-    ) {
+    )
+    {
         if (isset($processedData['data']['header_link']) && trim($processedData['data']['header_link']) !== '') {
             $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
             $processedData['headerLink'] = $typoLinkCodecService->decode($processedData['data']['header_link']);
         }
         return $processedData;
     }
+
 }

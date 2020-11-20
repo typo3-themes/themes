@@ -89,4 +89,5 @@ class ThemesVariantsDataProcessor implements DataProcessorInterface
     {
         return $GLOBALS['TSFE'];
     }
+
 }

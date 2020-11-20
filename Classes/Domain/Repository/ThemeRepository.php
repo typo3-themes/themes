@@ -29,8 +29,8 @@ namespace KayStrobach\Themes\Domain\Repository;
 
 use KayStrobach\Themes\Domain\Model\AbstractTheme;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
@@ -55,6 +55,12 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      */
     public function __construct()
     {
+        // Helper
+        // https://forge.typo3.org/issues/85310
+        if($GLOBALS['BE_USER'] === null) {
+            $GLOBALS['BE_USER'] = GeneralUtility::makeInstance('TYPO3\CMS\Core\Authentication\BackendUserAuthentication');
+            $GLOBALS['BE_USER']->start();
+        }
         // Hook to recognize themes, this is the magic point, why it's possible to support so many theme formats and types.
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'])) {
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'])) {
@@ -201,17 +207,9 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      */
     public function findByPageId($pid)
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_template');
-        $queryBuilder->select('*')
-            ->from('sys_template')
-            ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
-            )
-            ->setMaxResults(1);
-        if (!empty($GLOBALS['TCA']['sys_template']['ctrl']['sortby'])) {
-            $queryBuilder->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);
-        }
-        $templateRow = $queryBuilder->execute()->fetch();
+        $template = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+        $template->tt_track = 0;
+        $templateRow = $template->ext_getFirstTemplate($pid);
         return $this->findByUid($templateRow['tx_themes_skin']);
     }
 
@@ -272,4 +270,5 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     {
         throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
+
 }

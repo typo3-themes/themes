@@ -91,4 +91,5 @@ class ThemesBehaviourDataProcessor implements DataProcessorInterface
     {
         return $GLOBALS['TSFE'];
     }
+
 }

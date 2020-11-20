@@ -2,6 +2,8 @@
 
 namespace KayStrobach\Themes\ViewHelpers\Iterator;
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /***************************************************************
  *
  * Copyright notice
@@ -27,7 +29,6 @@ namespace KayStrobach\Themes\ViewHelpers\Iterator;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class SortViewHelper.
@@ -36,6 +37,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class SortViewHelper extends AbstractViewHelper
 {
+
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -80,4 +82,5 @@ class SortViewHelper extends AbstractViewHelper
     {
         return strcasecmp($a[$this->arguments['key']], $b[$this->arguments['key']]);
     }
+
 }

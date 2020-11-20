@@ -57,12 +57,12 @@ class ThemesDomainRepositoryThemeRepositoryInitHook
         // Get all available extensions, excluding system extensions
         $extensionsToCheck = array_diff(
             ExtensionManagementUtility::getLoadedExtensionListArray(),
-            scandir(Environment::getBackendPath() . '/sysext')
+            scandir(Environment::getPublicPath() . '/typo3/sysext')
         );
         //
         // Check extensions, which are worth to check
         foreach ($extensionsToCheck as $extensionName) {
-            if (trim($startWith) === '' || substr($extensionName, 0, strlen($startWith)) === $startWith) {
+            if(trim($startWith) === '' || substr($extensionName, 0, strlen($startWith)) === $startWith) {
                 $extPath = ExtensionManagementUtility::extPath($extensionName);
                 if (file_exists($extPath . 'Meta/theme.yaml')) {
                     if (file_exists($extPath . 'Configuration/TypoScript/setup.typoscript')) {
@@ -72,4 +72,5 @@ class ThemesDomainRepositoryThemeRepositoryInitHook
             }
         }
     }
+
 }

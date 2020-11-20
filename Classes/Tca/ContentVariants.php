@@ -39,13 +39,12 @@ class ContentVariants extends AbstractContentRow
     /**
      * Render a Content Variant row.
      *
-     * @param array $parameters
-     * @param mixed $parentObject
-     *
-     * @return string
+     * @return mixed
      */
-    public function renderField(array &$parameters, &$parentObject)
+    public function render()
     {
+        $parameters = $this->data['parameterArray'];
+        $parameters['row'] = $this->data['databaseRow'];
         // Vars
         $uid = $parameters['row']['uid'];
         $pid = $parameters['row']['pid'];
@@ -137,7 +136,8 @@ class ContentVariants extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $this->valuesAvailable);
 
-        return '<div class="contentVariant">'.$checkboxes.$hiddenField.$missedField.'</div>';
+        $result['html'] = '<div class="contentVariant">'.$checkboxes.$hiddenField.$missedField.'</div>';
+        return $result;
     }
 
     /**

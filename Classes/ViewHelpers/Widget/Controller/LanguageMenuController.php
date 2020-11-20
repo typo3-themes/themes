@@ -75,8 +75,8 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
         /** @var Site $siteConfiguration */
         $siteConfiguration = $this->siteFinder->getSiteByPageId($pageUid);
         /** @var SiteLanguage $language */
-        foreach ($siteConfiguration->getAllLanguages() as $language) {
-            if ($language->isEnabled()) {
+        foreach($siteConfiguration->getAllLanguages() as $language) {
+            if($language->isEnabled()) {
                 //
                 $item = [
                     'L' => $language->getLanguageId(),
@@ -94,7 +94,7 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
                 //
                 // Has translation?
                 $item['hasTranslation'] = true;
-                if ($language->getLanguageId() > 0) {
+                if($language->getLanguageId() > 0) {
                     $item['hasTranslation'] = $this->hasTranslation($pageUid, $language->getLanguageId());
                 }
                 //
@@ -128,12 +128,10 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
             ->from('pages')
             ->andWhere(
                 $queryBuilder->expr()->eq(
-                    'l10n_parent',
-                    $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
+                    'l10n_parent', $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
-                    'sys_language_uid',
-                    $queryBuilder->createNamedParameter((int) $languageUid, \PDO::PARAM_INT)
+                    'sys_language_uid', $queryBuilder->createNamedParameter((int) $languageUid, \PDO::PARAM_INT)
                 )
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */

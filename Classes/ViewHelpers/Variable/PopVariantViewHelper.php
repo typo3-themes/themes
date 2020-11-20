@@ -2,6 +2,8 @@
 
 namespace KayStrobach\Themes\ViewHelpers\Variable;
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /***************************************************************
  *
  * Copyright notice
@@ -27,13 +29,13 @@ namespace KayStrobach\Themes\ViewHelpers\Variable;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * @author Thomas Deuling <typo3@coding.ms>, coding.ms
  */
 class PopVariantViewHelper extends AbstractViewHelper
 {
+
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -74,4 +76,5 @@ class PopVariantViewHelper extends AbstractViewHelper
             }
         }
     }
+
 }

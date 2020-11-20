@@ -97,4 +97,5 @@ class ThemesResponsiveDataProcessor implements DataProcessorInterface
     {
         return $GLOBALS['TSFE'];
     }
+
 }

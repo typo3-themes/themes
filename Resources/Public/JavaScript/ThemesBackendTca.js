@@ -1,11 +1,11 @@
 /**
- * 
+ *
  */
 define(['jquery'], function (jQuery) {
 
 
 	var Themes = {};
-	
+
 	Themes.initialize = function() {
 		Themes.initSelectBoxValues();
 		jQuery('.contentVariant select').change(function() {
@@ -72,7 +72,7 @@ define(['jquery'], function (jQuery) {
 			}
 		});
 	};
-	
+
 	Themes.contentVariantChangeSelectbox = function(field) {
 		var itemselector = "";
 		if(jQuery(field).closest(".t3-form-field-item").index() > 0) {
@@ -83,18 +83,21 @@ define(['jquery'], function (jQuery) {
 		}
 		var value = jQuery(field).val();
 		var prefix = jQuery(field).attr('name');
-		var classes = jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").attr('class').split(' ');
+		//console.log(jQuery(field).closest(".contentVariant").find("input[readonly='readonly']"));
+		//var classes = jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").attr('class').split(' ');
+        var classes = jQuery(field).closest(".contentVariant").find("input[readonly='readonly']").attr('class').split(' ');
+
 		// Remove all classes with the same prefix
 		for (var i=0; i<classes.length; i++) {
 			if(classes[i].substr(0, prefix.length+1) == prefix + '-') {
-				jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").removeClass(classes[i]);
+                jQuery(field).closest(".contentVariant").find("input[readonly='readonly']").removeClass(classes[i]);
 			}
 		}
 		// Add the selected value
-		jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").addClass(value);
-		var values = jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").attr("class");
+        jQuery(field).closest(".contentVariant").find("input[readonly='readonly']").addClass(value);
+		var values = jQuery(field).closest(".contentVariant").find("input[readonly='readonly']").attr("class");
 		values = Themes.convertClassesForInputValue(values);
-		jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").attr("value", values);
+        jQuery(field).closest(".contentVariant").find("input[readonly='readonly']").attr("value", values);
 	};
 
 	Themes.contentVariantChangeCheckbox = function(field) {
@@ -106,14 +109,14 @@ define(['jquery'], function (jQuery) {
 			itemselector = ".t3js-formengine-field-item";
 		}
 		if (field.checked) {
-			jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").addClass(field.name);
+            jQuery(field).closest(".contentVariant").find("input[readonly='readonly']").addClass(field.name);
 		}
 		else {
-			jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").removeClass(field.name);
+            jQuery(field).closest(".contentVariant").find("input[readonly='readonly']").removeClass(field.name);
 		}
-		var values = jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").attr("class");
+		var values = jQuery(field).closest(".contentVariant").find("input[readonly='readonly']").attr("class");
 		values = Themes.convertClassesForInputValue(values);
-		jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").attr("value", values);
+        jQuery(field).closest(".contentVariant").find("input[readonly='readonly']").attr("value", values);
 	};
 
 	Themes.contentBehaviourChangeSelectbox = function(field) {
@@ -126,18 +129,18 @@ define(['jquery'], function (jQuery) {
 		}
 		var value = jQuery(field).val();
 		var prefix = jQuery(field).attr('name');
-		var classes = jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").attr('class').split(' ');
+		var classes = jQuery(field).closest(".contentBehaviour").find("input[readonly=\'readonly\']").attr('class').split(' ');
 		// Remove all classes with the same prefix
 		for (var i=0; i<classes.length; i++) {
 			if(classes[i].substr(0, prefix.length+1) == prefix + '-') {
-				jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").removeClass(classes[i]);
+				jQuery(field).closest(".contentBehaviour").find("input[readonly=\'readonly\']").removeClass(classes[i]);
 			}
 		}
 		// Add the selected value
-		jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").addClass(value);
-		var values = jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").attr("class");
+		jQuery(field).closest(".contentBehaviour").find("input[readonly=\'readonly\']").addClass(value);
+		var values = jQuery(field).closest(".contentBehaviour").find("input[readonly=\'readonly\']").attr("class");
 		values = Themes.convertClassesForInputValue(values);
-		jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").attr("value", values);
+		jQuery(field).closest(".contentBehaviour").find("input[readonly=\'readonly\']").attr("value", values);
 	};
 
 	Themes.contentBehaviourChangeCheckbox = function(field) {
@@ -149,14 +152,14 @@ define(['jquery'], function (jQuery) {
 			itemselector = ".t3js-formengine-field-item";
 		}
 		if (field.checked) {
-			jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").addClass(field.name);
+			jQuery(field).closest(".contentBehaviour").find("input[readonly=\'readonly\']").addClass(field.name);
 		}
 		else {
-			jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").removeClass(field.name);
+			jQuery(field).closest(".contentBehaviour").find("input[readonly=\'readonly\']").removeClass(field.name);
 		}
-		var values = jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").attr("class");
+		var values = jQuery(field).closest(".contentBehaviour").find("input[readonly=\'readonly\']").attr("class");
 		values = Themes.convertClassesForInputValue(values);
-		jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").attr("value", values);
+		jQuery(field).closest(".contentBehaviour").find("input[readonly=\'readonly\']").attr("value", values);
 	};
 
 	Themes.contentResponsiveChangeSelectbox = function(field) {
@@ -169,18 +172,18 @@ define(['jquery'], function (jQuery) {
 		}
 		var value = jQuery(field).val();
 		var prefix = jQuery(field).attr('name');
-		var classes = jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").attr('class').split(' ');
+		var classes = jQuery(field).closest(".contentResponsive").find("input[readonly=\'readonly\']").attr('class').split(' ');
 		// Remove all classes with the same prefix
 		for (var i=0; i<classes.length; i++) {
 			if(classes[i].substr(0, prefix.length+1) == prefix + '-') {
-				jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").removeClass(classes[i]);
+				jQuery(field).closest(".contentResponsive").find("input[readonly=\'readonly\']").removeClass(classes[i]);
 			}
 		}
 		// Add the selected value
-		jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").addClass(value);
-		var values = jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").attr("class");
+		jQuery(field).closest(".contentResponsive").find("input[readonly=\'readonly\']").addClass(value);
+		var values = jQuery(field).closest(".contentResponsive").find("input[readonly=\'readonly\']").attr("class");
 		values = Themes.convertClassesForInputValue(values);
-		jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").attr("value", values);
+		jQuery(field).closest(".contentResponsive").find("input[readonly=\'readonly\']").attr("value", values);
 	};
 
 	Themes.contentColumnSettingsChange = function(field) {
@@ -218,8 +221,9 @@ define(['jquery'], function (jQuery) {
 		values = Themes.convertClassesForInputValue(values);
 		jQuery(field).closest(itemselector).find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").attr("value", values);
 	};
-	
+
 	Themes.convertClassesForInputValue = function(values) {
+	    console.log(values);
 		values = values.replace(/form-control/g, "").trim();
 		values = values.replace(/themes-hidden-admin-field/g, "").trim();
 		values = values.replace(/\ /g, ",");

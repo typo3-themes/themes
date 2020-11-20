@@ -4,33 +4,33 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
+$_EXTKEY = 'themes';
+
 /**
  * Static templates
  */
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('themes', 'Configuration/TypoScript', 'Themes');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('themes', 'Configuration/TypoScript/FluidStyledContent', 'Themes (For backward compatibility: Additional add this for using fluid_styled_content)');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Themes');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/FluidStyledContent', 'Themes (For backward compatibility: Additional add this for using fluid_styled_content)');
 
 if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'KayStrobach.themes',
-        'web', // Main area
+        'KayStrobach.'.$_EXTKEY, 'web', // Main area
         'mod1', // Name of the module
         '', // Position of the module
         [
             // Allowed controller action combinations
             'Editor' => 'index,update,showTheme,setTheme,showThemeDetails,saveCategoriesFilterSettings',
-        ],
-        [
+        ], [
             // Additional configuration
             'access'         => 'user,group',
-            'icon' => 'EXT:themes/ext_icon.svg',
+            'icon' => 'EXT:' . $_EXTKEY . '/ext_icon.svg',
             'iconIdentifier' => 'module-themes',
-            'labels'         => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf',
+            'labels'         => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf',
         ]
     );
     // Add some backend stylesheets and javascript
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][]
-        = \KayStrobach\Themes\Hooks\PageRenderer::class . '->addJSCSS';
+        = 'KayStrobach\\Themes\\Hooks\\PageRenderer->addJSCSS';
 }
 
 /*
@@ -58,9 +58,7 @@ $iconsSvg = [
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 foreach ($iconsSvg as $identifier => $path) {
     $iconRegistry->registerIcon(
-        $identifier,
-        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-        ['source' => 'EXT:themes/' . $path]
+        $identifier, \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class, ['source' => 'EXT:' . $_EXTKEY . '/' . $path]
     );
 }
 

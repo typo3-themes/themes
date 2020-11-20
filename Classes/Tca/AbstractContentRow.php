@@ -27,6 +27,7 @@ namespace KayStrobach\Themes\Tca;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Abstract for ContentRow.
  */
-abstract class AbstractContentRow
+abstract class AbstractContentRow extends AbstractFormElement
 {
     protected $ctypeProperties = [];
     protected $defaultProperties = [];
@@ -55,17 +56,25 @@ abstract class AbstractContentRow
     protected function getMergedConfiguration($pid, $node, $cType)
     {
         // Get configuration ctype specific configuration
-        $cTypeConfig = $this->getBeUser()->getTSConfig(
-            'themes.content.'.$node.'.'.$cType,
-            BackendUtility::getPagesTSconfig($pid)
-        );
+        $cTypeConfig['properties'] = BackendUtility::getPagesTSconfig($pid)['themes.']['content.'][$node.'.'][$cType.'.'];
         $this->ctypeProperties = $cTypeConfig['properties'];
+
+//        $cTypeConfig = $this->getBeUser()->getTSConfig(
+//            'themes.content.'.$node.'.'.$cType,
+//            BackendUtility::getPagesTSconfig($pid)
+//        );
+//        $this->ctypeProperties = $cTypeConfig['properties'];
+
         // Get default configuration
-        $defaultConfig = $this->getBeUser()->getTSConfig(
-            'themes.content.'.$node.'.default',
-            BackendUtility::getPagesTSconfig($pid)
-        );
+        $defaultConfig['properties'] = BackendUtility::getPagesTSconfig($pid)['themes.']['content.'][$node.'.']['default.'];
         $this->defaultProperties = $defaultConfig['properties'];
+
+//        $defaultConfig = $this->getBeUser()->getTSConfig(
+//            'themes.content.'.$node.'.default',
+//            BackendUtility::getPagesTSconfig($pid)
+//        );
+//        $this->defaultProperties = $defaultConfig['properties'];
+
         // Merge configurations
         $config = array_replace_recursive($cTypeConfig, $defaultConfig);
 
@@ -86,8 +95,7 @@ abstract class AbstractContentRow
             ->from('tt_content')
             ->where(
                 $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter(-((int) $pid), \PDO::PARAM_INT)
+                    'uid', $queryBuilder->createNamedParameter(-((int) $pid), \PDO::PARAM_INT)
                 )
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */

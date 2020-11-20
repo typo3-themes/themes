@@ -2,6 +2,8 @@
 
 namespace KayStrobach\Themes\ViewHelpers;
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /***************************************************************
  *
  * Copyright notice
@@ -27,8 +29,6 @@ namespace KayStrobach\Themes\ViewHelpers;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-
 /**
  * can be used to access array keys or object properties dynamically.
  *
@@ -36,6 +36,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class ArrayIndexViewHelper extends AbstractViewHelper
 {
+
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -70,4 +71,5 @@ class ArrayIndexViewHelper extends AbstractViewHelper
         }
         return false;
     }
+
 }

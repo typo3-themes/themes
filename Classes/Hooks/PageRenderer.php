@@ -57,4 +57,5 @@ class PageRenderer implements SingletonInterface
         $filename = PathUtility::getAbsoluteWebPath($absolutePath);
         $pageRenderer->addCssFile($filename, 'stylesheet', 'screen');
     }
+
 }

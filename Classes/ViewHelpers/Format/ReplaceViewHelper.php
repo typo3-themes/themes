@@ -2,6 +2,8 @@
 
 namespace KayStrobach\Themes\ViewHelpers\Format;
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /***************************************************************
  *
  * Copyright notice
@@ -27,13 +29,13 @@ namespace KayStrobach\Themes\ViewHelpers\Format;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Replaces $substring in $content with $replacement.
  */
 class ReplaceViewHelper extends AbstractViewHelper
 {
+
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -57,4 +59,5 @@ class ReplaceViewHelper extends AbstractViewHelper
         }
         return str_replace($substring, $replacement, $content, $count);
     }
+
 }

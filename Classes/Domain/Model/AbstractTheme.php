@@ -260,14 +260,14 @@ class AbstractTheme extends AbstractEntity
     }
 
     /**
-     * Calculates the relative path to the theme directory for frontend usage.
+     * returns the relative path of the theme.
      *
      * @return string
      */
     public function getRelativePath()
     {
         if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
-            return PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->getExtensionName()));
+            return ExtensionManagementUtility::siteRelPath($this->getExtensionName());
         }
         return '';
     }
@@ -314,8 +314,7 @@ class AbstractTheme extends AbstractEntity
                 $pObj->processTemplate(
                     $themeItem,
                     $params['idList'] . ',ext_theme' . str_replace('_', '', $this->getExtensionName()),
-                    $params['pid'],
-                    'ext_theme' . str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'], 'ext_theme' . str_replace('_', '', $this->getExtensionName()),
                     $params['templateId']
                 );
             }
@@ -328,8 +327,7 @@ class AbstractTheme extends AbstractEntity
                 $pObj->processTemplate(
                     $themeItem,
                     $params['idList'] . ',ext_theme' . str_replace('_', '', $this->getExtensionName()),
-                    $params['pid'],
-                    'ext_theme' . str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'], 'ext_theme' . str_replace('_', '', $this->getExtensionName()),
                     $params['templateId']
                 );
             }
@@ -395,7 +393,7 @@ class AbstractTheme extends AbstractEntity
                 foreach ($languages as $key => $language) {
                     $languageUid = (int)$language['languageId'];
                     $languageUids[] = $languageUid;
-                    $buffer = '[siteLanguage("languageId") == ' . $languageUid . ']' . LF;
+                    $buffer = '[globalVar = GP:L=' . $languageUid . ']' . LF;
                     $buffer .= $key . '.current {' . LF;
                     $buffer .= ' uid = ' . $languageUid . LF;
                     $buffer .= ' label = ' . $language['title'] . LF;
@@ -406,14 +404,16 @@ class AbstractTheme extends AbstractEntity
                     $buffer .= ' isoCodeShort = ' . $language['iso-639-1'] . LF;
                     $buffer .= ' isoCodeHtml = ' . $language['hreflang'] . LF;
                     $buffer .= '} ' . LF;
-                    $buffer .= '[end]' . LF;
+                    $buffer .= '[global]' . LF;
                     $outputBuffer .= $buffer;
                 }
                 $outputBuffer .= $key . '.available=' . implode(',', $languageUids) . LF;
-            } else {
+            }
+            else {
                 $outputBuffer .= $key . '.available=' . LF;
             }
-        } else {
+        }
+        else {
             $outputBuffer .= $key . '.available=' . LF;
         }
         return $outputBuffer;
@@ -437,4 +437,5 @@ class AbstractTheme extends AbstractEntity
         $buffer .= LF . 'themes.mode.isProduction = ' . (int)!ApplicationContext::isDevelopmentModeActive();
         return $buffer;
     }
+
 }
