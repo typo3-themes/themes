@@ -30,6 +30,8 @@ namespace KayStrobach\Themes\Utilities;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * Class TsParserUtility.
@@ -236,17 +238,19 @@ class TsParserUtility implements SingletonInterface
             $this->tsParser = GeneralUtility::makeInstance('TYPO3\\CMS\Core\\TypoScript\\ExtendedTemplateService');
             // Do not log time-performance information
             $this->tsParser->tt_track = 0;
-            $this->tsParser->init();
 
             $this->tsParser->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate');
-            $this->tsParser->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'].ExtensionManagementUtility::siteRelPath('tstemplate');
+            $this->tsParser->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'] . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('tstemplate'));
 
             $this->tsParserTplRow = $this->tsParser->ext_getFirstTemplate($pageId, $templateUid);
 
             if (is_array($this->tsParserTplRow)) {
-                /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageRepository */
-                $sysPageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-                $rootLine = $sysPageRepository->getRootLine($pageId);
+                $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId);
+                try {
+                    $rootLine = $rootlineUtility->get();
+                } catch (\RuntimeException $e) {
+                    return false;
+                }
                 // This generates the constants/config + hierarchy info for the template.
                 $this->tsParser->runThroughTemplates($rootLine, $templateUid);
                 // The editable constants are returned in an array.

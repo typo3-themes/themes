@@ -260,14 +260,14 @@ class AbstractTheme extends AbstractEntity
     }
 
     /**
-     * returns the relative path of the theme.
+     * Calculates the relative path to the theme directory for frontend usage.
      *
      * @return string
      */
     public function getRelativePath()
     {
         if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
-            return ExtensionManagementUtility::siteRelPath($this->getExtensionName());
+            return PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->getExtensionName()));
         }
         return '';
     }
@@ -393,7 +393,7 @@ class AbstractTheme extends AbstractEntity
                 foreach ($languages as $key => $language) {
                     $languageUid = (int)$language['languageId'];
                     $languageUids[] = $languageUid;
-                    $buffer = '[globalVar = GP:L=' . $languageUid . ']' . LF;
+                    $buffer = '[siteLanguage("languageId") == ' . $languageUid . ']' . LF;
                     $buffer .= $key . '.current {' . LF;
                     $buffer .= ' uid = ' . $languageUid . LF;
                     $buffer .= ' label = ' . $language['title'] . LF;
@@ -404,7 +404,7 @@ class AbstractTheme extends AbstractEntity
                     $buffer .= ' isoCodeShort = ' . $language['iso-639-1'] . LF;
                     $buffer .= ' isoCodeHtml = ' . $language['hreflang'] . LF;
                     $buffer .= '} ' . LF;
-                    $buffer .= '[global]' . LF;
+                    $buffer .= '[end]' . LF;
                     $outputBuffer .= $buffer;
                 }
                 $outputBuffer .= $key . '.available=' . implode(',', $languageUids) . LF;

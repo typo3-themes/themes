@@ -28,13 +28,14 @@ namespace KayStrobach\Themes\ViewHelpers;
  ***************************************************************/
 
 use KayStrobach\Themes\Utilities\ThemeEnabledCondition;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * Is a theme enabled?
  *
  * @author Thomas Deuling <typo3@coding.ms>, Kay Strobach
  */
-class ThemeEnabledConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper
+class ThemeEnabledConditionViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initializes the "theme" argument.

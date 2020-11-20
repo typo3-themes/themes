@@ -9,7 +9,7 @@ namespace KayStrobach\Themes\ViewHelpers\Variable;
  */
 
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ### Variable: Set.
@@ -74,7 +74,7 @@ class SetViewHelper extends AbstractViewHelper {
 	public function render() {
 		$name = $this->arguments['name'];
 		$value = $this->arguments['value'];
-		
+
 		if (null === $value) {
 			$value = $this->renderChildren();
 		}

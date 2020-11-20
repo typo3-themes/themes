@@ -28,6 +28,7 @@ namespace KayStrobach\Themes\Hooks;
  ***************************************************************/
 
 use KayStrobach\Themes\Domain\Model\Theme;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -56,7 +57,7 @@ class ThemesDomainRepositoryThemeRepositoryInitHook
         // Get all available extensions, excluding system extensions
         $extensionsToCheck = array_diff(
             ExtensionManagementUtility::getLoadedExtensionListArray(),
-            scandir(PATH_typo3 . 'sysext')
+            scandir(Environment::getBackendPath() . '/sysext')
         );
         //
         // Check extensions, which are worth to check

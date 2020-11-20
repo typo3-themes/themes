@@ -29,8 +29,8 @@ namespace KayStrobach\Themes\Domain\Repository;
 
 use KayStrobach\Themes\Domain\Model\AbstractTheme;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
@@ -201,10 +201,17 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      */
     public function findByPageId($pid)
     {
-        $template = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-        $template->tt_track = 0;
-        $template->init();
-        $templateRow = $template->ext_getFirstTemplate($pid);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_template');
+        $queryBuilder->select('*')
+            ->from('sys_template')
+            ->where(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
+            )
+            ->setMaxResults(1);
+        if (!empty($GLOBALS['TCA']['sys_template']['ctrl']['sortby'])) {
+            $queryBuilder->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);
+        }
+        $templateRow = $queryBuilder->execute()->fetch();
         return $this->findByUid($templateRow['tx_themes_skin']);
     }
 
