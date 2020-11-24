@@ -406,7 +406,7 @@ class AbstractTheme extends AbstractEntity
                     $buffer .= ' isoCodeShort = ' . $language['iso-639-1'] . LF;
                     $buffer .= ' isoCodeHtml = ' . $language['hreflang'] . LF;
                     $buffer .= '} ' . LF;
-                    $buffer .= '[global]' . LF;
+                    $buffer .= '[end]' . LF;
                     $outputBuffer .= $buffer;
                 }
                 $outputBuffer .= $key . '.available=' . implode(',', $languageUids) . LF;
