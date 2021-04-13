@@ -26,5 +26,10 @@
   },
   "conflict": {
     "typo3-ter/yaml-parser": "*"
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "themes"
+    }
   }
 }
