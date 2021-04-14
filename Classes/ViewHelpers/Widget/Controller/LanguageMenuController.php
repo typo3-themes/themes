@@ -71,7 +71,7 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
     {
         $menu = [];
         $pageUid = (int)$GLOBALS['TSFE']->id;
-        $languageUid = (int)$GLOBALS['TSFE']->sys_language_uid;
+        $languageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
         /** @var Site $siteConfiguration */
         $siteConfiguration = $this->siteFinder->getSiteByPageId($pageUid);
         /** @var SiteLanguage $language */
