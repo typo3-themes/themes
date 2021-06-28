@@ -88,10 +88,6 @@ class CheckPageUtility
                 $queryBuilder->expr()->eq(
                     'pid',
                     $queryBuilder->createNamedParameter((int)$pid, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'root',
-                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
                 )
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */
