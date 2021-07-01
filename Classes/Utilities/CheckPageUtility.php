@@ -101,7 +101,7 @@ class CheckPageUtility
                 $themeableSysTemplateRecordsRequireRootFlag = (bool)$configuration['themeableSysTemplateRecordsRequireRootFlag'];
             }
         } catch (SiteNotFoundException $e) {
-            // nothing todo if no site is found
+            // simple keep variable value
         }
         if ($themeableSysTemplateRecordsRequireRootFlag === true) {
             $queryBuilder->andWhere(
