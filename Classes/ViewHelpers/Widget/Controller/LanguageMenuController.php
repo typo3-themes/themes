@@ -125,7 +125,8 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
             ->from('sys_language')
             ->where(
                 $queryBuilder->expr()->eq(
-                    'uid', $queryBuilder->createNamedParameter((int) $uid, \PDO::PARAM_INT)
+                    'uid',
+                    $queryBuilder->createNamedParameter((int) $uid, \PDO::PARAM_INT)
                 )
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */
@@ -155,10 +156,12 @@ class LanguageMenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
             ->from('pages_language_overlay')
             ->andWhere(
                 $queryBuilder->expr()->eq(
-                    'pid', $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
+                    'pid',
+                    $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
-                    'sys_language_uid', $queryBuilder->createNamedParameter((int) $languageUid, \PDO::PARAM_INT)
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter((int) $languageUid, \PDO::PARAM_INT)
                 )
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */

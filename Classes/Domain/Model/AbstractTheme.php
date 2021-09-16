@@ -289,7 +289,8 @@ class AbstractTheme extends AbstractEntity
                 $pObj->processTemplate(
                     $themeItem,
                     $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
-                    $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'],
+                    'ext_theme'.str_replace('_', '', $this->getExtensionName()),
                     $params['templateId']
                 );
             }
@@ -302,7 +303,8 @@ class AbstractTheme extends AbstractEntity
                 $pObj->processTemplate(
                     $themeItem,
                     $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
-                    $params['pid'], 'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['pid'],
+                    'ext_theme'.str_replace('_', '', $this->getExtensionName()),
                     $params['templateId']
                 );
             }
@@ -370,7 +372,8 @@ class AbstractTheme extends AbstractEntity
             ->from('static_languages')
             ->where(
                 $queryBuilder->expr()->eq(
-                    'sys_language.static_lang_isocode', 'static_languages.uid'
+                    'sys_language.static_lang_isocode',
+                    'static_languages.uid'
                 )
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */
