@@ -55,7 +55,8 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
             ->from('tx_themes_buttoncontent')
             ->where(
                 $queryBuilder->expr()->eq(
-                    'tt_content', $queryBuilder->createNamedParameter((int)$processedData['data']['uid'], \PDO::PARAM_INT)
+                    'tt_content',
+                    $queryBuilder->createNamedParameter((int)$processedData['data']['uid'], \PDO::PARAM_INT)
                 )
             )
             ->orderBy('sorting');
