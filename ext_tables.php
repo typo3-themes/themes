@@ -21,12 +21,14 @@ unset($extensionConfiguration);
 
 if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'KayStrobach.'.$_EXTKEY, 'web', // Main area
+        'KayStrobach.'.$_EXTKEY,
+        'web', // Main area
         'mod1', // Name of the module
         '', // Position of the module
         [// Allowed controller action combinations
             'Editor' => 'index,update,showTheme,setTheme,showThemeDetails,saveCategoriesFilterSettings',
-        ], [// Additional configuration
+        ],
+        [// Additional configuration
             'access'         => 'user,group',
             'icon' => 'EXT:' . $_EXTKEY . '/ext_icon.svg',
             'iconIdentifier' => 'module-themes',

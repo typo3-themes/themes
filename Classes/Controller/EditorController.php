@@ -202,7 +202,8 @@ class EditorController extends ActionController
         // mod.tx_themes.constantCategoriesToShow.value
         // Get value from page/user typoscript
         $externalConstantCategoriesToShow = $this->getBackendUser()->getTSConfig(
-            'mod.tx_themes.constantCategoriesToShow', BackendUtility::getPagesTSconfig($this->id)
+            'mod.tx_themes.constantCategoriesToShow',
+            BackendUtility::getPagesTSconfig($this->id)
         );
         if ($externalConstantCategoriesToShow['value']) {
             $this->externalConfig['constantCategoriesToShow'] = GeneralUtility::trimExplode(',', $externalConstantCategoriesToShow['value']);
@@ -214,7 +215,8 @@ class EditorController extends ActionController
         // mod.tx_themes.constantsToHide.value
         // Get value from page/user typoscript
         $externalConstantsToHide = $this->getBackendUser()->getTSConfig(
-            'mod.tx_themes.constantsToHide', BackendUtility::getPagesTSconfig($this->id)
+            'mod.tx_themes.constantsToHide',
+            BackendUtility::getPagesTSconfig($this->id)
         );
         if ($externalConstantsToHide['value']) {
             $this->externalConfig['constantsToHide'] = GeneralUtility::trimExplode(',', $externalConstantsToHide['value']);

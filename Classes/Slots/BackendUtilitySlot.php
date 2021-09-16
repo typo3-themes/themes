@@ -107,7 +107,8 @@ class BackendUtilitySlot extends TsConfigParser
                 ->where(
                     $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->eq(
-                            'pid', $queryBuilder->createNamedParameter((int)$page['uid'], \PDO::PARAM_INT)
+                            'pid',
+                            $queryBuilder->createNamedParameter((int)$page['uid'], \PDO::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq('root', '1')
                     )
