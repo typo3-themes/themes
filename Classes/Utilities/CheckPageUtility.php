@@ -28,6 +28,8 @@ namespace KayStrobach\Themes\Utilities;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -84,16 +86,31 @@ class CheckPageUtility
             ->getQueryBuilderForTable('sys_template');
         $queryBuilder->select('*')
             ->from('sys_template')
-            ->andWhere(
+            ->where(
                 $queryBuilder->expr()->eq(
                     'pid',
                     $queryBuilder->createNamedParameter((int)$pid, \PDO::PARAM_INT)
-                ),
+                )
+            );
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $themeableSysTemplateRecordsRequireRootFlag = true;
+        try {
+            $site = $siteFinder->getSiteByPageId($pid);
+            $configuration = $site->getConfiguration();
+            if (isset($configuration['themeableSysTemplateRecordsRequireRootFlag'])) {
+                $themeableSysTemplateRecordsRequireRootFlag = (bool)$configuration['themeableSysTemplateRecordsRequireRootFlag'];
+            }
+        } catch (SiteNotFoundException $e) {
+            // simple keep variable value
+        }
+        if ($themeableSysTemplateRecordsRequireRootFlag === true) {
+            $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     'root',
                     $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
                 )
             );
+        }
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */
         $statement = $queryBuilder->execute();
         if ($statement->rowCount() > 0) {
