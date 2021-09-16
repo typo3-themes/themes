@@ -25,13 +25,16 @@ class CheckPageUtility
             ->from('sys_template')
             ->andWhere(
                 $queryBuilder->expr()->eq(
-                    'pid', $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
+                    'pid',
+                    $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
-                    'root', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                    'root',
+                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->neq(
-                    'tx_themes_skin', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                    'tx_themes_skin',
+                    $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
                 )
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */
@@ -58,10 +61,12 @@ class CheckPageUtility
             ->from('sys_template')
             ->andWhere(
                 $queryBuilder->expr()->eq(
-                    'pid', $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
+                    'pid',
+                    $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
-                    'root', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                    'root',
+                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
                 )
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */
@@ -87,10 +92,12 @@ class CheckPageUtility
             ->from('sys_template')
             ->andWhere(
                 $queryBuilder->expr()->eq(
-                    'pid', $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
+                    'pid',
+                    $queryBuilder->createNamedParameter((int) $pid, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
-                    'root', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                    'root',
+                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
                 )
             );
         /** @var  \Doctrine\DBAL\Driver\Statement $statement */

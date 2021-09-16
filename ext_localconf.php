@@ -60,7 +60,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = '
  */
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'KayStrobach.' . $_EXTKEY,
-    'Theme', [
+    'Theme',
+    [
     'Theme' => 'index',
 ],
     []
