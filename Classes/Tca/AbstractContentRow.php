@@ -27,14 +27,16 @@ namespace KayStrobach\Themes\Tca;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityCore;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract for ContentRow.
  */
-abstract class AbstractContentRow
+abstract class AbstractContentRow extends AbstractFormElement
 {
     protected $ctypeProperties = [];
     protected $defaultProperties = [];
@@ -55,20 +57,17 @@ abstract class AbstractContentRow
     protected function getMergedConfiguration($pid, $node, $cType)
     {
         // Get configuration ctype specific configuration
-        $cTypeConfig = $this->getBeUser()->getTSConfig(
-            'themes.content.'.$node.'.'.$cType,
-            BackendUtility::getPagesTSconfig($pid)
-        );
-        $this->ctypeProperties = $cTypeConfig['properties'];
-        // Get default configuration
-        $defaultConfig = $this->getBeUser()->getTSConfig(
-            'themes.content.'.$node.'.default',
-            BackendUtility::getPagesTSconfig($pid)
-        );
-        $this->defaultProperties = $defaultConfig['properties'];
+        $pagesTsConfig = BackendUtilityCore::getPagesTSconfig($pid);
+        $this->ctypeProperties = [];
+        if(is_array($pagesTsConfig['themes.']['content.'][$node . '.'][$cType . '.'])) {
+            $this->ctypeProperties['properties'] = $pagesTsConfig['themes.']['content.'][$node . '.'][$cType . '.'];
+        }
+        $this->defaultProperties = [];
+        if(is_array($pagesTsConfig['themes.']['content.'][$node . '.']['default.'])) {
+            $this->defaultProperties['properties'] = $pagesTsConfig['themes.']['content.'][$node . '.']['default.'];
+        }
         // Merge configurations
-        $config = array_replace_recursive($cTypeConfig, $defaultConfig);
-
+        $config = array_replace_recursive($this->ctypeProperties , $this->defaultProperties);
         return $config;
     }
 

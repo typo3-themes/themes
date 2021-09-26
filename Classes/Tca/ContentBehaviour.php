@@ -39,13 +39,12 @@ class ContentBehaviour extends AbstractContentRow
     /**
      * Render a Content Behaviour row.
      *
-     * @param array $parameters
-     * @param mixed $parentObject
-     *
-     * @return string
+     * @return array
      */
-    public function renderField(array &$parameters, &$parentObject)
+    public function render()
     {
+        $parameters = $this->data['parameterArray'];
+        $parameters['row'] = $this->data['databaseRow'];
         // Vars
         $uid = $parameters['row']['uid'];
         $pid = $parameters['row']['pid'];
@@ -135,7 +134,7 @@ class ContentBehaviour extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $this->valuesAvailable);
 
-        return '<div class="contentBehaviour">'.$checkboxes.$hiddenField.$missedField.'</div>';
+        return ['html' => '<div class="contentBehaviour">'.$checkboxes.$hiddenField.$missedField.'</div>'];
     }
 
     /**

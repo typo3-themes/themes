@@ -1,11 +1,11 @@
 /**
- * 
+ *
  */
 define(['jquery'], function (jQuery) {
 
 
 	var Themes = {};
-	
+
 	Themes.initialize = function() {
 		Themes.initSelectBoxValues();
 		jQuery('.contentVariant select').change(function() {
@@ -72,7 +72,7 @@ define(['jquery'], function (jQuery) {
 			}
 		});
 	};
-	
+
 	Themes.contentVariantChangeSelectbox = function(field) {
 		var itemselector = "";
 		if(jQuery(field).closest(".t3-form-field-item").index() > 0) {
@@ -81,6 +81,9 @@ define(['jquery'], function (jQuery) {
 		else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0) {
 			itemselector = ".t3js-formengine-field-item";
 		}
+        else {
+            itemselector = ".form-group";
+        }
 		var value = jQuery(field).val();
 		var prefix = jQuery(field).attr('name');
 		var classes = jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").attr('class').split(' ');
@@ -105,6 +108,9 @@ define(['jquery'], function (jQuery) {
 		else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0) {
 			itemselector = ".t3js-formengine-field-item";
 		}
+		else {
+			itemselector = ".form-group";
+		}
 		if (field.checked) {
 			jQuery(field).closest(itemselector).find(".contentVariant input[readonly=\'readonly\']").addClass(field.name);
 		}
@@ -124,6 +130,9 @@ define(['jquery'], function (jQuery) {
 		else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0) {
 			itemselector = ".t3js-formengine-field-item";
 		}
+        else {
+            itemselector = ".form-group";
+        }
 		var value = jQuery(field).val();
 		var prefix = jQuery(field).attr('name');
 		var classes = jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").attr('class').split(' ');
@@ -148,6 +157,9 @@ define(['jquery'], function (jQuery) {
 		else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0) {
 			itemselector = ".t3js-formengine-field-item";
 		}
+        else {
+            itemselector = ".form-group";
+        }
 		if (field.checked) {
 			jQuery(field).closest(itemselector).find(".contentBehaviour input[readonly=\'readonly\']").addClass(field.name);
 		}
@@ -167,6 +179,9 @@ define(['jquery'], function (jQuery) {
 		else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0) {
 			itemselector = ".t3js-formengine-field-item";
 		}
+        else {
+            itemselector = ".form-group";
+        }
 		var value = jQuery(field).val();
 		var prefix = jQuery(field).attr('name');
 		var classes = jQuery(field).closest(itemselector).find(".contentResponsive input[readonly=\'readonly\']").attr('class').split(' ');
@@ -191,6 +206,9 @@ define(['jquery'], function (jQuery) {
 		else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0) {
 			itemselector = ".t3js-formengine-field-item";
 		}
+        else {
+            itemselector = ".form-group";
+        }
 		jQuery.each(jQuery(".contentColumnSettings select[name=\'"+field.name+"\'] option"), function(index, node) {
 			jQuery(field).closest(itemselector).find(".contentColumnSettings input[readonly=\'readonly\']").removeClass(node.value);
 		});
@@ -208,6 +226,9 @@ define(['jquery'], function (jQuery) {
 		else if(jQuery(field).closest(".t3js-formengine-field-item").index() > 0) {
 			itemselector = ".t3js-formengine-field-item";
 		}
+        else {
+            itemselector = ".form-group";
+        }
 		if (field.checked) {
 			jQuery(field).closest(itemselector).find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").addClass(field.name);
 		}
@@ -218,7 +239,7 @@ define(['jquery'], function (jQuery) {
 		values = Themes.convertClassesForInputValue(values);
 		jQuery(field).closest(itemselector).find(".contentEnforceEqualColumnHeight input[readonly=\'readonly\']").attr("value", values);
 	};
-	
+
 	Themes.convertClassesForInputValue = function(values) {
 		values = values.replace(/form-control/g, "").trim();
 		values = values.replace(/themes-hidden-admin-field/g, "").trim();

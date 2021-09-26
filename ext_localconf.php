@@ -46,3 +46,20 @@ unset($signalSlotDispatcher);
     ['Theme' => 'index'],
     []
 );
+
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667595] = [
+    'nodeName' => 'ContentVariants',
+    'priority' => '70',
+    'class' => \KayStrobach\Themes\Tca\ContentVariants::class
+];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667596] = [
+    'nodeName' => 'ContentBehaviour',
+    'priority' => '70',
+    'class' => \KayStrobach\Themes\Tca\ContentBehaviour::class
+];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667597] = [
+    'nodeName' => 'ContentResponsive',
+    'priority' => '70',
+    'class' => \KayStrobach\Themes\Tca\ContentResponsive::class
+];

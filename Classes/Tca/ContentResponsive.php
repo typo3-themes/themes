@@ -37,13 +37,12 @@ class ContentResponsive extends AbstractContentRow
     /**
      * Render a Content Variant row.
      *
-     * @param array $parameters
-     * @param mixed $parentObject
-     *
-     * @return string
+     * @return array
      */
-    public function renderField(array &$parameters, &$parentObject)
+    public function render()
     {
+        $parameters = $this->data['parameterArray'];
+        $parameters['row'] = $this->data['databaseRow'];
         // Vars
         $uid = $parameters['row']['uid'];
         $pid = $parameters['row']['pid'];
@@ -239,6 +238,6 @@ class ContentResponsive extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $valuesAvailable);
 
-        return '<div class="contentResponsive">'.$selectboxes.$hiddenField.$missedField.'</div>';
+        return ['html' => '<div class="contentResponsive">'.$selectboxes.$hiddenField.$missedField.'</div>'];
     }
 }

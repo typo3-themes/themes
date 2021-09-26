@@ -64,24 +64,24 @@ $tempColumn = [
         'exclude' => 1,
         'label'   => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants',
         'config'  => [
-            'type'     => 'user',
-            'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentVariants->renderField',
+            'type'       => 'input',
+            'renderType' => 'ContentVariants',
         ],
     ],
     'tx_themes_behaviour' => [
         'exclude' => 1,
         'label'   => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:behaviour',
         'config'  => [
-            'type'     => 'user',
-            'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentBehaviour->renderField',
+            'type'       => 'input',
+            'renderType' => 'ContentBehaviour',
         ],
     ],
     'tx_themes_responsive' => [
         'exclude' => 1,
         'label'   => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:responsive_settings',
         'config'  => [
-            'type'     => 'user',
-            'userFunc' => 'KayStrobach\\Themes\\Tca\\ContentResponsive->renderField',
+            'type'       => 'input',
+            'renderType' => 'ContentResponsive',
         ],
     ],
 ];

@@ -35,13 +35,12 @@ class ContentColumnSettings extends AbstractContentRow
     /**
      * Render a row for enforcing equal height of a column.
      *
-     * @param array $parameters
-     * @param mixed $parentObject
-     *
-     * @return string
+     * @return array
      */
-    public function renderField(array &$parameters, &$parentObject)
+    public function render()
     {
+        $parameters = $this->data['parameterArray'];
+        $parameters['row'] = $this->data['databaseRow'];
         // Vars
         $uid = $parameters['row']['uid'];
         $pid = $parameters['row']['pid'];
@@ -121,6 +120,6 @@ class ContentColumnSettings extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $valuesAvailable);
 
-        return '<div class="contentColumnSettings">'.$selectboxes.$hiddenField.$missedField.'</div>';
+        return ['html' => '<div class="contentColumnSettings">'.$selectboxes.$hiddenField.$missedField.'</div>'];
     }
 }
