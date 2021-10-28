@@ -33,6 +33,7 @@ namespace KayStrobach\Themes\ViewHelpers\Widget\Controller;
  * @author Thomas Deuling <typo3@coding.ms>
  * @package themes
  */
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Site\Entity\Site;
