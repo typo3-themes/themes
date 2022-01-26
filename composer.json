@@ -20,7 +20,6 @@
     "psr-4": { "KayStrobach\\Themes\\Tests\\": "tests/"}
   },
   "replace": {
-    "themes": "self.version",
     "typo3-ter/themes": "self.version"
   },
   "conflict": {
