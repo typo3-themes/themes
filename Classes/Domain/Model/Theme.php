@@ -99,15 +99,22 @@ class Theme extends AbstractTheme
      */
     public function getAllPreviewImages()
     {
-        $buffer = $this->metaInformation['screenshots'];
-        if (count($buffer) > 0) {
-            foreach ($buffer as $key => $image) {
-                // We need to use a real image file path, because in case of using a file
-                // reference, a non admin backend user might not have access to the storage!
-                $previewImage = GeneralUtility::getFileAbsFileName($image['file']);
-                $previewImage = PathUtility::getAbsoluteWebPath($previewImage);
-                $buffer[$key]['file'] = $previewImage;
-            }
+        $buffer = [];
+        if (is_array($this->metaInformation['screenshots']) && count($this->metaInformation['screenshots']) > 0) {
+            $buffer = $this->metaInformation['screenshots'];
+        }
+        if (count($buffer) < 1) {
+            $buffer[] = [
+                'file' => $this->previewImage,
+                'caption' => ''
+            ];
+        }
+        foreach ($buffer as $key => $image) {
+            // We need to use a real image file path, because in case of using a file
+            // reference, a non admin backend user might not have access to the storage!
+            $previewImage = GeneralUtility::getFileAbsFileName($image['file']);
+            $previewImage = PathUtility::getAbsoluteWebPath($previewImage);
+            $buffer[$key]['file'] = $previewImage;
         }
         return $buffer;
     }

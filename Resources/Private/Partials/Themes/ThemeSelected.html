@@ -8,9 +8,13 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">{selectedTheme.title} (Version: {selectedTheme.version})</div>
 				<div class="panel-body">
-
 					<f:if condition="{selectedTheme.metaInformation.description}">
-						<p>{selectedTheme.metaInformation.description}</p>
+						<f:then>
+                            <p>{selectedTheme.metaInformation.description}</p>
+                        </f:then>
+                        <f:else>
+                            <p>{selectedTheme.description}</p>
+                        </f:else>
 					</f:if>
 
 					<f:if condition="{selectedTheme.metaInformation.constants.availableCategories -> f:count()}">
