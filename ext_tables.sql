@@ -1,7 +1,7 @@
 CREATE TABLE sys_template (
-	tx_themes_skin tinytext NOT NULL,
-	tx_themes_extensions text,
-	tx_themes_features text,
+	tx_themes_skin tinytext DEFAULT '' NULL,
+	tx_themes_extensions tinytext DEFAULT '' NULL,
+	tx_themes_features tinytext DEFAULT '' NULL,
 );
 
 #
