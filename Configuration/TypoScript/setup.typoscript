@@ -11,6 +11,8 @@ config {
 	metaCharset = utf-8
 }
 
+
+
 # Plugin configuration
 plugin.tx_themes {
 	view {
@@ -18,8 +20,8 @@ plugin.tx_themes {
 		templateName {
 			cObject = TEXT
 			cObject {
-				data = page:backend_layout
-				ifEmpty.data = levelfield:-1, backend_layout_next_level, slide
+				data = levelfield:-2, backend_layout_next_level, slide
+                override.data = page:backend_layout
 				required = 1
 				split {
 					token = pagets__
@@ -29,8 +31,6 @@ plugin.tx_themes {
 			}
 			ifEmpty = Error
 		}
-	}
-	view {
 		templateRootPaths {
 			100 = EXT:themes/Resources/Private/Templates/
 			500 = {$themes.resourcesPrivatePath}Templates/
@@ -64,7 +64,7 @@ page {
 		pluginName = Theme
 		controller = Theme
 		action = Index
-		settings =< plugin.tx_themes.view
+		settings =< plugin.tx_themes.settings
 		persistence =< plugin.tx_themes.persistence
 		view =< plugin.tx_themes.view
 	}
