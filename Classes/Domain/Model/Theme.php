@@ -55,8 +55,20 @@ class Theme extends AbstractTheme
             $path = ExtensionManagementUtility::extPath($this->getExtensionName());
             //
             $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.typoscript';
+            if (!file_exists($this->pathTyposcript)) {
+                $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.txt';
+            }
+
             $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.typoscript';
+            if (!file_exists($this->pathTyposcriptConstants)) {
+                $this->pathTyposcript = $path . 'Configuration/TypoScript/constants.txt';
+            }
+
             $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.typoscript';
+            if (!file_exists($this->pathTsConfig)) {
+                $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.txt';
+            }
+
             //
             $this->importExtEmConf();
             if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png')) {
@@ -151,8 +163,8 @@ class Theme extends AbstractTheme
         // @codingStandardsIgnoreEnd
 
         // @todo resources Path / private Path
-        $themeItem['constants'] .= LF.'themes.resourcesPrivatePath = '.$this->getRelativePath().'Resources/Private/';
-        $themeItem['constants'] .= LF.'themes.resourcesPublicPath = '.$this->getRelativePath().'Resources/Public/';
+        $themeItem['constants'] .= LF.'themes.resourcesPrivatePath = EXT:'.$this->getExtensionName().'/Resources/Private/';
+        $themeItem['constants'] .= LF.'themes.resourcesPublicPath = EXT:'.$this->getExtensionName().'/Resources/Public/';
         $themeItem['constants'] .= $this->getBasicConstants($params['pid']);
         $themeItem['constants'] .= LF.$this->getTypoScriptForLanguage($params, $pObj);
 
@@ -193,3 +205,4 @@ class Theme extends AbstractTheme
         }
     }
 }
+
