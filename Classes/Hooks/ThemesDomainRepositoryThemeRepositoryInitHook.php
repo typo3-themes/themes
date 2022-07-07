@@ -59,13 +59,16 @@ class ThemesDomainRepositoryThemeRepositoryInitHook
             ExtensionManagementUtility::getLoadedExtensionListArray(),
             scandir(Environment::getBackendPath() . '/sysext')
         );
-        //
+
         // Check extensions, which are worth to check
         foreach ($extensionsToCheck as $extensionName) {
             if (trim($startWith) === '' || substr($extensionName, 0, strlen($startWith)) === $startWith) {
                 $extPath = ExtensionManagementUtility::extPath($extensionName);
+
+                //throw new \Exception($extPath);
+
                 if (file_exists($extPath . 'Meta/theme.yaml')) {
-                    if (file_exists($extPath . 'Configuration/TypoScript/setup.typoscript')) {
+                    if (file_exists($extPath . 'Configuration/TypoScript/setup.typoscript') || file_exists($extPath . 'Configuration/TypoScript/setup.txt')) {
                         $pObj->add(new Theme($extensionName));
                     }
                 }
@@ -73,3 +76,4 @@ class ThemesDomainRepositoryThemeRepositoryInitHook
         }
     }
 }
+
