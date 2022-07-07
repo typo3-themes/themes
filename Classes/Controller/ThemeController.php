@@ -122,6 +122,7 @@ class ThemeController extends ActionController
             unset($configuration['settings']['templateName']);
         }
         $this->view->assign('settings', $configuration['settings']);
+        $this->view->assign('conf', $configuration);
         $this->view->assign('page', $pageArray);
         $this->view->assign('data', $pageArray);
         $this->view->assign('TSFE', $frontendController);
