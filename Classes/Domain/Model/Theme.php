@@ -205,4 +205,3 @@ class Theme extends AbstractTheme
         }
     }
 }
-
