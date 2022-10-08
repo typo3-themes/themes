@@ -14,6 +14,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
+    /**
+     * Initialize arguments.
+     *
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('constant', 'string', 'the constant path', false, '');
+    }
+    
 	/**
 	 * Gets a constant
 	 *
@@ -30,8 +40,10 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	 * (depending on your domain)
 	 * </output>
 	 */
-	public function render($constant = '') {
-
+	public function render() 
+    {
+        $constant = $this->arguments['constant'];
+                
 		$pageWithTheme   = \KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility::find($this->getFrontendController()->id);
 		$pageLanguage    = (int)GeneralUtility::_GP('L');
 		// instantiate the cache
@@ -80,7 +92,8 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	/**
 	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
 	 */
-	public function getFrontendController() {
+	public function getFrontendController()
+    {
 		return $GLOBALS['TSFE'];
 	}
 }
