@@ -61,7 +61,7 @@ class Theme extends AbstractTheme
 
             $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.typoscript';
             if (!file_exists($this->pathTyposcriptConstants)) {
-                $this->pathTyposcript = $path . 'Configuration/TypoScript/constants.txt';
+                $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.txt';
             }
 
             $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.typoscript';
