@@ -203,12 +203,12 @@ class TsParserUtility implements SingletonInterface
             // Set the data to be saved
             $saveId = $this->tsParserTplRow['uid'];
             $recData = [];
-            $recData['sys_template'][$saveId]['constants'] = implode($this->tsParser->raw, chr(10));
+            $recData['sys_template'][$saveId]['constants'] = implode(chr(10), $this->tsParser->raw);
             // Create new  tce-object
             /**
              * @var \TYPO3\CMS\Core\DataHandling\DataHandler
              */
-            $tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+            $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
             $tce->stripslashes_values = 0;
 
             /*
