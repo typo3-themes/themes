@@ -1,73 +1,54 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Access constants
- *
- * @author Thomas Deuling <typo3@coding.ms>
- * @package themes
- *
- * @deprecated readd constantsviewhelper to ensure compatibility to old themes
- *
+ * ConstantViewHelper
  */
-class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class ConstantViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
 
     /**
      * Initialize arguments.
      *
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     * @return void
      */
     public function initializeArguments()
     {
-        $this->registerArgument('constant', 'string', 'the constant path', false, '');
+        parent::initializeArguments();
+        $this->registerArgument('constant', 'string', 'TypoScript constant');
     }
 
     /**
-     * Gets a constant
-     *
-     * @param string $constant The name of the constant
-     * @return string Constant-Value
-     *
-     * = Examples =
-     *
-     * <code title="Example">
-     * <theme:constant constant="themes.configuration.baseurl" />
-     * </code>
-     * <output>
-     * http://yourdomain.tld/
-     * (depending on your domain)
-     * </output>
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
      */
-    public function render()
-    {
-        $constant = $this->arguments['constant'];
-
-        $pageWithTheme   = \KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility::find($this->getFrontendController()->id);
-        $pageLanguage    = (int)GeneralUtility::_GP('L');
-        $flatSetup = $this->getFrontendController()->tmpl->flatSetup;
-
-        // If flatSetup not available and not cached, generate it!
-        if (!isset($flatSetup) || !is_array($flatSetup)) {
-            $this->getFrontendController()->tmpl->generateConfig();
-            $flatSetup = $this->getFrontendController()->tmpl->flatSetup;
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $constant = trim($arguments['constant']);
+        if (($GLOBALS['TSFE']->tmpl->flatSetup === null) || (!is_array($GLOBALS['TSFE']->tmpl->flatSetup)) || (count($GLOBALS['TSFE']->tmpl->flatSetup) === 0)) {
+                    $GLOBALS['TSFE']->tmpl->generateConfig();
         }
 
-        // check if there is a value and return it
-        if ((is_array($flatSetup)) && (array_key_exists($constant, $flatSetup))) {
-            return $this->getFrontendController()->tmpl->substituteConstants($flatSetup[$constant]);
-        }
-        return null;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    public function getFrontendController()
-    {
-        return $GLOBALS['TSFE'];
+        return $GLOBALS['TSFE']->tmpl->flatSetup[$constant] ?? '';
     }
 }
