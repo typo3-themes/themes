@@ -2,6 +2,10 @@
 
 namespace KayStrobach\Themes\Tca;
 
+use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *
  * Copyright notice
@@ -32,6 +36,20 @@ namespace KayStrobach\Themes\Tca;
  */
 class ContentColumnSettings extends AbstractContentRow
 {
+    /**
+     * Container objects give $nodeFactory down to other containers.
+     *
+     * @param NodeFactory $nodeFactory
+     * @param array $data
+     */
+    public function __construct(NodeFactory $nodeFactory = null, array $data = null)
+    {
+        if ($nodeFactory !== null) {
+            parent::__construct($nodeFactory, $data);
+        }
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+    }
+
     /**
      * Render a row for enforcing equal height of a column.
      *
@@ -101,8 +119,8 @@ class ContentColumnSettings extends AbstractContentRow
         }
         // Process current classes/identifiers
         $setClasses = array_intersect($values, $valuesAvailable);
-        $setClass = htmlspecialchars(implode(' ', $setClasses));
-        $setValue = htmlspecialchars(implode(',', $setClasses));
+        $setClass = htmlspecialchars(implode(' ', $setClasses), ENT_QUOTES | ENT_HTML5);
+        $setValue = htmlspecialchars(implode(',', $setClasses), ENT_QUOTES | ENT_HTML5);
         // Allow admins to see the internal identifiers
         $inputType = 'hidden';
         if ($this->isAdminAndDebug()) {
@@ -113,7 +131,7 @@ class ContentColumnSettings extends AbstractContentRow
         $hiddenField .= '<div class="form-control-wrap">'.LF;
         $hiddenField .= '<input class="form-control themes-hidden-admin-field '.$setClass.'" ';
         $hiddenField .= 'readonly="readonly" type="'.$inputType.'" ';
-        $hiddenField .= 'name="'.htmlspecialchars($name).'" ';
+        $hiddenField .= 'name="'. htmlspecialchars($name, ENT_QUOTES | ENT_HTML5) .'" ';
         $hiddenField .= 'value="'.$setValue.'" class="'.$setClass.'">'.LF;
         $hiddenField .= '</div>'.LF;
         $hiddenField .= '</div>'.LF;

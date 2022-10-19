@@ -45,7 +45,7 @@ abstract class AbstractContentRow extends AbstractFormElement
     {
         $missedField = '';
         $missedClasses = array_diff($values, $valuesAvailable);
-        $missedClass = htmlspecialchars(implode(', ', $missedClasses));
+        $missedClass = htmlspecialchars(implode(', ', $missedClasses), ENT_QUOTES | ENT_HTML5);
         if (!empty($missedClass)) {
             $label = $this->getLanguageService()->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:unavailable_classes');
             $missedField = '<div class="alert alert-danger" role="alert"><strong>'.$label.':</strong> '.$missedClass.'</div>';

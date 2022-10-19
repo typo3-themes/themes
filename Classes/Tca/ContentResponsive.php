@@ -212,8 +212,8 @@ class ContentResponsive extends AbstractContentRow
         }
         // Process current classes/identifiers
         $setClasses = array_intersect($values, $valuesAvailable);
-        $setClass = htmlspecialchars(implode(' ', $setClasses));
-        $setValue = htmlspecialchars(implode(',', $setClasses));
+        $setClass = htmlspecialchars(implode(' ', $setClasses), ENT_QUOTES | ENT_HTML5);
+        $setValue = htmlspecialchars(implode(',', $setClasses), ENT_QUOTES | ENT_HTML5);
         // Allow admins to see the internal identifiers
         $inputType = 'hidden';
         if ($this->isAdminAndDebug()) {
@@ -225,7 +225,7 @@ class ContentResponsive extends AbstractContentRow
         $hiddenField .= '<div class="form-control-wrap">'.LF;
         $hiddenField .= '<input class="form-control themes-hidden-admin-field '.$setClass.'" ';
         $hiddenField .= 'readonly="readonly" type="'.$inputType.'" ';
-        $hiddenField .= 'name="'.htmlspecialchars($name).'" ';
+        $hiddenField .= 'name="'. htmlspecialchars($name, ENT_QUOTES | ENT_HTML5) .'" ';
         $hiddenField .= 'value="'.$setValue.'" class="'.$setClass.'">'.LF;
         $hiddenField .= '</div>'.LF;
         $hiddenField .= '</div>'.LF;
