@@ -63,3 +63,15 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667597] = [
     'priority' => '70',
     'class' => \KayStrobach\Themes\Tca\ContentResponsive::class
 ];
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667598] = [
+    'nodeName' => 'ThemesContentColumnSettings',
+    'priority' => '70',
+    'class' => \KayStrobach\Themes\Tca\ContentColumnSettings::class
+];
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667599] = [
+    'nodeName' => 'ThemesContentEnforceEqualColumnHeight',
+    'priority' => '70',
+    'class' => \KayStrobach\Themes\Tca\ContentEnforceEqualColumnHeight::class
+];
