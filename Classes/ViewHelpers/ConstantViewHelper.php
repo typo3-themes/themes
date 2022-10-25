@@ -46,7 +46,7 @@ class ConstantViewHelper extends AbstractViewHelper
     ) {
         $constant = trim($arguments['constant']);
         if (($GLOBALS['TSFE']->tmpl->flatSetup === null) || (!is_array($GLOBALS['TSFE']->tmpl->flatSetup)) || (count($GLOBALS['TSFE']->tmpl->flatSetup) === 0)) {
-                    $GLOBALS['TSFE']->tmpl->generateConfig();
+            $GLOBALS['TSFE']->tmpl->generateConfig();
         }
 
         return $GLOBALS['TSFE']->tmpl->flatSetup[$constant] ?? '';
