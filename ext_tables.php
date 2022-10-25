@@ -7,8 +7,6 @@ if (!defined('TYPO3_MODE')) {
 /**
  * Static templates
  */
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('themes', 'Configuration/TypoScript', 'Themes');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('themes', 'Configuration/TypoScript/FluidStyledContent', 'Themes (For backward compatibility: Additional add this for using fluid_styled_content)');
 
 if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
@@ -63,11 +61,3 @@ foreach ($iconsSvg as $identifier => $path) {
         ['source' => 'EXT:themes/' . $path]
     );
 }
-
-$GLOBALS['TCA']['pages']['columns']['module']['config']['items'][] = [
-    0 => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:contains-theme',
-    1 => 'themes',
-    2 => 'extensions-themes-contains-theme',
-];
-
-$GLOBALS['TCA']['pages']['ctrl']['typeicon_classes']['contains-themes'] = 'extensions-themes-contains-theme';

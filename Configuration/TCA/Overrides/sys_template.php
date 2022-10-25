@@ -50,3 +50,6 @@ $tempColumn = [
 // Add the skin selector for backend users.
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_template', $tempColumn);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('sys_template', '--div--;Themes,tx_themes_skin,tx_themes_extensions,tx_themes_features');
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('themes', 'Configuration/TypoScript', 'Themes');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('themes', 'Configuration/TypoScript/FluidStyledContent', 'Themes (For backward compatibility: Additional add this for using fluid_styled_content)');
