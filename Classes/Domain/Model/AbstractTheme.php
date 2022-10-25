@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Install\Configuration\Exception;
 
 /**
  * Class AbstractTheme.
@@ -276,12 +277,12 @@ class AbstractTheme extends AbstractEntity
      * Includes static template records (from static_template table) and static template files (from extensions) for the input template record row.
      *
      * @param array $params Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
-     * @param \TYPO3\CMS\Core\TypoScript\TemplateService $pObj Reference back to parent object, t3lib_tstemplate or one of its subclasses.
+     * @param TemplateService $pObj Reference back to parent object, t3lib_tstemplate or one of its subclasses.
      * @param array $extensions Array of additional TypoScript for extensions
      * @param array $features Array of additional TypoScript for features
      *
-     * @throws \TYPO3\CMS\Install\Configuration\Exception
      * @return void
+     *@throws Exception
      */
     public function addTypoScriptForFe(&$params, TemplateService &$pObj, $extensions = [], $features = [])
     {
@@ -378,7 +379,7 @@ class AbstractTheme extends AbstractEntity
 
     /**
      * @param array $params
-     * @param \TYPO3\CMS\Core\TypoScript\TemplateService $pObj
+     * @param TemplateService $pObj
      *
      * @return string
      */
@@ -424,7 +425,7 @@ class AbstractTheme extends AbstractEntity
      *
      * @param $pid
      * @return string
-     * @throws \TYPO3\CMS\Install\Configuration\Exception
+     * @throws Exception
      */
     protected function getBasicConstants($pid)
     {

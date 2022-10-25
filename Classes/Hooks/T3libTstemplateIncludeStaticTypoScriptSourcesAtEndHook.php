@@ -27,9 +27,13 @@ namespace KayStrobach\Themes\Hooks;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use KayStrobach\Themes\Domain\Model\Theme;
+use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Install\Configuration\Exception;
 
 /**
  * Class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.
@@ -41,10 +45,11 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
     /**
      * Includes static template records (from static_template table) and static template files (from extensions) for the input template record row.
      *
-     * @param array array of parameters from the parent class. Includes idList, templateId, pid, and row.
-     * @param \TYPO3\CMS\Core\TypoScript\TemplateService Reference back to parent object, t3lib_tstemplate or one of its subclasses.
+     * @param array $params array of parameters from the parent class. Includes idList, templateId, pid, and row.
+     * @param TemplateService $pObj Reference back to parent object, t3lib_tstemplate or one of its subclasses.
      *
      * @return void
+     * @throws Exception
      */
     public static function main(&$params, TemplateService &$pObj)
     {
@@ -52,7 +57,7 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
         $templateId = $params['templateId'];
         $pid = $params['pid'];
         if ($templateId === $idList) {
-            /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+            /** @var QueryBuilder $queryBuilder */
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('sys_template');
             $queryBuilder->select('*')
@@ -79,9 +84,9 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
                 if (empty($themeIdentifier)) {
                     $themeIdentifier = $tRow['tx_themes_skin'];
                 }
-                /** @var \KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository */
-                $themeRepository = GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
-                /** @var \KayStrobach\Themes\Domain\Model\Theme $theme */
+                /** @var ThemeRepository $themeRepository */
+                $themeRepository = GeneralUtility::makeInstance(ThemeRepository::class);
+                /** @var Theme $theme */
                 $theme = $themeRepository->findByUid($themeIdentifier);
                 if ($theme === null) {
                     // fallback if the hook returns a undefined theme

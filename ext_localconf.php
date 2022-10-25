@@ -14,7 +14,7 @@ $tsconfig = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:themes/Configuration/PageTS/t
  * Register hook to inject themes
  */
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'][]
-    = 'KayStrobach\\Themes\\Hooks\\ThemesDomainRepositoryThemeRepositoryInitHook->init';
+    = \KayStrobach\Themes\Hooks\ThemesDomainRepositoryThemeRepositoryInitHook::class . '->init';
 
 /*
  * register used hooks to inject the TS
@@ -28,7 +28,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['i
  *
  * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
  */
-$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 $signalSlotDispatcher->connect(
     \TYPO3\CMS\Backend\Utility\BackendUtility::class,
     'getPagesTSconfigPreInclude',
