@@ -85,7 +85,6 @@ class Theme extends AbstractTheme
                 } catch (ParseErrorException $exception) {
                     $this->metaInformation = [];
                 }
-
             } else {
                 throw new \Exception('No Yaml meta information found!');
             }
