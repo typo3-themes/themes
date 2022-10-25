@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 
 /**
@@ -78,8 +79,13 @@ class Theme extends AbstractTheme
             }
             $yamlFile = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml';
             if (file_exists($yamlFile)) {
-                $yamlSource = GeneralUtility::makeInstance(YamlSource::class);
-                $this->metaInformation = $yamlSource->load(array($yamlFile));
+                try {
+                    $yamlSource = GeneralUtility::makeInstance(YamlSource::class);
+                    $this->metaInformation = $yamlSource->load(array($yamlFile));
+                } catch (ParseErrorException $exception) {
+                    $this->metaInformation = [];
+                }
+
             } else {
                 throw new \Exception('No Yaml meta information found!');
             }
