@@ -37,21 +37,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 class LanguageMenuViewHelper extends AbstractViewHelper
 {
     /**
-     * @var \KayStrobach\Themes\ViewHelpers\Widget\Controller\LanguageMenuController
-     */
-    protected $controller;
-
-    /**
-     * @param \KayStrobach\Themes\ViewHelpers\Widget\Controller\LanguageMenuController $controller
-     *
-     * @return void
-     */
-    public function injectController(LanguageMenuController $controller)
-    {
-        $this->controller = $controller;
-    }
-
-    /**
      * initialize the arguments of the viewHelper.
      *
      * @return void
