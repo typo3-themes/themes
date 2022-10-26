@@ -27,15 +27,14 @@ namespace KayStrobach\Themes\ViewHelpers\Widget;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
-use KayStrobach\Themes\ViewHelpers\Widget\Controller\LanguageMenuController;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Provides a Language Menu.
  *
  * @author Thomas Deuling <typo3@coding.ms>
  */
-class LanguageMenuViewHelper extends AbstractWidgetViewHelper
+class LanguageMenuViewHelper extends AbstractViewHelper
 {
     /**
      * @var \KayStrobach\Themes\ViewHelpers\Widget\Controller\LanguageMenuController
@@ -77,6 +76,6 @@ class LanguageMenuViewHelper extends AbstractWidgetViewHelper
      */
     public function render()
     {
-        return $this->initiateSubRequest();
+        return '<!-- this widget is currently not available -->';
     }
 }
