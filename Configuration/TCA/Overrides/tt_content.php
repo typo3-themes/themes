@@ -40,7 +40,6 @@ $tempColumn = [
             ],
             'behaviour'      => [
                 'allowLanguageSynchronization'         => true,
-                'localizeChildrenAtParentLocalization' => true,
             ],
             'foreign_table'  => 'tx_themes_buttoncontent',
             'foreign_field'  => 'tt_content',
