@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Hooks;
 
 /***************************************************************
@@ -27,26 +29,27 @@ namespace KayStrobach\Themes\Hooks;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Exception;
 use KayStrobach\Themes\Domain\Model\Theme;
+use KayStrobach\Themes\Domain\Repository\ThemeRepository;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
 /**
  * Hooks into the theme repo to load the list of themes.
  */
 class ThemesDomainRepositoryThemeRepositoryInitHook
 {
-
     /**
      * Add all available themes to the Themes repository
      *
      * @param array $params
-     * @param $pObj \KayStrobach\Themes\Domain\Repository\ThemeRepository
-     * @throws \Exception
+     * @param ThemeRepository $pObj
+     * @throws Exception
      */
-    public function init(&$params, $pObj)
+    public function init(array &$params, ThemeRepository $pObj): void
     {
         //
         // Themes configuration

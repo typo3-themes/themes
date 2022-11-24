@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Tca;
+
+use Doctrine\DBAL\DBALException;
 
 /***************************************************************
  *
@@ -36,13 +40,13 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow
      * Render a row for enforcing equal height of a column.
      *
      * @return array
+     * @throws DBALException
      */
-    public function render()
+    public function render(): array
     {
         $parameters = $this->data['parameterArray'];
         $parameters['row'] = $this->data['databaseRow'];
         // Vars
-        $uid = $parameters['row']['uid'];
         $pid = $parameters['row']['pid'];
         $name = $parameters['itemFormElName'];
         $value = $parameters['itemFormElValue'];
@@ -67,35 +71,35 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow
         $checkboxes = '';
         if (isset($responsives['properties']) && is_array($responsives['properties'])) {
             foreach ($responsives['properties'] as $groupKey => $settings) {
-
                 // Validate groupKey and get label
                 $groupKey = substr($groupKey, 0, -1);
-                $label = isset($settings['label']) ? $settings['label'] : $groupKey;
-                $checkboxes .= '<div class="col-xs-6 col-sm-2 themes-column">'.LF;
-                $checkboxes .= '<label class="t3js-formengine-label">'.$this->getLanguageService()->sL($label).'</label>'.LF;
+                $label = $settings['label'] ?? $groupKey;
+                $checkboxes .= '<div class="col-xs-6 col-sm-2 themes-column">' . LF;
+                $checkboxes .= '<label class="t3js-formengine-label">' . $this->getLanguageService()->sL(
+                    $label
+                ) . '</label>' . LF;
                 if (isset($settings['rowSettings.']) && is_array($settings['rowSettings.'])) {
-
-                    // check if there is already a value selected
+                    // check if theres already a value selected
                     $valueSet = false;
                     foreach ($settings['rowSettings.'] as $visibilityKey => $_) {
-                        $tempKey = $groupKey.'-'.$visibilityKey;
+                        $tempKey = $groupKey . '-' . $visibilityKey;
                         if (!$valueSet) {
                             $valueSet = isset($valuesFlipped[$tempKey]);
                         }
                     }
                     foreach ($settings['rowSettings.'] as $visibilityKey => $visibilityLabel) {
-                        $tempKey = $groupKey.'-'.$visibilityKey;
+                        $tempKey = $groupKey . '-' . $visibilityKey;
                         $valuesAvailable[] = $tempKey;
-                        $checked = (isset($valuesFlipped[$tempKey])) ? 'checked="checked"' : '';
+                        $checked = (isset($valuesFlipped[$tempKey])) ? 'checked="checked"':'';
 
                         // build checkbox
-                        $checkboxes .= '<div>'.LF;
-                        $checkboxes .= '<label><input type="checkbox" name="'.$tempKey.'" value="'.$tempKey.'" '.$checked.'>'.LF;
-                        $checkboxes .= $this->getLanguageService()->sL($visibilityLabel).'</label>'.LF;
-                        $checkboxes .= '</div>'.LF;
+                        $checkboxes .= '<div>' . LF;
+                        $checkboxes .= '<label><input type="checkbox" name="' . $tempKey . '" value="' . $tempKey . '" ' . $checked . '>' . LF;
+                        $checkboxes .= $this->getLanguageService()->sL($visibilityLabel) . '</label>' . LF;
+                        $checkboxes .= '</div>' . LF;
                     }
                 }
-                $checkboxes .= '</div>'.LF;
+                $checkboxes .= '</div>' . LF;
             }
         }
         // Process current classes/identifiers
@@ -108,17 +112,17 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow
             $inputType = 'text';
         }
         // Build hidden field structure
-        $hiddenField = '<div>'.LF;
-        $hiddenField .= '<div class="form-control-wrap">'.LF;
-        $hiddenField .= '<input class="form-control themes-hidden-admin-field '.$setClass.'" ';
-        $hiddenField .= 'readonly="readonly" type="'.$inputType.'" ';
-        $hiddenField .= 'name="'. htmlspecialchars($name, ENT_QUOTES | ENT_HTML5) .'" ';
-        $hiddenField .= 'value="'.$setValue.'" class="'.$setClass.'">'.LF;
-        $hiddenField .= '</div>'.LF;
-        $hiddenField .= '</div>'.LF;
+        $hiddenField = '<div>' . LF;
+        $hiddenField .= '<div class="form-control-wrap">' . LF;
+        $hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
+        $hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
+        $hiddenField .= 'name="' . htmlspecialchars($name) . '" ';
+        $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . LF;
+        $hiddenField .= '</div>' . LF;
+        $hiddenField .= '</div>' . LF;
         // Missed classes
         $missedField = $this->getMissedFields($values, $valuesAvailable);
 
-        return ['html' => '<div class="contentEnforceEqualColumnHeight">'.$checkboxes.$hiddenField.$missedField.'</div>'];
+        return ['html' => '<div class="contentEnforceEqualColumnHeight">' . $checkboxes . $hiddenField . $missedField . '</div>'];
     }
 }

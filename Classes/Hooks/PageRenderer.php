@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Hooks;
 
 /***************************************************************
@@ -27,10 +29,10 @@ namespace KayStrobach\Themes\Hooks;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Page\PageRenderer as PageRendererCore;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Page\PageRenderer as PageRendererCore;
 
 /**
  * Class/Function which adds the necessary ExtJS and pure JS stuff for themes.
@@ -39,13 +41,11 @@ use TYPO3\CMS\Core\Page\PageRenderer as PageRendererCore;
  */
 class PageRenderer implements SingletonInterface
 {
-
     /**
      * Wrapper function called by hook (\TYPO3\CMS\Core\Page\PageRenderer->render-preProcess).
      *
      * @param array $parameters An array of available parameters
-     * @param \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer The parent object that triggered this hook
-     * @return void
+     * @param PageRendererCore $pageRenderer The parent object that triggered this hook
      */
     public function addJSCSS(array $parameters, PageRendererCore $pageRenderer)
     {

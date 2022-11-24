@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Utilities;
 
 /***************************************************************
@@ -27,27 +29,24 @@ namespace KayStrobach\Themes\Utilities;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Install\Configuration\FeatureManager;
+use TYPO3\CMS\Install\Configuration\AbstractPreset;
 use TYPO3\CMS\Install\Configuration\Context\ContextFeature;
+use TYPO3\CMS\Install\Configuration\Exception;
+use TYPO3\CMS\Install\Configuration\FeatureManager;
 
 class ApplicationContext
 {
+    /**
+     * @var FeatureManager
+     */
+    protected FeatureManager $featureManager;
 
     /**
-     * @var \TYPO3\CMS\Install\Configuration\FeatureManager
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    protected $featureManager;
-
-    /**
-     * @param \TYPO3\CMS\Install\Configuration\FeatureManager $featureManager
-     */
-    public function injectFeatureManager(FeatureManager $featureManager)
-    {
-        $this->featureManager = $featureManager;
-    }
-
     public function __construct()
     {
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -57,16 +56,16 @@ class ApplicationContext
     /**
      * @return string
      */
-    public static function getApplicationContext()
+    public static function getApplicationContext(): string
     {
-        return (string)GeneralUtility::getApplicationContext();
+        return (string)Environment::getContext();
     }
 
     /**
      * @return bool
-     * @throws \TYPO3\CMS\Install\Configuration\Exception
+     * @throws Exception
      */
-    public static function isDevelopmentModeActive()
+    public static function isDevelopmentModeActive(): bool
     {
         $applicationContext = new self();
         return $applicationContext->isDevelopmentApplicationContext() || $applicationContext->isDevelopPresetActive();
@@ -75,28 +74,26 @@ class ApplicationContext
     /**
      * @return bool
      */
-    public function isDevelopmentApplicationContext()
+    public function isDevelopmentApplicationContext(): bool
     {
-        if (GeneralUtility::getApplicationContext()->isDevelopment()) {
+        if (Environment::getContext()->isDevelopment()) {
             return true;
         }
         return false;
     }
 
     /**
-     * @throws \TYPO3\CMS\Install\Configuration\Exception
-     *
-     * @return boolean
+     * @return bool
+     * @throws Exception
      */
-    public function isDevelopPresetActive()
+    public function isDevelopPresetActive(): bool
     {
         $features = $this->featureManager->getInitializedFeatures([]);
-        /* @var \TYPO3\CMS\Install\Configuration\Context\ContextFeature $contextPreset */
+        /* @var ContextFeature $contextPreset */
         $contextFeature = null;
         foreach ($features as $feature) {
             if ($feature instanceof ContextFeature) {
                 $contextFeature = $feature;
-                continue;
             }
         }
         if ($contextFeature === null) {
@@ -105,15 +102,22 @@ class ApplicationContext
         $activePreset = null;
         $presets = $contextFeature->getPresetsOrderedByPriority();
         foreach ($presets as $preset) {
-            /** @var \TYPO3\CMS\Install\Configuration\AbstractPreset $preset */
+            /** @var AbstractPreset $preset */
             if ($preset->isActive()) {
                 $activePreset = $preset;
-                continue;
             }
         }
         if ($activePreset && $activePreset->getName() === 'Development') {
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param FeatureManager $featureManager
+     */
+    public function injectFeatureManager(FeatureManager $featureManager): void
+    {
+        $this->featureManager = $featureManager;
     }
 }

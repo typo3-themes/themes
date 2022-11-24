@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\DataProcessing;
 
 /***************************************************************
@@ -30,6 +32,7 @@ namespace KayStrobach\Themes\DataProcessing;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * DataProcessor for Fluid Styled Content.
@@ -48,8 +51,12 @@ class ThemesVariantsDataProcessor implements DataProcessorInterface
      *
      * @return array the processed data as key/value store
      */
-    public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData)
-    {
+    public function process(
+        ContentObjectRenderer $cObj,
+        array $contentObjectConfiguration,
+        array $processorConfiguration,
+        array $processedData
+    ): array {
         $keys = GeneralUtility::trimExplode(',', $processedData['data']['tx_themes_variants'], true);
         $processedData['themes']['variants']['css'] = [];
         $processedData['themes']['variants']['css2key'] = [];
@@ -76,16 +83,21 @@ class ThemesVariantsDataProcessor implements DataProcessorInterface
                     }
                 }
             }
-            $processedData['themes']['variants']['key2css'] = array_flip($processedData['themes']['variants']['css2key']);
-            $processedData['themes']['variants']['cssClasses'] = implode(' ', $processedData['themes']['variants']['css']);
+            $processedData['themes']['variants']['key2css'] = array_flip(
+                $processedData['themes']['variants']['css2key']
+            );
+            $processedData['themes']['variants']['cssClasses'] = implode(
+                ' ',
+                $processedData['themes']['variants']['css']
+            );
         }
         return $processedData;
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TypoScriptFrontendController
      */
-    protected function getFrontendController()
+    protected function getFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
     }

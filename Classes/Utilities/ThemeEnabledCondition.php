@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Utilities;
 
 /***************************************************************
@@ -27,28 +29,27 @@ namespace KayStrobach\Themes\Utilities;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Doctrine\DBAL\DBALException;
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class ThemeEnabledCondition
- * @package KayStrobach\Themes\Utilities
  */
 class ThemeEnabledCondition
 {
-
     /**
      * Check if theme is enabled
      *
      * @param string $theme
-     * @return boolean
+     * @return bool
+     * @throws DBALException
      */
-    public static function isThemeEnabled($theme = '')
+    public static function isThemeEnabled(string $theme = ''): bool
     {
         $pageId = (int)GeneralUtility::_GET('id');
-        /** @var \KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository */
+        /** @var ThemeRepository $themeRepository */
         $themeRepository = GeneralUtility::makeInstance(ThemeRepository::class);
-        /** @var \KayStrobach\Themes\Domain\Model\Theme $themeOfPage */
         $themeOfPage = $themeRepository->findByPageOrRootline($pageId);
         return ($themeOfPage !== null) && ($themeOfPage->getExtensionName() === $theme);
     }

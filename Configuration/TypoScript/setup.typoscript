@@ -1,73 +1,75 @@
 config {
-	linkVars = L(1-99)
-	uniqueLinkVars = 1
-	sys_language_uid = {$themes.languages.current.uid}
-	language = {$themes.languages.current.isoCodeShort}
-	locale_all = {$themes.languages.current.isoCode}.UTF-8
-	htmlTag_langKey = {$themes.languages.current.isoCodeHtml}
-	#sys_language_overlay = hideNonTranslated
-	sys_language_mode = content_fallback
-	doctype = html5
-	metaCharset = utf-8
+    linkVars = L(1-99)
+    uniqueLinkVars = 1
+    sys_language_uid = {$themes.languages.current.uid}
+    language = {$themes.languages.current.isoCodeShort}
+    locale_all = {$themes.languages.current.isoCode}.UTF-8
+    htmlTag_langKey = {$themes.languages.current.isoCodeHtml}
+    #sys_language_overlay = hideNonTranslated
+    sys_language_mode = content_fallback
+    doctype = html5
+    metaCharset = utf-8
 }
 
 
 
 # Plugin configuration
 plugin.tx_themes {
-	view {
-		templateName = TEXT
-		templateName {
-			cObject = TEXT
-			cObject {
-				data = levelfield:-2, backend_layout_next_level, slide
-                override.data = page:backend_layout
-				required = 1
-				split {
-					token = pagets__
-					cObjNum = 1
-					1.current = 1
-				}
-			}
-			ifEmpty = Error
-		}
-		templateRootPaths {
-			100 = EXT:themes/Resources/Private/Templates/
-			500 = {$themes.resourcesPrivatePath}Templates/
-		}
-		partialRootPaths {
-			100 = EXT:themes/Resources/Private/Partials/
-			500 = {$themes.resourcesPrivatePath}Partials/
-		}
-		layoutRootPaths {
-			100 = EXT:themes/Resources/Private/Layouts/
-			500 = {$themes.resourcesPrivatePath}Layouts/
-		}
-	}
-	# This is an example how to modify the translation
-	_LOCAL_LANG {
-		default {
-			someUnusedKey = foo
-		}
-	}
+    view {
+        templateName = TEXT
+        templateName {
+            cObject = TEXT
+            cObject {
+                data = page:backend_layout
+                ifEmpty.data = levelfield:-1, backend_layout_next_level, slide
+                required = 1
+                split {
+                    token = pagets__
+                    cObjNum = 1
+                    1.current = 1
+                }
+            }
+            ifEmpty = Error
+        }
+    }
+    view {
+        templateRootPaths {
+            100 = EXT:themes/Resources/Private/Templates/
+            500 = {$themes.resourcesPrivatePath}Templates/
+        }
+        partialRootPaths {
+            100 = EXT:themes/Resources/Private/Partials/
+            500 = {$themes.resourcesPrivatePath}Partials/
+        }
+        layoutRootPaths {
+            100 = EXT:themes/Resources/Private/Layouts/
+            500 = {$themes.resourcesPrivatePath}Layouts/
+        }
+    }
+    # This is an example how to modify the translation
+    _LOCAL_LANG {
+        default {
+            someUnusedKey = foo
+        }
+    }
 }
 
 page = PAGE
 page {
-	typeNum = 0
-	100 = USER
-	100 {
-		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-		extensionName = Themes
-		vendorName = KayStrobach
-		pluginKey = Theme
-		pluginName = Theme
-		controller = Theme
-		action = Index
-		settings =< plugin.tx_themes.settings
-		persistence =< plugin.tx_themes.persistence
-		view =< plugin.tx_themes.view
-	}
+    typeNum = 0
+    100 = USER
+    100 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = Themes
+        vendorName = KayStrobach
+        pluginKey = Theme
+        pluginName = Theme
+        controller = Theme
+        action = Index
+        settings =< plugin.tx_themes.view
+        persistence =< plugin.tx_themes.persistence
+        view =< plugin.tx_themes.view
+    }
 }
 
 <INCLUDE_TYPOSCRIPT: source="DIR:EXT:themes/Configuration/Elements/TypoScript" extensions="setupts">

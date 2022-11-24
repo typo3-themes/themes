@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Domain\Model;
 
 /***************************************************************
@@ -29,14 +31,12 @@ namespace KayStrobach\Themes\Domain\Model;
 
 use KayStrobach\Themes\Utilities\ApplicationContext;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Install\Configuration\Exception;
 
 /**
@@ -49,52 +49,52 @@ class AbstractTheme extends AbstractEntity
     /**
      * @var string
      */
-    protected $title;
+    protected string $title;
 
     /**
      * @var array
      */
-    protected $author = [];
+    protected array $author = [];
 
     /**
      * @var string
      */
-    protected $description;
+    protected string $description;
 
     /**
      * @var string
      */
-    protected $extensionName;
+    protected string $extensionName;
 
     /**
      * @var string
      */
-    protected $version = '';
+    protected string $version = '';
 
     /**
      * @var string
      */
-    protected $previewImage;
+    protected string $previewImage;
 
     /**
      * @var string
      */
-    protected $pathTyposcript;
+    protected string $pathTyposcript;
 
     /**
      * @var string
      */
-    protected $pathTyposcriptConstants;
+    protected string $pathTyposcriptConstants;
 
     /**
      * @var string
      */
-    protected $pathTsConfig;
+    protected string $pathTsConfig;
 
     /**
      * @var array
      */
-    protected $metaInformation = [];
+    protected array $metaInformation = [];
 
     /**
      * Constructs a new Theme.
@@ -102,7 +102,7 @@ class AbstractTheme extends AbstractEntity
      * @param string $extensionName
      * @api
      */
-    public function __construct($extensionName)
+    public function __construct(string $extensionName)
     {
         $this->extensionName = $extensionName;
     }
@@ -114,7 +114,7 @@ class AbstractTheme extends AbstractEntity
      *
      * @api
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -126,21 +126,9 @@ class AbstractTheme extends AbstractEntity
      *
      * @api
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
-    }
-
-    /**
-     * Returns the previewImage.
-     *
-     * @return string
-     *
-     * @api
-     */
-    public function getPreviewImage()
-    {
-        return $this->previewImage;
     }
 
     /**
@@ -155,13 +143,13 @@ class AbstractTheme extends AbstractEntity
     /**
      * @return array
      */
-    public function getAllPreviewImages()
+    public function getAllPreviewImages(): array
     {
         return [
-            [
-                'file' => $this->getPreviewImage(),
-                'caption' => '',
-            ],
+                [
+                        'file' => $this->getPreviewImage(),
+                        'caption' => '',
+                ],
         ];
     }
 
@@ -172,15 +160,15 @@ class AbstractTheme extends AbstractEntity
      *
      * @api
      */
-    public function getExtensionName()
+    public function getPreviewImage(): string
     {
-        return $this->extensionName;
+        return $this->previewImage;
     }
 
     /**
      * @return array
      */
-    public function getMetaInformation()
+    public function getMetaInformation(): array
     {
         return $this->metaInformation;
     }
@@ -188,7 +176,7 @@ class AbstractTheme extends AbstractEntity
     /**
      * @param array $metaInformation
      */
-    public function setMetaInformation($metaInformation)
+    public function setMetaInformation(array $metaInformation)
     {
         $this->metaInformation = $metaInformation;
     }
@@ -198,7 +186,7 @@ class AbstractTheme extends AbstractEntity
      *
      * @return string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }
@@ -206,7 +194,7 @@ class AbstractTheme extends AbstractEntity
     /**
      * @return array
      */
-    public function getAuthor()
+    public function getAuthor(): array
     {
         return $this->author;
     }
@@ -218,7 +206,7 @@ class AbstractTheme extends AbstractEntity
      *
      * @api
      */
-    public function getManualUrl()
+    public function getManualUrl(): string
     {
         return '';
     }
@@ -226,7 +214,7 @@ class AbstractTheme extends AbstractEntity
     /**
      * @return string
      */
-    public function getTypoScriptConfig()
+    public function getTypoScriptConfig(): string
     {
         $typoScriptConfig = '';
         $typoScriptConfigAbsPath = $this->getTypoScriptConfigAbsPath();
@@ -239,38 +227,9 @@ class AbstractTheme extends AbstractEntity
     /**
      * @return string
      */
-    public function getTypoScriptConfigAbsPath()
+    public function getTypoScriptConfigAbsPath(): string
     {
         return $this->pathTsConfig;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTypoScriptAbsPath()
-    {
-        return $this->pathTyposcript;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTypoScriptConstantsAbsPath()
-    {
-        return $this->pathTyposcriptConstants;
-    }
-
-    /**
-     * Calculates the relative path to the theme directory for frontend usage.
-     *
-     * @return string
-     */
-    public function getRelativePath()
-    {
-        if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
-            return PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->getExtensionName()));
-        }
-        return '';
     }
 
     /**
@@ -281,19 +240,22 @@ class AbstractTheme extends AbstractEntity
      * @param array $extensions Array of additional TypoScript for extensions
      * @param array $features Array of additional TypoScript for features
      *
-     * @return void
-     *@throws Exception
+     * @throws Exception
      */
-    public function addTypoScriptForFe(&$params, TemplateService &$pObj, $extensions = [], $features = [])
+    public function addTypoScriptForFe(array &$params, TemplateService &$pObj, array $extensions = [], array $features = [])
     {
         // @codingStandardsIgnoreStart
         $themeItem = [
-            'constants' => @is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptConstantsAbsPath()) : '',
-            'config' => @is_file($this->getTypoScriptAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptAbsPath()) : '',
-            'include_static' => '',
-            'include_static_file' => '',
-            'title' => 'themes:' . $this->getExtensionName(),
-            'uid' => md5($this->getExtensionName()),
+                'constants' => @is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl(
+                    $this->getTypoScriptConstantsAbsPath()
+                ):'',
+                'config' => @is_file($this->getTypoScriptAbsPath()) ? GeneralUtility::getUrl(
+                    $this->getTypoScriptAbsPath()
+                ):'',
+                'include_static' => '',
+                'include_static_file' => '',
+                'title' => 'themes:' . $this->getExtensionName(),
+                'uid' => md5($this->getExtensionName()),
         ];
         // @codingStandardsIgnoreEnd
         //
@@ -311,7 +273,7 @@ class AbstractTheme extends AbstractEntity
         // Additional TypoScript for extensions
         if (count($extensions) > 0) {
             foreach ($extensions as $extension) {
-                $themeItem = $this->getTypoScriptDataForProcessing($extension, 'extension');
+                $themeItem = $this->getTypoScriptDataForProcessing($extension);
                 $pObj->processTemplate(
                     $themeItem,
                     $params['idList'] . ',ext_theme' . str_replace('_', '', $this->getExtensionName()),
@@ -338,43 +300,62 @@ class AbstractTheme extends AbstractEntity
     }
 
     /**
-     * @param $key string Key of the Extension or Feature
-     * @param $type string Typ can be either extension or feature.
-     * @return array
+     * @return string
      */
-    protected function getTypoScriptDataForProcessing($key, $type = 'extension')
+    public function getTypoScriptConstantsAbsPath(): string
     {
-        $relPath = '';
-        $keyParts = explode('_', $key);
-        $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($keyParts[0]);
-        $extensionPath = ExtensionManagementUtility::extPath($extensionKey);
-        if ($type === 'feature') {
-            $relPath = $extensionPath . 'Configuration/TypoScript/Features/' . $keyParts[1] . '/';
-        } elseif ($type === 'extension') {
-            $relPath = $extensionPath . 'Resources/Private/Extensions/' . $keyParts[1] . '/TypoScript/';
+        return $this->pathTyposcriptConstants;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypoScriptAbsPath(): string
+    {
+        return $this->pathTyposcript;
+    }
+
+    /**
+     * Returns the basic TypoScript constants
+     *
+     * @param $pid
+     * @return string
+     * @throws Exception
+     */
+    protected function getBasicConstants($pid): string
+    {
+        $buffer = LF . 'themes.relativePath = ' . $this->getRelativePath();
+        $buffer .= LF . 'themes.name = ' . $this->getExtensionName();
+        $buffer .= LF . 'themes.templatePageId = ' . $pid;
+        $buffer .= LF . 'themes.mode.context = ' . ApplicationContext::getApplicationContext();
+        $buffer .= LF . 'themes.mode.isDevelopment = ' . (int)ApplicationContext::isDevelopmentModeActive();
+        $buffer .= LF . 'themes.mode.isProduction = ' . (int)!ApplicationContext::isDevelopmentModeActive();
+        return $buffer;
+    }
+
+    /**
+     * Calculates the relative path to the theme directory for frontend usage.
+     *
+     * @return string
+     */
+    public function getRelativePath(): string
+    {
+        if (ExtensionManagementUtility::isLoaded($this->getExtensionName())) {
+            return PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->getExtensionName()));
         }
-        $themeItem = [
-            'constants' => '',
-            'config' => '',
-            'include_static' => '',
-            'include_static_file' => '',
-            'title' => 'themes:' . $this->getExtensionName() . ':' . $relPath,
-            'uid' => md5($this->getExtensionName() . ':' . $relPath),
-        ];
-        //
-        // TypoScript setup, if available
-        $setupFile = GeneralUtility::getFileAbsFileName($relPath . 'setup.typoscript');
-        if (file_exists($setupFile)) {
-            $themeItem['config'] = file_get_contents($setupFile);
-        }
-        //
-        // TypoScript constants, if available
-        $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'constants.typoscript');
-        if (file_exists($constantsFile)) {
-            $themeItem['constants'] = file_get_contents($constantsFile);
-        }
-        //
-        return $themeItem;
+        return '';
+    }
+
+    /**
+     * Returns the previewImage.
+     *
+     * @return string
+     *
+     * @api
+     */
+    public function getExtensionName(): string
+    {
+        return $this->extensionName;
     }
 
     /**
@@ -383,12 +364,12 @@ class AbstractTheme extends AbstractEntity
      *
      * @return string
      */
-    public function getTypoScriptForLanguage(&$params, &$pObj)
+    public function getTypoScriptForLanguage(array &$params, TemplateService &$pObj): string
     {
         $outputBuffer = '';
         $key = 'themes.languages';
         $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
-        $site = $request ? $request->getAttribute('site') : null;
+        $site = $request ? $request->getAttribute('site'):null;
         if ($site instanceof Site) {
             $languages = ArrayUtility::getValueByPath($site->getConfiguration(), 'languages', '.');
             if (count($languages) > 0) {
@@ -421,21 +402,42 @@ class AbstractTheme extends AbstractEntity
     }
 
     /**
-     * Returns the basic TypoScript constants
-     *
-     * @param $pid
-     * @return string
-     * @throws Exception
+     * @param string $key Key of the Extension or Feature
+     * @param string $type Typ can be either extension or feature.
+     * @return array
      */
-    protected function getBasicConstants($pid)
+    protected function getTypoScriptDataForProcessing(string $key, string $type = 'extension'): array
     {
-        $buffer = '';
-        $buffer .= LF . 'themes.relativePath = ' . $this->getRelativePath();
-        $buffer .= LF . 'themes.name = ' . $this->getExtensionName();
-        $buffer .= LF . 'themes.templatePageId = ' . $pid;
-        $buffer .= LF . 'themes.mode.context = ' . ApplicationContext::getApplicationContext();
-        $buffer .= LF . 'themes.mode.isDevelopment = ' . (int)ApplicationContext::isDevelopmentModeActive();
-        $buffer .= LF . 'themes.mode.isProduction = ' . (int)!ApplicationContext::isDevelopmentModeActive();
-        return $buffer;
+        $relPath = '';
+        $keyParts = explode('_', $key);
+        $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($keyParts[0]);
+        $extensionPath = ExtensionManagementUtility::extPath($extensionKey);
+        if ($type === 'feature') {
+            $relPath = $extensionPath . 'Configuration/TypoScript/Features/' . $keyParts[1] . '/';
+        } elseif ($type === 'extension') {
+            $relPath = $extensionPath . 'Resources/Private/Extensions/' . $keyParts[1] . '/TypoScript/';
+        }
+        $themeItem = [
+                'constants' => '',
+                'config' => '',
+                'include_static' => '',
+                'include_static_file' => '',
+                'title' => 'themes:' . $this->getExtensionName() . ':' . $relPath,
+                'uid' => md5($this->getExtensionName() . ':' . $relPath),
+        ];
+        //
+        // TypoScript setup, if available
+        $setupFile = GeneralUtility::getFileAbsFileName($relPath . 'setup.typoscript');
+        if (file_exists($setupFile)) {
+            $themeItem['config'] = file_get_contents($setupFile);
+        }
+        //
+        // TypoScript constants, if available
+        $constantsFile = GeneralUtility::getFileAbsFileName($relPath . 'constants.typoscript');
+        if (file_exists($constantsFile)) {
+            $themeItem['constants'] = file_get_contents($constantsFile);
+        }
+        //
+        return $themeItem;
     }
 }

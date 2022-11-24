@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\DataProcessing;
 
 /***************************************************************
@@ -30,6 +32,7 @@ namespace KayStrobach\Themes\DataProcessing;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * DataProcessor for Fluid Styled Content.
@@ -38,11 +41,10 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  */
 class ThemesResponsiveDataProcessor implements DataProcessorInterface
 {
-
     /**
      * @var array
      */
-    protected $setup;
+    protected array $setup;
 
     /**
      * Process data for the Themes variants.
@@ -54,8 +56,12 @@ class ThemesResponsiveDataProcessor implements DataProcessorInterface
      *
      * @return array the processed data as key/value store
      */
-    public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData)
-    {
+    public function process(
+        ContentObjectRenderer $cObj,
+        array $contentObjectConfiguration,
+        array $processorConfiguration,
+        array $processedData
+    ): array {
         $keys = GeneralUtility::trimExplode(',', $processedData['data']['tx_themes_responsive'], true);
         $processedData['themes']['responsive']['keys'] = $keys;
         $processedData['themes']['responsive']['css'] = [];
@@ -73,7 +79,10 @@ class ThemesResponsiveDataProcessor implements DataProcessorInterface
                                 $value = sprintf($cssClass, $column);
                                 $processedData['themes']['responsive']['column'][$no]['css'][$value] = $value;
                                 if (isset($processedData['themes']['responsive']['column'][$no]['css'])) {
-                                    $processedData['themes']['responsive']['column'][$no]['cssClasses'] = implode(' ', $processedData['themes']['responsive']['column'][$no]['css']);
+                                    $processedData['themes']['responsive']['column'][$no]['cssClasses'] = implode(
+                                        ' ',
+                                        $processedData['themes']['responsive']['column'][$no]['css']
+                                    );
                                 }
                             }
                         }
@@ -85,15 +94,18 @@ class ThemesResponsiveDataProcessor implements DataProcessorInterface
                     }
                 }
             }
-            $processedData['themes']['responsive']['cssClasses'] = implode(' ', $processedData['themes']['responsive']['css']);
+            $processedData['themes']['responsive']['cssClasses'] = implode(
+                ' ',
+                $processedData['themes']['responsive']['css']
+            );
         }
         return $processedData;
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TypoScriptFrontendController
      */
-    protected function getFrontendController()
+    protected function getFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
     }

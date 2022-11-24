@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\ViewHelpers\Variable;
 
 /*
@@ -8,6 +11,7 @@ namespace KayStrobach\Themes\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -58,10 +62,9 @@ class GetViewHelper extends AbstractViewHelper
     }
 
     /**
-     *
      * @return mixed
      */
-    public function render()
+    public function render(): mixed
     {
         $name = $this->arguments['name'];
         $useRawKeys = $this->arguments['useRawKeys'];
@@ -99,10 +102,11 @@ class GetViewHelper extends AbstractViewHelper
                     }
 
                     return $value;
-                } catch (\Exception $e) {
-                    return;
+                } catch (Exception $e) {
+                    return null;
                 }
             }
         }
+        return null;
     }
 }

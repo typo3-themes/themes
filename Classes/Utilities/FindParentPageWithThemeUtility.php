@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Utilities;
 
 /***************************************************************
@@ -27,6 +29,7 @@ namespace KayStrobach\Themes\Utilities;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
@@ -34,12 +37,12 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  */
 class FindParentPageWithThemeUtility
 {
-
     /**
      * @param $pid
      * @return mixed
+     * @throws DBALException
      */
-    public static function find($pid)
+    public static function find($pid): mixed
     {
         $pageUid = 0;
         //
@@ -52,9 +55,12 @@ class FindParentPageWithThemeUtility
             $rootLineUtility = new RootlineUtility($pid);
             $pages = $rootLineUtility->get();
             foreach ($pages as $page) {
-                if (CheckPageUtility::hasThemeableSysTemplateRecord($page['pid'])) {
-                    $pageUid = $page['pid'];
-                    break;
+                try {
+                    if (CheckPageUtility::hasThemeableSysTemplateRecord($page['pid'])) {
+                        $pageUid = $page['pid'];
+                        break;
+                    }
+                } catch (DBALException $e) {
                 }
             }
         }

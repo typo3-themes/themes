@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\DataProcessing;
 
 /***************************************************************
@@ -39,7 +41,6 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  */
 class HeaderLinkDataProcessor implements DataProcessorInterface
 {
-
     /**
      * Process data for the header link.
      *
@@ -55,7 +56,7 @@ class HeaderLinkDataProcessor implements DataProcessorInterface
         array $contentObjectConfiguration,
         array $processorConfiguration,
         array $processedData
-    ) {
+    ): array {
         if (isset($processedData['data']['header_link']) && trim($processedData['data']['header_link']) !== '') {
             $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
             $processedData['headerLink'] = $typoLinkCodecService->decode($processedData['data']['header_link']);

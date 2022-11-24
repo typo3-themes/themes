@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Domain\Model;
 
 /***************************************************************
@@ -27,11 +29,11 @@ namespace KayStrobach\Themes\Domain\Model;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Exception;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
-use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 
 /**
@@ -45,13 +47,13 @@ class Theme extends AbstractTheme
      * Constructs a new Theme.
      *
      * @param $extensionName
-     * @throws \Exception
+     * @throws Exception
      * @api
      */
     public function __construct($extensionName)
     {
         parent::__construct($extensionName);
-        if (ExtensionManagementUtility::isLoaded($extensionName, false)) {
+        if (ExtensionManagementUtility::isLoaded($extensionName)) {
             // set needed path variables
             $path = ExtensionManagementUtility::extPath($this->getExtensionName());
             //
@@ -72,35 +74,34 @@ class Theme extends AbstractTheme
 
             //
             $this->importExtEmConf();
-            if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png')) {
-                $this->previewImage = PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->getExtensionName())) . 'Meta/Screenshots/screenshot.png';
+            if (is_file(
+                ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png'
+            )) {
+                $this->previewImage = PathUtility::stripPathSitePrefix(
+                    ExtensionManagementUtility::extPath($this->getExtensionName())
+                ) . 'Meta/Screenshots/screenshot.png';
             } else {
-                $this->previewImage = PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('themes')) . 'Resources/Public/Images/screenshot.gif';
+                $this->previewImage = PathUtility::stripPathSitePrefix(
+                    ExtensionManagementUtility::extPath('themes')
+                ) . 'Resources/Public/Images/screenshot.gif';
             }
             $yamlFile = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml';
             if (file_exists($yamlFile)) {
-                try {
-                    $yamlSource = GeneralUtility::makeInstance(YamlSource::class);
-                    $this->metaInformation = $yamlSource->load(array($yamlFile));
-                } catch (ParseErrorException $exception) {
-                    $this->metaInformation = [];
-                }
+                $yamlSource = GeneralUtility::makeInstance(YamlSource::class);
+                $this->metaInformation = $yamlSource->load([$yamlFile]);
             } else {
-                throw new \Exception('No Yaml meta information found!');
+                throw new Exception('No Yaml meta information found!');
             }
         }
     }
 
     /**
      * abstract the extension meta data import.
-     *
-     * @return void
      */
-    protected function importExtEmConf()
+    protected function importExtEmConf(): void
     {
         // @codingStandardsIgnoreStart
-        $EM_CONF = array();
-        /** @var string $_EXTKEY */
+        $EM_CONF = [];
         $_EXTKEY = $this->extensionName;
         include ExtensionManagementUtility::extPath($this->getExtensionName()) . 'ext_emconf.php';
         // @codingStandardsIgnoreEnd
@@ -116,7 +117,7 @@ class Theme extends AbstractTheme
      * Returns an array of preview images
      * @return array
      */
-    public function getAllPreviewImages()
+    public function getAllPreviewImages(): array
     {
         $buffer = $this->metaInformation['screenshots'];
         if (is_array($buffer) && count($buffer) > 0) {
@@ -136,7 +137,7 @@ class Theme extends AbstractTheme
      *
      * @return string
      */
-    public function getTypoScriptConfig()
+    public function getTypoScriptConfig(): string
     {
         if (file_exists($this->getTypoScriptConfigAbsPath()) && is_file($this->getTypoScriptConfigAbsPath())) {
             return file_get_contents($this->getTypoScriptConfigAbsPath());
@@ -147,49 +148,55 @@ class Theme extends AbstractTheme
     /**
      * Includes static template records (from static_template table) and static template files (from extensions) for the input template record row.
      *
-     * @param array  $params Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
-     * @param object $pObj   Reference back to parent object, t3lib_tstemplate or one of its subclasses.
+     * @param array $params Array of parameters from the parent class.  Includes idList, templateId, pid, and row.
+     * @param TemplateService $pObj Reference back to parent object, t3lib_tstemplate or one of its subclasses.
      * @param array $extensions Array of additional TypoScript for extensions
      * @param array $features Array of additional TypoScript for features
      *
-     * @return void
+     * @throws \TYPO3\CMS\Install\Configuration\Exception
      */
-    public function addTypoScriptForFe(&$params, TemplateService &$pObj, $extensions=[], $features=[])
+    public function addTypoScriptForFe(array &$params, TemplateService &$pObj, array $extensions = [], array $features = []): void
     {
         // @codingStandardsIgnoreStart
         $themeItem = [
-            'constants'           => @is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptConstantsAbsPath()) : '',
-            'config'              => @is_file($this->getTypoScriptAbsPath()) ? GeneralUtility::getUrl($this->getTypoScriptAbsPath()) : '',
-            'include_static'      => '',
-            'include_static_file' => '',
-            'title'               => 'themes:'.$this->getExtensionName(),
-            'uid'                 => md5($this->getExtensionName()),
+                'constants' => @is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl(
+                    $this->getTypoScriptConstantsAbsPath()
+                ):'',
+                'config' => @is_file($this->getTypoScriptAbsPath()) ? GeneralUtility::getUrl(
+                    $this->getTypoScriptAbsPath()
+                ):'',
+                'include_static' => '',
+                'include_static_file' => '',
+                'title' => 'themes:' . $this->getExtensionName(),
+                'uid' => md5($this->getExtensionName()),
         ];
         // @codingStandardsIgnoreEnd
 
         // @todo resources Path / private Path
-        $themeItem['constants'] .= LF.'themes.resourcesPrivatePath = EXT:'.$this->getExtensionName().'/Resources/Private/';
-        $themeItem['constants'] .= LF.'themes.resourcesPublicPath = EXT:'.$this->getExtensionName().'/Resources/Public/';
+        $themeItem['constants'] .= LF . 'themes.resourcesPrivatePath = ' . $this->getRelativePath(
+        ) . 'Resources/Private/';
+        $themeItem['constants'] .= LF . 'themes.resourcesPublicPath = ' . $this->getRelativePath(
+        ) . 'Resources/Public/';
         $themeItem['constants'] .= $this->getBasicConstants($params['pid']);
-        $themeItem['constants'] .= LF.$this->getTypoScriptForLanguage($params, $pObj);
+        $themeItem['constants'] .= LF . $this->getTypoScriptForLanguage($params, $pObj);
 
         $pObj->processTemplate(
             $themeItem,
-            $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
+            $params['idList'] . ',ext_theme' . str_replace('_', '', $this->getExtensionName()),
             $params['pid'],
-            'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+            'ext_theme' . str_replace('_', '', $this->getExtensionName()),
             $params['templateId']
         );
         //
         // Additional TypoScript for extensions
         if (count($extensions) > 0) {
             foreach ($extensions as $extension) {
-                $themeItem = $this->getTypoScriptDataForProcessing($extension, 'extension');
+                $themeItem = $this->getTypoScriptDataForProcessing($extension);
                 $pObj->processTemplate(
                     $themeItem,
-                    $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['idList'] . ',ext_theme' . str_replace('_', '', $this->getExtensionName()),
                     $params['pid'],
-                    'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    'ext_theme' . str_replace('_', '', $this->getExtensionName()),
                     $params['templateId']
                 );
             }
@@ -201,9 +208,9 @@ class Theme extends AbstractTheme
                 $themeItem = $this->getTypoScriptDataForProcessing($feature, 'feature');
                 $pObj->processTemplate(
                     $themeItem,
-                    $params['idList'].',ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    $params['idList'] . ',ext_theme' . str_replace('_', '', $this->getExtensionName()),
                     $params['pid'],
-                    'ext_theme'.str_replace('_', '', $this->getExtensionName()),
+                    'ext_theme' . str_replace('_', '', $this->getExtensionName()),
                     $params['templateId']
                 );
             }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\DataProcessing;
 
 /***************************************************************
@@ -30,6 +32,7 @@ namespace KayStrobach\Themes\DataProcessing;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * DataProcessor for Fluid Styled Content.
@@ -38,11 +41,10 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  */
 class ThemesResponsiveColumnDataProcessor implements DataProcessorInterface
 {
-
     /**
      * @var array
      */
-    protected $setup;
+    protected array $setup;
 
     /**
      * Process data for the Themes variants.
@@ -54,18 +56,29 @@ class ThemesResponsiveColumnDataProcessor implements DataProcessorInterface
      *
      * @return array the processed data as key/value store
      */
-    public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData)
-    {
+    public function process(
+        ContentObjectRenderer $cObj,
+        array $contentObjectConfiguration,
+        array $processorConfiguration,
+        array $processedData
+    ): array {
         $this->setup = $this->getFrontendController()->tmpl->setup;
-        $processedData = $this->getColumnClasses($processedData, 'flexform_column_widths_md');
+        $processedData = $this->getColumnClasses($processedData);
         $processedData = $this->getColumnClasses($processedData, 'flexform_column_widths_sm');
         $processedData = $this->getColumnClasses($processedData, 'flexform_column_widths_xs');
         $processedData = $this->getColumnClasses($processedData, 'flexform_column_widths_lg');
-        $processedData = $this->getColumnClasses($processedData, 'flexform_column_widths_xl');
-        return $processedData;
+        return $this->getColumnClasses($processedData, 'flexform_column_widths_xl');
     }
 
-    protected function getColumnClasses(array $processedData = [], $index = 'flexform_column_widths_md')
+    /**
+     * @return TypoScriptFrontendController
+     */
+    protected function getFrontendController(): TypoScriptFrontendController
+    {
+        return $GLOBALS['TSFE'];
+    }
+
+    protected function getColumnClasses(array $processedData = [], $index = 'flexform_column_widths_md'): array
     {
         $keys = GeneralUtility::trimExplode('#', $processedData['data'][$index], true);
         if (!empty($keys)) {
@@ -76,20 +89,15 @@ class ThemesResponsiveColumnDataProcessor implements DataProcessorInterface
                     $processedData['themes']['responsive']['column'][$column]['css'][$cssClass] = $cssClass;
                 }
                 if (isset($processedData['themes']['responsive']['column'][$column]['css'])) {
-                    $processedData['themes']['responsive']['column'][$column]['cssClasses'] = implode(' ', $processedData['themes']['responsive']['column'][$column]['css']);
+                    $processedData['themes']['responsive']['column'][$column]['cssClasses'] = implode(
+                        ' ',
+                        $processedData['themes']['responsive']['column'][$column]['css']
+                    );
                 }
                 $column++;
             }
         }
 
         return $processedData;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected function getFrontendController()
-    {
-        return $GLOBALS['TSFE'];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\ViewHelpers\Iterator;
 
 /***************************************************************
@@ -44,10 +46,9 @@ class SortViewHelper extends AbstractViewHelper
     }
 
     /**
-     *
      * @return array|null
      */
-    public function render()
+    public function render(): ?array
     {
         $subject = $this->arguments['subject'];
         $key = $this->arguments['key'];
@@ -70,13 +71,13 @@ class SortViewHelper extends AbstractViewHelper
      *
      * @return array
      */
-    protected function sortArray($array)
+    protected function sortArray(array $array): array
     {
         usort($array, [$this, 'compare']);
         return $array;
     }
 
-    public function compare($a, $b)
+    public function compare($a, $b): int
     {
         return strcasecmp($a[$this->arguments['key']], $b[$this->arguments['key']]);
     }

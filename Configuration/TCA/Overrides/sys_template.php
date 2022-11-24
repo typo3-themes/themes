@@ -29,7 +29,6 @@ $tempColumn = [
             'size' => 10,
             'maxitems' => 100,
             'items' => [],
-            'enableMultiSelectFilterTextfield' => true,
             'softref' => 'ext_fileref'
         ]
     ],
@@ -41,7 +40,6 @@ $tempColumn = [
             'size' => 10,
             'maxitems' => 100,
             'items' => [],
-            'enableMultiSelectFilterTextfield' => true,
             'softref' => 'ext_fileref'
         ]
     ],

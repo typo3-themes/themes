@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Hooks;
 
 /***************************************************************
@@ -27,12 +29,15 @@ namespace KayStrobach\Themes\Hooks;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Statement;
 use KayStrobach\Themes\Domain\Model\Theme;
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
+use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Configuration\Exception;
 
 /**
@@ -48,10 +53,10 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
      * @param array $params array of parameters from the parent class. Includes idList, templateId, pid, and row.
      * @param TemplateService $pObj Reference back to parent object, t3lib_tstemplate or one of its subclasses.
      *
-     * @return void
+     * @throws DBALException
      * @throws Exception
      */
-    public static function main(&$params, TemplateService &$pObj)
+    public static function main(array &$params, TemplateService &$pObj): void
     {
         $idList = $params['idList'];
         $templateId = $params['templateId'];
@@ -59,23 +64,25 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
         if ($templateId === $idList) {
             /** @var QueryBuilder $queryBuilder */
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('sys_template');
+                    ->getQueryBuilderForTable('sys_template');
             $queryBuilder->select('*')
-                ->from('sys_template')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter((int)$pid, \PDO::PARAM_INT)
-                    )
-                );
-            /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+                    ->from('sys_template')
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter((int)$pid, PDO::PARAM_INT)
+                        )
+                    );
+            /** @var Statement $statement */
             $statement = $queryBuilder->execute();
-            if ($statement->rowCount()>0) {
+            if ($statement->rowCount() > 0) {
                 $tRow = $statement->fetch();
                 $themeIdentifier = $tRow['tx_themes_skin'];
                 //
                 // Call hook for possible manipulation of current skin.
-                if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hooks/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'])) {
+                if (!empty(
+                    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hooks/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme']
+                )) {
                     $tempParamsForHook = ['theme' => $themeIdentifier];
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hooks/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['setTheme'] as $userFunc) {
                         $themeIdentifier = GeneralUtility::callUserFunction($userFunc, $tempParamsForHook, $ref = null);
@@ -85,7 +92,9 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
                     $themeIdentifier = $tRow['tx_themes_skin'];
                 }
                 /** @var ThemeRepository $themeRepository */
-                $themeRepository = GeneralUtility::makeInstance(ThemeRepository::class);
+                $themeRepository = GeneralUtility::makeInstance(
+                    'KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository'
+                );
                 /** @var Theme $theme */
                 $theme = $themeRepository->findByUid($themeIdentifier);
                 if ($theme === null) {
@@ -99,12 +108,14 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
                 }
                 // @todo add hook to inject template overlays, e.g. for previewed constants before save ...
                 // Call hook for possible manipulation of current skin. constants
-                if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hooks/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['modifyTS'])) {
+                if (!empty(
+                    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hooks/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['modifyTS']
+                )) {
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/themes/Classes/Hooks/T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook.php']['modifyTS'] as $userFunc) {
                         $themeItem = GeneralUtility::callUserFunction($userFunc, $tempParamsForHook, $pObj);
                         $pObj->processTemplate(
                             $themeItem,
-                            $params['idList'].',themes_modifyTsOverlay',
+                            $params['idList'] . ',themes_modifyTsOverlay',
                             $params['pid'],
                             'themes_themes_modifyTsOverlay',
                             $params['templateId']

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Controller;
 
 /***************************************************************
@@ -27,11 +29,17 @@ namespace KayStrobach\Themes\Controller;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Doctrine\DBAL\DBALException;
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Class ThemeController.
@@ -41,32 +49,30 @@ class ThemeController extends ActionController
     /**
      * @var string
      */
-    protected $templateName = '';
+    protected string $templateName = '';
 
     /**
      * @var array
      */
-    protected $typoScriptSetup;
+    protected array $typoScriptSetup;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
     /**
-     * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository
+     * @var ThemeRepository
      */
-    protected $themeRepository;
+    protected ThemeRepository $themeRepository;
 
     /**
-     * @var \TYPO3\CMS\Frontend\Page\PageRepository
+     * @var PageRepository
      */
-    protected $pageRepository;
+    protected PageRepository $pageRepository;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     *
-     * @return void
+     * @param ConfigurationManagerInterface $configurationManager
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
@@ -76,7 +82,7 @@ class ThemeController extends ActionController
     }
 
     /**
-     * @param \KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository
+     * @param ThemeRepository $themeRepository
      */
     public function injectThemeRepository(ThemeRepository $themeRepository)
     {
@@ -84,7 +90,7 @@ class ThemeController extends ActionController
     }
 
     /**
-     * @param \TYPO3\CMS\Frontend\Page\PageRepository $pageRepository
+     * @param PageRepository $pageRepository
      */
     public function injectPageRepository(PageRepository $pageRepository)
     {
@@ -94,9 +100,10 @@ class ThemeController extends ActionController
     /**
      * renders the given theme.
      *
-     * @return void
+     * @return ResponseInterface
+     * @throws DBALException
      */
-    public function indexAction()
+    public function indexAction(): ResponseInterface
     {
         $this->templateName = $this->evaluateTypoScript('plugin.tx_themes.view.templateName');
         $templateFile = $this->getTemplateFile();
@@ -126,67 +133,37 @@ class ThemeController extends ActionController
         $this->view->assign('page', $pageArray);
         $this->view->assign('data', $pageArray);
         $this->view->assign('TSFE', $frontendController);
-    }
-
-    /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected function getFrontendController()
-    {
-        return $GLOBALS['TSFE'];
+        return $this->htmlResponse();
     }
 
     /**
      * renders a given TypoScript Path.
      *
-     * @param $path
+     * @param string $path
      *
      * @return string
      */
-    protected function evaluateTypoScript($path)
+    protected function evaluateTypoScript(string $path): string
     {
-        /** @var $vh \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper */
-        $vh = $this->objectManager->get(\TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper::class);
+        /** @var CObjectViewHelper $vh */
+        $vh = $this->objectManager->get(CObjectViewHelper::class);
         $vh->setRenderChildrenClosure(function () {
             return '';
         });
 
         $vh->setArguments(['typoscriptObjectPath' => $path]);
-        /** @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext $renderingContext */
-        $renderingContext = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class);
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = GeneralUtility::makeInstance(RenderingContext::class);
         $vh->setRenderingContext($renderingContext);
         return $vh->render();
     }
 
     /**
-     * gets a TS Array by path.
-     *
-     * @param $typoscriptObjectPath
-     *
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
-     *
-     * @return array
-     */
-    protected function getTsArrayByPath($typoscriptObjectPath)
-    {
-        $pathSegments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $typoscriptObjectPath);
-        $setup = $this->typoScriptSetup;
-        foreach ($pathSegments as $segment) {
-            if (!array_key_exists(($segment . '.'), $setup)) {
-                throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist', 1253191023);
-            }
-            $setup = $setup[$segment . '.'];
-        }
-
-        return $setup;
-    }
-
-    /**
      * get the needed templateFile from TS.
      *
-     * @return null|string
+     * @return string|null
      */
-    protected function getTemplateFile()
+    protected function getTemplateFile(): ?string
     {
         $templatePaths = $this->getTsArrayByPath('plugin.tx_themes.view.templateRootPaths');
         krsort($templatePaths);
@@ -197,5 +174,38 @@ class ThemeController extends ActionController
             }
         }
         return null;
+    }
+
+    /**
+     * gets a TS Array by path.
+     *
+     * @param $typoscriptObjectPath
+     *
+     * @return array
+     * @throws Exception
+     */
+    protected function getTsArrayByPath($typoscriptObjectPath): array
+    {
+        $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
+        $setup = $this->typoScriptSetup;
+        foreach ($pathSegments as $segment) {
+            if (!array_key_exists(($segment . '.'), $setup)) {
+                throw new Exception(
+                    'TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist',
+                    1253191023
+                );
+            }
+            $setup = $setup[$segment . '.'];
+        }
+
+        return $setup;
+    }
+
+    /**
+     * @return TypoScriptFrontendController
+     */
+    protected function getFrontendController(): TypoScriptFrontendController
+    {
+        return $GLOBALS['TSFE'];
     }
 }

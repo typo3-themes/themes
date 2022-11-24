@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Domain\Repository;
 
 /***************************************************************
@@ -27,13 +29,17 @@ namespace KayStrobach\Themes\Domain\Repository;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Doctrine\DBAL\DBALException;
 use KayStrobach\Themes\Domain\Model\AbstractTheme;
+use KayStrobach\Themes\Domain\Model\Theme;
+use PDO;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 
 /**
@@ -48,16 +54,15 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      *
      * @var array
      */
-    protected $addedObjects = [];
+    protected array $addedObjects = [];
 
-    /**
-     * @return void
-     */
     public function __construct()
     {
         // Hook to recognize themes, this is the magic point, why it's possible to support so many theme formats and types.
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'])) {
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'])) {
+            if (is_array(
+                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init']
+            )) {
                 $hookParameters = [];
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'] as $hookFunction) {
                     GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
@@ -69,8 +74,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     /**
      * Adds an object to this repository.
      *
-     * @param \KayStrobach\Themes\Domain\Model\AbstractTheme $object The object to add
-     * @return void
+     * @param AbstractTheme $object The object to add
      * @api
      */
     public function add($object)
@@ -81,9 +85,8 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     /**
      * Removes an object from this repository.
      *
-     * @param \KayStrobach\Themes\Domain\Model\AbstractTheme $object The object to remove
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
-     * @return void
+     * @param AbstractTheme $object The object to remove
+     * @throws Exception
      * @api
      */
     public function remove($object)
@@ -96,11 +99,10 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      *
      * @param AbstractTheme $existingObject The existing object
      * @param AbstractTheme $newObject The new object
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
-     * @return void
+     * @throws Exception
      * @api
      */
-    public function replace($existingObject, $newObject)
+    public function replace(AbstractTheme $existingObject, AbstractTheme $newObject)
     {
         throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
@@ -109,8 +111,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * Replaces an existing object with the same identifier by the given object.
      *
      * @param AbstractTheme $modifiedObject The modified object
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
-     * @return void
+     * @throws Exception
      * @api
      */
     public function update($modifiedObject)
@@ -123,7 +124,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      *
      * @return array An array of objects
      */
-    public function getAddedObjects()
+    public function getAddedObjects(): array
     {
         return $this->addedObjects;
     }
@@ -131,8 +132,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     /**
      * Returns an array with objects remove()d from the repository that had been persisted to the storage layer before.
      *
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
-     * @return void
+     * @throws Exception
      */
     public function getRemovedObjects()
     {
@@ -145,7 +145,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * @return array An array of objects, empty if no objects found
      * @api
      */
-    public function findAll()
+    public function findAll(): array
     {
         return array_values($this->addedObjects);
     }
@@ -156,7 +156,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * @return int The object count
      * @api
      */
-    public function countAll()
+    public function countAll(): int
     {
         return count($this->addedObjects);
     }
@@ -164,7 +164,6 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     /**
      * Removes all objects of this repository as if remove() was called for all of them.
      *
-     * @return void
      * @api
      */
     public function removeAll()
@@ -173,61 +172,62 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     }
 
     /**
-     * Finds an object matching the given identifier.
-     *
-     * @param int $uid The identifier of the object to find
-     * @return AbstractTheme The matching object if found, otherwise NULL
-     * @api
-     */
-    public function findByUid($uid)
-    {
-        if ((is_array($this->addedObjects)) && (array_key_exists($uid, $this->addedObjects))) {
-            return $this->addedObjects[$uid];
-        }
-    }
-
-    /**
      * @param mixed $uid
-     * @return AbstractTheme
+     * @return Theme
      */
-    public function findByIdentifier($uid)
+    public function findByIdentifier($uid): Theme
     {
         return $this->findByUid($uid);
     }
 
     /**
-     * @param int $pid id of the Page
-     * @return mixed
+     * Finds an object matching the given identifier.
+     *
+     * @param int $uid The identifier of the object to find
+     * @return Theme|null The matching object if found, otherwise NULL
+     * @api
      */
-    public function findByPageId($pid)
+    public function findByUid($uid): Theme|null
+    {
+        if (array_key_exists($uid, $this->addedObjects)) {
+            return $this->addedObjects[$uid];
+        }
+        return null;
+    }
+
+    /**
+     * @param int $pid
+     * @return Theme|null
+     * @throws DBALException
+     */
+    public function findByPageOrRootline(int $pid): Theme|null
+    {
+        $rootline = BackendUtility::BEgetRootLine($pid);
+        foreach ($rootline as $page) {
+            return $this->findByPageId($page['uid']);
+        }
+        return null;
+    }
+
+    /**
+     * @param int $pid id of the Page
+     * @return Theme
+     * @throws DBALException
+     */
+    public function findByPageId(int $pid): Theme
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_template');
         $queryBuilder->select('*')
-            ->from('sys_template')
-            ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
-            )
-            ->setMaxResults(1);
+                ->from('sys_template')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, PDO::PARAM_INT))
+                )
+                ->setMaxResults(1);
         if (!empty($GLOBALS['TCA']['sys_template']['ctrl']['sortby'])) {
             $queryBuilder->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);
         }
         $templateRow = $queryBuilder->execute()->fetch();
         return $this->findByUid($templateRow['tx_themes_skin']);
-    }
-
-    /**
-     * @param int $pid
-     * @return \KayStrobach\Themes\Domain\Model\Theme
-     */
-    public function findByPageOrRootline($pid)
-    {
-        $rootline = BackendUtility::BEgetRootLine($pid);
-        foreach ($rootline as $page) {
-            $theme = $this->findByPageId($page['uid']);
-            if ($theme !== null) {
-                return $theme;
-            }
-        }
     }
 
     /**
@@ -239,8 +239,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * ).
      *
      * @param array $defaultOrderings The property names to order by
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
-     * @return void
+     * @throws Exception
      * @api
      */
     public function setDefaultOrderings(array $defaultOrderings)
@@ -251,9 +250,8 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     /**
      * Sets the default query settings to be used in this repository.
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
-     * @return void
+     * @param QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
+     * @throws Exception
      * @api
      */
     public function setDefaultQuerySettings(QuerySettingsInterface $defaultQuerySettings)
@@ -264,11 +262,10 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     /**
      * Returns a query for objects of this repository.
      *
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
-     * @return void
+     * @throws Exception
      * @api
      */
-    public function createQuery()
+    public function createQuery(): QueryInterface
     {
         throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }

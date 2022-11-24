@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\ViewHelpers\Variable;
 
 /*
@@ -8,6 +11,7 @@ namespace KayStrobach\Themes\ViewHelpers\Variable;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -66,13 +70,8 @@ class SetViewHelper extends AbstractViewHelper
 
     /**
      * Set (override) the variable in $name.
-     *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return void
      */
-    public function render()
+    public function render(): void
     {
         $name = $this->arguments['name'];
         $value = $this->arguments['value'];
@@ -98,7 +97,7 @@ class SetViewHelper extends AbstractViewHelper
                 // Note: re-insert the variable to ensure unreferenced values like arrays also get updated
                 $this->templateVariableContainer->remove($objectName);
                 $this->templateVariableContainer->add($objectName, $object);
-            } catch (\Exception $error) {
+            } catch (Exception $error) {
                 return;
             }
         }

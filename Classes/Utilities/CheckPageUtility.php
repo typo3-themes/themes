@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Utilities;
 
 /***************************************************************
@@ -27,7 +29,11 @@ namespace KayStrobach\Themes\Utilities;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Statement;
+use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -41,57 +47,23 @@ class CheckPageUtility
      * @param $pid
      *
      * @return bool
+     * @throws DBALException
      */
-    public static function hasTheme($pid)
-    {
-        $hasTheme = false;
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_template');
-        $queryBuilder->select('*')
-            ->from('sys_template')
-            ->andWhere(
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter((int)$pid, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'root',
-                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->neq(
-                    'tx_themes_skin',
-                    $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
-                )
-            );
-        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
-        $statement = $queryBuilder->execute();
-        if ($statement->rowCount() > 0) {
-            $hasTheme = true;
-        }
-        return $hasTheme;
-    }
-
-    /**
-     * @param $pid
-     *
-     * @return bool
-     */
-    public static function hasThemeableSysTemplateRecord($pid)
+    public static function hasThemeableSysTemplateRecord($pid): bool
     {
         self::hasTheme($pid);
         $themeable = false;
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_template');
+                ->getQueryBuilderForTable('sys_template');
         $queryBuilder->select('*')
-            ->from('sys_template')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter((int)$pid, \PDO::PARAM_INT)
-                )
-            );
+                ->from('sys_template')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter((int)$pid, PDO::PARAM_INT)
+                    )
+                );
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         $themeableSysTemplateRecordsRequireRootFlag = true;
         try {
@@ -107,11 +79,11 @@ class CheckPageUtility
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     'root',
-                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)
                 )
             );
         }
-        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+        /** @var Statement $statement */
         $statement = $queryBuilder->execute();
         if ($statement->rowCount() > 0) {
             $themeable = true;
@@ -122,27 +94,64 @@ class CheckPageUtility
     /**
      * @param $pid
      *
-     * @return bool|int
+     * @return bool
+     * @throws DBALException
      */
-    public static function getThemeableSysTemplateRecord($pid)
+    public static function hasTheme($pid): bool
+    {
+        $hasTheme = false;
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_template');
+        $queryBuilder->select('*')
+                ->from('sys_template')
+                ->andWhere(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter((int)$pid, PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'root',
+                        $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        'tx_themes_skin',
+                        $queryBuilder->createNamedParameter('')
+                    )
+                );
+        /** @var Statement $statement */
+        $statement = $queryBuilder->execute();
+        if ($statement->rowCount() > 0) {
+            $hasTheme = true;
+        }
+        return $hasTheme;
+    }
+
+    /**
+     * @param $pid
+     *
+     * @return bool|int
+     * @throws DBALException
+     */
+    public static function getThemeableSysTemplateRecord($pid): bool|int
     {
         $themeable = false;
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_template');
+                ->getQueryBuilderForTable('sys_template');
         $queryBuilder->select('*')
-            ->from('sys_template')
-            ->andWhere(
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter((int)$pid, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'root',
-                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
-                )
-            );
-        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+                ->from('sys_template')
+                ->andWhere(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter((int)$pid, PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'root',
+                        $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)
+                    )
+                );
+        /** @var Statement $statement */
         $statement = $queryBuilder->execute();
         if ($statement->rowCount() > 0) {
             $row = $statement->fetch();

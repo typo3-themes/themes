@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace KayStrobach\Themes\ExpressionLanguage;
 
@@ -14,7 +15,7 @@ class ConditionProvider extends AbstractProvider
     public function __construct()
     {
         $this->expressionLanguageVariables = [
-            'extension' => GeneralUtility::makeInstance(ExtensionCondition::class)
+            'extension' => GeneralUtility::makeInstance(ExtensionCondition::class),
         ];
     }
 }

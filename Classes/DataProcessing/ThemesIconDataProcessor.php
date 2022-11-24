@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\DataProcessing;
 
 /***************************************************************
@@ -29,6 +31,7 @@ namespace KayStrobach\Themes\DataProcessing;
 
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * DataProcessor for Fluid Styled Content.
@@ -37,7 +40,6 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  */
 class ThemesIconDataProcessor implements DataProcessorInterface
 {
-
     /**
      * Process data for the Themes icons.
      *
@@ -48,8 +50,12 @@ class ThemesIconDataProcessor implements DataProcessorInterface
      *
      * @return array the processed data as key/value store
      */
-    public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData)
-    {
+    public function process(
+        ContentObjectRenderer $cObj,
+        array $contentObjectConfiguration,
+        array $processorConfiguration,
+        array $processedData
+    ): array {
         if (isset($processedData['data']['tx_themes_icon']) && $processedData['data']['tx_themes_icon'] != '') {
             $setup = $this->getFrontendController()->tmpl->setup;
             $processedData['themes']['icon'] = $setup['lib.']['icons.']['cssMap.'][$processedData['data']['tx_themes_icon']];
@@ -58,9 +64,9 @@ class ThemesIconDataProcessor implements DataProcessorInterface
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TypoScriptFrontendController
      */
-    protected function getFrontendController()
+    protected function getFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
     }

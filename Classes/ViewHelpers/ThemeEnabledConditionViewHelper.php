@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\ViewHelpers;
 
 /***************************************************************
@@ -27,6 +29,7 @@ namespace KayStrobach\Themes\ViewHelpers;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Doctrine\DBAL\DBALException;
 use KayStrobach\Themes\Utilities\ThemeEnabledCondition;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
@@ -38,24 +41,23 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 class ThemeEnabledConditionViewHelper extends AbstractConditionViewHelper
 {
     /**
-     * Initializes the "theme" argument.
+     * This method decides if the condition is TRUE or FALSE. It can be overridden in extending viewhelpers to adjust functionality.
      *
-     * @return void
+     * @param array|null $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+     *
+     * @return bool
+     * @throws DBALException
+     */
+    protected static function evaluateCondition(array $arguments = null): bool
+    {
+        return ThemeEnabledCondition::isThemeEnabled($arguments['theme']);
+    }
+
+    /**
+     * Initializes the "theme" argument.
      */
     public function initializeArguments()
     {
         $this->registerArgument('theme', 'string', 'The theme');
-    }
-
-    /**
-     * This method decides if the condition is TRUE or FALSE. It can be overridden in extending viewhelpers to adjust functionality.
-     *
-     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-     *
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
-    {
-        return ThemeEnabledCondition::isThemeEnabled($arguments['theme']);
     }
 }

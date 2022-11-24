@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\ViewHelpers;
 
 /***************************************************************
@@ -27,6 +29,8 @@ namespace KayStrobach\Themes\ViewHelpers;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Exception;
+use ReflectionClass;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -44,10 +48,9 @@ class ArrayIndexViewHelper extends AbstractViewHelper
     }
 
     /**
-     *
      * @return mixed
      */
-    public function render()
+    public function render(): mixed
     {
         $object = $this->arguments['object'];
         $index = $this->arguments['index'];
@@ -56,11 +59,11 @@ class ArrayIndexViewHelper extends AbstractViewHelper
                 return $object->$index;
             }
             try {
-                $reflectionClass = new \ReflectionClass($object);
+                $reflectionClass = new ReflectionClass($object);
                 $reflectionProperty = $reflectionClass->getProperty($index);
                 $reflectionProperty->setAccessible(true);
                 return $reflectionProperty->getValue($object);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // we want a silent fail here, as the default will return null
             }
         } elseif (is_array($object)) {

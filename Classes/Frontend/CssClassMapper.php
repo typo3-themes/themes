@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Frontend;
 
 /***************************************************************
@@ -32,16 +34,15 @@ namespace KayStrobach\Themes\Frontend;
  */
 class CssClassMapper
 {
-
     /**
      * Maps generic class names of a record to the official class names of the underlying framework.
      *
      * @param string $content
-     * @param array  $conf
+     * @param array $conf
      *
      * @return string
      */
-    public function mapGenericToFramework($content = '', $conf = [])
+    public function mapGenericToFramework(string $content = '', array $conf = []): string
     {
         if ($content) {
             $frameworkClasses = [];
@@ -49,9 +50,9 @@ class CssClassMapper
             foreach ($conf as $checkConfKey => $checkConfValue) {
                 if (!is_array($conf[$checkConfValue]) && $checkConfValue && strpos($checkConfValue, '<') === 0) {
                     $checkConfArray = explode('.', ltrim($checkConfValue, '< '));
-                    $conf[$checkConfKey] = $GLOBALS['TSFE']->tmpl->setup[array_shift($checkConfArray).'.'];
+                    $conf[$checkConfKey] = $GLOBALS['TSFE']->tmpl->setup[array_shift($checkConfArray) . '.'];
                     foreach ($checkConfArray as $checkConfArrayKey) {
-                        $conf[$checkConfKey] = $conf[$checkConfKey][$checkConfArrayKey.'.'];
+                        $conf[$checkConfKey] = $conf[$checkConfKey][$checkConfArrayKey . '.'];
                     }
                 }
                 if (is_array($conf[$checkConfKey])) {
@@ -60,8 +61,7 @@ class CssClassMapper
             }
             $mappedClasses = array_intersect_key($frameworkClasses, $genericClasses);
             return implode(' ', $mappedClasses);
-        } else {
-            return '';
         }
+        return '';
     }
 }

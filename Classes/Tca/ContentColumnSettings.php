@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Tca;
 
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -39,8 +42,8 @@ class ContentColumnSettings extends AbstractContentRow
     /**
      * Container objects give $nodeFactory down to other containers.
      *
-     * @param NodeFactory $nodeFactory
-     * @param array $data
+     * @param NodeFactory|null $nodeFactory
+     * @param array|null $data
      */
     public function __construct(NodeFactory $nodeFactory = null, array $data = null)
     {
@@ -54,13 +57,13 @@ class ContentColumnSettings extends AbstractContentRow
      * Render a row for enforcing equal height of a column.
      *
      * @return array
+     * @throws DBALException
      */
-    public function render()
+    public function render(): array
     {
         $parameters = $this->data['parameterArray'];
         $parameters['row'] = $this->data['databaseRow'];
         // Vars
-        $uid = $parameters['row']['uid'];
         $pid = $parameters['row']['pid'];
         $name = $parameters['itemFormElName'];
         $value = $parameters['itemFormElValue'];
@@ -87,34 +90,38 @@ class ContentColumnSettings extends AbstractContentRow
             foreach ($responsives['properties'] as $groupKey => $settings) {
                 // Validate groupKey and get label
                 $groupKey = substr($groupKey, 0, -1);
-                $label = isset($settings['label']) ? $settings['label'] : $groupKey;
-                $selectboxes .= '<div class="col-xs-6 col-sm-2 themes-column">'.LF;
-                $selectboxes .= '<label class="t3js-formengine-label">'.$this->getLanguageService()->sL($label).'</label>'.LF;
+                $label = $settings['label'] ?? $groupKey;
+                $selectboxes .= '<div class="col-xs-6 col-sm-2 themes-column">' . LF;
+                $selectboxes .= '<label class="t3js-formengine-label">' . $this->getLanguageService()->sL(
+                    $label
+                ) . '</label>' . LF;
                 if (isset($settings['columnSettings.']) && is_array($settings['columnSettings.'])) {
                     foreach ($settings['columnSettings.'] as $visibilityKey => $visibilityLabel) {
-                        $start = $visibilityKey === 'width' ? 1 : 0;
-                        $tempKey = $groupKey.'-'.$visibilityKey;
+                        $start = $visibilityKey === 'width' ? 1:0;
+                        $tempKey = $groupKey . '-' . $visibilityKey;
 
                         // Collect selectable values
                         for ($i = $start; $i <= 12; $i++) {
-                            $valuesAvailable[] = $tempKey.'-'.$i;
+                            $valuesAvailable[] = $tempKey . '-' . $i;
                         }
 
                         // build radiobox
-                        $selectboxes .= '<div>'.LF;
-                        $selectboxes .= '<label class="themes-select-label">'.$this->getLanguageService()->sL($visibilityLabel).'</label>'.LF;
-                        $selectboxes .= '<select class="form-control form-control-adapt input-sm" name="'.$tempKey.'">'.LF;
-                        $selectboxes .= '<option value="">default</option>'.LF;
+                        $selectboxes .= '<div>' . LF;
+                        $selectboxes .= '<label class="themes-select-label">' . $this->getLanguageService()->sL(
+                            $visibilityLabel
+                        ) . '</label>' . LF;
+                        $selectboxes .= '<select class="form-control form-control-adapt input-sm" name="' . $tempKey . '">' . LF;
+                        $selectboxes .= '<option value="">default</option>' . LF;
                         for ($i = $start; $i <= 12; $i++) {
                             // set the selected value
-                            $selected = (isset($valuesFlipped[$tempKey.'-'.$i])) ? 'selected="selected"' : '';
-                            $selectboxes .= '<option value="'.$tempKey.'-'.$i.'" '.$selected.'>'.$i.' columns of 12<!-- '.$visibilityKey.' '.$i.'--></option>'.LF;
+                            $selected = (isset($valuesFlipped[$tempKey . '-' . $i])) ? 'selected="selected"':'';
+                            $selectboxes .= '<option value="' . $tempKey . '-' . $i . '" ' . $selected . '>' . $i . ' columns of 12<!-- ' . $visibilityKey . ' ' . $i . '--></option>' . LF;
                         }
-                        $selectboxes .= '</select>'.LF;
-                        $selectboxes .= '</div>'.LF;
+                        $selectboxes .= '</select>' . LF;
+                        $selectboxes .= '</div>' . LF;
                     }
                 }
-                $selectboxes .= '</div>'.LF;
+                $selectboxes .= '</div>' . LF;
             }
         }
         // Process current classes/identifiers
@@ -127,17 +134,17 @@ class ContentColumnSettings extends AbstractContentRow
             $inputType = 'text';
         }
         // Build hidden field structure
-        $hiddenField = '<div>'.LF;
-        $hiddenField .= '<div class="form-control-wrap">'.LF;
-        $hiddenField .= '<input class="form-control themes-hidden-admin-field '.$setClass.'" ';
-        $hiddenField .= 'readonly="readonly" type="'.$inputType.'" ';
-        $hiddenField .= 'name="'. htmlspecialchars($name, ENT_QUOTES | ENT_HTML5) .'" ';
-        $hiddenField .= 'value="'.$setValue.'" class="'.$setClass.'">'.LF;
-        $hiddenField .= '</div>'.LF;
-        $hiddenField .= '</div>'.LF;
+        $hiddenField = '<div>' . LF;
+        $hiddenField .= '<div class="form-control-wrap">' . LF;
+        $hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
+        $hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
+        $hiddenField .= 'name="' . htmlspecialchars($name) . '" ';
+        $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . LF;
+        $hiddenField .= '</div>' . LF;
+        $hiddenField .= '</div>' . LF;
         // Missed classes
         $missedField = $this->getMissedFields($values, $valuesAvailable);
 
-        return ['html' => '<div class="contentColumnSettings">'.$selectboxes.$hiddenField.$missedField.'</div>'];
+        return ['html' => '<div class="contentColumnSettings">' . $selectboxes . $hiddenField . $missedField . '</div>'];
     }
 }

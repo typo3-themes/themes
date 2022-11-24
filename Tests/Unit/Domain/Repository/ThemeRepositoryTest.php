@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Tests\Unit\Domain\Repository;
 
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class ThemeRepositoryTest.
@@ -11,16 +13,16 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 class ThemeRepositoryTest extends UnitTestCase
 {
     /**
-     * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository
+     * @var ThemeRepository
      */
-    protected $fixture;
+    protected ThemeRepository $fixture;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->fixture = new ThemeRepository();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
     }
 
@@ -29,10 +31,10 @@ class ThemeRepositoryTest extends UnitTestCase
      */
     public function findAllCountTest()
     {
-        $this->markTestSkipped('Needs to be moved to functionaltesting');
+        self::markTestSkipped('Needs to be moved to functionaltesting');
 
         return;
-        $this->assertGreaterThanOrEqual(
+        self::assertGreaterThanOrEqual(
             1,
             count($this->fixture->findAll()),
             'No Themes found :('
@@ -44,7 +46,7 @@ class ThemeRepositoryTest extends UnitTestCase
      */
     public function findAllTypeTest()
     {
-        $this->assertGreaterThanOrEqual(
+        self::assertGreaterThanOrEqual(
             'array',
             gettype($this->fixture->findAll()),
             'themes does not contain an array of themes'
@@ -56,8 +58,7 @@ class ThemeRepositoryTest extends UnitTestCase
      */
     public function checkForOldHookUsage()
     {
-        $this->assertSame(
-            false,
+        self::assertFalse(
             is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init']),
             'One of your extensions is still using the old hook, please repair that'
         );
@@ -68,11 +69,10 @@ class ThemeRepositoryTest extends UnitTestCase
      */
     public function checkForNewHookUsage()
     {
-        $this->markTestSkipped('Needs to be moved to functionaltesting');
+        self::markTestSkipped('Needs to be moved to functionaltesting');
 
         return;
-        $this->assertSame(
-            true,
+        self::assertTrue(
             is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init']),
             'You have no theme provider registered, themes itself should register one!'
         );

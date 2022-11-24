@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\DataProcessing;
 
 /***************************************************************
@@ -27,10 +29,15 @@ namespace KayStrobach\Themes\DataProcessing;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Statement;
+use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
@@ -49,34 +56,37 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
      * @param array $processedData Key/value store of processed data (e.g. to be passed to a Fluid View)
      *
      * @return array the processed data as key/value store
+     * @throws DBALException
      */
     public function process(
         ContentObjectRenderer $cObj,
         array $contentObjectConfiguration,
         array $processorConfiguration,
         array $processedData
-    ) {
-        $processedData['themes']['buttons'] = array();
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+    ): array {
+        $processedData['themes']['buttons'] = [];
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tx_themes_buttoncontent');
+                ->getQueryBuilderForTable('tx_themes_buttoncontent');
         $queryBuilder->select('*')
-            ->from('tx_themes_buttoncontent')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'tt_content',
-                    $queryBuilder->createNamedParameter((int)$processedData['data']['uid'], \PDO::PARAM_INT)
+                ->from('tx_themes_buttoncontent')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'tt_content',
+                        $queryBuilder->createNamedParameter((int)$processedData['data']['uid'], PDO::PARAM_INT)
+                    )
                 )
-            )
-            ->orderBy('sorting');
-        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+                ->orderBy('sorting');
+        /** @var Statement $statement */
         $statement = $queryBuilder->execute();
         while ($row = $statement->fetch()) {
-            $link = array();
+            $link = [];
             $link['uid'] = $row['uid'];
             $link['text'] = $row['linktext'];
             $link['link'] = $row['linktarget'];
-            $link['linkParameter'] = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($row['linktarget']);
+            $link['linkParameter'] = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode(
+                $row['linktarget']
+            );
             $link['title'] = $row['linktitle'];
             $link['icon'] = '';
             if ($row['icon'] != '') {
@@ -89,9 +99,9 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TypoScriptFrontendController
      */
-    protected function getFrontendController()
+    protected function getFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
     }

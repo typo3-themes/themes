@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Tca;
 
 /***************************************************************
@@ -28,6 +30,7 @@ namespace KayStrobach\Themes\Tca;
  ***************************************************************/
 
 use KayStrobach\Themes\Domain\Model\Theme;
+use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -35,28 +38,28 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ThemeSelector
 {
-    public function items(&$PA, $fobj)
+    public function items(&$PA, $fobj): void
     {
         /**
-         * @var \KayStrobach\Themes\Domain\Repository\ThemeRepository
+         * @var ThemeRepository $repository
          */
         $repository = GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
 
         $themes = $repository->findAll();
 
         $PA['items'] = [
-            [
-                0 => 'None',
-                1 => '',
-            ],
+                [
+                        0 => 'None',
+                        1 => '',
+                ],
         ];
 
         /** @var Theme $theme */
         foreach ($themes as $theme) {
             $PA['items'][] = [
-                0 => $theme->getTitle(),
-                1 => $theme->getExtensionName(),
-                2 => $theme->getPreviewImage(),
+                    0 => $theme->getTitle(),
+                    1 => $theme->getExtensionName(),
+                    2 => $theme->getPreviewImage(),
             ];
         }
     }

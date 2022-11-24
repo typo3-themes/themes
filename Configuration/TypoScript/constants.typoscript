@@ -3,28 +3,28 @@
 # customsubcategory=default=Default settings
 
 themes.languages {
-	# cat=languages,advanced//; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:available
-	available =
-	# cat=languages,advanced//; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:fallback_mode
-	mode = fallback
-	default {
-		# cat=languages,advanced/default/; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_label
-		label = English
-		# cat=languages,advanced/default/; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_iso_code
-		isoCode = en_EN
-		# cat=languages,advanced/default/; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_iso_code_short
-		isoCodeShort = en
-		# cat=languages,advanced/default/; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_iso_code_html
-		isoCodeHtml = {$themes.languages.default.isoCodeShort}
-		# cat=languages,advanced/default/; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_flag
-		flag = gb
-	}
-	current {
-		uid = 0
-		label = {$themes.languages.default.label}
-		isoCode = {$themes.languages.default.isoCode}
-		isoCodeShort = {$themes.languages.default.isoCodeShort}
-		isoCodeHtml = {$themes.languages.default.isoCodeHtml}
-		flag = {$themes.languages.default.flag}
-	}
+    # cat=languages,advanced//; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:available
+    available = 
+    # cat=languages,advanced//; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:fallback_mode
+    mode = fallback
+    default {
+        # cat=languages,advanced/default/; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_label
+        label = English
+        # cat=languages,advanced/default/; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_iso_code
+        isoCode = en_EN
+        # cat=languages,advanced/default/; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_iso_code_short
+        isoCodeShort = en
+        # cat=languages,advanced/default/; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_iso_code_html
+        isoCodeHtml = {$themes.languages.default.isoCodeShort}
+        # cat=languages,advanced/default/; type=string; label=LLL:EXT:themes/Resources/Private/Language/Constants.xlf:default_flag
+        flag = gb
+    }
+    current {
+        uid = 0
+        label = {$themes.languages.default.label}
+        isoCode = {$themes.languages.default.isoCode}
+        isoCodeShort = {$themes.languages.default.isoCodeShort}
+        isoCodeHtml = {$themes.languages.default.isoCodeHtml}
+        flag = {$themes.languages.default.flag}
+    }
 }

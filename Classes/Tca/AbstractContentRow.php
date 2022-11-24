@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Tca;
 
 /***************************************************************
@@ -27,10 +29,15 @@ namespace KayStrobach\Themes\Tca;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Statement;
+use PDO;
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityCore;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -38,23 +45,34 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractContentRow extends AbstractFormElement
 {
-    protected $ctypeProperties = [];
-    protected $defaultProperties = [];
+    protected array $ctypeProperties = [];
 
-    protected function getMissedFields($values, $valuesAvailable)
+    protected array $defaultProperties = [];
+
+    protected function getMissedFields($values, $valuesAvailable): string
     {
         $missedField = '';
         $missedClasses = array_diff($values, $valuesAvailable);
         $missedClass = htmlspecialchars(implode(', ', $missedClasses), ENT_QUOTES | ENT_HTML5);
         if (!empty($missedClass)) {
-            $label = $this->getLanguageService()->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:unavailable_classes');
-            $missedField = '<div class="alert alert-danger" role="alert"><strong>'.$label.':</strong> '.$missedClass.'</div>';
+            $label = $this->getLanguageService()->sL(
+                'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:unavailable_classes'
+            );
+            $missedField = '<div class="alert alert-danger" role="alert"><strong>' . $label . ':</strong> ' . $missedClass . '</div>';
         }
 
         return $missedField;
     }
 
-    protected function getMergedConfiguration($pid, $node, $cType)
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    protected function getMergedConfiguration($pid, $node, $cType): array
     {
         // Get configuration ctype specific configuration
         $pagesTsConfig = BackendUtilityCore::getPagesTSconfig($pid);
@@ -67,10 +85,12 @@ abstract class AbstractContentRow extends AbstractFormElement
             $this->defaultProperties['properties'] = $pagesTsConfig['themes.']['content.'][$node . '.']['default.'];
         }
         // Merge configurations
-        $config = array_replace_recursive($this->ctypeProperties, $this->defaultProperties);
-        return $config;
+        return array_replace_recursive($this->ctypeProperties, $this->defaultProperties);
     }
 
+    /**
+     * @throws DBALException
+     */
     protected function getPidFromParentContentElement($pid)
     {
         $parentPid = 0;
@@ -78,20 +98,20 @@ abstract class AbstractContentRow extends AbstractFormElement
         // negative uid_pid values indicate that the element has been inserted after an existing element
         // so there is no pid to get the backendLayout for and we have to get that first
         //
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tt_content');
+                ->getQueryBuilderForTable('tt_content');
         $queryBuilder->select('pid')
-            ->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter(-((int) $pid), \PDO::PARAM_INT)
-                )
-            );
-        /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+                ->from('tt_content')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter(-((int)$pid), PDO::PARAM_INT)
+                    )
+                );
+        /** @var Statement $statement */
         $statement = $queryBuilder->execute();
-        if ($statement->rowCount()>0) {
+        if ($statement->rowCount() > 0) {
             $row = $statement->fetch();
             $parentPid = $row['pid'];
         }
@@ -99,38 +119,30 @@ abstract class AbstractContentRow extends AbstractFormElement
     }
 
     /**
-     * Checks if a backend user is an admin user.
-     *
-     * @return bool
-     */
-    protected function isAdmin()
-    {
-        return $this->getBeUser()->isAdmin();
-    }
-
-    /**
      * Checks if a backend user is an admin user and debug mode is enabled.
      *
      * @return bool
      */
-    protected function isAdminAndDebug()
+    protected function isAdminAndDebug(): bool
     {
         return $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBeUser()->isAdmin();
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * Checks if a backend user is an admin user.
+     *
+     * @return bool
      */
-    protected function getBeUser()
+    protected function isAdmin(): bool
     {
-        return $GLOBALS['BE_USER'];
+        return $this->getBeUser()->isAdmin();
     }
 
     /**
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @return BackendUserAuthentication
      */
-    protected function getLanguageService()
+    protected function getBeUser(): BackendUserAuthentication
     {
-        return $GLOBALS['LANG'];
+        return $GLOBALS['BE_USER'];
     }
 }

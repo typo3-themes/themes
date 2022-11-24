@@ -6,11 +6,14 @@
   "license": ["GPL-2.0+"],
   "keywords": ["TYPO3 CMS", "TYPO3 THEMES", "THEMES", "THEMES", "FLUID", "CUSTOMIZE"],
   "require": {
-    "typo3/cms-core": "^9.5 || ^10.4.6",
-    "typo3/cms-form": "^9.5 || ^10.4",
-    "gridelementsteam/gridelements": "^9.2.1 || ^10.0",
+    "typo3/cms-core": "^9.5 || ^10.4.6 || ^11.5.10",
+    "typo3/cms-form": "^9.5 || ^10.4 || ^11.5.0",
+    "gridelementsteam/gridelements": "^9.2.1 || ^10.0 || dev-master",
     "ext-json": "*",
     "ext-pdo": "*"
+  },
+  "require-dev": {
+    "typo3/testing-framework": "^6.16.6"
   },
   "support": {
     "issues": "https://github.com/typo3-themes/themes/issues"
@@ -19,7 +22,7 @@
     "psr-4": { "KayStrobach\\Themes\\": "Classes/"}
   },
   "autoload-dev": {
-    "psr-4": { "KayStrobach\\Themes\\Tests\\": "tests/"}
+    "psr-4": { "KayStrobach\\Themes\\Tests\\": "Tests/"}
   },
   "replace": {
     "typo3-ter/themes": "self.version"

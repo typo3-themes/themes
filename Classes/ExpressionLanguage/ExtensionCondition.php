@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace KayStrobach\Themes\ExpressionLanguage;
 
@@ -11,7 +12,7 @@ class ExtensionCondition
      * @param string $extensionKey
      * @return bool
      */
-    public function isLoaded($extensionKey): bool
+    public function isLoaded(string $extensionKey): bool
     {
         return ExtensionManagementUtility::isLoaded($extensionKey);
     }

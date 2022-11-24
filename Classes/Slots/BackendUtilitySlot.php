@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Slots;
 
 /***************************************************************
@@ -27,48 +29,52 @@ namespace KayStrobach\Themes\Slots;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Statement;
+use KayStrobach\Themes\Domain\Repository\ThemeRepository;
+use PDO;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Backend\Configuration\TsConfigParser;
 
 /**
  * This class automatically adds the theme TSConfig for the current page
  * to the Page TSConfig either by using a signal slot.
  */
-class BackendUtilitySlot extends TsConfigParser
+class BackendUtilitySlot extends PageTsConfigParser
 {
-
     /**
      * Selected/activated extensions in Theme (selected by sys_template)
      * @var array
      */
-    protected $themeExtensions = [];
+    protected array $themeExtensions = [];
 
     /**
      * Selected/activated features in Theme (selected by sys_template)
      * @var array
      */
-    protected $themeFeatures = [];
+    protected array $themeFeatures = [];
 
     /**
      * Retrieves the theme TSConfig for the given page.
      *
-     * @param $typoscriptDataArray
+     * @param array $typoscriptDataArray
      * @param int $pageUid
      * @param $rootLine
-     * @param $returnPartArray
+     * @param array $returnPartArray
      *
      * @return array The found TSConfig or an empty string.
+     * @throws DBALException
      */
-    public function getPagesTsConfigPreInclude($typoscriptDataArray, $pageUid, $rootLine, $returnPartArray)
+    public function getPagesTsConfigPreInclude(array $typoscriptDataArray, int $pageUid, $rootLine, array $returnPartArray): array
     {
-        $pageUid = (int)$pageUid;
         if ($pageUid === 0) {
             return [];
         }
-        /** @var \KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository */
+        /** @var ThemeRepository $themeRepository */
         $themeRepository = GeneralUtility::makeInstance('KayStrobach\Themes\\Domain\\Repository\\ThemeRepository');
         $theme = $themeRepository->findByPageOrRootline($pageUid);
         if (!isset($theme)) {
@@ -83,7 +89,7 @@ class BackendUtilitySlot extends TsConfigParser
         // Additional TypoScript for extensions
         if (count($this->themeExtensions) > 0) {
             foreach ($this->themeExtensions as $extension) {
-                $tsconfig = $this->getTypoScriptDataForProcessing($extension, 'extension');
+                $tsconfig = $this->getTypoScriptDataForProcessing($extension);
                 if ($tsconfig !== '') {
                     array_unshift($typoscriptDataArray, $tsconfig);
                 }
@@ -103,16 +109,17 @@ class BackendUtilitySlot extends TsConfigParser
         array_unshift($typoscriptDataArray, $theme->getTypoScriptConfig());
         $typoscriptDataArray = $defaultDataArray + $typoscriptDataArray;
         return [
-            $typoscriptDataArray,
-            $pageUid,
-            $rootLine,
-            $returnPartArray,
+                $typoscriptDataArray,
+                $pageUid,
+                $rootLine,
+                $returnPartArray,
         ];
     }
 
     /**
      * Fetches the selected Extensions and Features by the Theme
      * @param $pageUid
+     * @throws DBALException
      */
     protected function fetchThemeExtensionsAndFeatures($pageUid)
     {
@@ -120,23 +127,23 @@ class BackendUtilitySlot extends TsConfigParser
         // Find sys_template recursive
         $rootline = BackendUtility::BEgetRootLine($pageUid);
         foreach ($rootline as $page) {
-            /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+            /** @var QueryBuilder $queryBuilder */
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('sys_template');
+                    ->getQueryBuilderForTable('sys_template');
             $queryBuilder->select('*')
-                ->from('sys_template')
-                ->where(
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->eq(
-                            'pid',
-                            $queryBuilder->createNamedParameter((int)$page['uid'], \PDO::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->eq('root', '1')
-                    )
-                );
-            /** @var  \Doctrine\DBAL\Driver\Statement $statement */
+                    ->from('sys_template')
+                    ->where(
+                        $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->eq(
+                                'pid',
+                                $queryBuilder->createNamedParameter((int)$page['uid'], PDO::PARAM_INT)
+                            ),
+                            $queryBuilder->expr()->eq('root', '1')
+                        )
+                    );
+            /** @var Statement $statement */
             $statement = $queryBuilder->execute();
-            if ($statement->rowCount()>0) {
+            if ($statement->rowCount() > 0) {
                 $tRow = $statement->fetch();
                 $this->themeExtensions = GeneralUtility::trimExplode(',', $tRow['tx_themes_extensions'], true);
                 $this->themeFeatures = GeneralUtility::trimExplode(',', $tRow['tx_themes_features'], true);
@@ -148,9 +155,9 @@ class BackendUtilitySlot extends TsConfigParser
     /**
      * @param $key string Key of the Extension or Feature
      * @param $type string Typ can be either extension or feature.
-     * @return array
+     * @return string
      */
-    protected function getTypoScriptDataForProcessing($key, $type='extension')
+    protected function getTypoScriptDataForProcessing(string $key, string $type = 'extension'): string
     {
         $relPath = '';
         $keyParts = explode('_', $key);

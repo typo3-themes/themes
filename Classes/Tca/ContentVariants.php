@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Themes\Tca;
+
+use Doctrine\DBAL\DBALException;
 
 /***************************************************************
  *
@@ -32,21 +36,23 @@ namespace KayStrobach\Themes\Tca;
  */
 class ContentVariants extends AbstractContentRow
 {
-    protected $checkboxesArray = [];
-    protected $valuesFlipped = [];
-    protected $valuesAvailable = [];
+    protected array $checkboxesArray = [];
+
+    protected array $valuesFlipped = [];
+
+    protected array $valuesAvailable = [];
 
     /**
      * Render a Content Variant row.
      *
      * @return array
+     * @throws DBALException
      */
-    public function render()
+    public function render(): array
     {
         $parameters = $this->data['parameterArray'];
         $parameters['row'] = $this->data['databaseRow'];
         // Vars
-        $uid = $parameters['row']['uid'];
         $pid = $parameters['row']['pid'];
         $name = $parameters['itemFormElName'];
         $value = $parameters['itemFormElValue'];
@@ -76,9 +82,11 @@ class ContentVariants extends AbstractContentRow
         $this->checkboxesArray['gridLayout'] = [];
         if (isset($variants['properties']) && is_array($variants['properties'])) {
             foreach ($variants['properties'] as $contentElementKey => $label) {
-
                 // GridElements: are able to provide grid-specific variants
-                if (is_array($label) && $cType === 'gridelements_pi1' && !array_key_exists($contentElementKey, $this->defaultProperties)) {
+                if (is_array($label) && $cType === 'gridelements_pi1' && !array_key_exists(
+                    $contentElementKey,
+                    $this->defaultProperties
+                )) {
                     $contentElementKey = substr($contentElementKey, 0, -1);
 
                     // Variant for all GridElements
@@ -86,21 +94,18 @@ class ContentVariants extends AbstractContentRow
                         foreach ($label as $gridLayoutKey => $gridLayoutVariantLabel) {
                             $this->createElement($gridLayoutKey, $gridLayoutVariantLabel, 'ctype');
                         }
-                    }
-                    // Variant only for selected GridElement
+                    } // Variant only for selected GridElement
                     elseif ($contentElementKey == $gridLayout && !empty($label)) {
                         foreach ($label as $gridLayoutKey => $gridLayoutVariantLabel) {
                             $this->createElement($gridLayoutKey, $gridLayoutVariantLabel, 'gridLayout');
                         }
                     }
-                }
-                // Normal CEs
+                } // Normal CEs
                 else {
                     // Is default property!?
                     if (array_key_exists($contentElementKey, $this->defaultProperties)) {
                         $this->createElement($contentElementKey, $label, 'default');
-                    }
-                    // Is ctype specific!
+                    } // Is ctype specific!
                     else {
                         $this->createElement($contentElementKey, $label, 'ctype');
                     }
@@ -108,12 +113,13 @@ class ContentVariants extends AbstractContentRow
             }
         }
         // Merge checkbox groups
-        $checkboxes = '';
-        $checkboxes .= $this->getMergedCheckboxes('default');
+        $checkboxes = $this->getMergedCheckboxes('default');
         $checkboxes .= $this->getMergedCheckboxes('ctype', $cType);
-        $checkboxes .= $this->getMergedCheckboxes('gridLayout', $cType.'/'.$gridLayout);
+        $checkboxes .= $this->getMergedCheckboxes('gridLayout', $cType . '/' . $gridLayout);
         if ($checkboxes === '') {
-            $checkboxes = $this->getLanguageService()->sL('LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.no_variants_available');
+            $checkboxes = $this->getLanguageService()->sL(
+                'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.no_variants_available'
+            );
         }
         // Process current classes/identifiers
         $setClasses = array_intersect($values, $this->valuesAvailable);
@@ -125,28 +131,28 @@ class ContentVariants extends AbstractContentRow
             $inputType = 'text';
         }
         // Build hidden field structure
-        $hiddenField = '<div>'.LF;
-        $hiddenField .= '<div class="form-control-wrap">'.LF;
-        $hiddenField .= '<input class="form-control themes-hidden-admin-field '.$setClass.'" ';
-        $hiddenField .= 'readonly="readonly" type="'.$inputType.'" ';
-        $hiddenField .= 'name="'.htmlspecialchars($name).'" ';
-        $hiddenField .= 'value="'.$setValue.'" class="'.$setClass.'">'.LF;
-        $hiddenField .= '</div>'.LF;
-        $hiddenField .= '</div>'.LF;
+        $hiddenField = '<div>' . LF;
+        $hiddenField .= '<div class="form-control-wrap">' . LF;
+        $hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
+        $hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
+        $hiddenField .= 'name="' . htmlspecialchars($name) . '" ';
+        $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . LF;
+        $hiddenField .= '</div>' . LF;
+        $hiddenField .= '</div>' . LF;
         // Missed classes
         $missedField = $this->getMissedFields($values, $this->valuesAvailable);
 
-        return ['html' => '<div class="contentVariant">'.$checkboxes.$hiddenField.$missedField.'</div>'];
+        return ['html' => '<div class="contentVariant">' . $checkboxes . $hiddenField . $missedField . '</div>'];
     }
 
     /**
      * Creates a checkbox/select box.
      *
-     * @param $key \string Key/name of the element
-     * @param $label \string|\array Label of the element
-     * @param $type \string Type of the element property
+     * @param string $key Key/name of the element
+     * @param mixed $label Label of the element
+     * @param string $type Type of the element property
      */
-    protected function createElement($key, $label, $type)
+    protected function createElement(string $key, mixed $label, string $type)
     {
         if (is_array($label) && !empty($label)) {
             $this->createSelectbox($key, $label, $type);
@@ -156,77 +162,79 @@ class ContentVariants extends AbstractContentRow
     }
 
     /**
-     * Creates a checkbox.
-     *
-     * @param $key \string Key/name of the checkbox
-     * @param $label \string Label of the checkbox
-     * @param $type \string Type of the checkbox property
-     */
-    protected function createCheckbox($key, $label, $type)
-    {
-        $label = $this->getLanguageService()->sL($label);
-        $this->valuesAvailable[] = $key;
-        $checked = (isset($this->valuesFlipped[$key])) ? 'checked="checked"' : '';
-        $checkbox = '<div  class="col-xs-12 col-sm-4 col-md-3 col-lg-2">'.LF;
-        $checkbox .= '<label class="themes-checkbox-label" title="'.$label.'">'.LF;
-        $checkbox .= '<input type="checkbox" name="'.$key.'" '.$checked.'>'.LF;
-        $checkbox .= $this->getLanguageService()->sL($label).'</label>'.LF;
-        $checkbox .= '</div>'.LF;
-        $this->checkboxesArray[$type][] = $checkbox;
-    }
-
-    /**
      * Creates a select box.
      *
-     * @param $key \string Key/name of the select box
-     * @param $label \array Array with items of the select box
-     * @param $type \string Type of the select box property
+     * @param string $key Key/name of the select box
+     * @param array $items Array with items of the select box
+     * @param string $type Type of the select box property
      */
-    protected function createSelectbox($key, $items, $type)
+    protected function createSelectbox(string $key, array $items, string $type)
     {
         // Remove dot
         $key = substr($key, 0, -1);
-        $selectbox = '<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">'.LF;
-        $selectbox .= '<div class="form-control-wrap">'.LF;
-        $selectbox .= '<select name="'.$key.'" class="form-control form-control-adapt input-sm">'.LF;
+        $selectbox = '<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">' . LF;
+        $selectbox .= '<div class="form-control-wrap">' . LF;
+        $selectbox .= '<select name="' . $key . '" class="form-control form-control-adapt input-sm">' . LF;
         $activeKey = '';
         foreach ($items as $itemKey => $itemValue) {
             if ($activeKey == '') {
-                $activeKey = $key.'-'.$itemKey;
+                $activeKey = $key . '-' . $itemKey;
             }
             $selected = '';
-            if (isset($this->valuesFlipped[$key.'-'.$itemKey])) {
-                $activeKey = $key.'-'.$itemKey;
+            if (isset($this->valuesFlipped[$key . '-' . $itemKey])) {
+                $activeKey = $key . '-' . $itemKey;
                 $selected = 'selected="selected"';
             }
             $label = $this->getLanguageService()->sL($itemValue);
-            $selectbox .= '<option value="'.$key.'-'.$itemKey.'" '.$selected.'>'.$label.'</option>'.LF;
+            $selectbox .= '<option value="' . $key . '-' . $itemKey . '" ' . $selected . '>' . $label . '</option>' . LF;
         }
-        $selectbox .= '</select>'.LF;
-        $selectbox .= '</div>'.LF;
-        $selectbox .= '</div>'.LF;
+        $selectbox .= '</select>' . LF;
+        $selectbox .= '</div>' . LF;
+        $selectbox .= '</div>' . LF;
         $this->valuesAvailable[] = $activeKey;
         $this->checkboxesArray[$type][] = $selectbox;
     }
 
     /**
+     * Creates a checkbox.
+     *
+     * @param string $key Key/name of the checkbox
+     * @param string $label Label of the checkbox
+     * @param string $type Type of the checkbox property
+     */
+    protected function createCheckbox(string $key, string $label, string $type)
+    {
+        $label = $this->getLanguageService()->sL($label);
+        $this->valuesAvailable[] = $key;
+        $checked = (isset($this->valuesFlipped[$key])) ? 'checked="checked"':'';
+        $checkbox = '<div  class="col-xs-12 col-sm-4 col-md-3 col-lg-2">' . LF;
+        $checkbox .= '<label class="themes-checkbox-label" title="' . $label . '">' . LF;
+        $checkbox .= '<input type="checkbox" name="' . $key . '" ' . $checked . '>' . LF;
+        $checkbox .= $this->getLanguageService()->sL($label) . '</label>' . LF;
+        $checkbox .= '</div>' . LF;
+        $this->checkboxesArray[$type][] = $checkbox;
+    }
+
+    /**
      * Merge checkboxes into a group.
      *
-     * @param $type \string Type of the checkbox property
-     *
+     * @param string $type Type of the checkbox property
+     * @param string $labelInfo
      * @return string Grouped checkboxes
      */
-    protected function getMergedCheckboxes($type, $labelInfo = '')
+    protected function getMergedCheckboxes(string $type, string $labelInfo = ''): string
     {
         $checkboxes = '';
         if (!empty($this->checkboxesArray[$type])) {
-            $labelKey = 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.'.strtolower($type).'_group_label';
+            $labelKey = 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf:variants.' . strtolower(
+                $type
+            ) . '_group_label';
             $label = $this->getLanguageService()->sL($labelKey);
             if (trim($labelInfo) != '') {
-                $label .= '('.$labelInfo.')';
+                $label .= '(' . $labelInfo . ')';
             }
-            $checkboxes .= '<label class="t3js-formengine-label themes-label-'.$type.' col-xs-12">'.$label.':</label>';
-            $checkboxes .= implode('', $this->checkboxesArray[$type]).LF;
+            $checkboxes .= '<label class="t3js-formengine-label themes-label-' . $type . ' col-xs-12">' . $label . ':</label>';
+            $checkboxes .= implode('', $this->checkboxesArray[$type]) . LF;
         }
 
         return $checkboxes;
