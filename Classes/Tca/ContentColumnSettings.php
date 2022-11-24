@@ -86,7 +86,7 @@ class ContentColumnSettings extends AbstractContentRow
 
         // Build selectboxes
         $selectboxes = '';
-        if (isset($responsives['properties']) && is_array($responsives['properties'])) {
+        if (!empty($responsives['properties'])) {
             foreach ($responsives['properties'] as $groupKey => $settings) {
                 // Validate groupKey and get label
                 $groupKey = substr($groupKey, 0, -1);
@@ -95,7 +95,7 @@ class ContentColumnSettings extends AbstractContentRow
                 $selectboxes .= '<label class="t3js-formengine-label">' . $this->getLanguageService()->sL(
                     $label
                 ) . '</label>' . LF;
-                if (isset($settings['columnSettings.']) && is_array($settings['columnSettings.'])) {
+                if (!empty($settings['columnSettings.'])) {
                     foreach ($settings['columnSettings.'] as $visibilityKey => $visibilityLabel) {
                         $start = $visibilityKey === 'width' ? 1:0;
                         $tempKey = $groupKey . '-' . $visibilityKey;

@@ -58,7 +58,7 @@ class SortViewHelper extends AbstractViewHelper
             $subject = $this->renderChildren();
         }
         $sorted = null;
-        if (true === is_array($subject)) {
+        if (is_array($subject)) {
             $sorted = $this->sortArray($subject);
         }
         return $sorted;

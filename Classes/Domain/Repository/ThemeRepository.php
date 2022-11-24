@@ -59,14 +59,12 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     public function __construct()
     {
         // Hook to recognize themes, this is the magic point, why it's possible to support so many theme formats and types.
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'])) {
-            if (is_array(
-                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init']
-            )) {
-                $hookParameters = [];
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'] as $hookFunction) {
-                    GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-                }
+        if (!empty(
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init']
+        )) {
+            $hookParameters = [];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'] as $hookFunction) {
+                GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
             }
         }
     }

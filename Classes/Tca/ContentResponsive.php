@@ -97,7 +97,7 @@ class ContentResponsive extends AbstractContentRow
         $responsives = $this->getMergedConfiguration($pid, 'responsive', $cType);
         // Build select boxes
         $selectboxes = '';
-        if (isset($responsives['properties']) && is_array($responsives['properties'])) {
+        if (!empty($responsives['properties'])) {
             foreach ($responsives['properties'] as $groupKey => $settings) {
                 // Validate groupKey and get label
                 $groupKey = substr($groupKey, 0, -1);
@@ -112,7 +112,7 @@ class ContentResponsive extends AbstractContentRow
                 $selectboxes .= '<label class="t3js-formengine-label">' . $this->getLanguageService()->sL(
                     $label
                 ) . '</label>' . LF;
-                if (isset($settings['visibility.']) && is_array($settings['visibility.'])) {
+                if (!empty($settings['visibility.'])) {
                     // check if there's already a value selected
                     $valueSet = false;
                     foreach ($settings['visibility.'] as $visibilityKey => $_) {

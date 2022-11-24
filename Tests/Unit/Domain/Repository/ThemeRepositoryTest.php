@@ -59,7 +59,7 @@ class ThemeRepositoryTest extends UnitTestCase
     public function checkForOldHookUsage()
     {
         self::assertFalse(
-            is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init']),
+            !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init']),
             'One of your extensions is still using the old hook, please repair that'
         );
     }
@@ -73,7 +73,7 @@ class ThemeRepositoryTest extends UnitTestCase
 
         return;
         self::assertTrue(
-            is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init']),
+            !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Tx_Themes_Domain_Repository_ThemeRepository']['init']),
             'You have no theme provider registered, themes itself should register one!'
         );
     }

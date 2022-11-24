@@ -80,7 +80,7 @@ class ContentVariants extends AbstractContentRow
         $this->checkboxesArray['default'] = [];
         $this->checkboxesArray['ctype'] = [];
         $this->checkboxesArray['gridLayout'] = [];
-        if (isset($variants['properties']) && is_array($variants['properties'])) {
+        if (!empty($variants['properties'])) {
             foreach ($variants['properties'] as $contentElementKey => $label) {
                 // GridElements: are able to provide grid-specific variants
                 if (is_array($label) && $cType === 'gridelements_pi1' && !array_key_exists(

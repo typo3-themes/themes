@@ -79,7 +79,7 @@ class ContentBehaviour extends AbstractContentRow
         $this->checkboxesArray['default'] = [];
         $this->checkboxesArray['ctype'] = [];
         $this->checkboxesArray['gridLayout'] = [];
-        if (isset($behaviours['properties']) && is_array($behaviours['properties'])) {
+        if (!empty($behaviours['properties'])) {
             foreach ($behaviours['properties'] as $contentElementKey => $label) {
                 // GridElements: are able to provide grid-specific behaviours
                 if (is_array($label) && $cType === 'gridelements_pi1' && !array_key_exists(

@@ -77,11 +77,11 @@ abstract class AbstractContentRow extends AbstractFormElement
         // Get configuration ctype specific configuration
         $pagesTsConfig = BackendUtilityCore::getPagesTSconfig($pid);
         $this->ctypeProperties = [];
-        if (is_array($pagesTsConfig['themes.']['content.'][$node . '.'][$cType . '.'])) {
+        if (!empty($pagesTsConfig['themes.']['content.'][$node . '.'][$cType . '.'])) {
             $this->ctypeProperties['properties'] = $pagesTsConfig['themes.']['content.'][$node . '.'][$cType . '.'];
         }
         $this->defaultProperties = [];
-        if (is_array($pagesTsConfig['themes.']['content.'][$node . '.']['default.'])) {
+        if (!empty($pagesTsConfig['themes.']['content.'][$node . '.']['default.'])) {
             $this->defaultProperties['properties'] = $pagesTsConfig['themes.']['content.'][$node . '.']['default.'];
         }
         // Merge configurations
