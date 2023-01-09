@@ -130,10 +130,10 @@ class CheckPageUtility
     /**
      * @param $pid
      *
-     * @return bool|int
+     * @return mixed
      * @throws DBALException
      */
-    public static function getThemeableSysTemplateRecord($pid): bool|int
+    public static function getThemeableSysTemplateRecord($pid)
     {
         $themeable = false;
         /** @var QueryBuilder $queryBuilder */

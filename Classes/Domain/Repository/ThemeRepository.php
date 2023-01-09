@@ -182,29 +182,27 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * Finds an object matching the given identifier.
      *
      * @param int $uid The identifier of the object to find
-     * @return Theme|null The matching object if found, otherwise NULL
+     * @return Theme The matching object if found, otherwise NULL
      * @api
      */
-    public function findByUid($uid): Theme|null
+    public function findByUid($uid): Theme
     {
         if (array_key_exists($uid, $this->addedObjects)) {
             return $this->addedObjects[$uid];
         }
-        return null;
     }
 
     /**
      * @param int $pid
-     * @return Theme|null
+     * @return Theme
      * @throws DBALException
      */
-    public function findByPageOrRootline(int $pid): Theme|null
+    public function findByPageOrRootline(int $pid): Theme
     {
         $rootline = BackendUtility::BEgetRootLine($pid);
         foreach ($rootline as $page) {
             return $this->findByPageId($page['uid']);
         }
-        return null;
     }
 
     /**

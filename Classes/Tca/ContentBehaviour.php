@@ -148,10 +148,10 @@ class ContentBehaviour extends AbstractContentRow
      * Creates a checkbox/select box.
      *
      * @param string $key Key/name of the element
-     * @param string|\array $label Label of the element
+     * @param mixed $label Label of the element
      * @param string $type Type of the element property
      */
-    protected function createElement(string $key, array|string $label, string $type)
+    protected function createElement(string $key, $label, string $type)
     {
         if (is_array($label) && !empty($label)) {
             $this->createSelectbox($key, $label, $type);
