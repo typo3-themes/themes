@@ -8,28 +8,26 @@ if (!defined('TYPO3')) {
  * Static templates
  */
 
-if (TYPO3_MODE === 'BE') {
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'Themes',
-        'web', // Main area
-        'mod1', // Name of the module
-        '', // Position of the module
-        [
-            // Allowed controller action combinations
-            \KayStrobach\Themes\Controller\EditorController::class => 'index,update,showTheme,setTheme,showThemeDetails,saveCategoriesFilterSettings',
-        ],
-        [
-            // Additional configuration
-            'access'         => 'user,group',
-            'icon' => 'EXT:themes/ext_icon.svg',
-            'iconIdentifier' => 'module-themes',
-            'labels'         => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf',
-        ]
-    );
-    // Add some backend stylesheets and javascript
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][]
-        = \KayStrobach\Themes\Hooks\PageRenderer::class . '->addJSCSS';
-}
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+    'Themes',
+    'web', // Main area
+    'mod1', // Name of the module
+    '', // Position of the module
+    [
+        // Allowed controller action combinations
+        \KayStrobach\Themes\Controller\EditorController::class => 'index,update,showTheme,setTheme,showThemeDetails,saveCategoriesFilterSettings',
+    ],
+    [
+        // Additional configuration
+        'access'         => 'user,group',
+        'icon' => 'EXT:themes/ext_icon.svg',
+        'iconIdentifier' => 'module-themes',
+        'labels'         => 'LLL:EXT:themes/Resources/Private/Language/locallang.xlf',
+    ]
+);
+// Add some backend stylesheets and javascript
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][]
+    = \KayStrobach\Themes\Hooks\PageRenderer::class . '->addJSCSS';
 
 /*
  * add themes overlay
