@@ -43,12 +43,12 @@ class ThemeEnabledConditionViewHelper extends AbstractConditionViewHelper
     /**
      * This method decides if the condition is TRUE or FALSE. It can be overridden in extending viewhelpers to adjust functionality.
      *
-     * @param array|null $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
      *
      * @return bool
      * @throws DBALException
      */
-    protected static function evaluateCondition(array $arguments = null): bool
+    protected static function evaluateCondition($arguments = null): bool
     {
         return ThemeEnabledCondition::isThemeEnabled($arguments['theme']);
     }

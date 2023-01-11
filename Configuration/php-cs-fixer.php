@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
+
 if (PHP_SAPI!=='cli') {
     die('This script supports command line usage only. Please check your command.');
 }
@@ -9,7 +12,7 @@ if (PHP_SAPI!=='cli') {
 // The following rule set is taken from TYPO3 10.4.
 // Keep up to date with most recent supported TYPO3 version.
 // See: https://github.com/TYPO3/typo3/blob/10.4/Build/php-cs-fixer.php
-$config = new \PhpCsFixer\Config();
+$config = new Config();
 $config->setRiskyAllowed(true)
     ->setRules([
        '@DoctrineAnnotation' => true,
@@ -76,7 +79,7 @@ $config->setRiskyAllowed(true)
        'whitespace_after_comma_in_array' => true,
    ])
     ->setFinder(
-        PhpCsFixer\Finder::create()
+        Finder::create()
             ->exclude(['vendor', 'public'])
             ->in(__DIR__)
     );
