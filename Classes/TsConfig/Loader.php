@@ -69,7 +69,7 @@ final class Loader
             return;
         }
         $pageUid = (int)$currentPage['uid'];
-        if ($pageUid===0) {
+        if ($pageUid === 0) {
             return;
         }
         $pageTsConfig = $event->getTsConfig();
@@ -90,8 +90,8 @@ final class Loader
         if (count($this->themeExtensions) > 0) {
             foreach ($this->themeExtensions as $extension) {
                 $tsconfig = $this->getTypoScriptDataForProcessing($extension);
-                if ($tsconfig!=='') {
-                    array_unshift($pageTsConfig, $tsconfig);
+                if ($tsconfig !== '') {
+                    $pageTsConfig[] = $tsconfig;
                 }
             }
         }
@@ -100,13 +100,13 @@ final class Loader
         if (count($this->themeFeatures) > 0) {
             foreach ($this->themeFeatures as $feature) {
                 $tsconfig = $this->getTypoScriptDataForProcessing($feature, 'feature');
-                if ($tsconfig!=='') {
-                    array_unshift($pageTsConfig, $tsconfig);
+                if ($tsconfig !== '') {
+                    $pageTsConfig[] = $tsconfig;
                 }
             }
         }
         //
-        array_unshift($pageTsConfig, $theme->getTypoScriptConfig());
+        $pageTsConfig[] = $theme->getTypoScriptConfig();
         $event->setTsConfig($defaultDataArray + $pageTsConfig);
     }
 
@@ -157,9 +157,9 @@ final class Loader
         $keyParts = explode('_', $key);
         $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($keyParts[0]);
         $extensionPath = ExtensionManagementUtility::extPath($extensionKey);
-        if ($type==='feature') {
+        if ($type === 'feature') {
             $relPath = $extensionPath . 'Configuration/PageTS/Features/' . $keyParts[1] . '/';
-        } elseif ($type==='extension') {
+        } elseif ($type === 'extension') {
             $relPath = $extensionPath . 'Resources/Private/Extensions/' . $keyParts[1] . '/PageTS/';
         }
         //

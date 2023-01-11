@@ -50,11 +50,11 @@ class TsParserUtility implements SingletonInterface
      */
     protected ExtendedTemplateService $tsParser;
 
-    protected array $tsParserTplRow;
+    protected array $tsParserTplRow = [];
 
-    protected array $tsParserConstants;
+    protected array $tsParserConstants = [];
 
-    protected bool $tsParserInitialized;
+    protected bool $tsParserInitialized = false;
 
     /**
      * @param $pid

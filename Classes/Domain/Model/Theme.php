@@ -129,7 +129,7 @@ class Theme extends AbstractTheme
                 $buffer[$key]['file'] = $previewImage;
             }
         }
-        return $buffer;
+        return $buffer ?? [];
     }
 
     /**

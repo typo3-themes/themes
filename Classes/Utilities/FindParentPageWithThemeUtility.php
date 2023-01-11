@@ -42,7 +42,7 @@ class FindParentPageWithThemeUtility
      * @return mixed
      * @throws DBALException
      */
-    public static function find($pid): mixed
+    public static function find($pid)
     {
         $pageUid = 0;
         //

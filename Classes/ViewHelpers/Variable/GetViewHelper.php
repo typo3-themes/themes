@@ -64,7 +64,7 @@ class GetViewHelper extends AbstractViewHelper
     /**
      * @return mixed
      */
-    public function render(): mixed
+    public function render()
     {
         $name = $this->arguments['name'];
         $useRawKeys = $this->arguments['useRawKeys'];

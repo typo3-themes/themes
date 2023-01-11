@@ -50,7 +50,7 @@ class ArrayIndexViewHelper extends AbstractViewHelper
     /**
      * @return mixed
      */
-    public function render(): mixed
+    public function render()
     {
         $object = $this->arguments['object'];
         $index = $this->arguments['index'];

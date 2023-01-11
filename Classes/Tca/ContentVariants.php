@@ -152,7 +152,7 @@ class ContentVariants extends AbstractContentRow
      * @param mixed $label Label of the element
      * @param string $type Type of the element property
      */
-    protected function createElement(string $key, mixed $label, string $type)
+    protected function createElement(string $key, $label, string $type)
     {
         if (is_array($label) && !empty($label)) {
             $this->createSelectbox($key, $label, $type);
