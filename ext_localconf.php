@@ -22,21 +22,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Reposito
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'][]
     = \KayStrobach\Themes\Hooks\T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook::class . '->main';
 
-/**
- * register signal to inject pagets without xclassing
- * Requires signal slot call from http://forge.typo3.org/issues/59703.
- *
- * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
- */
-$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-$signalSlotDispatcher->connect(
-    \TYPO3\CMS\Backend\Utility\BackendUtility::class,
-    'getPagesTSconfigPreInclude',
-    \KayStrobach\Themes\Slots\BackendUtilitySlot::class,
-    'getPagesTsConfigPreInclude'
-);
-unset($signalSlotDispatcher);
-
 /*
  * register frontend plugin to allow usage of extbase controller
  */

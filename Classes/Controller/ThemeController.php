@@ -154,6 +154,7 @@ class ThemeController extends ActionController
         $vh->setArguments(['typoscriptObjectPath' => $path]);
         /** @var RenderingContext $renderingContext */
         $renderingContext = GeneralUtility::makeInstance(RenderingContext::class);
+        $renderingContext->setRequest($this->request);
         $vh->setRenderingContext($renderingContext);
         return $vh->render();
     }

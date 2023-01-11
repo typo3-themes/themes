@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace KayStrobach\Themes\Slots;
+namespace KayStrobach\Themes\TsConfig;
 
 /***************************************************************
  *
@@ -34,7 +34,7 @@ use Doctrine\DBAL\Driver\Statement;
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use PDO;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
+use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -44,7 +44,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This class automatically adds the theme TSConfig for the current page
  * to the Page TSConfig either by using a signal slot.
  */
-class BackendUtilitySlot extends PageTsConfigParser
+final class Loader
 {
     /**
      * Selected/activated extensions in Theme (selected by sys_template)
@@ -59,29 +59,29 @@ class BackendUtilitySlot extends PageTsConfigParser
     protected array $themeFeatures = [];
 
     /**
-     * Retrieves the theme TSConfig for the given page.
-     *
-     * @param array $typoscriptDataArray
-     * @param int $pageUid
-     * @param $rootLine
-     * @param array $returnPartArray
-     *
-     * @return array The found TSConfig or an empty string.
      * @throws DBALException
      */
-    public function getPagesTsConfigPreInclude(array $typoscriptDataArray, int $pageUid, $rootLine, array $returnPartArray): array
+    public function __invoke(ModifyLoadedPageTsConfigEvent $event): void
     {
-        if ($pageUid === 0) {
-            return [];
+        $rootLine = $event->getRootLine();
+        $currentPage = end($rootLine);
+        if (!$currentPage) {
+            return;
         }
+        $pageUid = (int)$currentPage['uid'];
+        if ($pageUid===0) {
+            return;
+        }
+        $pageTsConfig = $event->getTsConfig();
+
         /** @var ThemeRepository $themeRepository */
         $themeRepository = GeneralUtility::makeInstance('KayStrobach\Themes\\Domain\\Repository\\ThemeRepository');
         $theme = $themeRepository->findByPageOrRootline($pageUid);
         if (!isset($theme)) {
-            return [];
+            return;
         }
         // Append Theme tsconfig.typoscript
-        $defaultDataArray['defaultPageTSconfig'] = array_shift($typoscriptDataArray);
+        $defaultDataArray['defaultPageTSconfig'] = array_shift($pageTsConfig);
         //
         // Fetch Theme Extensions and Features
         $this->fetchThemeExtensionsAndFeatures($pageUid);
@@ -90,8 +90,8 @@ class BackendUtilitySlot extends PageTsConfigParser
         if (count($this->themeExtensions) > 0) {
             foreach ($this->themeExtensions as $extension) {
                 $tsconfig = $this->getTypoScriptDataForProcessing($extension);
-                if ($tsconfig !== '') {
-                    array_unshift($typoscriptDataArray, $tsconfig);
+                if ($tsconfig!=='') {
+                    array_unshift($pageTsConfig, $tsconfig);
                 }
             }
         }
@@ -100,20 +100,14 @@ class BackendUtilitySlot extends PageTsConfigParser
         if (count($this->themeFeatures) > 0) {
             foreach ($this->themeFeatures as $feature) {
                 $tsconfig = $this->getTypoScriptDataForProcessing($feature, 'feature');
-                if ($tsconfig !== '') {
-                    array_unshift($typoscriptDataArray, $tsconfig);
+                if ($tsconfig!=='') {
+                    array_unshift($pageTsConfig, $tsconfig);
                 }
             }
         }
         //
-        array_unshift($typoscriptDataArray, $theme->getTypoScriptConfig());
-        $typoscriptDataArray = $defaultDataArray + $typoscriptDataArray;
-        return [
-                $typoscriptDataArray,
-                $pageUid,
-                $rootLine,
-                $returnPartArray,
-        ];
+        array_unshift($pageTsConfig, $theme->getTypoScriptConfig());
+        $event->setTsConfig($defaultDataArray + $pageTsConfig);
     }
 
     /**
@@ -133,13 +127,13 @@ class BackendUtilitySlot extends PageTsConfigParser
             $queryBuilder->select('*')
                     ->from('sys_template')
                     ->where(
-                        $queryBuilder->expr()->andX(
-                            $queryBuilder->expr()->eq(
-                                'pid',
-                                $queryBuilder->createNamedParameter((int)$page['uid'], PDO::PARAM_INT)
-                            ),
-                            $queryBuilder->expr()->eq('root', '1')
-                        )
+                            $queryBuilder->expr()->andX(
+                                    $queryBuilder->expr()->eq(
+                                            'pid',
+                                            $queryBuilder->createNamedParameter((int)$page['uid'], PDO::PARAM_INT)
+                                    ),
+                                    $queryBuilder->expr()->eq('root', '1')
+                            )
                     );
             /** @var Statement $statement */
             $statement = $queryBuilder->execute();
@@ -163,9 +157,9 @@ class BackendUtilitySlot extends PageTsConfigParser
         $keyParts = explode('_', $key);
         $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($keyParts[0]);
         $extensionPath = ExtensionManagementUtility::extPath($extensionKey);
-        if ($type === 'feature') {
+        if ($type==='feature') {
             $relPath = $extensionPath . 'Configuration/PageTS/Features/' . $keyParts[1] . '/';
-        } elseif ($type === 'extension') {
+        } elseif ($type==='extension') {
             $relPath = $extensionPath . 'Resources/Private/Extensions/' . $keyParts[1] . '/PageTS/';
         }
         //
