@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -142,6 +143,8 @@ class ThemeController extends ActionController
      * @param string $path
      *
      * @return string
+     * @throws InvalidControllerNameException
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
     protected function evaluateTypoScript(string $path): string
     {

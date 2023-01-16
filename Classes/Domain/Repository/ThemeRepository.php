@@ -173,7 +173,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * @param mixed $uid
      * @return Theme
      */
-    public function findByIdentifier($uid): Theme
+    public function findByIdentifier($uid): ?Theme
     {
         return $this->findByUid($uid);
     }
@@ -185,11 +185,12 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * @return Theme The matching object if found, otherwise NULL
      * @api
      */
-    public function findByUid($uid): Theme
+    public function findByUid($uid): ?Theme
     {
         if (array_key_exists($uid, $this->addedObjects)) {
             return $this->addedObjects[$uid];
         }
+        return null;
     }
 
     /**
@@ -197,12 +198,13 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * @return Theme
      * @throws DBALException
      */
-    public function findByPageOrRootline(int $pid): Theme
+    public function findByPageOrRootline(int $pid): ?Theme
     {
         $rootline = BackendUtility::BEgetRootLine($pid);
         foreach ($rootline as $page) {
             return $this->findByPageId($page['uid']);
         }
+        return null;
     }
 
     /**
@@ -210,7 +212,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * @return Theme
      * @throws DBALException
      */
-    public function findByPageId(int $pid): Theme
+    public function findByPageId(int $pid): ?Theme
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_template');
         $queryBuilder->select('*')
@@ -261,7 +263,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * @throws Exception
      * @api
      */
-    public function createQuery(): QueryInterface
+    public function createQuery(): ?QueryInterface
     {
         throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
