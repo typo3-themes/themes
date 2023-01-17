@@ -119,7 +119,7 @@ class Theme extends AbstractTheme
      */
     public function getAllPreviewImages(): array
     {
-        $buffer = $this->metaInformation['screenshots'];
+        $buffer = $this->metaInformation['screenshots'] ?? [];
         if (is_array($buffer) && count($buffer) > 0) {
             foreach ($buffer as $key => $image) {
                 // We need to use a real image file path, because in case of using a file

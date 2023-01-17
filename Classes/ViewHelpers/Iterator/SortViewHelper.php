@@ -79,6 +79,6 @@ class SortViewHelper extends AbstractViewHelper
 
     public function compare($a, $b): int
     {
-        return strcasecmp((string)$a[$this->arguments['key']], (string)$b[$this->arguments['key']]);
+        return strcasecmp((string)($a[$this->arguments['key']] ?? ''), (string)($b[$this->arguments['key']] ?? ''));
     }
 }

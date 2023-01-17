@@ -83,7 +83,7 @@ class TsParserUtility implements SingletonInterface
             $this->tsParser->tt_track = 0;
 
             $this->tsParser->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate');
-            $this->tsParser->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'] . PathUtility::stripPathSitePrefix(
+            $this->tsParser->ext_localWebGfxPrefix = PathUtility::stripPathSitePrefix(
                 ExtensionManagementUtility::extPath('tstemplate')
             );
 

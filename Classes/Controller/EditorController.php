@@ -389,7 +389,10 @@ class EditorController extends ActionController
             // Initialize icon factory
             $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             // Try to load the selected theme
-            $this->selectedTheme = $this->themeRepository->findByPageId($this->id);
+            $selectedTheme = $this->themeRepository->findByPageId($this->id);
+            if ($selectedTheme) {
+                $this->selectedTheme = $selectedTheme;
+            }
             // Create menu and buttons
             $this->createMenu();
             $this->createButtons();
@@ -501,8 +504,8 @@ class EditorController extends ActionController
         // mod.tx_themes.constantCategoriesToShow.value
         // Get value from page/user typoscript
         $externalConstantCategoriesToShow = $this->getBackendUser()->getTSConfig(
-        )['mod.']['tx_themes.']['constantCategoriesToShow.'] ?? null;
-        if ($externalConstantCategoriesToShow['value']) {
+        )['mod.']['tx_themes.']['constantCategoriesToShow.'] ?? [];
+        if (!empty($externalConstantCategoriesToShow['value'])) {
             $this->externalConfig['constantCategoriesToShow'] = GeneralUtility::trimExplode(
                 ',',
                 $externalConstantCategoriesToShow['value']
@@ -515,8 +518,8 @@ class EditorController extends ActionController
         // mod.tx_themes.constantsToHide.value
         // Get value from page/user typoscript
         $externalConstantsToHide = $this->getBackendUser()->getTSConfig(
-        )['mod.']['tx_themes.']['constantsToHide.'] ?? null;
-        if ($externalConstantsToHide['value']) {
+        )['mod.']['tx_themes.']['constantsToHide.'] ?? [];
+        if (!empty($externalConstantsToHide['value'])) {
             $this->externalConfig['constantsToHide'] = GeneralUtility::trimExplode(
                 ',',
                 $externalConstantsToHide['value']
