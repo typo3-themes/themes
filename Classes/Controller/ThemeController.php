@@ -154,7 +154,11 @@ class ThemeController extends ActionController
             return '';
         });
 
-        $vh->setArguments(['typoscriptObjectPath' => $path]);
+        $vh->setArguments([
+            'typoscriptObjectPath' => $path,
+            'currentValueKey' => 0,
+            'table' => ''
+        ]);
         /** @var RenderingContext $renderingContext */
         $renderingContext = GeneralUtility::makeInstance(RenderingContext::class);
         $renderingContext->setRequest($this->request);

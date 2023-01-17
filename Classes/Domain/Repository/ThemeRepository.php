@@ -225,7 +225,10 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
             $queryBuilder->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);
         }
         $templateRow = $queryBuilder->execute()->fetch();
-        return $this->findByUid($templateRow['tx_themes_skin']);
+        if (!empty($templateRow)) {
+            return $this->findByUid($templateRow['tx_themes_skin']);
+        }
+        return null;
     }
 
     /**
