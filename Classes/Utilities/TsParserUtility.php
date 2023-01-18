@@ -228,10 +228,13 @@ class TsParserUtility implements SingletonInterface
                 if (!isset($constantArray['cat'])) {
                     continue;
                 }
-                if (!isset($categories[$constantArray['cat']])) {
-                    $categories[$constantArray['cat']] = [];
+                $assignedCategories = GeneralUtility::trimExplode(',', $constantArray['cat'], true);
+                foreach ($assignedCategories as $assignedCategory) {
+                    if (!isset($categories[$assignedCategory])) {
+                        $categories[$assignedCategory] = [];
+                    }
+                    $categories[$assignedCategory][$constantName] = $constantArray;
                 }
-                $categories[$constantArray['cat']][$constantName] = $constantArray;
             }
         }
 
