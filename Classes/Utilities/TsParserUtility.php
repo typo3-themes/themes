@@ -218,21 +218,36 @@ class TsParserUtility implements SingletonInterface
      */
     public function getCategories($pid, array $categoriesToShow = [], array $deniedFields = []): array
     {
-        $this->initializeTsParser($pid);
+        $categories = [];
 
-        foreach ($this->tsParser->categories as $categoryName => $category) {
-            if ((count($categoriesToShow) === 0) || (in_array($categoryName, $categoriesToShow))) {
-                foreach (array_keys($category) as $constantName) {
-                    if (in_array($constantName, $deniedFields)) {
-                        unset($this->tsParser->categories[$categoryName][$constantName]);
-                    }
+        $this->initializeTsParser($pid);
+        $constants = $this->tsParser->generateConfig_constants();
+
+        if (!empty($constants)) {
+            foreach ($constants as $constantName => $constantArray) {
+                if (!isset($constantArray['cat'])) {
+                    continue;
                 }
-            } else {
-                unset($this->tsParser->categories[$categoryName]);
+                if (!isset($categories[$constantArray['cat']])) {
+                    $categories[$constantArray['cat']] = [];
+                }
+                $categories[$constantArray['cat']][$constantName] = $constantArray;
             }
         }
 
-        return $this->tsParser->categories;
+        foreach ($categories as $categoryName => $category) {
+            if ((count($categoriesToShow) === 0) || (in_array($categoryName, $categoriesToShow))) {
+                foreach (array_keys($category) as $constantName) {
+                    if (in_array($constantName, $deniedFields)) {
+                        unset($categories[$categoryName][$constantName]);
+                    }
+                }
+            } else {
+                unset($categories[$categoryName]);
+            }
+        }
+
+        return $categories;
     }
 
     /**
