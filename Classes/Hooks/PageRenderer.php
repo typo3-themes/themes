@@ -49,6 +49,9 @@ class PageRenderer implements SingletonInterface
      */
     public function addJSCSS(array $parameters, PageRendererCore $pageRenderer)
     {
+        if ($pageRenderer->getApplicationType() === 'FE') {
+            return;
+        }
         // Add JavaScript
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendTca');
         // Add CSS
