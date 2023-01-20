@@ -31,6 +31,7 @@ namespace KayStrobach\Themes\Hooks;
 
 use TYPO3\CMS\Core\Page\PageRenderer as PageRendererCore;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -49,6 +50,9 @@ class PageRenderer implements SingletonInterface
      */
     public function addJSCSS(array $parameters, PageRendererCore $pageRenderer)
     {
+        if ($pageRenderer->getApplicationType() === 'FE') {
+            return;
+        }
         // Add JavaScript
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendTca');
         // Add CSS
