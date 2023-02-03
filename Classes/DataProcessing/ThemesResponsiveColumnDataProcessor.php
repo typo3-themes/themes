@@ -80,21 +80,23 @@ class ThemesResponsiveColumnDataProcessor implements DataProcessorInterface
 
     protected function getColumnClasses(array $processedData = [], $index = 'flexform_column_widths_md'): array
     {
-        $keys = GeneralUtility::trimExplode('#', $processedData['data'][$index], true);
-        if (!empty($keys)) {
-            $column = 0;
-            foreach ($keys as $key) {
-                if (isset($this->setup['lib.']['content.']['cssMap.']['responsive.']['column.'][$key])) {
-                    $cssClass = trim($this->setup['lib.']['content.']['cssMap.']['responsive.']['column.'][$key]);
-                    $processedData['themes']['responsive']['column'][$column]['css'][$cssClass] = $cssClass;
+        if (isset($processedData['data'][$index])) {
+            $keys = GeneralUtility::trimExplode('#', $processedData['data'][$index], true);
+            if (!empty($keys)) {
+                $column = 0;
+                foreach ($keys as $key) {
+                    if (isset($this->setup['lib.']['content.']['cssMap.']['responsive.']['column.'][$key])) {
+                        $cssClass = trim($this->setup['lib.']['content.']['cssMap.']['responsive.']['column.'][$key]);
+                        $processedData['themes']['responsive']['column'][$column]['css'][$cssClass] = $cssClass;
+                    }
+                    if (isset($processedData['themes']['responsive']['column'][$column]['css'])) {
+                        $processedData['themes']['responsive']['column'][$column]['cssClasses'] = implode(
+                            ' ',
+                            $processedData['themes']['responsive']['column'][$column]['css']
+                        );
+                    }
+                    $column++;
                 }
-                if (isset($processedData['themes']['responsive']['column'][$column]['css'])) {
-                    $processedData['themes']['responsive']['column'][$column]['cssClasses'] = implode(
-                        ' ',
-                        $processedData['themes']['responsive']['column'][$column]['css']
-                    );
-                }
-                $column++;
             }
         }
 
