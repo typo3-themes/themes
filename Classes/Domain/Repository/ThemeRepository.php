@@ -222,7 +222,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
         $queryBuilder->select('*')
                 ->from('sys_template')
                 ->where(
-                        $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, PDO::PARAM_INT))
                 )
                 ->setMaxResults(1);
         if (!empty($GLOBALS['TCA']['sys_template']['ctrl']['sortby'])) {
