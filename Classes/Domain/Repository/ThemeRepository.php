@@ -202,7 +202,10 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     {
         $rootline = BackendUtility::BEgetRootLine($pid);
         foreach ($rootline as $page) {
-            return $this->findByPageId($page['uid']);
+            $theme = $this->findByPageId($page['uid']);
+            if (!empty($theme)) {
+                return $theme;
+            }
         }
         return null;
     }
@@ -216,11 +219,11 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_template');
         $queryBuilder->select('*')
-                ->from('sys_template')
-                ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, PDO::PARAM_INT))
-                )
-                ->setMaxResults(1);
+            ->from('sys_template')
+            ->where(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, PDO::PARAM_INT))
+            )
+            ->setMaxResults(1);
         if (!empty($GLOBALS['TCA']['sys_template']['ctrl']['sortby'])) {
             $queryBuilder->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);
         }
