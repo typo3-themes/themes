@@ -36,6 +36,7 @@ use PDO;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
@@ -60,7 +61,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     {
         // Hook to recognize themes, this is the magic point, why it's possible to support so many theme formats and types.
         if (!empty(
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init']
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init']
         )) {
             $hookParameters = [];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'] as $hookFunction) {
@@ -202,7 +203,10 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     {
         $rootline = BackendUtility::BEgetRootLine($pid);
         foreach ($rootline as $page) {
-            return $this->findByPageId($page['uid']);
+            $theme = $this->findByPageId($page['uid']);
+            if ($theme) {
+                return $theme;
+            }
         }
         return null;
     }
@@ -218,7 +222,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
         $queryBuilder->select('*')
                 ->from('sys_template')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, PDO::PARAM_INT))
+                        $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, PDO::PARAM_INT))
                 )
                 ->setMaxResults(1);
         if (!empty($GLOBALS['TCA']['sys_template']['ctrl']['sortby'])) {
