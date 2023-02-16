@@ -22,7 +22,6 @@ $tempColumn = [
             'appearance'     => [
                 'levelLinksPosition'              => 'top',
                 'showPossibleLocalizationRecords' => true,
-                'showRemovedLocalizationRecords'  => true,
                 'showAllLocalizationLink'         => true,
                 'showSynchronizationLink'         => true,
                 'enabledControls'                 => [
