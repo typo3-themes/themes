@@ -191,6 +191,9 @@ class ContentResponsive extends AbstractContentRow
                     if (!empty($settings)) {
                         foreach ($settings as $settingKey => $settingValues) {
                             $settingKey = substr($settingKey, 0, -1);
+                            if (!array_key_exists($settingKey, $tempContent)) {
+                                $tempContent[$settingKey] = '';
+                            }
                             $tempContent[$settingKey] .= '<div class="' . $cssClasses . '" style="' . $cssStyles . '">' . LF;
                             $tempContent[$settingKey] .= '<label class="t3js-formengine-label sub-label">' . $this->getLanguageService(
                             )->sL($settingKey) . '</label>' . LF;
