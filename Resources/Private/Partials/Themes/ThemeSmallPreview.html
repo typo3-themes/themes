@@ -4,7 +4,7 @@
 	<div class="theme {additionalClass}">
 		<div class="theme-image">
 			<f:if condition="{theme.previewImageExists}">
-				<f:image src="{theme.previewImage}"  alt="{screenshot.caption}" width="298" style="width:298px" />
+				<img src="{f:uri.image(src:theme.previewImage, maxWidth:298)}"  alt="{screenshot.caption}"/>
 			</f:if>
 			<div class="theme-hover">
 				<div class="theme-hover-inner">
