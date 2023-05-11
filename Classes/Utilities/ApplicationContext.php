@@ -34,7 +34,6 @@ use TYPO3\CMS\Install\Configuration\Context\ContextFeature;
 
 class ApplicationContext
 {
-
     /**
      * @var \TYPO3\CMS\Install\Configuration\FeatureManager
      */

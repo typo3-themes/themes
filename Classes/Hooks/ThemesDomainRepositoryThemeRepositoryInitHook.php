@@ -38,7 +38,6 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
  */
 class ThemesDomainRepositoryThemeRepositoryInitHook
 {
-
     /**
      * Add all available themes to the Themes repository
      *

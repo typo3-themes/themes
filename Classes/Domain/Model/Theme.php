@@ -78,7 +78,7 @@ class Theme extends AbstractTheme
 
             if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png')) {
                 rename(
-                    ExtensionManagementUtility::extPath($this->getExtensionName() ). 'Meta/Screenshots/screenshot.png',
+                    ExtensionManagementUtility::extPath($this->getExtensionName()). 'Meta/Screenshots/screenshot.png',
                     $screenshotsFolder . 'screenshot.png'
                 );
             } elseif (is_file(ExtensionManagementUtility::extPath('themes'). 'Resources/Public/Images/screenshot.gif')) {
