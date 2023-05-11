@@ -11,7 +11,7 @@
 				<div class="carousel-inner">
 					<f:for each="{screenshots}" as="screenshot" iteration="iteration">
 						<div class="item {f:if(condition:iteration.isFirst, then:'active')}" data-interval="3000" data-pause="hover" title="{screenshot.caption}">
-							<img src="{screenshot.file}"  alt="{screenshot.caption}" width="600" />
+							<f:image src="{screenshot.file}"  alt="{screenshot.caption}" width="600" />
 						</div>
 					</f:for>
 				</div>

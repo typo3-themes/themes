@@ -27,6 +27,7 @@ namespace KayStrobach\Themes\Domain\Model;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use KayStrobach\Sitemgr\Utilities\FileSystemUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -70,13 +71,30 @@ class Theme extends AbstractTheme
                 $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.txt';
             }
 
-            //
             $this->importExtEmConf();
+
+            $screenshotsFolder = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Resources/Public/Screenshots/';
+            GeneralUtility::mkdir($screenshotsFolder);
+
             if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png')) {
-                $this->previewImage = PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->getExtensionName())) . 'Meta/Screenshots/screenshot.png';
-            } else {
-                $this->previewImage = PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('themes')) . 'Resources/Public/Images/screenshot.gif';
+                rename(
+                    ExtensionManagementUtility::extPath($this->getExtensionName() ). 'Meta/Screenshots/screenshot.png',
+                    $screenshotsFolder . 'screenshot.png'
+                );
+            } elseif (is_file(ExtensionManagementUtility::extPath('themes'). 'Resources/Public/Images/screenshot.gif')) {
+                rename(
+                    ExtensionManagementUtility::extPath('themes') . '/Resources/Public/Images/screenshot.gif',
+                    $screenshotsFolder . 'screenshot.gif'
+                );
             }
+
+            if (is_file(GeneralUtility::getFileAbsFileName('EXT:' . $this->getExtensionName() . '/Resources/Public/Screenshots/screenshot.gif'))) {
+                $this->previewImage = 'EXT:' . $this->getExtensionName() . '/Resources/Public/Screenshots/screenshot.gif';
+            }
+            if (is_file(GeneralUtility::getFileAbsFileName('EXT:' . $this->getExtensionName() . '/Resources/Public/Screenshots/screenshot.png'))) {
+                $this->previewImage = 'EXT:' . $this->getExtensionName() . '/Resources/Public/Screenshots/screenshot.png';
+            }
+
             $yamlFile = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml';
             if (file_exists($yamlFile)) {
                 try {
@@ -127,6 +145,12 @@ class Theme extends AbstractTheme
                 $previewImage = PathUtility::getAbsoluteWebPath($previewImage);
                 $buffer[$key]['file'] = $previewImage;
             }
+        }
+
+        if (is_file(GeneralUtility::getFileAbsFileName($this->previewImage))) {
+            $buffer[] = [
+                'file' => $this->previewImage
+            ];
         }
         return $buffer;
     }
