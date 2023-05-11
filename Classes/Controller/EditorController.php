@@ -52,7 +52,6 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
  */
 class EditorController extends ActionController
 {
-
     /**
      * @var string Key of the extension this controller belongs to
      */

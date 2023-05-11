@@ -39,7 +39,6 @@ use TYPO3\CMS\Backend\Configuration\TsConfigParser;
  */
 class BackendUtilitySlot extends TsConfigParser
 {
-
     /**
      * Selected/activated extensions in Theme (selected by sys_template)
      * @var array

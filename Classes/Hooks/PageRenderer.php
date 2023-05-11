@@ -39,7 +39,6 @@ use TYPO3\CMS\Core\Page\PageRenderer as PageRendererCore;
  */
 class PageRenderer implements SingletonInterface
 {
-
     /**
      * Wrapper function called by hook (\TYPO3\CMS\Core\Page\PageRenderer->render-preProcess).
      *

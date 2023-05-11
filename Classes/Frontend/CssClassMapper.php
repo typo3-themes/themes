@@ -32,7 +32,6 @@ namespace KayStrobach\Themes\Frontend;
  */
 class CssClassMapper
 {
-
     /**
      * Maps generic class names of a record to the official class names of the underlying framework.
      *

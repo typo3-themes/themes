@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ThemeEnabledCondition
 {
-
     /**
      * Check if theme is enabled
      *
