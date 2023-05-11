@@ -74,18 +74,21 @@ class Theme extends AbstractTheme
             $this->importExtEmConf();
 
             $screenshotsFolder = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Resources/Public/Screenshots/';
-            GeneralUtility::mkdir($screenshotsFolder);
+            if (!is_dir($screenshotsFolder)) {
+                GeneralUtility::mkdir_deep($screenshotsFolder);
 
-            if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png')) {
-                rename(
-                    ExtensionManagementUtility::extPath($this->getExtensionName() ). 'Meta/Screenshots/screenshot.png',
-                    $screenshotsFolder . 'screenshot.png'
-                );
-            } elseif (is_file(ExtensionManagementUtility::extPath('themes'). 'Resources/Public/Images/screenshot.gif')) {
-                rename(
-                    ExtensionManagementUtility::extPath('themes') . '/Resources/Public/Images/screenshot.gif',
-                    $screenshotsFolder . 'screenshot.gif'
-                );
+                if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png')) {
+                    rename(
+                        ExtensionManagementUtility::extPath($this->getExtensionName()). 'Meta/Screenshots/screenshot.png',
+                        $screenshotsFolder . 'screenshot.png'
+                    );
+                }
+                if (is_file(ExtensionManagementUtility::extPath($this->getExtensionName()). 'Resources/Public/Images/screenshot.gif')) {
+                    rename(
+                        ExtensionManagementUtility::extPath($this->getExtensionName()) . '/Resources/Public/Images/screenshot.gif',
+                        $screenshotsFolder . 'screenshot.gif'
+                    );
+                }
             }
 
             if (is_file(GeneralUtility::getFileAbsFileName('EXT:' . $this->getExtensionName() . '/Resources/Public/Screenshots/screenshot.gif'))) {
