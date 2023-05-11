@@ -93,7 +93,6 @@ class ContentResponsive extends AbstractContentRow
         $selectboxes = '';
         if (isset($responsives['properties']) && is_array($responsives['properties'])) {
             foreach ($responsives['properties'] as $groupKey => $settings) {
-
                 // Validate groupKey and get label
                 $groupKey = substr($groupKey, 0, -1);
                 $label = isset($settings['label']) ? $settings['label'] : $groupKey;
@@ -106,7 +105,6 @@ class ContentResponsive extends AbstractContentRow
                 $selectboxes .= '<div class="'.$cssClasses.'" style="'.$cssStyles.'">'.LF;
                 $selectboxes .= '<label class="t3js-formengine-label">'.$this->getLanguageService()->sL($label).'</label>'.LF;
                 if (isset($settings['visibility.']) && is_array($settings['visibility.'])) {
-
                     // check if there's already a value selected
                     $valueSet = false;
                     foreach ($settings['visibility.'] as $visibilityKey => $_) {

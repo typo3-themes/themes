@@ -39,7 +39,6 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  */
 class HeaderLinkDataProcessor implements DataProcessorInterface
 {
-
     /**
      * Process data for the header link.
      *
