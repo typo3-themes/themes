@@ -36,8 +36,8 @@ $EM_CONF['themes'] = [
     'author_company' => 'private',
     'constraints' => [
         'depends' => [
-            'typo3' => '9.5.7-10.4.99',
-            'gridelements' => '9.2.1-10.0.99',
+            'typo3' => '9.5.7-11.5.99',
+            'gridelements' => '9.2.1-11.0.99',
         ],
         'conflicts' => [
             'belayout_tsprovider' => '0.0.0-1.99.99',
