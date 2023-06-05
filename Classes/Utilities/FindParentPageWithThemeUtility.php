@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  */
 class FindParentPageWithThemeUtility
 {
-
     /**
      * @param $pid
      * @return mixed

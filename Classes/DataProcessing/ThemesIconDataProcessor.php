@@ -37,7 +37,6 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  */
 class ThemesIconDataProcessor implements DataProcessorInterface
 {
-
     /**
      * Process data for the Themes icons.
      *

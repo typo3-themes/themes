@@ -67,14 +67,12 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow
         $checkboxes = '';
         if (isset($responsives['properties']) && is_array($responsives['properties'])) {
             foreach ($responsives['properties'] as $groupKey => $settings) {
-
                 // Validate groupKey and get label
                 $groupKey = substr($groupKey, 0, -1);
                 $label = isset($settings['label']) ? $settings['label'] : $groupKey;
                 $checkboxes .= '<div class="col-xs-6 col-sm-2 themes-column">'.LF;
                 $checkboxes .= '<label class="t3js-formengine-label">'.$this->getLanguageService()->sL($label).'</label>'.LF;
                 if (isset($settings['rowSettings.']) && is_array($settings['rowSettings.'])) {
-
                     // check if there is already a value selected
                     $valueSet = false;
                     foreach ($settings['rowSettings.'] as $visibilityKey => $_) {

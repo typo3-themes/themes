@@ -38,7 +38,6 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  */
 class ThemesResponsiveDataProcessor implements DataProcessorInterface
 {
-
     /**
      * @var array
      */
