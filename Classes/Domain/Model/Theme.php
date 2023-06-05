@@ -146,7 +146,9 @@ class Theme extends AbstractTheme
                 // reference, a non admin backend user might not have access to the storage!
                 $previewImage = GeneralUtility::getFileAbsFileName($image['file']);
                 $previewImage = PathUtility::getAbsoluteWebPath($previewImage);
-                $buffer[$key]['file'] = $previewImage;
+                if (is_file($previewImage)) {
+                    $buffer[$key]['file'] = $previewImage;
+                }
             }
         }
 
