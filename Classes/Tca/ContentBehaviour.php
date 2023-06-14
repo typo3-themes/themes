@@ -84,7 +84,7 @@ class ContentBehaviour extends AbstractContentRow
                 // GridElements: are able to provide grid-specific behaviours
                 if (is_array($label) && $cType === 'gridelements_pi1' && !array_key_exists(
                     $contentElementKey,
-                    $this->defaultProperties
+	                $this->defaultProperties['properties']
                 )) {
                     $contentElementKey = substr($contentElementKey, 0, -1);
 
@@ -102,7 +102,7 @@ class ContentBehaviour extends AbstractContentRow
                 } // Normal CEs
                 else {
                     // Is default property!?
-                    if (array_key_exists($contentElementKey, $this->defaultProperties)) {
+	                if (array_key_exists($contentElementKey, $this->defaultProperties['properties'])) {
                         $this->createElement($contentElementKey, $label, 'default');
                     } // Is ctype specific!
                     else {
@@ -141,7 +141,7 @@ class ContentBehaviour extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $this->valuesAvailable);
 
-        return ['html' => '<div class="contentBehaviour">' . $checkboxes . $hiddenField . $missedField . '</div>'];
+        return ['html' => '<div class="contentBehaviour row">' . $checkboxes . $hiddenField . $missedField . '</div>'];
     }
 
     /**
@@ -173,7 +173,7 @@ class ContentBehaviour extends AbstractContentRow
         $key = substr($key, 0, -1);
         $selectbox = '<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">' . LF;
         $selectbox .= '<div class="form-control-wrap">' . LF;
-        $selectbox .= '<select name="' . $key . '" class="form-control form-control-adapt input-sm">' . LF;
+        $selectbox .= '<select name="' . $key . '" class="form-select form-control-adapt input-sm">' . LF;
         $activeKey = '';
         foreach ($items as $itemKey => $itemValue) {
             if ($activeKey == '') {
