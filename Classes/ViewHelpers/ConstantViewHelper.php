@@ -34,9 +34,6 @@ class ConstantViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return string
      */
     public static function renderStatic(
@@ -44,7 +41,7 @@ class ConstantViewHelper extends AbstractViewHelper
         Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ): string {
-        $constant = trim($arguments['constant']);
+        $constant = trim((string) $arguments['constant']);
         if (($GLOBALS['TSFE']->tmpl->flatSetup === null) || (!is_array($GLOBALS['TSFE']->tmpl->flatSetup)) || (count($GLOBALS['TSFE']->tmpl->flatSetup) === 0)) {
             $GLOBALS['TSFE']->tmpl->generateConfig();
         }

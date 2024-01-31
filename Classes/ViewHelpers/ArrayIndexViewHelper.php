@@ -63,7 +63,7 @@ class ArrayIndexViewHelper extends AbstractViewHelper
                 $reflectionProperty = $reflectionClass->getProperty($index);
                 $reflectionProperty->setAccessible(true);
                 return $reflectionProperty->getValue($object);
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // we want a silent fail here, as the default will return null
             }
         } elseif (is_array($object)) {

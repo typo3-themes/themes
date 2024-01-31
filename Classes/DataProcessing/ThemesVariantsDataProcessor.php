@@ -65,7 +65,7 @@ class ThemesVariantsDataProcessor implements DataProcessorInterface
             if (isset($setup['lib.']['content.']['cssMap.']['variants.']) && !empty($setup['lib.']['content.']['cssMap.']['variants.'])) {
                 foreach ($setup['lib.']['content.']['cssMap.']['variants.'] as $key => $cssClass) {
                     if (is_array($cssClass)) {
-                        $key = substr($key, 0, -1);
+                        $key = substr((string) $key, 0, -1);
                         if (!empty($cssClass)) {
                             foreach ($cssClass as $subKey => $setting) {
                                 if (in_array($key . '-' . $subKey, $keys)) {

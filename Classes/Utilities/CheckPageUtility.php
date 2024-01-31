@@ -72,7 +72,7 @@ class CheckPageUtility
             if (isset($configuration['themeableSysTemplateRecordsRequireRootFlag'])) {
                 $themeableSysTemplateRecordsRequireRootFlag = (bool)$configuration['themeableSysTemplateRecordsRequireRootFlag'];
             }
-        } catch (SiteNotFoundException $e) {
+        } catch (SiteNotFoundException) {
             // simple keep variable value
         }
         if ($themeableSysTemplateRecordsRequireRootFlag === true) {

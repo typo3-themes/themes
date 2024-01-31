@@ -13,7 +13,7 @@ $tsconfig = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:themes/Configuration/PageTS/t
 /*
  * Register hook to inject themes
  */
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'][]
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\KayStrobach\Themes\Domain\Repository\ThemeRepository::class]['init'][]
     = \KayStrobach\Themes\Hooks\ThemesDomainRepositoryThemeRepositoryInitHook::class . '->init';
 
 /*
@@ -33,29 +33,29 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['i
 );
 
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667595] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1_632_667_595] = [
     'nodeName' => 'ContentVariants',
     'priority' => '70',
     'class' => \KayStrobach\Themes\Tca\ContentVariants::class
 ];
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667596] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1_632_667_596] = [
     'nodeName' => 'ContentBehaviour',
     'priority' => '70',
     'class' => \KayStrobach\Themes\Tca\ContentBehaviour::class
 ];
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667597] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1_632_667_597] = [
     'nodeName' => 'ContentResponsive',
     'priority' => '70',
     'class' => \KayStrobach\Themes\Tca\ContentResponsive::class
 ];
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667598] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1_632_667_598] = [
     'nodeName' => 'ThemesContentColumnSettings',
     'priority' => '70',
     'class' => \KayStrobach\Themes\Tca\ContentColumnSettings::class
 ];
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667599] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1_632_667_599] = [
     'nodeName' => 'ThemesContentEnforceEqualColumnHeight',
     'priority' => '70',
     'class' => \KayStrobach\Themes\Tca\ContentEnforceEqualColumnHeight::class

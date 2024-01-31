@@ -36,11 +36,14 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 
 /**
  * Class ThemeController.
@@ -72,27 +75,19 @@ class ThemeController extends ActionController
      */
     protected PageRepository $pageRepository;
 
-    /**
-     * @param ConfigurationManagerInterface $configurationManager
-     */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT;
         $this->typoScriptSetup = $this->configurationManager->getConfiguration($configurationType);
+        $this->arguments = GeneralUtility::makeInstance(Arguments::class);
     }
 
-    /**
-     * @param ThemeRepository $themeRepository
-     */
     public function injectThemeRepository(ThemeRepository $themeRepository)
     {
         $this->themeRepository = $themeRepository;
     }
 
-    /**
-     * @param PageRepository $pageRepository
-     */
     public function injectPageRepository(PageRepository $pageRepository)
     {
         $this->pageRepository = $pageRepository;
@@ -140,28 +135,25 @@ class ThemeController extends ActionController
     /**
      * renders a given TypoScript Path.
      *
-     * @param string $path
      *
+     * @param string $path
      * @return string
-     * @throws InvalidControllerNameException
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
     protected function evaluateTypoScript(string $path): string
     {
         /** @var CObjectViewHelper $vh */
-        $vh = $this->objectManager->get(CObjectViewHelper::class);
-        $vh->setRenderChildrenClosure(function () {
-            return '';
-        });
+        $vh = GeneralUtility::makeInstance(CObjectViewHelper::class);
+        $vh->setRenderChildrenClosure(fn() => '');
 
         $vh->setArguments([
             'typoscriptObjectPath' => $path,
             'currentValueKey' => 0,
             'table' => ''
         ]);
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = GeneralUtility::makeInstance(RenderingContext::class);
-        $renderingContext->setRequest($this->request);
+
+        /** @var AbstractTemplateView $view*/
+        $view = $this->view;
+        $renderingContext = $view->getRenderingContext();
         $vh->setRenderingContext($renderingContext);
         return $vh->render();
     }
@@ -199,8 +191,8 @@ class ThemeController extends ActionController
         foreach ($pathSegments as $segment) {
             if (!array_key_exists(($segment . '.'), $setup)) {
                 throw new Exception(
-                    'TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist',
-                    1253191023
+                    'TypoScript object path "' . htmlspecialchars((string) $typoscriptObjectPath) . '" does not exist',
+                    1_253_191_023
                 );
             }
             $setup = $setup[$segment . '.'];

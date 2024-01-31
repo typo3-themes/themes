@@ -28,13 +28,12 @@ namespace KayStrobach\Themes\DataProcessing;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 use TYPO3\CMS\Frontend\Resource\FileCollector;
-use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
  * This data processor can be used for processing data for record which contain
@@ -135,7 +134,7 @@ class FilesProcessor implements DataProcessorInterface
             /** @var FileReference $file */
             foreach ($files as $file) {
                 $fileProperties = $file->getProperties();
-                $link = trim($fileProperties['link']);
+                $link = trim((string) $fileProperties['link']);
                 $linkData = [];
                 if ($link !== '') {
                     $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);

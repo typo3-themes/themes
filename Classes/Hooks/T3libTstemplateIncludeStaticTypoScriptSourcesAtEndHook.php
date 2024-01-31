@@ -93,7 +93,7 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
                 }
                 /** @var ThemeRepository $themeRepository */
                 $themeRepository = GeneralUtility::makeInstance(
-                    'KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository'
+                    ThemeRepository::class
                 );
                 /** @var Theme $theme */
                 $theme = $themeRepository->findByUid($themeIdentifier);

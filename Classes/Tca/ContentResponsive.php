@@ -66,7 +66,7 @@ class ContentResponsive extends AbstractContentRow
             $gridLayout = $gridLayout[0];
         }
         // Get values
-        $values = explode(',', $value);
+        $values = explode(',', (string) $value);
         $valuesFlipped = array_flip($values);
         $valuesAvailable = [];
 
@@ -81,10 +81,10 @@ class ContentResponsive extends AbstractContentRow
             $responsiveSettings = $typoScriptService->convertTypoScriptArrayToPlainArray(
                 $responsiveSettings['properties']
             );
-            if (count($responsiveSettings['sizes']) > 0) {
-                $cssStyles = 'width: ' . (100 / count(
+            if ((is_countable($responsiveSettings['sizes']) ? count($responsiveSettings['sizes']) : 0) > 0) {
+                $cssStyles = 'width: ' . (100 / (is_countable($responsiveSettings['sizes']) ? count(
                     $responsiveSettings['sizes']
-                ) - 1) . '%; float:left;margin-left:0.5%;margin-right:0.5%;margin-bottom:8px;border:none';
+                ) : 0) - 1) . '%; float:left;margin-left:0.5%;margin-right:0.5%;margin-bottom:8px;border:none';
             }
         } else {
             $responsiveSettings = [];
@@ -100,7 +100,7 @@ class ContentResponsive extends AbstractContentRow
         if (!empty($responsives['properties'])) {
             foreach ($responsives['properties'] as $groupKey => $settings) {
                 // Validate groupKey and get label
-                $groupKey = substr($groupKey, 0, -1);
+                $groupKey = substr((string) $groupKey, 0, -1);
                 $label = $settings['label'] ?? $groupKey;
 
                 // is valid size?!
@@ -150,10 +150,10 @@ class ContentResponsive extends AbstractContentRow
                 $tempContent = [];
                 $valueSet = false;
                 foreach ($responsives['properties'][$cType . '.'] as $groupKey => $settings) {
-                    $groupKey = substr($groupKey, 0, -1);
+                    $groupKey = substr((string) $groupKey, 0, -1);
                     if (!empty($settings)) {
                         foreach ($settings as $settingKey => $settingValues) {
-                            $settingKey = substr($settingKey, 0, -1);
+                            $settingKey = substr((string) $settingKey, 0, -1);
                             $tempContent[$settingKey] .= '<div class="' . $cssClasses . '" style="' . $cssStyles . '">' . LF;
                             $tempContent[$settingKey] .= '<label class="t3js-formengine-label sub-label">' . $this->getLanguageService(
                             )->sL($settingKey) . '</label>' . LF;
@@ -186,11 +186,11 @@ class ContentResponsive extends AbstractContentRow
                 $tempContent = [];
                 $valueSet = false;
                 foreach ($responsives['properties'][$gridLayout . '.'] as $groupKey => $settings) {
-                    $groupKey = substr($groupKey, 0, -1);
+                    $groupKey = substr((string) $groupKey, 0, -1);
                     $tempContent[$groupKey] = '';
                     if (!empty($settings)) {
                         foreach ($settings as $settingKey => $settingValues) {
-                            $settingKey = substr($settingKey, 0, -1);
+                            $settingKey = substr((string) $settingKey, 0, -1);
                             if (!array_key_exists($settingKey, $tempContent)) {
                                 $tempContent[$settingKey] = '';
                             }
@@ -236,7 +236,7 @@ class ContentResponsive extends AbstractContentRow
         $hiddenField .= '<div class="form-control-wrap">' . LF;
         $hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
         $hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
-        $hiddenField .= 'name="' . htmlspecialchars($name) . '" ';
+        $hiddenField .= 'name="' . htmlspecialchars((string) $name) . '" ';
         $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . LF;
         $hiddenField .= '</div>' . LF;
         $hiddenField .= '</div>' . LF;

@@ -58,8 +58,6 @@ class TsParserUtility implements SingletonInterface
 
     /**
      * @param $pid
-     * @param array $constants
-     * @param array $isSetConstants
      */
     public function applyToPid($pid, array $constants, array $isSetConstants = [])
     {
@@ -70,7 +68,6 @@ class TsParserUtility implements SingletonInterface
 
     /**
      * @param $pageId
-     * @param int $templateUid
      *
      * @return bool
      */
@@ -93,7 +90,7 @@ class TsParserUtility implements SingletonInterface
                 $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId);
                 try {
                     $rootLine = $rootlineUtility->get();
-                } catch (RuntimeException $e) {
+                } catch (RuntimeException) {
                     return false;
                 }
                 // This generates the constants/config + hierarchy info for the template.
@@ -115,7 +112,6 @@ class TsParserUtility implements SingletonInterface
     /**
      * @param $pid
      * @param $constants
-     * @param array $isSetConstants
      *
      * @todo access check!
      */
@@ -141,7 +137,7 @@ class TsParserUtility implements SingletonInterface
             /**
              * @var DataHandler $tce
              */
-            $tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+            $tce = GeneralUtility::makeInstance(DataHandler::class);
 
             /*
              * Save data and clear the cache
@@ -173,9 +169,9 @@ class TsParserUtility implements SingletonInterface
 
                 if ($field['type'] === 'int+') {
                     $return[$key]['typeCleaned'] = 'Int';
-                } elseif (substr($field['type'], 0, 3) === 'int') {
+                } elseif (str_starts_with((string) $field['type'], 'int')) {
                     $return[$key]['typeCleaned'] = 'Int';
-                    $return[$key]['range'] = substr($field['type'], 3);
+                    $return[$key]['range'] = substr((string) $field['type'], 3);
                 } elseif ($field['type'] === 'small') {
                     $return[$key]['typeCleaned'] = 'Text';
                 } elseif ($field['type'] === 'color') {
@@ -184,11 +180,11 @@ class TsParserUtility implements SingletonInterface
                     $return[$key]['typeCleaned'] = 'Boolean';
                 } elseif ($field['type'] === 'string') {
                     $return[$key]['typeCleaned'] = 'String';
-                } elseif (substr($field['type'], 0, 4) === 'file') {
+                } elseif (str_starts_with((string) $field['type'], 'file')) {
                     $return[$key]['typeCleaned'] = 'File';
-                } elseif (substr($field['type'], 0, 7) === 'options') {
+                } elseif (str_starts_with((string) $field['type'], 'options')) {
                     $return[$key]['typeCleaned'] = 'Options';
-                    $options = explode(',', substr($field['type'], 8, -1));
+                    $options = explode(',', substr((string) $field['type'], 8, -1));
                     $return[$key]['options'] = [];
                     foreach ($options as $option) {
                         $t = explode('=', $option);
@@ -211,8 +207,6 @@ class TsParserUtility implements SingletonInterface
 
     /**
      * @param $pid
-     * @param array $categoriesToShow
-     * @param array $deniedFields
      *
      * @return array
      */

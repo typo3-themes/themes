@@ -29,7 +29,6 @@ namespace KayStrobach\Themes\Domain\Repository;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Doctrine\DBAL\DBALException;
 use KayStrobach\Themes\Domain\Model\AbstractTheme;
 use KayStrobach\Themes\Domain\Model\Theme;
 use PDO;
@@ -37,9 +36,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\Exception;
+use TYPO3\CMS\Extbase\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 
 /**
@@ -60,10 +58,10 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     {
         // Hook to recognize themes, this is the magic point, why it's possible to support so many theme formats and types.
         if (!empty(
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init']
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\KayStrobach\Themes\Domain\Repository\ThemeRepository::class]['init']
         )) {
             $hookParameters = [];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository']['init'] as $hookFunction) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\KayStrobach\Themes\Domain\Repository\ThemeRepository::class]['init'] as $hookFunction) {
                 GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
             }
         }
@@ -87,7 +85,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * @throws Exception
      * @api
      */
-    public function remove($object)
+    public function remove($object): never
     {
         throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
@@ -100,7 +98,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * @throws Exception
      * @api
      */
-    public function replace(AbstractTheme $existingObject, AbstractTheme $newObject)
+    public function replace(AbstractTheme $existingObject, AbstractTheme $newObject): never
     {
         throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
@@ -112,7 +110,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * @throws Exception
      * @api
      */
-    public function update($modifiedObject)
+    public function update($modifiedObject): never
     {
         throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
@@ -132,7 +130,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      *
      * @throws Exception
      */
-    public function getRemovedObjects()
+    public function getRemovedObjects(): never
     {
         throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
@@ -170,10 +168,9 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     }
 
     /**
-     * @param mixed $uid
      * @return Theme
      */
-    public function findByIdentifier($uid): ?Theme
+    public function findByIdentifier(mixed $uid): ?Theme
     {
         return $this->findByUid($uid);
     }
@@ -194,9 +191,8 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     }
 
     /**
-     * @param int $pid
      * @return Theme
-     * @throws DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function findByPageOrRootline(int $pid): ?Theme
     {
@@ -213,7 +209,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
     /**
      * @param int $pid id of the Page
      * @return Theme
-     * @throws DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function findByPageId(int $pid): ?Theme
     {
@@ -246,7 +242,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * @throws Exception
      * @api
      */
-    public function setDefaultOrderings(array $defaultOrderings)
+    public function setDefaultOrderings(array $defaultOrderings): never
     {
         throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
@@ -258,7 +254,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * @throws Exception
      * @api
      */
-    public function setDefaultQuerySettings(QuerySettingsInterface $defaultQuerySettings)
+    public function setDefaultQuerySettings(QuerySettingsInterface $defaultQuerySettings): never
     {
         throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }
@@ -269,7 +265,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      * @throws Exception
      * @api
      */
-    public function createQuery(): ?QueryInterface
+    public function createQuery(): never
     {
         throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
     }

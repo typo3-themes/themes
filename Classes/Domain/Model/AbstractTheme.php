@@ -64,11 +64,6 @@ class AbstractTheme extends AbstractEntity
     /**
      * @var string
      */
-    protected string $extensionName;
-
-    /**
-     * @var string
-     */
     protected string $version = '';
 
     /**
@@ -102,9 +97,8 @@ class AbstractTheme extends AbstractEntity
      * @param string $extensionName
      * @api
      */
-    public function __construct(string $extensionName)
+    public function __construct(protected string $extensionName)
     {
-        $this->extensionName = $extensionName;
     }
 
     /**
@@ -173,9 +167,6 @@ class AbstractTheme extends AbstractEntity
         return $this->metaInformation;
     }
 
-    /**
-     * @param array $metaInformation
-     */
     public function setMetaInformation(array $metaInformation)
     {
         $this->metaInformation = $metaInformation;
@@ -359,8 +350,6 @@ class AbstractTheme extends AbstractEntity
     }
 
     /**
-     * @param array $params
-     * @param TemplateService $pObj
      *
      * @return string
      */
@@ -372,7 +361,7 @@ class AbstractTheme extends AbstractEntity
         $site = $request ? $request->getAttribute('site'):null;
         if ($site instanceof Site) {
             $languages = ArrayUtility::getValueByPath($site->getConfiguration(), 'languages', '.');
-            if (count($languages) > 0) {
+            if ((is_countable($languages) ? count($languages) : 0) > 0) {
                 $languageUids = [];
                 foreach ($languages as $key => $language) {
                     $languageUid = (int)$language['languageId'];

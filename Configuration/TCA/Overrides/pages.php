@@ -11,7 +11,7 @@ $tempColumn = [
             'type'         => 'select',
             'renderType'   => 'selectSingle',
             'items'        => [
-                ['', ''],
+                ['label' => '', 'value' => ''],
             ],
         ],
     ],

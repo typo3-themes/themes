@@ -37,8 +37,6 @@ class CssClassMapper
     /**
      * Maps generic class names of a record to the official class names of the underlying framework.
      *
-     * @param string $content
-     * @param array $conf
      *
      * @return string
      */
@@ -48,8 +46,8 @@ class CssClassMapper
             $frameworkClasses = [];
             $genericClasses = array_flip(explode(',', $content));
             foreach ($conf as $checkConfKey => $checkConfValue) {
-                if (empty($conf[$checkConfValue]) && $checkConfValue && strpos($checkConfValue, '<') === 0) {
-                    $checkConfArray = explode('.', ltrim($checkConfValue, '< '));
+                if (empty($conf[$checkConfValue]) && $checkConfValue && str_starts_with((string) $checkConfValue, '<')) {
+                    $checkConfArray = explode('.', ltrim((string) $checkConfValue, '< '));
                     $conf[$checkConfKey] = $GLOBALS['TSFE']->tmpl->setup[array_shift($checkConfArray) . '.'];
                     foreach ($checkConfArray as $checkConfArrayKey) {
                         $conf[$checkConfKey] = $conf[$checkConfKey][$checkConfArrayKey . '.'];

@@ -45,8 +45,6 @@ class ThemesDomainRepositoryThemeRepositoryInitHook
     /**
      * Add all available themes to the Themes repository
      *
-     * @param array $params
-     * @param ThemeRepository $pObj
      * @throws Exception
      */
     public function init(array &$params, ThemeRepository $pObj): void
@@ -65,7 +63,7 @@ class ThemesDomainRepositoryThemeRepositoryInitHook
 
         // Check extensions, which are worth to check
         foreach ($extensionsToCheck as $extensionName) {
-            if (trim($startWith) === '' || substr($extensionName, 0, strlen($startWith)) === $startWith) {
+            if (trim((string) $startWith) === '' || str_starts_with((string) $extensionName, (string) $startWith)) {
                 $extPath = ExtensionManagementUtility::extPath($extensionName);
 
                 //throw new \Exception($extPath);

@@ -41,7 +41,6 @@ class ThemeEnabledCondition
     /**
      * Check if theme is enabled
      *
-     * @param string $theme
      * @return bool
      * @throws DBALException
      */

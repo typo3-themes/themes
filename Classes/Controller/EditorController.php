@@ -52,7 +52,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -107,19 +107,10 @@ class EditorController extends ActionController
      */
     protected Theme $selectedTheme;
 
-    private ModuleTemplateFactory $moduleTemplateFactory;
-
-    private PageRenderer $pageRenderer;
-
-    public function __construct(ModuleTemplateFactory $moduleTemplateFactory, PageRenderer $pageRenderer)
+    public function __construct(private readonly ModuleTemplateFactory $moduleTemplateFactory, private readonly PageRenderer $pageRenderer)
     {
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->pageRenderer = $pageRenderer;
     }
 
-    /**
-     * @param ThemeRepository $themeRepository
-     */
     public function injectThemeRepository(ThemeRepository $themeRepository)
     {
         $this->themeRepository = $themeRepository;
@@ -173,10 +164,7 @@ class EditorController extends ActionController
     }
 
     /**
-     * @param TsParserUtility $tsParserWrapper
      * @param $pid
-     * @param array|null $allowedCategories
-     * @param array|null $deniedFields
      *
      * @return array
      */
@@ -195,7 +183,7 @@ class EditorController extends ActionController
                 $title = $GLOBALS['LANG']->sL(
                     'LLL:EXT:themes/Resources/Private/Language/Constants/locallang.xml:cat_' . $categoryName
                 );
-                if (strlen($title) === 0) {
+                if (strlen((string) $title) === 0) {
                     $title = $categoryName;
                 }
                 $definition[$categoryName] = [
@@ -224,7 +212,7 @@ class EditorController extends ActionController
                             $constants[$constantName]['userScope'] = 'expert';
                         }
                         // Only get the first category
-                        $catParts = explode(',', $constants[$constantName]['cat']);
+                        $catParts = explode(',', (string) $constants[$constantName]['cat']);
                         if (isset($catParts[1])) {
                             $constants[$constantName]['cat'] = $catParts[0];
                         }
@@ -240,9 +228,6 @@ class EditorController extends ActionController
     /**
      * save changed constants.
      *
-     * @param array $data
-     * @param array $check
-     * @param int $pid
      *
      * @throws StopActionException
      */
@@ -297,7 +282,6 @@ class EditorController extends ActionController
     /**
      * activate a theme.
      *
-     * @param string $theme
      *
      * @throws StopActionException
      * @throws DBALException
@@ -346,9 +330,9 @@ class EditorController extends ActionController
                 } elseif ($type == 'string') {
                     try {
                         $categoriesFilterSettings[$setting] = ctype_alpha(
-                            $this->request->getArgument($setting)
+                            (string) $this->request->getArgument($setting)
                         ) ? $this->request->getArgument($setting):'all';
-                    } catch (NoSuchArgumentException $e) {
+                    } catch (NoSuchArgumentException) {
                     }
                 }
             }
@@ -365,7 +349,7 @@ class EditorController extends ActionController
                 'error' => '',
                 'data' => $categoriesFilterSettings,
         ];
-        return $this->jsonResponse(json_encode($response));
+        return $this->jsonResponse(json_encode($response, JSON_THROW_ON_ERROR));
     }
 
     /**
@@ -377,8 +361,6 @@ class EditorController extends ActionController
     protected function initializeView(ViewInterface $view)
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        /** @var BackendTemplateView $view */
-        parent::initializeView($view);
         if (!empty($moduleTemplate)) {
             $pageRenderer = $this->pageRenderer;
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/Colorpicker');
@@ -489,9 +471,9 @@ class EditorController extends ActionController
         // Get extension configuration
         try {
             $extensionConfiguration = $this->getExtensionConfiguration('themes');
-        } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException $e) {
+        } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException) {
         }
-        $extensionConfiguration = $extensionConfiguration ?? [];
+        $extensionConfiguration ??= [];
         // Initially, get configuration from extension manager!
         $extensionConfiguration['categoriesToShow'] = GeneralUtility::trimExplode(
             ',',
@@ -510,10 +492,7 @@ class EditorController extends ActionController
                 ',',
                 $externalConstantCategoriesToShow['value']
             );
-            $extensionConfiguration['categoriesToShow'] = array_merge(
-                $extensionConfiguration['categoriesToShow'],
-                $this->externalConfig['constantCategoriesToShow']
-            );
+            $extensionConfiguration['categoriesToShow'] = [...$extensionConfiguration['categoriesToShow'], ...$this->externalConfig['constantCategoriesToShow']];
         }
         // mod.tx_themes.constantsToHide.value
         // Get value from page/user typoscript
@@ -524,10 +503,7 @@ class EditorController extends ActionController
                 ',',
                 $externalConstantsToHide['value']
             );
-            $extensionConfiguration['constantsToHide'] = array_merge(
-                $extensionConfiguration['constantsToHide'],
-                $this->externalConfig['constantsToHide']
-            );
+            $extensionConfiguration['constantsToHide'] = [...$extensionConfiguration['constantsToHide'], ...$this->externalConfig['constantsToHide']];
         }
         $this->allowedCategories = $extensionConfiguration['categoriesToShow'];
         $this->deniedFields = $extensionConfiguration['constantsToHide'];
@@ -535,7 +511,6 @@ class EditorController extends ActionController
     }
 
     /**
-     * @param string $extensionKey
      * @return array
      * @throws ExtensionConfigurationExtensionNotConfiguredException
      * @throws ExtensionConfigurationPathDoesNotExistException

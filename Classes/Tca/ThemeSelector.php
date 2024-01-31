@@ -43,7 +43,7 @@ class ThemeSelector
         /**
          * @var ThemeRepository $repository
          */
-        $repository = GeneralUtility::makeInstance('KayStrobach\\Themes\\Domain\\Repository\\ThemeRepository');
+        $repository = GeneralUtility::makeInstance(ThemeRepository::class);
 
         $themes = $repository->findAll();
 

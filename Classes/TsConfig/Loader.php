@@ -63,6 +63,7 @@ final class Loader
      */
     public function __invoke(ModifyLoadedPageTsConfigEvent $event): void
     {
+        $defaultDataArray = [];
         $rootLine = $event->getRootLine();
         $currentPage = end($rootLine);
         if (!$currentPage) {
@@ -75,7 +76,7 @@ final class Loader
         $pageTsConfig = $event->getTsConfig();
 
         /** @var ThemeRepository $themeRepository */
-        $themeRepository = GeneralUtility::makeInstance('KayStrobach\Themes\\Domain\\Repository\\ThemeRepository');
+        $themeRepository = GeneralUtility::makeInstance(ThemeRepository::class);
         $theme = $themeRepository->findByPageOrRootline($pageUid);
         if (!isset($theme)) {
             return;
@@ -127,13 +128,10 @@ final class Loader
             $queryBuilder->select('*')
                     ->from('sys_template')
                     ->where(
-                            $queryBuilder->expr()->andX(
-                                    $queryBuilder->expr()->eq(
-                                            'pid',
-                                            $queryBuilder->createNamedParameter((int)$page['uid'], PDO::PARAM_INT)
-                                    ),
-                                    $queryBuilder->expr()->eq('root', '1')
-                            )
+                            $queryBuilder->expr()->and($queryBuilder->expr()->eq(
+                                    'pid',
+                                    $queryBuilder->createNamedParameter((int)$page['uid'], PDO::PARAM_INT)
+                            ), $queryBuilder->expr()->eq('root', '1'))
                     );
             /** @var Statement $statement */
             $statement = $queryBuilder->execute();

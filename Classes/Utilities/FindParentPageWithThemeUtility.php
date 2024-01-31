@@ -60,7 +60,7 @@ class FindParentPageWithThemeUtility
                         $pageUid = $page['pid'];
                         break;
                     }
-                } catch (DBALException $e) {
+                } catch (DBALException) {
                 }
             }
         }

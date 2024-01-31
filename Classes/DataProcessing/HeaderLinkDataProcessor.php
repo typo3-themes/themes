@@ -28,11 +28,10 @@ namespace KayStrobach\Themes\DataProcessing;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
-use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
  * DataProcessor for header link parts
@@ -57,7 +56,7 @@ class HeaderLinkDataProcessor implements DataProcessorInterface
         array $processorConfiguration,
         array $processedData
     ): array {
-        if (isset($processedData['data']['header_link']) && trim($processedData['data']['header_link']) !== '') {
+        if (isset($processedData['data']['header_link']) && trim((string) $processedData['data']['header_link']) !== '') {
             $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
             $processedData['headerLink'] = $typoLinkCodecService->decode($processedData['data']['header_link']);
         }

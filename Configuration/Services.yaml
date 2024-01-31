@@ -1,7 +1,19 @@
 services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  KayStrobach\Themes\:
+    resource: '../Classes/*'
+
   KayStrobach\Themes\TsConfig\Loader:
     public: true
     tags:
       - name: event.listener
         identifier: 'add-site-configuration'
         event: TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent
+  KayStrobach\Themes\EventListener\AfterTemplatesHaveBeenDeterminedEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'themes/AfterTemplatesHaveBeenDeterminedEventListner'

@@ -8,7 +8,6 @@ return [
         'label'              => 'linktext',
         'tstamp'             => 'tstamp',
         'crdate'             => 'crdate',
-        'cruser_id'          => 'cruser_id',
         'versioningWS'       => true,
         'origUid'            => 't3_origuid',
         'sortby'             => 'sorting',
@@ -48,7 +47,7 @@ return [
                 'type' => 'input',
                 'size' => 50,
                 'max'  => 256,
-                'eval' => 'required',
+                'required' => true,
             ],
         ],
         'icon' => [
@@ -58,7 +57,7 @@ return [
                 'type'         => 'select',
                 'renderType'   => 'selectSingle',
                 'items'        => [
-                    ['', ''],
+                    ['label' => '', 'value' => ''],
                 ],
             ],
         ],
@@ -67,21 +66,14 @@ return [
             'label'   => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config'  => [
                 'type'  => 'check',
-                'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:hidden.I.0',
-                    ],
-                ],
             ],
         ],
         'starttime' => [
             'exclude' => 1,
             'label'   => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config'  => [
-                'type'    => 'input',
-                'renderType' => 'inputDateTime',
+                'type'    => 'datetime',
                 'size'    => 13,
-                'eval'    => 'datetime',
                 'default' => 0,
             ],
             'l10n_mode'    => 'exclude',
@@ -91,10 +83,8 @@ return [
             'exclude' => 1,
             'label'   => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config'  => [
-                'type'    => 'input',
-                'renderType' => 'inputDateTime',
+                'type'    => 'datetime',
                 'size'    => 13,
-                'eval'    => 'datetime',
                 'default' => 0,
                 'range'   => [
                     'upper' => mktime(0, 0, 0, 12, 31, 2020),
@@ -113,12 +103,12 @@ return [
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items'               => [
                     [
-                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
-                        -1,
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
+                        'value' => -1,
                     ],
                     [
-                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value',
-                        0,
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value',
+                        'value' => 0,
                     ],
                 ],
             ],
@@ -145,9 +135,9 @@ return [
                 'size'       => 5,
                 'maxitems'   => 20,
                 'items'      => [
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login', -1],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login', -2],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups', '--div--'],
+                    ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login', 'value' => -1],
+                    ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login', 'value' => -2],
+                    ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups', 'value' => '--div--'],
                 ],
                 'exclusiveKeys'       => '-1,-2',
                 'foreign_table'       => 'fe_groups',

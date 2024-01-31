@@ -70,7 +70,7 @@ class ContentVariants extends AbstractContentRow
             $gridLayout = $gridLayout[0];
         }
         // Get values
-        $values = explode(',', $value);
+        $values = explode(',', (string) $value);
         $this->valuesFlipped = array_flip($values);
         $this->valuesAvailable = [];
         // Get configuration
@@ -87,7 +87,7 @@ class ContentVariants extends AbstractContentRow
                     $contentElementKey,
                     $this->defaultProperties
                 )) {
-                    $contentElementKey = substr($contentElementKey, 0, -1);
+                    $contentElementKey = substr((string) $contentElementKey, 0, -1);
 
                     // Variant for all GridElements
                     if ($contentElementKey == 'default' && !empty($label)) {
@@ -135,7 +135,7 @@ class ContentVariants extends AbstractContentRow
         $hiddenField .= '<div class="form-control-wrap">' . LF;
         $hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
         $hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
-        $hiddenField .= 'name="' . htmlspecialchars($name) . '" ';
+        $hiddenField .= 'name="' . htmlspecialchars((string) $name) . '" ';
         $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . LF;
         $hiddenField .= '</div>' . LF;
         $hiddenField .= '</div>' . LF;
@@ -152,7 +152,7 @@ class ContentVariants extends AbstractContentRow
      * @param mixed $label Label of the element
      * @param string $type Type of the element property
      */
-    protected function createElement(string $key, $label, string $type)
+    protected function createElement(string $key, mixed $label, string $type)
     {
         if (is_array($label) && !empty($label)) {
             $this->createSelectbox($key, $label, $type);
@@ -219,7 +219,6 @@ class ContentVariants extends AbstractContentRow
      * Merge checkboxes into a group.
      *
      * @param string $type Type of the checkbox property
-     * @param string $labelInfo
      * @return string Grouped checkboxes
      */
     protected function getMergedCheckboxes(string $type, string $labelInfo = ''): string

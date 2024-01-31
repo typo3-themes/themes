@@ -31,7 +31,6 @@ namespace KayStrobach\Themes\Utilities;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Install\Configuration\AbstractPreset;
 use TYPO3\CMS\Install\Configuration\Context\ContextFeature;
 use TYPO3\CMS\Install\Configuration\Exception;
@@ -44,13 +43,10 @@ class ApplicationContext
      */
     protected FeatureManager $featureManager;
 
-    /**
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
-     */
     public function __construct()
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->featureManager = $objectManager->get(FeatureManager::class);
+        $featureManager = GeneralUtility::makeInstance(FeatureManager::class);
+        $this->featureManager = $featureManager;
     }
 
     /**
@@ -113,9 +109,6 @@ class ApplicationContext
         return false;
     }
 
-    /**
-     * @param FeatureManager $featureManager
-     */
     public function injectFeatureManager(FeatureManager $featureManager): void
     {
         $this->featureManager = $featureManager;

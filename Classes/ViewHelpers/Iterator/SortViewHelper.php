@@ -67,13 +67,12 @@ class SortViewHelper extends AbstractViewHelper
     /**
      * Sort an array.
      *
-     * @param array $array
      *
      * @return array
      */
     protected function sortArray(array $array): array
     {
-        usort($array, [$this, 'compare']);
+        usort($array, $this->compare(...));
         return $array;
     }
 

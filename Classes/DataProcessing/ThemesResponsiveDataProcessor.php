@@ -70,12 +70,12 @@ class ThemesResponsiveDataProcessor implements DataProcessorInterface
             foreach ($keys as $key) {
                 if (isset($setup['lib.']['content.']['cssMap.']['responsive.'][$key])) {
                     // Special handling for column width
-                    if (strstr($key, '-column-width-')) {
-                        $keyParts = explode('-', $key);
+                    if (strstr((string) $key, '-column-width-')) {
+                        $keyParts = explode('-', (string) $key);
                         $columns = array_slice($keyParts, 3);
                         if (!empty($columns)) {
                             foreach ($columns as $no => $column) {
-                                $cssClass = trim($setup['lib.']['content.']['cssMap.']['responsive.'][$key]);
+                                $cssClass = trim((string) $setup['lib.']['content.']['cssMap.']['responsive.'][$key]);
                                 $value = sprintf($cssClass, $column);
                                 $processedData['themes']['responsive']['column'][$no]['css'][$value] = $value;
                                 if (isset($processedData['themes']['responsive']['column'][$no]['css'])) {
@@ -87,7 +87,7 @@ class ThemesResponsiveDataProcessor implements DataProcessorInterface
                             }
                         }
                     } else {
-                        $cssClass = trim($setup['lib.']['content.']['cssMap.']['responsive.'][$key]);
+                        $cssClass = trim((string) $setup['lib.']['content.']['cssMap.']['responsive.'][$key]);
                         if ($cssClass !== '') {
                             $processedData['themes']['responsive']['css'][$cssClass] = $cssClass;
                         }

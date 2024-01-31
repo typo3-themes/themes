@@ -68,12 +68,12 @@ class GetViewHelper extends AbstractViewHelper
     {
         $name = $this->arguments['name'];
         $useRawKeys = $this->arguments['useRawKeys'];
-        if (false === strpos($name, '.')) {
+        if (!str_contains((string) $name, '.')) {
             if (true === $this->templateVariableContainer->exists($name)) {
                 return $this->templateVariableContainer->get($name);
             }
         } else {
-            $segments = explode('.', $name);
+            $segments = explode('.', (string) $name);
             $lastSegment = array_shift($segments);
             $templateVariableRootName = $lastSegment;
             if (true === $this->templateVariableContainer->exists($templateVariableRootName)) {
@@ -102,7 +102,7 @@ class GetViewHelper extends AbstractViewHelper
                     }
 
                     return $value;
-                } catch (Exception $e) {
+                } catch (Exception) {
                     return null;
                 }
             }

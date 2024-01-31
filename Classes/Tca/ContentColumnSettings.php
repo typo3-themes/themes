@@ -77,7 +77,7 @@ class ContentColumnSettings extends AbstractContentRow
             $cType = $cType[0];
         }
         // Get values
-        $values = explode(',', $value);
+        $values = explode(',', (string) $value);
         $valuesFlipped = array_flip($values);
         $valuesAvailable = [];
 
@@ -89,7 +89,7 @@ class ContentColumnSettings extends AbstractContentRow
         if (!empty($responsives['properties'])) {
             foreach ($responsives['properties'] as $groupKey => $settings) {
                 // Validate groupKey and get label
-                $groupKey = substr($groupKey, 0, -1);
+                $groupKey = substr((string) $groupKey, 0, -1);
                 $label = $settings['label'] ?? $groupKey;
                 $selectboxes .= '<div class="col-xs-6 col-sm-2 themes-column">' . LF;
                 $selectboxes .= '<label class="t3js-formengine-label">' . $this->getLanguageService()->sL(
@@ -138,7 +138,7 @@ class ContentColumnSettings extends AbstractContentRow
         $hiddenField .= '<div class="form-control-wrap">' . LF;
         $hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
         $hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
-        $hiddenField .= 'name="' . htmlspecialchars($name) . '" ';
+        $hiddenField .= 'name="' . htmlspecialchars((string) $name) . '" ';
         $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . LF;
         $hiddenField .= '</div>' . LF;
         $hiddenField .= '</div>' . LF;

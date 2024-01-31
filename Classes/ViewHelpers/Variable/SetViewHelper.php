@@ -79,13 +79,13 @@ class SetViewHelper extends AbstractViewHelper
         if (null === $value) {
             $value = $this->renderChildren();
         }
-        if (false === strpos($name, '.')) {
+        if (!str_contains((string) $name, '.')) {
             if (true === $this->templateVariableContainer->exists($name)) {
                 $this->templateVariableContainer->remove($name);
             }
             $this->templateVariableContainer->add($name, $value);
-        } elseif (1 === substr_count($name, '.')) {
-            $parts = explode('.', $name);
+        } elseif (1 === substr_count((string) $name, '.')) {
+            $parts = explode('.', (string) $name);
             $objectName = array_shift($parts);
             $path = implode('.', $parts);
             if (false === $this->templateVariableContainer->exists($objectName)) {
@@ -97,7 +97,7 @@ class SetViewHelper extends AbstractViewHelper
                 // Note: re-insert the variable to ensure unreferenced values like arrays also get updated
                 $this->templateVariableContainer->remove($objectName);
                 $this->templateVariableContainer->add($objectName, $object);
-            } catch (Exception $error) {
+            } catch (Exception) {
                 return;
             }
         }

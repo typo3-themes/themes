@@ -57,6 +57,6 @@ class ReplaceViewHelper extends AbstractViewHelper
         if (null === $content) {
             $content = $this->renderChildren();
         }
-        return str_replace($substring, $replacement, $content, $count);
+        return str_replace($substring, $replacement, (string) $content, $count);
     }
 }

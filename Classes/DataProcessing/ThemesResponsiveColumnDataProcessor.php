@@ -86,7 +86,7 @@ class ThemesResponsiveColumnDataProcessor implements DataProcessorInterface
                 $column = 0;
                 foreach ($keys as $key) {
                     if (isset($this->setup['lib.']['content.']['cssMap.']['responsive.']['column.'][$key])) {
-                        $cssClass = trim($this->setup['lib.']['content.']['cssMap.']['responsive.']['column.'][$key]);
+                        $cssClass = trim((string) $this->setup['lib.']['content.']['cssMap.']['responsive.']['column.'][$key]);
                         $processedData['themes']['responsive']['column'][$column]['css'][$cssClass] = $cssClass;
                     }
                     if (isset($processedData['themes']['responsive']['column'][$column]['css'])) {

@@ -65,7 +65,7 @@ class ThemesBehaviourDataProcessor implements DataProcessorInterface
             if (isset($setup['lib.']['content.']['cssMap.']['behaviour.']) && !empty($setup['lib.']['content.']['cssMap.']['behaviour.'])) {
                 foreach ($setup['lib.']['content.']['cssMap.']['behaviour.'] as $key => $cssClass) {
                     if (is_array($cssClass)) {
-                        $key = substr($key, 0, -1);
+                        $key = substr((string) $key, 0, -1);
                         if (!empty($cssClass)) {
                             foreach ($cssClass as $subKey => $setting) {
                                 if (in_array($key . '-' . $subKey, $keys)) {
