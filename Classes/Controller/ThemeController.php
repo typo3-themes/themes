@@ -192,7 +192,7 @@ class ThemeController extends ActionController
             if (!array_key_exists(($segment . '.'), $setup)) {
                 throw new Exception(
                     'TypoScript object path "' . htmlspecialchars((string) $typoscriptObjectPath) . '" does not exist',
-                    1_253_191_023
+                    1253191023
                 );
             }
             $setup = $setup[$segment . '.'];

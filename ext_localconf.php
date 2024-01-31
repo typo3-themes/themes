@@ -33,29 +33,29 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['i
 );
 
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1_632_667_595] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667595] = [
     'nodeName' => 'ContentVariants',
     'priority' => '70',
     'class' => \KayStrobach\Themes\Tca\ContentVariants::class
 ];
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1_632_667_596] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667596] = [
     'nodeName' => 'ContentBehaviour',
     'priority' => '70',
     'class' => \KayStrobach\Themes\Tca\ContentBehaviour::class
 ];
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1_632_667_597] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667597] = [
     'nodeName' => 'ContentResponsive',
     'priority' => '70',
     'class' => \KayStrobach\Themes\Tca\ContentResponsive::class
 ];
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1_632_667_598] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667598] = [
     'nodeName' => 'ThemesContentColumnSettings',
     'priority' => '70',
     'class' => \KayStrobach\Themes\Tca\ContentColumnSettings::class
 ];
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1_632_667_599] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1632667599] = [
     'nodeName' => 'ThemesContentEnforceEqualColumnHeight',
     'priority' => '70',
     'class' => \KayStrobach\Themes\Tca\ContentEnforceEqualColumnHeight::class
