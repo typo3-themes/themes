@@ -91,10 +91,10 @@ class ContentColumnSettings extends AbstractContentRow
                 // Validate groupKey and get label
                 $groupKey = substr((string) $groupKey, 0, -1);
                 $label = $settings['label'] ?? $groupKey;
-                $selectboxes .= '<div class="col-xs-6 col-sm-2 themes-column">' . LF;
+                $selectboxes .= '<div class="col-xs-6 col-sm-2 themes-column">' . PHP_EOL;
                 $selectboxes .= '<label class="t3js-formengine-label">' . $this->getLanguageService()->sL(
                     $label
-                ) . '</label>' . LF;
+                ) . '</label>' . PHP_EOL;
                 if (!empty($settings['columnSettings.'])) {
                     foreach ($settings['columnSettings.'] as $visibilityKey => $visibilityLabel) {
                         $start = $visibilityKey === 'width' ? 1:0;
@@ -106,22 +106,22 @@ class ContentColumnSettings extends AbstractContentRow
                         }
 
                         // build radiobox
-                        $selectboxes .= '<div>' . LF;
+                        $selectboxes .= '<div>' . PHP_EOL;
                         $selectboxes .= '<label class="themes-select-label">' . $this->getLanguageService()->sL(
                             $visibilityLabel
-                        ) . '</label>' . LF;
-                        $selectboxes .= '<select class="form-control form-control-adapt input-sm" name="' . $tempKey . '">' . LF;
-                        $selectboxes .= '<option value="">default</option>' . LF;
+                        ) . '</label>' . PHP_EOL;
+                        $selectboxes .= '<select class="form-control form-control-adapt input-sm" name="' . $tempKey . '">' . PHP_EOL;
+                        $selectboxes .= '<option value="">default</option>' . PHP_EOL;
                         for ($i = $start; $i <= 12; $i++) {
                             // set the selected value
                             $selected = (isset($valuesFlipped[$tempKey . '-' . $i])) ? 'selected="selected"':'';
-                            $selectboxes .= '<option value="' . $tempKey . '-' . $i . '" ' . $selected . '>' . $i . ' columns of 12<!-- ' . $visibilityKey . ' ' . $i . '--></option>' . LF;
+                            $selectboxes .= '<option value="' . $tempKey . '-' . $i . '" ' . $selected . '>' . $i . ' columns of 12<!-- ' . $visibilityKey . ' ' . $i . '--></option>' . PHP_EOL;
                         }
-                        $selectboxes .= '</select>' . LF;
-                        $selectboxes .= '</div>' . LF;
+                        $selectboxes .= '</select>' . PHP_EOL;
+                        $selectboxes .= '</div>' . PHP_EOL;
                     }
                 }
-                $selectboxes .= '</div>' . LF;
+                $selectboxes .= '</div>' . PHP_EOL;
             }
         }
         // Process current classes/identifiers
@@ -134,14 +134,14 @@ class ContentColumnSettings extends AbstractContentRow
             $inputType = 'text';
         }
         // Build hidden field structure
-        $hiddenField = '<div>' . LF;
-        $hiddenField .= '<div class="form-control-wrap">' . LF;
+        $hiddenField = '<div>' . PHP_EOL;
+        $hiddenField .= '<div class="form-control-wrap">' . PHP_EOL;
         $hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
         $hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
         $hiddenField .= 'name="' . htmlspecialchars((string) $name) . '" ';
-        $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . LF;
-        $hiddenField .= '</div>' . LF;
-        $hiddenField .= '</div>' . LF;
+        $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . PHP_EOL;
+        $hiddenField .= '</div>' . PHP_EOL;
+        $hiddenField .= '</div>' . PHP_EOL;
         // Missed classes
         $missedField = $this->getMissedFields($values, $valuesAvailable);
 

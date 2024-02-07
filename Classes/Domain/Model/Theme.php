@@ -157,6 +157,12 @@ class Theme extends AbstractTheme
      */
     public function addTypoScriptForFe(array &$params, TemplateService &$pObj, array $extensions = [], array $features = []): void
     {
+
+        /**
+         * @todo v12 can be removed finally
+         */
+
+
         // @codingStandardsIgnoreStart
         $themeItem = [
                 'constants' => @is_file($this->getTypoScriptConstantsAbsPath()) ? GeneralUtility::getUrl(
@@ -173,12 +179,12 @@ class Theme extends AbstractTheme
         // @codingStandardsIgnoreEnd
 
         // @todo resources Path / private Path
-        $themeItem['constants'] .= LF . 'themes.resourcesPrivatePath = ' . $this->getRelativePath(
+        $themeItem['constants'] .= PHP_EOL . 'themes.resourcesPrivatePath = ' . $this->getRelativePath(
         ) . 'Resources/Private/';
-        $themeItem['constants'] .= LF . 'themes.resourcesPublicPath = ' . $this->getRelativePath(
+        $themeItem['constants'] .= PHP_EOL . 'themes.resourcesPublicPath = ' . $this->getRelativePath(
         ) . 'Resources/Public/';
         $themeItem['constants'] .= $this->getBasicConstants($params['pid']);
-        $themeItem['constants'] .= LF . $this->getTypoScriptForLanguage($params, $pObj);
+        $themeItem['constants'] .= PHP_EOL . $this->getTypoScriptForLanguage($params, $pObj);
 
         $pObj->processTemplate(
             $themeItem,

@@ -29,7 +29,6 @@ $tempColumn = [
             'size' => 10,
             'maxitems' => 100,
             'items' => [],
-            'softref' => 'ext_fileref'
         ]
     ],
     'tx_themes_features' => [
@@ -40,7 +39,6 @@ $tempColumn = [
             'size' => 10,
             'maxitems' => 100,
             'items' => [],
-            'softref' => 'ext_fileref'
         ]
     ],
 ];

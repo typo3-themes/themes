@@ -40,26 +40,21 @@ class ThemeSelector
 {
     public function items(&$PA, $fobj): void
     {
-        /**
-         * @var ThemeRepository $repository
-         */
+        /** @var ThemeRepository $repository */
         $repository = GeneralUtility::makeInstance(ThemeRepository::class);
-
         $themes = $repository->findAll();
-
         $PA['items'] = [
-                [
-                        0 => 'None',
-                        1 => '',
-                ],
+            [
+                'label' => 'None',
+                'value' => '',
+            ],
         ];
-
         /** @var Theme $theme */
         foreach ($themes as $theme) {
             $PA['items'][] = [
-                    0 => $theme->getTitle(),
-                    1 => $theme->getExtensionName(),
-                    2 => $theme->getPreviewImage(),
+                'label' => $theme->getTitle(),
+                'value' => $theme->getExtensionName(),
+                'icon' => $theme->getPreviewImage(),
             ];
         }
     }

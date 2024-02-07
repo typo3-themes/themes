@@ -46,44 +46,18 @@ use TYPO3\CMS\Install\Configuration\Exception;
  */
 class AbstractTheme extends AbstractEntity
 {
-    /**
-     * @var string
-     */
     protected string $title;
 
     /**
      * @var array
      */
     protected array $author = [];
-
-    /**
-     * @var string
-     */
     protected string $description;
-
-    /**
-     * @var string
-     */
+    protected string $extensionName;
     protected string $version = '';
-
-    /**
-     * @var string
-     */
     protected string $previewImage;
-
-    /**
-     * @var string
-     */
     protected string $pathTyposcript;
-
-    /**
-     * @var string
-     */
     protected string $pathTyposcriptConstants;
-
-    /**
-     * @var string
-     */
     protected string $pathTsConfig;
 
     /**
@@ -97,8 +71,9 @@ class AbstractTheme extends AbstractEntity
      * @param string $extensionName
      * @api
      */
-    public function __construct(protected string $extensionName)
+    public function __construct(string $extensionName)
     {
+        $this->extensionName = $extensionName;
     }
 
     /**
@@ -140,10 +115,10 @@ class AbstractTheme extends AbstractEntity
     public function getAllPreviewImages(): array
     {
         return [
-                [
-                        'file' => $this->getPreviewImage(),
-                        'caption' => '',
-                ],
+            [
+                'file' => $this->getPreviewImage(),
+                'caption' => '',
+            ],
         ];
     }
 
@@ -251,7 +226,7 @@ class AbstractTheme extends AbstractEntity
         // @codingStandardsIgnoreEnd
         //
         $themeItem['constants'] .= $this->getBasicConstants($params['pid']);
-        $themeItem['constants'] .= LF . $this->getTypoScriptForLanguage($params, $pObj);
+        $themeItem['constants'] .= PHP_EOL . $this->getTypoScriptForLanguage($params, $pObj);
         //
         $pObj->processTemplate(
             $themeItem,
@@ -313,14 +288,24 @@ class AbstractTheme extends AbstractEntity
      * @return string
      * @throws Exception
      */
-    protected function getBasicConstants($pid): string
+    public function getBasicConstants($pid): string
     {
-        $buffer = LF . 'themes.relativePath = ' . $this->getRelativePath();
-        $buffer .= LF . 'themes.name = ' . $this->getExtensionName();
-        $buffer .= LF . 'themes.templatePageId = ' . $pid;
-        $buffer .= LF . 'themes.mode.context = ' . ApplicationContext::getApplicationContext();
-        $buffer .= LF . 'themes.mode.isDevelopment = ' . (int)ApplicationContext::isDevelopmentModeActive();
-        $buffer .= LF . 'themes.mode.isProduction = ' . (int)!ApplicationContext::isDevelopmentModeActive();
+        $buffer = PHP_EOL . 'themes.relativePath = ' . $this->getRelativePath();
+
+        /**
+         * @todo clean up, if this solves this issue!!
+         */
+//        $buffer .= PHP_EOL . 'themes.resourcesPrivatePath = ' . $this->getRelativePath() . 'Resources/Private/';
+//        $buffer .= PHP_EOL . 'themes.resourcesPublicPath = ' . $this->getRelativePath() . 'Resources/Public/';
+
+        $buffer .= PHP_EOL . 'themes.resourcesPrivatePath = EXT:' . $this->getExtensionName() . '/Resources/Private/';
+        $buffer .= PHP_EOL . 'themes.resourcesPublicPath = EXT:' . $this->getExtensionName() . '/Resources/Public/';
+
+        $buffer .= PHP_EOL . 'themes.name = ' . $this->getExtensionName();
+        $buffer .= PHP_EOL . 'themes.templatePageId = ' . $pid;
+        $buffer .= PHP_EOL . 'themes.mode.context = ' . ApplicationContext::getApplicationContext();
+        $buffer .= PHP_EOL . 'themes.mode.isDevelopment = ' . (int)ApplicationContext::isDevelopmentModeActive();
+        $buffer .= PHP_EOL . 'themes.mode.isProduction = ' . (int)!ApplicationContext::isDevelopmentModeActive();
         return $buffer;
     }
 
@@ -353,7 +338,7 @@ class AbstractTheme extends AbstractEntity
      *
      * @return string
      */
-    public function getTypoScriptForLanguage(array &$params, TemplateService &$pObj): string
+    public function getTypoScriptForLanguage(): string
     {
         $outputBuffer = '';
         $key = 'themes.languages';
@@ -366,26 +351,31 @@ class AbstractTheme extends AbstractEntity
                 foreach ($languages as $key => $language) {
                     $languageUid = (int)$language['languageId'];
                     $languageUids[] = $languageUid;
-                    $buffer = '[siteLanguage("languageId") == ' . $languageUid . ']' . LF;
-                    $buffer .= $key . '.current {' . LF;
-                    $buffer .= ' uid = ' . $languageUid . LF;
-                    $buffer .= ' label = ' . $language['title'] . LF;
-                    $buffer .= ' labelLocalized = ' . $language['navigationTitle'] . LF;
-                    $buffer .= ' labelEnglish = ' . $language['navigationTitle'] . LF;
-                    $buffer .= ' flag = ' . $language['flag'] . LF;
-                    $buffer .= ' isoCode = ' . $language['locale'] . LF;
-                    $buffer .= ' isoCodeShort = ' . $language['iso-639-1'] . LF;
-                    $buffer .= ' isoCodeHtml = ' . $language['hreflang'] . LF;
-                    $buffer .= '} ' . LF;
-                    $buffer .= '[end]' . LF;
+                    $buffer = '[siteLanguage("languageId") == ' . $languageUid . ']' . PHP_EOL;
+                    $buffer .= $key . '.current {' . PHP_EOL;
+                    $buffer .= ' uid = ' . $languageUid . PHP_EOL;
+                    $buffer .= ' label = ' . $language['title'] . PHP_EOL;
+                    $buffer .= ' labelLocalized = ' . $language['navigationTitle'] . PHP_EOL;
+                    $buffer .= ' labelEnglish = ' . $language['navigationTitle'] . PHP_EOL;
+                    $buffer .= ' flag = ' . $language['flag'] . PHP_EOL;
+                    $buffer .= ' isoCode = ' . $language['locale'] . PHP_EOL;
+                    $buffer .= ' isoCodeShort = ' . $language['iso-639-1'] . PHP_EOL;
+                    $buffer .= ' isoCodeHtml = ' . $language['hreflang'] . PHP_EOL;
+                    $buffer .= '} ' . PHP_EOL;
+                    $buffer .= '[end]' . PHP_EOL;
                     $outputBuffer .= $buffer;
                 }
-                $outputBuffer .= $key . '.available=' . implode(',', $languageUids) . LF;
+                $outputBuffer .= $key . '.available=' . implode(',', $languageUids) . PHP_EOL;
             } else {
-                $outputBuffer .= $key . '.available=' . LF;
+                $outputBuffer .= $key . '.available=' . PHP_EOL;
+
+                /**
+                 * @todo in this method we need to fix the "0.available = 0" - what was the goal of this!?
+                 */
+
             }
         } else {
-            $outputBuffer .= $key . '.available=' . LF;
+            $outputBuffer .= $key . '.available=' . PHP_EOL;
         }
         return $outputBuffer;
     }

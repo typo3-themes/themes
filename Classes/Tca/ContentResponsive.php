@@ -108,10 +108,10 @@ class ContentResponsive extends AbstractContentRow
                     continue;
                 }
 
-                $selectboxes .= '<div class="' . $cssClasses . '" style="' . $cssStyles . '">' . LF;
+                $selectboxes .= '<div class="' . $cssClasses . '" style="' . $cssStyles . '">' . PHP_EOL;
                 $selectboxes .= '<label class="t3js-formengine-label">' . $this->getLanguageService()->sL(
                     $label
-                ) . '</label>' . LF;
+                ) . '</label>' . PHP_EOL;
                 if (!empty($settings['visibility.'])) {
                     // check if there's already a value selected
                     $valueSet = false;
@@ -122,9 +122,9 @@ class ContentResponsive extends AbstractContentRow
                         }
                     }
                     $selectboxes .= '<label class="t3js-formengine-label sub-label" style="font-weight:normal">' . $this->getLanguageService(
-                    )->sL('visibility') . '</label>' . LF;
+                    )->sL('visibility') . '</label>' . PHP_EOL;
 
-                    $selectbox = '<select name="' . $groupKey . '" class="form-control input-sm">' . LF;
+                    $selectbox = '<select name="' . $groupKey . '" class="form-control input-sm">' . PHP_EOL;
                     foreach ($settings['visibility.'] as $visibilityKey => $visibilityLabel) {
                         $tempKey = $groupKey . '-' . $visibilityKey;
                         $valuesAvailable[] = $tempKey;
@@ -137,12 +137,12 @@ class ContentResponsive extends AbstractContentRow
                             $valueSet = true;
                         }
                         $label = $this->getLanguageService()->sL($visibilityLabel);
-                        $selectbox .= '<option value="' . $tempKey . '" ' . $selected . '>' . $label . '</option>' . LF;
+                        $selectbox .= '<option value="' . $tempKey . '" ' . $selected . '>' . $label . '</option>' . PHP_EOL;
                     }
-                    $selectbox .= '</select>' . LF;
+                    $selectbox .= '</select>' . PHP_EOL;
                     $selectboxes .= $selectbox;
                 }
-                $selectboxes .= '</div>' . LF;
+                $selectboxes .= '</div>' . PHP_EOL;
             }
 
             // For special content elements
@@ -154,10 +154,10 @@ class ContentResponsive extends AbstractContentRow
                     if (!empty($settings)) {
                         foreach ($settings as $settingKey => $settingValues) {
                             $settingKey = substr((string) $settingKey, 0, -1);
-                            $tempContent[$settingKey] .= '<div class="' . $cssClasses . '" style="' . $cssStyles . '">' . LF;
+                            $tempContent[$settingKey] .= '<div class="' . $cssClasses . '" style="' . $cssStyles . '">' . PHP_EOL;
                             $tempContent[$settingKey] .= '<label class="t3js-formengine-label sub-label">' . $this->getLanguageService(
-                            )->sL($settingKey) . '</label>' . LF;
-                            $selectbox = '<select name="' . $groupKey . '-' . $settingKey . '" class="form-control input-sm">' . LF;
+                            )->sL($settingKey) . '</label>' . PHP_EOL;
+                            $selectbox = '<select name="' . $groupKey . '-' . $settingKey . '" class="form-control input-sm">' . PHP_EOL;
                             foreach ($settingValues as $settingEntryKey => $settingEntryLabel) {
                                 $tempKey = $groupKey . '-' . $settingKey . '-' . $settingEntryKey;
                                 $valuesAvailable[] = $tempKey;
@@ -170,11 +170,11 @@ class ContentResponsive extends AbstractContentRow
                                     $valueSet = true;
                                 }
                                 $label = $this->getLanguageService()->sL($settingEntryLabel);
-                                $selectbox .= '<option value="' . $tempKey . '" ' . $selected . '>' . $label . '</option>' . LF;
+                                $selectbox .= '<option value="' . $tempKey . '" ' . $selected . '>' . $label . '</option>' . PHP_EOL;
                             }
-                            $selectbox .= '</select>' . LF;
+                            $selectbox .= '</select>' . PHP_EOL;
                             $tempContent[$settingKey] .= $selectbox;
-                            $tempContent[$settingKey] .= '</div>' . LF;
+                            $tempContent[$settingKey] .= '</div>' . PHP_EOL;
                         }
                     }
                 }
@@ -194,10 +194,10 @@ class ContentResponsive extends AbstractContentRow
                             if (!array_key_exists($settingKey, $tempContent)) {
                                 $tempContent[$settingKey] = '';
                             }
-                            $tempContent[$settingKey] .= '<div class="' . $cssClasses . '" style="' . $cssStyles . '">' . LF;
+                            $tempContent[$settingKey] .= '<div class="' . $cssClasses . '" style="' . $cssStyles . '">' . PHP_EOL;
                             $tempContent[$settingKey] .= '<label class="t3js-formengine-label sub-label">' . $this->getLanguageService(
-                            )->sL($settingKey) . '</label>' . LF;
-                            $selectbox = '<select name="' . $groupKey . '-' . $settingKey . '" class="form-control input-sm">' . LF;
+                            )->sL($settingKey) . '</label>' . PHP_EOL;
+                            $selectbox = '<select name="' . $groupKey . '-' . $settingKey . '" class="form-control input-sm">' . PHP_EOL;
                             foreach ($settingValues as $settingEntryKey => $settingEntryLabel) {
                                 $tempKey = $groupKey . '-' . $settingKey . '-' . $settingEntryKey;
                                 $valuesAvailable[] = $tempKey;
@@ -210,11 +210,11 @@ class ContentResponsive extends AbstractContentRow
                                     $valueSet = true;
                                 }
                                 $label = $this->getLanguageService()->sL($settingEntryLabel);
-                                $selectbox .= '<option value="' . $tempKey . '" ' . $selected . '>' . $label . '</option>' . LF;
+                                $selectbox .= '<option value="' . $tempKey . '" ' . $selected . '>' . $label . '</option>' . PHP_EOL;
                             }
-                            $selectbox .= '</select>' . LF;
+                            $selectbox .= '</select>' . PHP_EOL;
                             $tempContent[$settingKey] .= $selectbox;
-                            $tempContent[$settingKey] .= '</div>' . LF;
+                            $tempContent[$settingKey] .= '</div>' . PHP_EOL;
                         }
                     }
                 }
@@ -232,18 +232,18 @@ class ContentResponsive extends AbstractContentRow
         }
 
         // Build hidden field structure
-        $hiddenField = '<div>' . LF;
-        $hiddenField .= '<div class="form-control-wrap">' . LF;
+        $hiddenField = '<div>' . PHP_EOL;
+        $hiddenField .= '<div class="form-control-wrap">' . PHP_EOL;
         $hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
         $hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
         $hiddenField .= 'name="' . htmlspecialchars((string) $name) . '" ';
-        $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . LF;
-        $hiddenField .= '</div>' . LF;
-        $hiddenField .= '</div>' . LF;
+        $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . PHP_EOL;
+        $hiddenField .= '</div>' . PHP_EOL;
+        $hiddenField .= '</div>' . PHP_EOL;
 
         // Build hidden field structure
         //  themes-hidden-admin-field
-        //$hiddenField = '<input readonly="readonly" type="' . $inputType . '" name="' . htmlspecialchars($name) . '" value="' . $setValue . '"  class="' . $setClass . '">' . LF;
+        //$hiddenField = '<input readonly="readonly" type="' . $inputType . '" name="' . htmlspecialchars($name) . '" value="' . $setValue . '"  class="' . $setClass . '">' . PHP_EOL;
 
         // Missed classes
         $missedField = $this->getMissedFields($values, $valuesAvailable);

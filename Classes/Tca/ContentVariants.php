@@ -131,14 +131,14 @@ class ContentVariants extends AbstractContentRow
             $inputType = 'text';
         }
         // Build hidden field structure
-        $hiddenField = '<div>' . LF;
-        $hiddenField .= '<div class="form-control-wrap">' . LF;
+        $hiddenField = '<div>' . PHP_EOL;
+        $hiddenField .= '<div class="form-control-wrap">' . PHP_EOL;
         $hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
         $hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
         $hiddenField .= 'name="' . htmlspecialchars((string) $name) . '" ';
-        $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . LF;
-        $hiddenField .= '</div>' . LF;
-        $hiddenField .= '</div>' . LF;
+        $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . PHP_EOL;
+        $hiddenField .= '</div>' . PHP_EOL;
+        $hiddenField .= '</div>' . PHP_EOL;
         // Missed classes
         $missedField = $this->getMissedFields($values, $this->valuesAvailable);
 
@@ -172,9 +172,9 @@ class ContentVariants extends AbstractContentRow
     {
         // Remove dot
         $key = substr($key, 0, -1);
-        $selectbox = '<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">' . LF;
-        $selectbox .= '<div class="form-control-wrap">' . LF;
-        $selectbox .= '<select name="' . $key . '" class="form-control form-control-adapt input-sm">' . LF;
+        $selectbox = '<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">' . PHP_EOL;
+        $selectbox .= '<div class="form-control-wrap">' . PHP_EOL;
+        $selectbox .= '<select name="' . $key . '" class="form-control form-control-adapt input-sm">' . PHP_EOL;
         $activeKey = '';
         foreach ($items as $itemKey => $itemValue) {
             if ($activeKey == '') {
@@ -186,11 +186,11 @@ class ContentVariants extends AbstractContentRow
                 $selected = 'selected="selected"';
             }
             $label = $this->getLanguageService()->sL($itemValue);
-            $selectbox .= '<option value="' . $key . '-' . $itemKey . '" ' . $selected . '>' . $label . '</option>' . LF;
+            $selectbox .= '<option value="' . $key . '-' . $itemKey . '" ' . $selected . '>' . $label . '</option>' . PHP_EOL;
         }
-        $selectbox .= '</select>' . LF;
-        $selectbox .= '</div>' . LF;
-        $selectbox .= '</div>' . LF;
+        $selectbox .= '</select>' . PHP_EOL;
+        $selectbox .= '</div>' . PHP_EOL;
+        $selectbox .= '</div>' . PHP_EOL;
         $this->valuesAvailable[] = $activeKey;
         $this->checkboxesArray[$type][] = $selectbox;
     }
@@ -207,11 +207,11 @@ class ContentVariants extends AbstractContentRow
         $label = $this->getLanguageService()->sL($label);
         $this->valuesAvailable[] = $key;
         $checked = (isset($this->valuesFlipped[$key])) ? 'checked="checked"':'';
-        $checkbox = '<div  class="col-xs-12 col-sm-4 col-md-3 col-lg-2">' . LF;
-        $checkbox .= '<label class="themes-checkbox-label" title="' . $label . '">' . LF;
-        $checkbox .= '<input type="checkbox" name="' . $key . '" ' . $checked . '>' . LF;
-        $checkbox .= $this->getLanguageService()->sL($label) . '</label>' . LF;
-        $checkbox .= '</div>' . LF;
+        $checkbox = '<div  class="col-xs-12 col-sm-4 col-md-3 col-lg-2">' . PHP_EOL;
+        $checkbox .= '<label class="themes-checkbox-label" title="' . $label . '">' . PHP_EOL;
+        $checkbox .= '<input type="checkbox" name="' . $key . '" ' . $checked . '>' . PHP_EOL;
+        $checkbox .= $this->getLanguageService()->sL($label) . '</label>' . PHP_EOL;
+        $checkbox .= '</div>' . PHP_EOL;
         $this->checkboxesArray[$type][] = $checkbox;
     }
 
@@ -233,7 +233,7 @@ class ContentVariants extends AbstractContentRow
                 $label .= '(' . $labelInfo . ')';
             }
             $checkboxes .= '<label class="t3js-formengine-label themes-label-' . $type . ' col-xs-12">' . $label . ':</label>';
-            $checkboxes .= implode('', $this->checkboxesArray[$type]) . LF;
+            $checkboxes .= implode('', $this->checkboxesArray[$type]) . PHP_EOL;
         }
 
         return $checkboxes;

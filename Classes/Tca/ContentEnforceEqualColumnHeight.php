@@ -74,10 +74,10 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow
                 // Validate groupKey and get label
                 $groupKey = substr((string) $groupKey, 0, -1);
                 $label = $settings['label'] ?? $groupKey;
-                $checkboxes .= '<div class="col-xs-6 col-sm-2 themes-column">' . LF;
+                $checkboxes .= '<div class="col-xs-6 col-sm-2 themes-column">' . PHP_EOL;
                 $checkboxes .= '<label class="t3js-formengine-label">' . $this->getLanguageService()->sL(
                     $label
-                ) . '</label>' . LF;
+                ) . '</label>' . PHP_EOL;
                 if (!empty($settings['rowSettings.'])) {
                     // check if theres already a value selected
                     $valueSet = false;
@@ -93,13 +93,13 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow
                         $checked = (isset($valuesFlipped[$tempKey])) ? 'checked="checked"':'';
 
                         // build checkbox
-                        $checkboxes .= '<div>' . LF;
-                        $checkboxes .= '<label><input type="checkbox" name="' . $tempKey . '" value="' . $tempKey . '" ' . $checked . '>' . LF;
-                        $checkboxes .= $this->getLanguageService()->sL($visibilityLabel) . '</label>' . LF;
-                        $checkboxes .= '</div>' . LF;
+                        $checkboxes .= '<div>' . PHP_EOL;
+                        $checkboxes .= '<label><input type="checkbox" name="' . $tempKey . '" value="' . $tempKey . '" ' . $checked . '>' . PHP_EOL;
+                        $checkboxes .= $this->getLanguageService()->sL($visibilityLabel) . '</label>' . PHP_EOL;
+                        $checkboxes .= '</div>' . PHP_EOL;
                     }
                 }
-                $checkboxes .= '</div>' . LF;
+                $checkboxes .= '</div>' . PHP_EOL;
             }
         }
         // Process current classes/identifiers
@@ -112,14 +112,14 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow
             $inputType = 'text';
         }
         // Build hidden field structure
-        $hiddenField = '<div>' . LF;
-        $hiddenField .= '<div class="form-control-wrap">' . LF;
+        $hiddenField = '<div>' . PHP_EOL;
+        $hiddenField .= '<div class="form-control-wrap">' . PHP_EOL;
         $hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
         $hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
         $hiddenField .= 'name="' . htmlspecialchars((string) $name) . '" ';
-        $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . LF;
-        $hiddenField .= '</div>' . LF;
-        $hiddenField .= '</div>' . LF;
+        $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . PHP_EOL;
+        $hiddenField .= '</div>' . PHP_EOL;
+        $hiddenField .= '</div>' . PHP_EOL;
         // Missed classes
         $missedField = $this->getMissedFields($values, $valuesAvailable);
 

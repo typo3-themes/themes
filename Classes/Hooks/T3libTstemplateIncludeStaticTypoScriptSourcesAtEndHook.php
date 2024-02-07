@@ -58,6 +58,14 @@ class T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook
      */
     public static function main(array &$params, TemplateService &$pObj): void
     {
+        return;
+
+        /**
+         * @todo v12 can be removed finally
+         */
+
+
+
         $idList = $params['idList'];
         $templateId = $params['templateId'];
         $pid = $params['pid'];

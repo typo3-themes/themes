@@ -65,7 +65,7 @@ page {
         pluginName = Theme
         controller = Theme
         action = Index
-        settings =< plugin.tx_themes.view
+        settings =< plugin.tx_themes.settings
         persistence =< plugin.tx_themes.persistence
         view =< plugin.tx_themes.view
     }
