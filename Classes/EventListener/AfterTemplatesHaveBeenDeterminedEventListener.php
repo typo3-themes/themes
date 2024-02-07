@@ -53,8 +53,8 @@ class AfterTemplatesHaveBeenDeterminedEventListener
                     }
 
 
-                    $rows[$rowIndex]['constants'] .= $constants;
-                    $rows[$rowIndex]['config'] .= $setup;
+                    $rows[$rowIndex]['constants'] = $constants . PHP_EOL . $rows[$rowIndex]['constants'];
+                    $rows[$rowIndex]['config'] = $setup . PHP_EOL . $rows[$rowIndex]['config'];
                 }
 
             }

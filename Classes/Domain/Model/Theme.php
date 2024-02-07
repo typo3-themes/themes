@@ -58,20 +58,8 @@ class Theme extends AbstractTheme
             $path = ExtensionManagementUtility::extPath($this->getExtensionName());
             //
             $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.typoscript';
-            if (!file_exists($this->pathTyposcript)) {
-                $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.txt';
-            }
-
             $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.typoscript';
-            if (!file_exists($this->pathTyposcriptConstants)) {
-                $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.txt';
-            }
-
             $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.typoscript';
-            if (!file_exists($this->pathTsConfig)) {
-                $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.txt';
-            }
-
             //
             $this->importExtEmConf();
             if (is_file(
