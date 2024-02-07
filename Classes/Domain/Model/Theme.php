@@ -145,7 +145,6 @@ class Theme extends AbstractTheme
      */
     public function addTypoScriptForFe(array &$params, TemplateService &$pObj, array $extensions = [], array $features = []): void
     {
-
         /**
          * @todo v12 can be removed finally
          */
