@@ -13,18 +13,14 @@ class AfterTemplatesHaveBeenDeterminedEventListener
     {
         $rows = $event->getTemplateRows();
 
-        foreach($rows as $rowIndex => $row) {
-
+        foreach ($rows as $rowIndex => $row) {
             if (isset($row['tx_themes_skin']) && trim($row['tx_themes_skin']) !== '') {
-
-
                 $themeIdentifier = $row['tx_themes_skin'];
                 /** @var ThemeRepository $themeRepository */
                 $themeRepository = GeneralUtility::makeInstance(ThemeRepository::class);
                 /** @var Theme $theme */
                 $theme = $themeRepository->findByUid($themeIdentifier);
                 if ($theme !== null) {
-
                     $themeFeatures = GeneralUtility::trimExplode(
                         ',',
                         $row['tx_themes_features'],
@@ -48,17 +44,13 @@ class AfterTemplatesHaveBeenDeterminedEventListener
                         true
                     );
                     foreach ($extensions as $extension) {
-
-
                     }
 
 
                     $rows[$rowIndex]['constants'] .= $constants;
                     $rows[$rowIndex]['config'] .= $setup;
                 }
-
             }
-
         }
 
 

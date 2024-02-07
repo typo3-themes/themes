@@ -143,7 +143,7 @@ class ThemeController extends ActionController
     {
         /** @var CObjectViewHelper $vh */
         $vh = GeneralUtility::makeInstance(CObjectViewHelper::class);
-        $vh->setRenderChildrenClosure(fn() => '');
+        $vh->setRenderChildrenClosure(fn () => '');
 
         $vh->setArguments([
             'typoscriptObjectPath' => $path,

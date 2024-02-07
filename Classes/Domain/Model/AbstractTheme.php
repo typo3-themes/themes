@@ -372,7 +372,6 @@ class AbstractTheme extends AbstractEntity
                 /**
                  * @todo in this method we need to fix the "0.available = 0" - what was the goal of this!?
                  */
-
             }
         } else {
             $outputBuffer .= $key . '.available=' . PHP_EOL;
