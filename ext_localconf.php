@@ -17,12 +17,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\KayStrobach\Themes\Domain\Repository\
     = \KayStrobach\Themes\Hooks\ThemesDomainRepositoryThemeRepositoryInitHook::class . '->init';
 
 /*
- * register used hooks to inject the TS
- */
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'][]
-    = \KayStrobach\Themes\Hooks\T3libTstemplateIncludeStaticTypoScriptSourcesAtEndHook::class . '->main';
-
-/*
  * register frontend plugin to allow usage of extbase controller
  */
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
