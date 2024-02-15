@@ -33,7 +33,6 @@ use Exception;
 use KayStrobach\Themes\Domain\Model\Theme;
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -55,19 +54,10 @@ class ThemesDomainRepositoryThemeRepositoryInitHook
         $themesConfiguration = $extensionConfiguration->get('themes');
         $startWith = $themesConfiguration['themeExtensionsStartWith'];
         //
-        // Get all available extensions, excluding system extensions
-        $extensionsToCheck = array_diff(
-            ExtensionManagementUtility::getLoadedExtensionListArray(),
-            scandir(Environment::getBackendPath() . '/sysext')
-        );
-
         // Check extensions, which are worth to check
-        foreach ($extensionsToCheck as $extensionName) {
-            if (trim((string) $startWith) === '' || str_starts_with((string) $extensionName, (string) $startWith)) {
+        foreach (ExtensionManagementUtility::getLoadedExtensionListArray() as $extensionName) {
+            if (trim((string)$startWith) === '' || str_starts_with((string)$extensionName, (string)$startWith)) {
                 $extPath = ExtensionManagementUtility::extPath($extensionName);
-
-                //throw new \Exception($extPath);
-
                 if (file_exists($extPath . 'Meta/theme.yaml')) {
                     if (file_exists($extPath . 'Configuration/TypoScript/setup.typoscript') || file_exists($extPath . 'Configuration/TypoScript/setup.txt')) {
                         $pObj->add(new Theme($extensionName));
