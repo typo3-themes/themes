@@ -8,7 +8,7 @@
   "require": {
     "typo3/cms-core": "^12.4",
     "typo3/cms-form": "^12.4",
-    "gridelementsteam/gridelements": "dev-ea_12-0",
+    "gridelementsteam/gridelements": ">=12.0.0 || dev-master || dev-ea_12-0 || dev-bugfix-fix-gridelements-plugin",
     "ext-json": "*",
     "ext-pdo": "*"
   },
