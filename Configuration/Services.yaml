@@ -17,3 +17,36 @@ services:
     tags:
       - name: event.listener
         identifier: 'themes/AfterTemplatesHaveBeenDeterminedEventListner'
+
+  KayStrobach\Themes\DataProcessing\FilesDataProcessor:
+    tags:
+      - name: 'files.data.processor'
+        identifier: 'themes'
+  KayStrobach\Themes\DataProcessing\HeaderLinkDataProcessor:
+    tags:
+      - name: 'header-link.data.processor'
+        identifier: 'themes'
+  KayStrobach\Themes\DataProcessing\ThemesBehaviourDataProcessor:
+    tags:
+      - name: 'themes-behaviour.data.processor'
+        identifier: 'themes'
+  KayStrobach\Themes\DataProcessing\ThemesButtonDataProcessor:
+    tags:
+      - name: 'themes-button.data.processor'
+        identifier: 'themes'
+  KayStrobach\Themes\DataProcessing\ThemesIconDataProcessor:
+    tags:
+      - name: 'themes-icon.data.processor'
+        identifier: 'themes'
+  KayStrobach\Themes\DataProcessing\ThemesResponsiveColumnDataProcessor:
+    tags:
+      - name: 'themes-responsive-column.data.processor'
+        identifier: 'themes'
+  KayStrobach\Themes\DataProcessing\ThemesResponsiveDataProcessor:
+    tags:
+      - name: 'themes-responsive.data.processor'
+        identifier: 'themes'
+  KayStrobach\Themes\DataProcessing\ThemesVariantsDataProcessor:
+    tags:
+      - name: 'themes-variants.data.processor'
+        identifier: 'themes'

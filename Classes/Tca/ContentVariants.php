@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace KayStrobach\Themes\Tca;
 
-use Doctrine\DBAL\DBALException;
-
 /***************************************************************
  *
  * Copyright notice
@@ -45,8 +43,7 @@ class ContentVariants extends AbstractContentRow
     /**
      * Render a Content Variant row.
      *
-     * @return array
-     * @throws DBALException
+     * @return string[]
      */
     public function render(): array
     {
@@ -142,7 +139,7 @@ class ContentVariants extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $this->valuesAvailable);
 
-        return ['html' => '<div class="contentVariant">' . $checkboxes . $hiddenField . $missedField . '</div>'];
+        return ['html' => '<div class="contentVariant row">' . $checkboxes . $hiddenField . $missedField . '</div>'];
     }
 
     /**
@@ -174,7 +171,7 @@ class ContentVariants extends AbstractContentRow
         $key = substr($key, 0, -1);
         $selectbox = '<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">' . PHP_EOL;
         $selectbox .= '<div class="form-control-wrap">' . PHP_EOL;
-        $selectbox .= '<select name="' . $key . '" class="form-control form-control-adapt input-sm">' . PHP_EOL;
+        $selectbox .= '<select name="' . $key . '" class="form-select form-select-sm">' . PHP_EOL;
         $activeKey = '';
         foreach ($items as $itemKey => $itemValue) {
             if ($activeKey == '') {
@@ -204,13 +201,16 @@ class ContentVariants extends AbstractContentRow
      */
     protected function createCheckbox(string $key, string $label, string $type)
     {
-        $label = $this->getLanguageService()->sL($label);
         $this->valuesAvailable[] = $key;
-        $checked = (isset($this->valuesFlipped[$key])) ? 'checked="checked"':'';
         $checkbox = '<div  class="col-xs-12 col-sm-4 col-md-3 col-lg-2">' . PHP_EOL;
-        $checkbox .= '<label class="themes-checkbox-label" title="' . $label . '">' . PHP_EOL;
-        $checkbox .= '<input type="checkbox" name="' . $key . '" ' . $checked . '>' . PHP_EOL;
-        $checkbox .= $this->getLanguageService()->sL($label) . '</label>' . PHP_EOL;
+
+        $checkbox .= $this->getCheckbox(
+            $key,
+            $key,
+            $this->getLanguageService()->sL($label),
+            isset($this->valuesFlipped[$key])
+        );
+
         $checkbox .= '</div>' . PHP_EOL;
         $this->checkboxesArray[$type][] = $checkbox;
     }

@@ -29,7 +29,6 @@ namespace KayStrobach\Themes\TsConfig;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use PDO;
@@ -58,9 +57,6 @@ final class Loader
      */
     protected array $themeFeatures = [];
 
-    /**
-     * @throws DBALException
-     */
     public function __invoke(ModifyLoadedPageTsConfigEvent $event): void
     {
         $defaultDataArray = [];

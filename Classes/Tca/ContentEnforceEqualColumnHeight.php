@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace KayStrobach\Themes\Tca;
 
-use Doctrine\DBAL\DBALException;
-
 /***************************************************************
  *
  * Copyright notice
@@ -39,8 +37,7 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow
     /**
      * Render a row for enforcing equal height of a column.
      *
-     * @return array
-     * @throws DBALException
+     * @return string[]
      */
     public function render(): array
     {
@@ -90,13 +87,12 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow
                     foreach ($settings['rowSettings.'] as $visibilityKey => $visibilityLabel) {
                         $tempKey = $groupKey . '-' . $visibilityKey;
                         $valuesAvailable[] = $tempKey;
-                        $checked = (isset($valuesFlipped[$tempKey])) ? 'checked="checked"':'';
-
-                        // build checkbox
-                        $checkboxes .= '<div>' . PHP_EOL;
-                        $checkboxes .= '<label><input type="checkbox" name="' . $tempKey . '" value="' . $tempKey . '" ' . $checked . '>' . PHP_EOL;
-                        $checkboxes .= $this->getLanguageService()->sL($visibilityLabel) . '</label>' . PHP_EOL;
-                        $checkboxes .= '</div>' . PHP_EOL;
+                        $checkboxes .= $this->getCheckbox(
+                            $tempKey,
+                            $tempKey,
+                            $this->getLanguageService()->sL($visibilityLabel),
+                            isset($valuesFlipped[$tempKey])
+                        );
                     }
                 }
                 $checkboxes .= '</div>' . PHP_EOL;

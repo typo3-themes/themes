@@ -29,7 +29,6 @@ namespace KayStrobach\Themes\ViewHelpers;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Doctrine\DBAL\DBALException;
 use KayStrobach\Themes\Utilities\ThemeEnabledCondition;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
@@ -46,7 +45,6 @@ class ThemeEnabledConditionViewHelper extends AbstractConditionViewHelper
      * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
      *
      * @return bool
-     * @throws DBALException
      */
     protected static function evaluateCondition($arguments = null): bool
     {

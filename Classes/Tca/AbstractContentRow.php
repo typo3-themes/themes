@@ -29,7 +29,6 @@ namespace KayStrobach\Themes\Tca;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use PDO;
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
@@ -89,7 +88,8 @@ abstract class AbstractContentRow extends AbstractFormElement
     }
 
     /**
-     * @throws DBALException
+     * @param $pid
+     * @return int|mixed
      */
     protected function getPidFromParentContentElement($pid)
     {
@@ -144,5 +144,15 @@ abstract class AbstractContentRow extends AbstractFormElement
     protected function getBeUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    protected function getCheckbox(string $name, string $id, string $label, bool $checked): string
+    {
+        $checkedString = $checked  ? 'checked="checked"' : '';
+        $checkbox = '<div class="form-check">' . PHP_EOL;
+        $checkbox .= '<input class="form-check-input" type="checkbox" value="" id="' . $id . '" name="' . $name . '" ' . $checkedString . '>' . PHP_EOL;
+        $checkbox .= '<label class="form-check-label themes-checkbox-label" for="' . $id . '" title="' . $label . '">' . $label . '</label>' . PHP_EOL;
+        $checkbox .= '</div>' . PHP_EOL;
+        return $checkbox;
     }
 }

@@ -29,7 +29,6 @@ namespace KayStrobach\Themes\Tca;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -41,8 +40,7 @@ class ContentResponsive extends AbstractContentRow
     /**
      * Render a Content Variant row.
      *
-     * @return array
-     * @throws DBALException
+     * @return string[]
      */
     public function render(): array
     {
@@ -124,7 +122,7 @@ class ContentResponsive extends AbstractContentRow
                     $selectboxes .= '<label class="t3js-formengine-label sub-label" style="font-weight:normal">' . $this->getLanguageService(
                     )->sL('visibility') . '</label>' . PHP_EOL;
 
-                    $selectbox = '<select name="' . $groupKey . '" class="form-control input-sm">' . PHP_EOL;
+                    $selectbox = '<select name="' . $groupKey . '" class="form-select form-select-sm">' . PHP_EOL;
                     foreach ($settings['visibility.'] as $visibilityKey => $visibilityLabel) {
                         $tempKey = $groupKey . '-' . $visibilityKey;
                         $valuesAvailable[] = $tempKey;
@@ -157,7 +155,7 @@ class ContentResponsive extends AbstractContentRow
                             $tempContent[$settingKey] .= '<div class="' . $cssClasses . '" style="' . $cssStyles . '">' . PHP_EOL;
                             $tempContent[$settingKey] .= '<label class="t3js-formengine-label sub-label">' . $this->getLanguageService(
                             )->sL($settingKey) . '</label>' . PHP_EOL;
-                            $selectbox = '<select name="' . $groupKey . '-' . $settingKey . '" class="form-control input-sm">' . PHP_EOL;
+                            $selectbox = '<select name="' . $groupKey . '-' . $settingKey . '" class="form-select form-select-sm">' . PHP_EOL;
                             foreach ($settingValues as $settingEntryKey => $settingEntryLabel) {
                                 $tempKey = $groupKey . '-' . $settingKey . '-' . $settingEntryKey;
                                 $valuesAvailable[] = $tempKey;
@@ -197,7 +195,7 @@ class ContentResponsive extends AbstractContentRow
                             $tempContent[$settingKey] .= '<div class="' . $cssClasses . '" style="' . $cssStyles . '">' . PHP_EOL;
                             $tempContent[$settingKey] .= '<label class="t3js-formengine-label sub-label">' . $this->getLanguageService(
                             )->sL($settingKey) . '</label>' . PHP_EOL;
-                            $selectbox = '<select name="' . $groupKey . '-' . $settingKey . '" class="form-control input-sm">' . PHP_EOL;
+                            $selectbox = '<select name="' . $groupKey . '-' . $settingKey . '" class="form-select form-select-sm">' . PHP_EOL;
                             foreach ($settingValues as $settingEntryKey => $settingEntryLabel) {
                                 $tempKey = $groupKey . '-' . $settingKey . '-' . $settingEntryKey;
                                 $valuesAvailable[] = $tempKey;
@@ -248,6 +246,6 @@ class ContentResponsive extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $valuesAvailable);
 
-        return ['html' => '<div class="contentResponsive">' . $selectboxes . $hiddenField . $missedField . '</div>'];
+        return ['html' => '<div class="contentResponsive row">' . $selectboxes . $hiddenField . $missedField . '</div>'];
     }
 }

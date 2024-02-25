@@ -29,7 +29,6 @@ namespace KayStrobach\Themes\Utilities;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -47,7 +46,6 @@ class CheckPageUtility
      * @param $pid
      *
      * @return bool
-     * @throws DBALException
      */
     public static function hasThemeableSysTemplateRecord($pid): bool
     {
@@ -95,7 +93,6 @@ class CheckPageUtility
      * @param $pid
      *
      * @return bool
-     * @throws DBALException
      */
     public static function hasTheme($pid): bool
     {
@@ -131,7 +128,6 @@ class CheckPageUtility
      * @param $pid
      *
      * @return mixed
-     * @throws DBALException
      */
     public static function getThemeableSysTemplateRecord($pid)
     {

@@ -29,7 +29,6 @@ namespace KayStrobach\Themes\Utilities;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Doctrine\DBAL\DBALException;
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -42,7 +41,6 @@ class ThemeEnabledCondition
      * Check if theme is enabled
      *
      * @return bool
-     * @throws DBALException
      */
     public static function isThemeEnabled(string $theme = ''): bool
     {

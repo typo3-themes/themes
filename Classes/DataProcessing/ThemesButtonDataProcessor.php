@@ -28,8 +28,8 @@ namespace KayStrobach\Themes\DataProcessing;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -55,7 +55,6 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
      * @param array $processedData Key/value store of processed data (e.g. to be passed to a Fluid View)
      *
      * @return array the processed data as key/value store
-     * @throws DBALException
      */
     public function process(
         ContentObjectRenderer $cObj,

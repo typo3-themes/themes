@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace KayStrobach\Themes\Tca;
 
-use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -56,8 +55,7 @@ class ContentColumnSettings extends AbstractContentRow
     /**
      * Render a row for enforcing equal height of a column.
      *
-     * @return array
-     * @throws DBALException
+     * @return string[]
      */
     public function render(): array
     {
@@ -110,7 +108,7 @@ class ContentColumnSettings extends AbstractContentRow
                         $selectboxes .= '<label class="themes-select-label">' . $this->getLanguageService()->sL(
                             $visibilityLabel
                         ) . '</label>' . PHP_EOL;
-                        $selectboxes .= '<select class="form-control form-control-adapt input-sm" name="' . $tempKey . '">' . PHP_EOL;
+                        $selectboxes .= '<select class="form-select form-select-sm" name="' . $tempKey . '">' . PHP_EOL;
                         $selectboxes .= '<option value="">default</option>' . PHP_EOL;
                         for ($i = $start; $i <= 12; $i++) {
                             // set the selected value
@@ -145,6 +143,6 @@ class ContentColumnSettings extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $valuesAvailable);
 
-        return ['html' => '<div class="contentColumnSettings">' . $selectboxes . $hiddenField . $missedField . '</div>'];
+        return ['html' => '<div class="contentColumnSettings row">' . $selectboxes . $hiddenField . $missedField . '</div>'];
     }
 }

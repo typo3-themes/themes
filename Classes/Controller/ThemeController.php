@@ -29,7 +29,6 @@ namespace KayStrobach\Themes\Controller;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Doctrine\DBAL\DBALException;
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -97,7 +96,6 @@ class ThemeController extends ActionController
      * renders the given theme.
      *
      * @return ResponseInterface
-     * @throws DBALException
      */
     public function indexAction(): ResponseInterface
     {

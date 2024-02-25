@@ -28,7 +28,7 @@ namespace KayStrobach\Themes\Controller;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use Doctrine\DBAL\DBALException;
+
 use KayStrobach\Themes\Domain\Model\Theme;
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use KayStrobach\Themes\Utilities\CheckPageUtility;
@@ -120,7 +120,6 @@ class EditorController extends ActionController
      * show available constants.
      *
      * @return ResponseInterface
-     * @throws DBALException
      */
     public function indexAction(): ResponseInterface
     {
@@ -246,7 +245,6 @@ class EditorController extends ActionController
      * Show theme details.
      *
      * @return ResponseInterface
-     * @throws DBALException
      */
     public function showThemeAction(): ResponseInterface
     {
@@ -284,7 +282,6 @@ class EditorController extends ActionController
      *
      *
      * @throws StopActionException
-     * @throws DBALException
      */
     public function setThemeAction(string $theme = '')
     {
@@ -356,7 +353,6 @@ class EditorController extends ActionController
      * Set up the doc header properly here
      *
      * @param ViewInterface $view
-     * @throws DBALException
      */
     protected function initializeView(ViewInterface $view)
     {

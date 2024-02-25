@@ -55,8 +55,3 @@ $tempColumn = [
     'Configuration/TypoScript',
     'Themes'
 );
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-    'themes',
-    'Configuration/TypoScript/FluidStyledContent',
-    'Themes (For backward compatibility: Additional add this for using fluid_styled_content)'
-);
