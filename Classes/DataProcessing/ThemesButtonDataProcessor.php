@@ -63,10 +63,13 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
         array $processedData
     ): array {
         $processedData['themes']['buttons'] = [];
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('tx_themes_buttoncontent');
-        $queryBuilder->select('*')
+        $uid = (int)($processedData['data']['uid'] ?? 0);
+        if ($uid > 0) {
+            /** @var ConnectionPool $connectionPool */
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_themes_buttoncontent');
+            $queryBuilder->select('*')
                 ->from('tx_themes_buttoncontent')
                 ->where(
                     $queryBuilder->expr()->eq(
@@ -75,23 +78,24 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
                     )
                 )
                 ->orderBy('sorting');
-        /** @var Statement $statement */
-        $statement = $queryBuilder->execute();
-        while ($row = $statement->fetch()) {
-            $link = [];
-            $link['uid'] = $row['uid'];
-            $link['text'] = $row['linktext'];
-            $link['link'] = $row['linktarget'];
-            $link['linkParameter'] = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode(
-                $row['linktarget']
-            );
-            $link['title'] = $row['linktitle'];
-            $link['icon'] = '';
-            if ($row['icon'] != '') {
-                $setup = $this->getFrontendController()->tmpl->setup;
-                $link['icon'] = $setup['lib.']['icons.']['cssMap.'][$row['icon']];
+            /** @var Statement $statement */
+            $statement = $queryBuilder->execute();
+            while ($row = $statement->fetch()) {
+                $link = [];
+                $link['uid'] = $row['uid'];
+                $link['text'] = $row['linktext'];
+                $link['link'] = $row['linktarget'];
+                $link['linkParameter'] = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode(
+                    $row['linktarget']
+                );
+                $link['title'] = $row['linktitle'];
+                $link['icon'] = '';
+                if ($row['icon'] != '') {
+                    $setup = $this->getFrontendController()->tmpl->setup;
+                    $link['icon'] = $setup['lib.']['icons.']['cssMap.'][$row['icon']];
+                }
+                $processedData['themes']['buttons'][] = $link;
             }
-            $processedData['themes']['buttons'][] = $link;
         }
         return $processedData;
     }
