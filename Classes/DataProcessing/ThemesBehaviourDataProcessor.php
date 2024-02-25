@@ -57,7 +57,12 @@ class ThemesBehaviourDataProcessor implements DataProcessorInterface
         array $processorConfiguration,
         array $processedData
     ): array {
-        $keys = GeneralUtility::trimExplode(',', $processedData['data']['tx_themes_behaviour'], true);
+        $keys = GeneralUtility::trimExplode(
+            ',',
+            $processedData['data']['tx_themes_behaviour'] ?? []
+            ,
+            true
+        );
         $processedData['themes']['behaviour']['css'] = [];
         $processedData['themes']['behaviour']['css2key'] = [];
         if (!empty($keys)) {

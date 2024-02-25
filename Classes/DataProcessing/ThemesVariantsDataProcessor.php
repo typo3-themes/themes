@@ -57,7 +57,12 @@ class ThemesVariantsDataProcessor implements DataProcessorInterface
         array $processorConfiguration,
         array $processedData
     ): array {
-        $keys = GeneralUtility::trimExplode(',', $processedData['data']['tx_themes_variants'], true);
+        $keys = GeneralUtility::trimExplode(
+            ',',
+            $processedData['data']['tx_themes_variants'] ?? []
+            ,
+            true
+        );
         $processedData['themes']['variants']['css'] = [];
         $processedData['themes']['variants']['css2key'] = [];
         if (!empty($keys)) {

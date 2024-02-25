@@ -62,7 +62,12 @@ class ThemesResponsiveDataProcessor implements DataProcessorInterface
         array $processorConfiguration,
         array $processedData
     ): array {
-        $keys = GeneralUtility::trimExplode(',', $processedData['data']['tx_themes_responsive'], true);
+        $keys = GeneralUtility::trimExplode(
+            ',',
+            $processedData['data']['tx_themes_responsive'] ?? []
+            ,
+            true
+        );
         $processedData['themes']['responsive']['keys'] = $keys;
         $processedData['themes']['responsive']['css'] = [];
         if (!empty($keys)) {
