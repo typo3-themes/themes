@@ -10,7 +10,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AfterTemplatesHaveBeenDeterminedEventListener
 {
-
     public function __invoke(AfterTemplatesHaveBeenDeterminedEvent $event): void
     {
         $rows = $event->getTemplateRows();
