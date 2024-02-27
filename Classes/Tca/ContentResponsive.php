@@ -169,5 +169,4 @@ class ContentResponsive extends AbstractContentRow
         $content .= '</select>' . PHP_EOL;
         return $content;
     }
-
 }

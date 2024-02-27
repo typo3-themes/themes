@@ -132,5 +132,4 @@ class Theme extends AbstractTheme
         }
         return '';
     }
-
 }
