@@ -105,9 +105,10 @@ abstract class AbstractContentRow extends AbstractFormElement
             }
             if (isset($this->ctypeProperties['properties'][$cType . '.'])) {
                 $this->ctypeProperties['properties'] = $this->ctypeProperties['properties'][$cType . '.'];
-            }
-            if (isset($this->ctypeProperties['properties'][$gridLayout . '.'])) {
+            } else if (isset($this->ctypeProperties['properties'][$gridLayout . '.'])) {
                 $this->ctypeProperties['properties'] = $this->ctypeProperties['properties'][$gridLayout . '.'];
+            } else {
+                $this->ctypeProperties['properties'] = [];
             }
         }
         // Merge configurations
@@ -181,7 +182,7 @@ abstract class AbstractContentRow extends AbstractFormElement
     protected function getCheckbox(string $name, string $id, string $label, bool $checked): string
     {
         $checkedString = $checked ? 'checked="checked"' : '';
-        $checkbox = '<div class="form-check">' . PHP_EOL;
+        $checkbox = '<div class="form-check form-switch">' . PHP_EOL;
         $checkbox .= '<input class="form-check-input" type="checkbox" value="" id="' . $id . '" name="' . $name . '" ' . $checkedString . '>' . PHP_EOL;
         $checkbox .= '<label class="form-check-label themes-checkbox-label" for="' . $id . '" title="' . $label . '">' . $label . '</label>' . PHP_EOL;
         $checkbox .= '</div>' . PHP_EOL;
