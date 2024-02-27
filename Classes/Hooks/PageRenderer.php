@@ -29,6 +29,7 @@ namespace KayStrobach\Themes\Hooks;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer as PageRendererCore;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -53,7 +54,9 @@ class PageRenderer implements SingletonInterface
             return;
         }
         // Add JavaScript
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendTca');
+        $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::create('@themes/themes-backend-tca.js')->invoke('initialize')
+        );
         // Add CSS
         $extensionFile = 'Resources/Public/Stylesheet/ThemesBackendTca.css';
         $absolutePath = ExtensionManagementUtility::extPath('themes', $extensionFile);

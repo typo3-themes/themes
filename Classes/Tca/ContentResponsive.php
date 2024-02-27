@@ -37,6 +37,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ContentResponsive extends AbstractContentRow
 {
+    protected array $valuesFlipped = [];
+    protected array $valuesAvailable = [];
+
     /**
      * Render a Content Variant row.
      *
@@ -64,163 +67,54 @@ class ContentResponsive extends AbstractContentRow
             $gridLayout = $gridLayout[0];
         }
         // Get values
-        $values = explode(',', (string) $value);
-        $valuesFlipped = array_flip($values);
-        $valuesAvailable = [];
-
+        $values = explode(',', (string)$value);
+        $this->valuesFlipped = array_flip($values);
+        $this->valuesAvailable = [];
+        //
         // Get responsive settings
-        $responsiveSettings = $this->getBeUser()->getTSConfig(
-        )['themes.']['content.']['responsive.']['settings.'] ?? null;
-        $cssStyles = '';
-        $cssClasses = 'themes-column';
+        $responsiveSettings = $this->getBeUser()->getTSConfig()['themes.']['content.']['responsive.']['settings.'] ?? null;
         if (isset($responsiveSettings['properties'])) {
             /** @var TypoScriptService $typoScriptService */
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
             $responsiveSettings = $typoScriptService->convertTypoScriptArrayToPlainArray(
                 $responsiveSettings['properties']
             );
-            if ((is_countable($responsiveSettings['sizes']) ? count($responsiveSettings['sizes']) : 0) > 0) {
-                $cssStyles = 'width: ' . (100 / (is_countable($responsiveSettings['sizes']) ? count(
-                    $responsiveSettings['sizes']
-                ) : 0) - 1) . '%; float:left;margin-left:0.5%;margin-right:0.5%;margin-bottom:8px;border:none';
-            }
         } else {
             $responsiveSettings = [];
         }
-        if ($cssStyles === '') {
-            $cssClasses = 'col-xs-6 col-sm-2 themes-column';
-        }
-
+        //
         // Get configuration
-        $responsives = $this->getMergedConfiguration($pid, 'responsive', $cType);
+        $responsives = $this->getMergedConfiguration($pid, 'responsive', $cType, $gridLayout);
+        //
         // Build select boxes
-        $selectboxes = '';
+        $selectBoxes = '';
         if (!empty($responsives['properties'])) {
-            foreach ($responsives['properties'] as $groupKey => $settings) {
+            foreach ($responsives['properties'] as $size => $settings) {
+                //
                 // Validate groupKey and get label
-                $groupKey = substr((string) $groupKey, 0, -1);
-                $label = $settings['label'] ?? $groupKey;
-
+                $size = substr((string)$size, 0, -1);
+                $label = $this->getLanguageService()->sL($settings['label'] ?? $size);
+                //
                 // is valid size?!
-                if (isset($responsiveSettings['sizes']) && !isset($responsiveSettings['sizes'][$groupKey])) {
+                if (isset($responsiveSettings['sizes']) && !isset($responsiveSettings['sizes'][$size])) {
                     continue;
                 }
-
-                $selectboxes .= '<div class="' . $cssClasses . '" style="' . $cssStyles . '">' . PHP_EOL;
-                $selectboxes .= '<label class="t3js-formengine-label">' . $this->getLanguageService()->sL(
-                    $label
-                ) . '</label>' . PHP_EOL;
-                if (!empty($settings['visibility.'])) {
-                    // check if there's already a value selected
-                    $valueSet = false;
-                    foreach ($settings['visibility.'] as $visibilityKey => $_) {
-                        $tempKey = $groupKey . '-' . $visibilityKey;
-                        if (!$valueSet) {
-                            $valueSet = isset($valuesFlipped[$tempKey]);
-                        }
-                    }
-                    $selectboxes .= '<label class="t3js-formengine-label sub-label" style="font-weight:normal">' . $this->getLanguageService(
-                    )->sL('visibility') . '</label>' . PHP_EOL;
-
-                    $selectbox = '<select name="' . $groupKey . '" class="form-select form-select-sm">' . PHP_EOL;
-                    foreach ($settings['visibility.'] as $visibilityKey => $visibilityLabel) {
-                        $tempKey = $groupKey . '-' . $visibilityKey;
-                        $valuesAvailable[] = $tempKey;
-                        // set the selected value
-                        if ($valueSet) {
-                            $selected = (isset($valuesFlipped[$tempKey])) ? 'selected="selected"':'';
-                        } // set the default value, this means the first one
-                        else {
-                            $selected = 'selected="selected"';
-                            $valueSet = true;
-                        }
-                        $label = $this->getLanguageService()->sL($visibilityLabel);
-                        $selectbox .= '<option value="' . $tempKey . '" ' . $selected . '>' . $label . '</option>' . PHP_EOL;
-                    }
-                    $selectbox .= '</select>' . PHP_EOL;
-                    $selectboxes .= $selectbox;
-                }
-                $selectboxes .= '</div>' . PHP_EOL;
-            }
-
-            // For special content elements
-            if ($cType !== 'gridelements_pi1' && isset($responsives['properties'][$cType . '.'])) {
-                $tempContent = [];
-                $valueSet = false;
-                foreach ($responsives['properties'][$cType . '.'] as $groupKey => $settings) {
-                    $groupKey = substr((string) $groupKey, 0, -1);
-                    if (!empty($settings)) {
-                        foreach ($settings as $settingKey => $settingValues) {
-                            $settingKey = substr((string) $settingKey, 0, -1);
-                            $tempContent[$settingKey] .= '<div class="' . $cssClasses . '" style="' . $cssStyles . '">' . PHP_EOL;
-                            $tempContent[$settingKey] .= '<label class="t3js-formengine-label sub-label">' . $this->getLanguageService(
-                            )->sL($settingKey) . '</label>' . PHP_EOL;
-                            $selectbox = '<select name="' . $groupKey . '-' . $settingKey . '" class="form-select form-select-sm">' . PHP_EOL;
-                            foreach ($settingValues as $settingEntryKey => $settingEntryLabel) {
-                                $tempKey = $groupKey . '-' . $settingKey . '-' . $settingEntryKey;
-                                $valuesAvailable[] = $tempKey;
-                                // set the selected value
-                                if ($valueSet) {
-                                    $selected = (isset($valuesFlipped[$tempKey])) ? 'selected="selected"':'';
-                                } // set the default value, this means the first one
-                                else {
-                                    $selected = 'selected="selected"';
-                                    $valueSet = true;
-                                }
-                                $label = $this->getLanguageService()->sL($settingEntryLabel);
-                                $selectbox .= '<option value="' . $tempKey . '" ' . $selected . '>' . $label . '</option>' . PHP_EOL;
-                            }
-                            $selectbox .= '</select>' . PHP_EOL;
-                            $tempContent[$settingKey] .= $selectbox;
-                            $tempContent[$settingKey] .= '</div>' . PHP_EOL;
-                        }
+                $selectBoxes .= '<div class="col-md col-sm-6 col-xs-6 pb-3 themes-column">' . PHP_EOL;
+                $selectBoxes .= '<label class="t3js-formengine-label mt-2">' . $label . '</label>' . PHP_EOL;
+                foreach ($settings as $settingKey => $setting) {
+                    if ($settingKey !== 'label') {
+                        $selectBoxes .= $this->buildItem(
+                            $size,
+                            rtrim($settingKey, '.'),
+                            $setting
+                        );
                     }
                 }
-                $selectboxes .= implode('', $tempContent);
-            }
-
-            // For special grid elements
-            if ($cType === 'gridelements_pi1' && isset($responsives['properties'][$gridLayout . '.'])) {
-                $tempContent = [];
-                $valueSet = false;
-                foreach ($responsives['properties'][$gridLayout . '.'] as $groupKey => $settings) {
-                    $groupKey = substr((string) $groupKey, 0, -1);
-                    $tempContent[$groupKey] = '';
-                    if (!empty($settings)) {
-                        foreach ($settings as $settingKey => $settingValues) {
-                            $settingKey = substr((string) $settingKey, 0, -1);
-                            if (!array_key_exists($settingKey, $tempContent)) {
-                                $tempContent[$settingKey] = '';
-                            }
-                            $tempContent[$settingKey] .= '<div class="' . $cssClasses . '" style="' . $cssStyles . '">' . PHP_EOL;
-                            $tempContent[$settingKey] .= '<label class="t3js-formengine-label sub-label">' . $this->getLanguageService(
-                            )->sL($settingKey) . '</label>' . PHP_EOL;
-                            $selectbox = '<select name="' . $groupKey . '-' . $settingKey . '" class="form-select form-select-sm">' . PHP_EOL;
-                            foreach ($settingValues as $settingEntryKey => $settingEntryLabel) {
-                                $tempKey = $groupKey . '-' . $settingKey . '-' . $settingEntryKey;
-                                $valuesAvailable[] = $tempKey;
-                                // set the selected value
-                                if ($valueSet) {
-                                    $selected = (isset($valuesFlipped[$tempKey])) ? 'selected="selected"':'';
-                                } // set the default value, this means the first one
-                                else {
-                                    $selected = 'selected="selected"';
-                                    $valueSet = true;
-                                }
-                                $label = $this->getLanguageService()->sL($settingEntryLabel);
-                                $selectbox .= '<option value="' . $tempKey . '" ' . $selected . '>' . $label . '</option>' . PHP_EOL;
-                            }
-                            $selectbox .= '</select>' . PHP_EOL;
-                            $tempContent[$settingKey] .= $selectbox;
-                            $tempContent[$settingKey] .= '</div>' . PHP_EOL;
-                        }
-                    }
-                }
-                $selectboxes .= implode('', $tempContent);
+                $selectBoxes .= '</div>' . PHP_EOL;
             }
         }
         // Process current classes/identifiers
-        $setClasses = array_intersect($values, $valuesAvailable);
+        $setClasses = array_intersect($values, $this->valuesAvailable);
         $setClass = htmlspecialchars(implode(' ', $setClasses), ENT_QUOTES | ENT_HTML5);
         $setValue = htmlspecialchars(implode(',', $setClasses), ENT_QUOTES | ENT_HTML5);
         // Allow admins to see the internal identifiers
@@ -234,18 +128,46 @@ class ContentResponsive extends AbstractContentRow
         $hiddenField .= '<div class="form-control-wrap">' . PHP_EOL;
         $hiddenField .= '<input class="form-control themes-hidden-admin-field ' . $setClass . '" ';
         $hiddenField .= 'readonly="readonly" type="' . $inputType . '" ';
-        $hiddenField .= 'name="' . htmlspecialchars((string) $name) . '" ';
+        $hiddenField .= 'name="' . htmlspecialchars((string)$name) . '" ';
         $hiddenField .= 'value="' . $setValue . '" class="' . $setClass . '">' . PHP_EOL;
         $hiddenField .= '</div>' . PHP_EOL;
         $hiddenField .= '</div>' . PHP_EOL;
 
-        // Build hidden field structure
-        //  themes-hidden-admin-field
-        //$hiddenField = '<input readonly="readonly" type="' . $inputType . '" name="' . htmlspecialchars($name) . '" value="' . $setValue . '"  class="' . $setClass . '">' . PHP_EOL;
-
         // Missed classes
-        $missedField = $this->getMissedFields($values, $valuesAvailable);
+        $missedField = $this->getMissedFields($values, $this->valuesAvailable);
 
-        return ['html' => '<div class="contentResponsive row">' . $selectboxes . $hiddenField . $missedField . '</div>'];
+        return ['html' => '<div class="contentResponsive row">' . $selectBoxes . $hiddenField . $missedField . '</div>'];
     }
+
+    /**
+     * @param string $size
+     * @param string $groupKey
+     * @param string[] $settings
+     * @return string
+     */
+    protected function buildItem(string $size, string $groupKey, array $settings): string
+    {
+        $content = '<label class="t3js-formengine-label sub-label mt-2">';
+        $content .= $this->getLanguageService()->sL($groupKey);
+        $content .= '</label>' . PHP_EOL;
+        $content .= '<select name="' . $size . '-' . $groupKey . '" class="form-select form-select-sm">' . PHP_EOL;
+        $valueSet = false;
+        foreach ($settings as $settingKey => $settingLabel) {
+            $tempKey = $size . '-' . $groupKey . '-' . $settingKey;
+            $this->valuesAvailable[] = $tempKey;
+            // set the selected value
+            if ($valueSet) {
+                $selected = (isset($this->valuesFlipped[$tempKey])) ? 'selected="selected"' : '';
+            } // set the default value, this means the first one
+            else {
+                $selected = 'selected="selected"';
+                $valueSet = true;
+            }
+            $label = $this->getLanguageService()->sL($settingLabel);
+            $content .= '<option value="' . $tempKey . '" ' . $selected . '>' . $label . '</option>' . PHP_EOL;
+        }
+        $content .= '</select>' . PHP_EOL;
+        return $content;
+    }
+
 }

@@ -44,11 +44,22 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractContentRow extends AbstractFormElement
 {
+    /**
+     * @var array<string, string[]>
+     */
     protected array $ctypeProperties = [];
 
+    /**
+     * @var array<string, string[]>
+     */
     protected array $defaultProperties = [];
 
-    protected function getMissedFields($values, $valuesAvailable): string
+    /**
+     * @param string[] $values
+     * @param string[] $valuesAvailable
+     * @return string
+     */
+    protected function getMissedFields(array $values, array $valuesAvailable): string
     {
         $missedField = '';
         $missedClasses = array_diff($values, $valuesAvailable);
@@ -59,7 +70,6 @@ abstract class AbstractContentRow extends AbstractFormElement
             );
             $missedField = '<div class="alert alert-danger" role="alert"><strong>' . $label . ':</strong> ' . $missedClass . '</div>';
         }
-
         return $missedField;
     }
 
@@ -71,7 +81,7 @@ abstract class AbstractContentRow extends AbstractFormElement
         return $GLOBALS['LANG'];
     }
 
-    protected function getMergedConfiguration($pid, $node, $cType): array
+    protected function getMergedConfiguration(int $pid, string $node, string $cType, string $gridLayout = ''): array
     {
         // Get configuration ctype specific configuration
         $pagesTsConfig = BackendUtilityCore::getPagesTSconfig($pid);
@@ -83,8 +93,30 @@ abstract class AbstractContentRow extends AbstractFormElement
         if (!empty($pagesTsConfig['themes.']['content.'][$node . '.']['default.'])) {
             $this->defaultProperties['properties'] = $pagesTsConfig['themes.']['content.'][$node . '.']['default.'];
         }
+        //
+        // In case of responsive row, we merge the c-type or grid-layout settings
+        if ($node === 'responsive') {
+            foreach (array_keys($this->defaultProperties['properties']) as $size) {
+                if (isset($this->ctypeProperties['properties'][$size])) {
+                    //
+                    // Throw an exception in order to eliminate mis-configurations
+                    throw new \Exception('Node "themes.content.responsive.gridelements_pi1.' . $size . '" is not allowed - please use it nested in grid-layout like "themes.content.responsive.gridelements_pi1.2ColumnGrid.' . $size . '"');
+                }
+            }
+            if (isset($this->ctypeProperties['properties'][$cType . '.'])) {
+                $this->ctypeProperties['properties'] = $this->ctypeProperties['properties'][$cType . '.'];
+            }
+            if (isset($this->ctypeProperties['properties'][$gridLayout . '.'])) {
+                $this->ctypeProperties['properties'] = $this->ctypeProperties['properties'][$gridLayout . '.'];
+            }
+        }
         // Merge configurations
         return array_replace_recursive($this->ctypeProperties, $this->defaultProperties);
+    }
+
+    protected function isDefaultProperty(string $key): bool
+    {
+        return array_key_exists($key, $this->defaultProperties['properties']);
     }
 
     /**
@@ -100,15 +132,15 @@ abstract class AbstractContentRow extends AbstractFormElement
         //
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('tt_content');
+            ->getQueryBuilderForTable('tt_content');
         $queryBuilder->select('pid')
-                ->from('tt_content')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter(-((int)$pid), PDO::PARAM_INT)
-                    )
-                );
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter(-((int)$pid), PDO::PARAM_INT)
+                )
+            );
         /** @var Statement $statement */
         $statement = $queryBuilder->execute();
         if ($statement->rowCount() > 0) {
@@ -148,7 +180,7 @@ abstract class AbstractContentRow extends AbstractFormElement
 
     protected function getCheckbox(string $name, string $id, string $label, bool $checked): string
     {
-        $checkedString = $checked  ? 'checked="checked"' : '';
+        $checkedString = $checked ? 'checked="checked"' : '';
         $checkbox = '<div class="form-check">' . PHP_EOL;
         $checkbox .= '<input class="form-check-input" type="checkbox" value="" id="' . $id . '" name="' . $name . '" ' . $checkedString . '>' . PHP_EOL;
         $checkbox .= '<label class="form-check-label themes-checkbox-label" for="' . $id . '" title="' . $label . '">' . $label . '</label>' . PHP_EOL;

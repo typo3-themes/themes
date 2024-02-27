@@ -35,9 +35,7 @@ namespace KayStrobach\Themes\Tca;
 class ContentBehaviour extends AbstractContentRow
 {
     protected array $checkboxesArray = [];
-
     protected array $valuesFlipped = [];
-
     protected array $valuesAvailable = [];
 
     /**
@@ -79,10 +77,7 @@ class ContentBehaviour extends AbstractContentRow
         if (!empty($behaviours['properties'])) {
             foreach ($behaviours['properties'] as $contentElementKey => $label) {
                 // GridElements: are able to provide grid-specific behaviours
-                if (is_array($label) && $cType === 'gridelements_pi1' && !array_key_exists(
-                    $contentElementKey,
-                    $this->defaultProperties
-                )) {
+                if (is_array($label) && $cType === 'gridelements_pi1' && !$this->isDefaultProperty($contentElementKey)) {
                     $contentElementKey = substr((string) $contentElementKey, 0, -1);
 
                     // Behaviour for all GridElements
@@ -99,7 +94,7 @@ class ContentBehaviour extends AbstractContentRow
                 } // Normal CEs
                 else {
                     // Is default property!?
-                    if (array_key_exists($contentElementKey, $this->defaultProperties)) {
+                    if ($this->isDefaultProperty($contentElementKey)) {
                         $this->createElement($contentElementKey, $label, 'default');
                     } // Is ctype specific!
                     else {

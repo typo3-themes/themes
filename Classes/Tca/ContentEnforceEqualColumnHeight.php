@@ -41,6 +41,7 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow
      */
     public function render(): array
     {
+        trigger_error('Using content enforce equal column is deprecated and will be removed in TYPO3 12. Please use responsive settings instead!', E_USER_DEPRECATED);
         $parameters = $this->data['parameterArray'];
         $parameters['row'] = $this->data['databaseRow'];
         // Vars

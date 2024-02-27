@@ -1,5 +1,10 @@
 # Themes Change-Log
 
+### 2024-02-27  Thomas Deuling  <typo3@coding.ms>
+
+*   [TASK] Mark grid columns using flexform settings as deprecated, will be removed in TYPO3 12
+
+
 
 ### 2019-11-27  Thomas Deuling  <typo3@coding.ms>
 

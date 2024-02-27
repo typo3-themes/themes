@@ -35,9 +35,7 @@ namespace KayStrobach\Themes\Tca;
 class ContentVariants extends AbstractContentRow
 {
     protected array $checkboxesArray = [];
-
     protected array $valuesFlipped = [];
-
     protected array $valuesAvailable = [];
 
     /**
@@ -80,10 +78,7 @@ class ContentVariants extends AbstractContentRow
         if (!empty($variants['properties'])) {
             foreach ($variants['properties'] as $contentElementKey => $label) {
                 // GridElements: are able to provide grid-specific variants
-                if (is_array($label) && $cType === 'gridelements_pi1' && !array_key_exists(
-                    $contentElementKey,
-                    $this->defaultProperties
-                )) {
+                if (is_array($label) && $cType === 'gridelements_pi1' && !$this->isDefaultProperty($contentElementKey)) {
                     $contentElementKey = substr((string) $contentElementKey, 0, -1);
 
                     // Variant for all GridElements
@@ -100,7 +95,7 @@ class ContentVariants extends AbstractContentRow
                 } // Normal CEs
                 else {
                     // Is default property!?
-                    if (array_key_exists($contentElementKey, $this->defaultProperties)) {
+                    if ($this->isDefaultProperty($contentElementKey)) {
                         $this->createElement($contentElementKey, $label, 'default');
                     } // Is ctype specific!
                     else {

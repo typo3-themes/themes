@@ -63,6 +63,7 @@ class ThemesResponsiveColumnDataProcessor implements DataProcessorInterface
         array $processedData
     ): array {
         $this->setup = $this->getFrontendController()->tmpl->setup;
+        trigger_error('Using grid columns using flexform settings is deprecated and will be removed in TYPO3 12', E_USER_DEPRECATED);
         $processedData = $this->getColumnClasses($processedData);
         $processedData = $this->getColumnClasses($processedData, 'flexform_column_widths_sm');
         $processedData = $this->getColumnClasses($processedData, 'flexform_column_widths_xs');
