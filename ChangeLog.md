@@ -1,5 +1,9 @@
 # Themes Change-Log
 
+### 2024-04-11  Thomas Deuling  <typo3@coding.ms>
+
+*   [BUGFIX] Fix responsive class mapping for older Themes versions
+
 ### 2024-02-27  Thomas Deuling  <typo3@coding.ms>
 
 *   [TASK] Mark grid columns using flexform settings as deprecated, will be removed in TYPO3 12

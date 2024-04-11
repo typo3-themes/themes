@@ -97,6 +97,15 @@ class ThemesResponsiveDataProcessor implements DataProcessorInterface
                             $processedData['themes']['responsive']['css'][$cssClass] = $cssClass;
                         }
                     }
+                } else {
+                    // Shorten identifier for backward compatibility!
+                    $key = str_replace('-visibility-', '-', $key);
+                    if (isset($setup['lib.']['content.']['cssMap.']['responsive.'][$key])) {
+                        $cssClass = trim((string) $setup['lib.']['content.']['cssMap.']['responsive.'][$key]);
+                        if ($cssClass !== '') {
+                            $processedData['themes']['responsive']['css'][$cssClass] = $cssClass;
+                        }
+                    }
                 }
             }
             $processedData['themes']['responsive']['cssClasses'] = implode(
