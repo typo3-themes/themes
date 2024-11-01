@@ -87,8 +87,14 @@ class Theme extends AbstractTheme
             }
             $yamlFile = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml';
             if (file_exists($yamlFile)) {
-                $yamlSource = GeneralUtility::makeInstance(YamlSource::class);
-                $this->metaInformation = $yamlSource->load([$yamlFile]);
+                try {
+                    $yamlSource = GeneralUtility::makeInstance(YamlSource::class);
+                    $this->metaInformation = $yamlSource->load([$yamlFile]);
+                } catch (Exception $e) {
+                    $this->metaInformation = [
+                        'title' => 'No title found',
+                    ];
+                }
             } else {
                 throw new Exception('No Yaml meta information found!');
             }
