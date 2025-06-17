@@ -82,12 +82,16 @@ class TsParserUtility implements SingletonInterface
             // Do not log time-performance information
             $this->tsParser->tt_track = 0;
 
+            $oldErrorReporting = error_reporting();
+            error_reporting(0);
             $this->tsParser->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate');
             $this->tsParser->ext_localWebGfxPrefix = PathUtility::stripPathSitePrefix(
                 ExtensionManagementUtility::extPath('tstemplate')
             );
 
             $this->tsParserTplRow = $this->tsParser->ext_getFirstTemplate($pageId, $templateUid);
+            error_reporting($oldErrorReporting);
+
 
             if (!empty($this->tsParserTplRow)) {
                 $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId);
@@ -141,7 +145,7 @@ class TsParserUtility implements SingletonInterface
             /**
              * @var DataHandler $tce
              */
-            $tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+            $tce = GeneralUtility::makeInstance(DataHandler::class);
 
             /*
              * Save data and clear the cache
