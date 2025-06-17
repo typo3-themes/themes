@@ -35,6 +35,7 @@ use KayStrobach\Themes\Utilities\CheckPageUtility;
 use KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility;
 use KayStrobach\Themes\Utilities\TsParserUtility;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -105,9 +106,11 @@ class EditorController extends ActionController
     /**
      * @var Theme
      */
-    protected Theme $selectedTheme;
+    protected ?Theme $selectedTheme = null;
 
     private ModuleTemplateFactory $moduleTemplateFactory;
+
+    private ?ModuleTemplate $moduleTemplate = null;
 
     private PageRenderer $pageRenderer;
 
@@ -115,6 +118,7 @@ class EditorController extends ActionController
     {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->pageRenderer = $pageRenderer;
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
     /**
@@ -134,6 +138,10 @@ class EditorController extends ActionController
     public function indexAction(): ResponseInterface
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+
+        $this->createMenu($moduleTemplate);
+        $this->createButtons($moduleTemplate);
+
         $this->view->assign('selectableThemes', $this->themeRepository->findAll());
         if (!empty($this->selectedTheme)) {
             $nearestPageWithTheme = $this->id;
@@ -376,10 +384,10 @@ class EditorController extends ActionController
      */
     protected function initializeView(ViewInterface $view)
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         /** @var BackendTemplateView $view */
         parent::initializeView($view);
-        if (!empty($moduleTemplate)) {
+        if (!empty($this->moduleTemplate)) {
             $pageRenderer = $this->pageRenderer;
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/Colorpicker');
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendModule');
@@ -394,17 +402,17 @@ class EditorController extends ActionController
                 $this->selectedTheme = $selectedTheme;
             }
             // Create menu and buttons
-            $this->createMenu();
-            $this->createButtons();
+            $this->createMenu($this->moduleTemplate);
+            $this->createButtons($this->moduleTemplate);
         }
+
     }
 
     /**
      * Create action menu
      */
-    protected function createMenu(): void
+    protected function createMenu(ModuleTemplate $moduleTemplate): void
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
@@ -439,9 +447,8 @@ class EditorController extends ActionController
     /**
      * Add menu buttons for specific actions
      */
-    protected function createButtons()
+    protected function createButtons(ModuleTemplate $moduleTemplate)
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
         $uriBuilder->setRequest($this->request);

@@ -1,4 +1,9 @@
 services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
   KayStrobach\Themes\TsConfig\Loader:
     public: true
     tags:
