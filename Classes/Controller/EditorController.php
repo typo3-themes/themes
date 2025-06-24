@@ -289,11 +289,11 @@ class EditorController extends ActionController
     /**
      * activate a theme.
      *
-     * @param null $theme
+     * @param string $theme
      *
      * @return ResponseInterface
      */
-    public function showThemeDetailsAction($theme = null): ResponseInterface
+    public function showThemeDetailsAction(string $theme = null): ResponseInterface
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $themeObject = $this->themeRepository->findByIdentifier($theme);
