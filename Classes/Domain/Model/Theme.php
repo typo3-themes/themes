@@ -30,11 +30,12 @@ namespace KayStrobach\Themes\Domain\Model;
  ***************************************************************/
 
 use Exception;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
+use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 
 /**
  * Class Theme.
@@ -88,8 +89,7 @@ class Theme extends AbstractTheme
             $yamlFile = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml';
             if (file_exists($yamlFile)) {
                 try {
-                    $yamlSource = GeneralUtility::makeInstance(YamlSource::class);
-                    $this->metaInformation = $yamlSource->load([$yamlFile]);
+                    $this->metaInformation = $this->loadYamlFile($yamlFile);
                 } catch (Exception $e) {
                     $this->metaInformation = [
                         'title' => 'No title found',
@@ -99,6 +99,22 @@ class Theme extends AbstractTheme
                 throw new Exception('No Yaml meta information found!');
             }
         }
+    }
+
+    protected function loadYamlFile(string $path): array
+    {
+        $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
+
+        try {
+            $loadedConfiguration = $loader->load($path);
+        } catch (\RuntimeException $e) {
+            throw new ParseErrorException(
+                sprintf('An error occurred while parsing file "%s": %s', $path, $e->getMessage()),
+                1480195405,
+                $e
+            );
+        }
+        return $loadedConfiguration;
     }
 
     /**
@@ -221,5 +237,14 @@ class Theme extends AbstractTheme
                 );
             }
         }
+    }
+
+    /**
+     * Takes precedence over getDeniedTypoScriptConstants
+     * @return array
+     */
+    public function getSupportedTypoScriptConstants(): array
+    {
+        return $this->metaInformation['editor']['allowedConstants'] ?? [];
     }
 }

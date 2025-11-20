@@ -440,4 +440,33 @@ class AbstractTheme extends AbstractEntity
         //
         return $themeItem;
     }
+
+    /**
+     * Takes precedence over getDeniedTypoScriptConstants
+     * @return array
+     */
+    public function getSupportedTypoScriptConstants(): array
+    {
+        return [];
+    }
+
+    public function isSupportedTypoScriptConstant(string $name): bool
+    {
+        $constants = $this->getSupportedTypoScriptConstants();
+        if (isset($this->metaInformation['editor']['ignoreAllowedConstants']) && $this->metaInformation['editor']['ignoreAllowedConstants']) {
+            return true;
+        }
+        if ($constants === []) {
+            return true;
+        }
+        if ($constants[$name]['allowed'] ?? false) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getAlternativeLabelForSupportedTypoScriptConstant(string $name, string $fallback): string
+    {
+        return $this->getSupportedTypoScriptConstants()[$name]['label'] ?? $fallback;
+    }
 }

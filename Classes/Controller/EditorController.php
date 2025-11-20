@@ -29,6 +29,7 @@ namespace KayStrobach\Themes\Controller;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use Doctrine\DBAL\DBALException;
+use KayStrobach\Themes\Domain\Model\AbstractTheme;
 use KayStrobach\Themes\Domain\Model\Theme;
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use KayStrobach\Themes\Utilities\CheckPageUtility;
@@ -42,6 +43,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -143,7 +145,7 @@ class EditorController extends ActionController
         $this->createButtons($moduleTemplate);
 
         $this->view->assign('selectableThemes', $this->themeRepository->findAll());
-        if (!empty($this->selectedTheme)) {
+        if ($this->selectedTheme instanceof AbstractTheme) {
             $nearestPageWithTheme = $this->id;
             $this->view->assign('selectedTheme', $this->selectedTheme);
             $this->view->assign(
@@ -152,7 +154,8 @@ class EditorController extends ActionController
                     $this->tsParser,
                     $this->id,
                     $this->allowedCategories,
-                    $this->deniedFields
+                    $this->deniedFields,
+                    $this->selectedTheme->getSupportedTypoScriptConstants() ?? []
                 )
             );
             $categoriesFilterSettings = $this->getBackendUser()->getModuleData(
@@ -173,6 +176,7 @@ class EditorController extends ActionController
             $nearestPageWithTheme = 0;
         }
 
+        $this->view->assign('isDevelopmentContext', Environment::getContext()->isDevelopment());
         $this->view->assign('pid', $this->id);
         $this->view->assign('nearestPageWithTheme', $nearestPageWithTheme);
         $this->view->assign('themeIsSelectable', CheckPageUtility::hasThemeableSysTemplateRecord($this->id));
@@ -192,53 +196,59 @@ class EditorController extends ActionController
         TsParserUtility $tsParserWrapper,
         $pid,
         ?array $allowedCategories = null,
-        ?array $deniedFields = null
+        ?array $deniedFields = [],
+        ?array $allowedFields = []
     ): array {
         $definition = [];
         $categories = $tsParserWrapper->getCategories($pid);
         $constants = $tsParserWrapper->getConstants($pid);
         foreach ($categories as $categoryName => $category) {
             asort($category);
-            if (is_array($category) && (($allowedCategories === null) || (in_array($categoryName, $allowedCategories)))) {
-                $title = $GLOBALS['LANG']->sL(
-                    'LLL:EXT:themes/Resources/Private/Language/Constants/locallang.xml:cat_' . $categoryName
-                );
-                if (strlen($title) === 0) {
-                    $title = $categoryName;
+            if (!is_array($category) || $allowedCategories !== [] && !in_array($categoryName, $allowedCategories)) {
+                continue;
+            }
+            $title = $GLOBALS['LANG']->sL(
+                'LLL:EXT:themes/Resources/Private/Language/Constants/locallang.xml:cat_' . $categoryName
+            );
+            if (strlen($title) === 0) {
+                $title = $categoryName;
+            }
+            $definition[$categoryName] = [
+                    'key' => $categoryName,
+                    'title' => $title,
+                    'items' => [],
+            ];
+            foreach (array_keys($category) as $constantName) {
+                if (in_array($constantName, $deniedFields)) {
+                    continue;
                 }
-                $definition[$categoryName] = [
-                        'key' => $categoryName,
-                        'title' => $title,
-                        'items' => [],
-                ];
-                foreach (array_keys($category) as $constantName) {
-                    if (($deniedFields === null) || (!in_array($constantName, $deniedFields))) {
-                        // Basic, advanced or expert?!
-                        $constants[$constantName]['userScope'] = 'advanced';
-                        if (isset($categories['basic']) && array_key_exists(
-                            $constants[$constantName]['name'],
-                            $categories['basic']
-                        )) {
-                            $constants[$constantName]['userScope'] = 'basic';
-                        } elseif (isset($categories['advanced']) && array_key_exists(
-                            $constants[$constantName]['name'],
-                            $categories['advanced']
-                        )) {
-                            $constants[$constantName]['userScope'] = 'advanced';
-                        } elseif (isset($categories['expert']) && array_key_exists(
-                            $constants[$constantName]['name'],
-                            $categories['expert']
-                        )) {
-                            $constants[$constantName]['userScope'] = 'expert';
-                        }
-                        // Only get the first category
-                        $catParts = explode(',', $constants[$constantName]['cat']);
-                        if (isset($catParts[1])) {
-                            $constants[$constantName]['cat'] = $catParts[0];
-                        }
-                        $definition[$categoryName]['items'][] = $constants[$constantName];
-                    }
+                if (!$this->selectedTheme->isSupportedTypoScriptConstant($constantName)) {
+                    continue;
                 }
+                // Basic, advanced or expert?!
+                $constants[$constantName]['userScope'] = 'advanced';
+                if (isset($categories['basic']) && array_key_exists(
+                    $constants[$constantName]['name'],
+                    $categories['basic']
+                )) {
+                    $constants[$constantName]['userScope'] = 'basic';
+                } elseif (isset($categories['advanced']) && array_key_exists(
+                    $constants[$constantName]['name'],
+                    $categories['advanced']
+                )) {
+                    $constants[$constantName]['userScope'] = 'advanced';
+                } elseif (isset($categories['expert']) && array_key_exists(
+                    $constants[$constantName]['name'],
+                    $categories['expert']
+                )) {
+                    $constants[$constantName]['userScope'] = 'expert';
+                }
+                // Only get the first category
+                $catParts = explode(',', $constants[$constantName]['cat']);
+                if (isset($catParts[1])) {
+                    $constants[$constantName]['cat'] = $catParts[0];
+                }
+                $definition[$categoryName]['items'][] = $constants[$constantName];
             }
         }
 
