@@ -81,7 +81,12 @@ class ThemesResponsiveColumnDataProcessor implements DataProcessorInterface
     protected function getColumnClasses(array $processedData = [], $index = 'flexform_column_widths_md'): array
     {
         if (isset($processedData['data'][$index])) {
-            $keys = GeneralUtility::trimExplode('#', $processedData['data'][$index], true);
+            $data = $processedData['data'][$index];
+            if (is_array($data)) {
+                // old typo3 data?
+                $data = $data[0];
+            }
+            $keys = GeneralUtility::trimExplode('#', $data, true);
             if (!empty($keys)) {
                 $column = 0;
                 foreach ($keys as $key) {
