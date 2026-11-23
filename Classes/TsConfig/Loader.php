@@ -127,13 +127,13 @@ final class Loader
             $queryBuilder->select('*')
                     ->from('sys_template')
                     ->where(
-                            $queryBuilder->expr()->andX(
-                                    $queryBuilder->expr()->eq(
-                                            'pid',
-                                            $queryBuilder->createNamedParameter((int)$page['uid'], PDO::PARAM_INT)
-                                    ),
-                                    $queryBuilder->expr()->eq('root', '1')
-                            )
+                        $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->eq(
+                                'pid',
+                                $queryBuilder->createNamedParameter((int)$page['uid'], PDO::PARAM_INT)
+                            ),
+                            $queryBuilder->expr()->eq('root', '1')
+                        )
                     );
             /** @var Statement $statement */
             $statement = $queryBuilder->execute();
