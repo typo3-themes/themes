@@ -56,9 +56,10 @@ class Theme extends AbstractTheme
             // set needed path variables
             $path = ExtensionManagementUtility::extPath($this->getExtensionName());
             //
-            $this->pathTyposcript = $path . 'Configuration/TypoScript/setup.typoscript';
-            $this->pathTyposcriptConstants = $path . 'Configuration/TypoScript/constants.typoscript';
-            $this->pathTsConfig = $path . 'Configuration/PageTS/tsconfig.typoscript';
+            // older themes (e.g. theme_bootstrap) still use the file ending .txt
+            $this->pathTyposcript = $this->firstExistingFile($path . 'Configuration/TypoScript/setup', ['typoscript', 'txt']);
+            $this->pathTyposcriptConstants = $this->firstExistingFile($path . 'Configuration/TypoScript/constants', ['typoscript', 'txt']);
+            $this->pathTsConfig = $this->firstExistingFile($path . 'Configuration/PageTS/tsconfig', ['typoscript', 'txt']);
             //
             $this->importExtEmConf();
             if (is_file(
@@ -75,11 +76,30 @@ class Theme extends AbstractTheme
             $yamlFile = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml';
             if (file_exists($yamlFile)) {
                 // Symfony YAML of the core, the YamlSource of EXT:form is internal
-                $this->metaInformation = (array)Yaml::parseFile($yamlFile);
+                try {
+                    $this->metaInformation = (array)Yaml::parseFile($yamlFile);
+                } catch (\Throwable) {
+                    $this->metaInformation = [
+                        'title' => 'No title found',
+                    ];
+                }
             } else {
                 throw new Exception('No Yaml meta information found!', 3105398553);
             }
         }
+    }
+
+    /**
+     * @param list<string> $fileEndings in order of preference, the first one is returned if no file exists
+     */
+    private function firstExistingFile(string $pathWithoutFileEnding, array $fileEndings): string
+    {
+        foreach ($fileEndings as $fileEnding) {
+            if (file_exists($pathWithoutFileEnding . '.' . $fileEnding)) {
+                return $pathWithoutFileEnding . '.' . $fileEnding;
+            }
+        }
+        return $pathWithoutFileEnding . '.' . $fileEndings[0];
     }
 
     /**
@@ -132,4 +152,12 @@ class Theme extends AbstractTheme
         return '';
     }
 
+    /**
+     * Takes precedence over getDeniedTypoScriptConstants
+     * @return array
+     */
+    public function getSupportedTypoScriptConstants(): array
+    {
+        return $this->metaInformation['editor']['allowedConstants'] ?? [];
+    }
 }

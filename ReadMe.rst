@@ -1,4 +1,4 @@
-.. image:: https://badge.waffle.io/typo3-themes/themes.png?label=ready&title=Ready 
+.. image:: https://badge.waffle.io/typo3-themes/themes.png?label=ready&title=Ready
  :target: https://waffle.io/typo3-themes/themes
  :alt: 'Stories in Ready'
 .. include:: Documentation/Index.rst
@@ -19,21 +19,21 @@ So the approach is similar to the Wordpress or Drupal world, where we have stand
 
 To achieve that goal and to be highly flexible configurable at the same time we build a set of extensions which provides the needed functionality:
 
-+---------------------+-------------------------------------------------+ 
-| Extensionkey        | purpose of this extension                       | 
-+=====================+=================================================+ 
++---------------------+-------------------------------------------------+
+| Extensionkey        | purpose of this extension                       |
++=====================+=================================================+
 | themes              | UI in the backend for theme switching           |
-+---------------------+-------------------------------------------------+ 
++---------------------+-------------------------------------------------+
 | themes_gridelements | provides datastructures to allow easy switching |
-+---------------------+-------------------------------------------------+ 
++---------------------+-------------------------------------------------+
 | theme_bootstrap     | base package for bootstrap 3.x                  |
-+---------------------+-------------------------------------------------+ 
++---------------------+-------------------------------------------------+
 | theme_foundation    | base package for foundation                     |
-+---------------------+-------------------------------------------------+ 
++---------------------+-------------------------------------------------+
 | dyncss*             | less and scss rendering                         |
-+---------------------+-------------------------------------------------+ 
++---------------------+-------------------------------------------------+
 | t3jquery            | standardized way of including javascript - not recommend anymore |
-+---------------------+-------------------------------------------------+ 
++---------------------+-------------------------------------------------+
 
 Having the base packages and also ready made themes like:
 
@@ -53,7 +53,7 @@ To install THEMES and get started fast, we highly recommend to take the followin
 **Simply install the themes from TER you would like to have**
 This will install all the needed dependencies and you are ready to go.
 
-You can get the list of all themes which are available via the TER on `typo3-themes.org <http://www.typo3-themes.org/>`_ 
+You can get the list of all themes which are available via the TER on `typo3-themes.org <http://www.typo3-themes.org/>`_
 
 Some example themes are:
 
@@ -67,6 +67,38 @@ Additionally you can install a ready made distribution which also adds a pagetre
 * `themes_distribution <http://typo3.org/extensions/repository/view/themes_distribution>`_
 
 This will make your TYPO3 serving a dummy webpage within some seconds.
+
+Meta/theme.yaml
+-------------------------
+
+```yaml
+title            : Minimalistic theme for reference purposes
+version          : 1.0.3
+description      : |
+  This is the description of the theme.
+  With the starting pipe it can contain multiple lines.
+
+  The newlines in this description will be preserved.
+editor:
+  ignoreAllowedConstants: false
+  allowedConstants:
+    themes.configuration.footer.email:
+      allowed: true
+    themes.configuration.meta.copyright:
+      allowed: true
+    themes.configuration.baseurlImage:
+      allowed: true
+    themes.configuration.favicon:
+      allowed: true
+    themes.configuration.colors.primary:
+      allowed: true
+    themes.configuration.meta.defaults.author:
+      allowed: true
+    themes.configuration.meta.defaults.authorEmail:
+      allowed: true
+
+```
+
 
 Advantages for Developers
 -------------------------
@@ -93,7 +125,7 @@ Advantages for integrators
 
   + please see a list of community shared licenses on https://github.com/typo3-themes/themes/wiki/Bought-Theme-Licenses
 
- 
+
 Advantages for Editors
 ----------------------
 
