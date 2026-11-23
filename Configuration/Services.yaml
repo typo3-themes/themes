@@ -34,6 +34,13 @@ services:
       - name: event.listener
         identifier: 'themes/resolve-nested-constants'
         event: TYPO3\CMS\Frontend\Event\ModifyTypoScriptConstantsEvent
+  KayStrobach\Themes\EventListener\RewriteLegacyExtensionPaths:
+    tags:
+      - name: event.listener
+        identifier: 'themes/rewrite-legacy-extension-paths'
+        event: TYPO3\CMS\Frontend\Event\ModifyTypoScriptConstantsEvent
+        # after the nested constants are resolved, they may contain such paths as well
+        after: 'themes/resolve-nested-constants'
 
   KayStrobach\Themes\DataProcessing\FilesDataProcessor:
     tags:
