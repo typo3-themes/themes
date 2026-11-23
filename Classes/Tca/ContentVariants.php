@@ -85,7 +85,7 @@ class ContentVariants extends AbstractContentRow
                 // GridElements: are able to provide grid-specific variants
                 if (is_array($label) && $cType === 'gridelements_pi1' && !array_key_exists(
                     $contentElementKey,
-	                $this->defaultProperties['properties']
+                    $this->defaultProperties['properties']
                 )) {
                     $contentElementKey = substr($contentElementKey, 0, -1);
 
@@ -103,7 +103,7 @@ class ContentVariants extends AbstractContentRow
                 } // Normal CEs
                 else {
                     // Is default property!?
-	                if (array_key_exists($contentElementKey, $this->defaultProperties['properties'])) {
+                    if (array_key_exists($contentElementKey, $this->defaultProperties['properties'])) {
                         $this->createElement($contentElementKey, $label, 'default');
                     } // Is ctype specific!
                     else {
