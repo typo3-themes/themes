@@ -43,10 +43,9 @@ class ApplicationContext
      */
     protected FeatureManager $featureManager;
 
-    public function __construct()
+    public function __construct(?FeatureManager $featureManager = null)
     {
-        $featureManager = GeneralUtility::makeInstance(FeatureManager::class);
-        $this->featureManager = $featureManager;
+        $this->featureManager = $featureManager ?? GeneralUtility::makeInstance(FeatureManager::class);
     }
 
     /**
@@ -107,10 +106,5 @@ class ApplicationContext
             return true;
         }
         return false;
-    }
-
-    public function injectFeatureManager(FeatureManager $featureManager): void
-    {
-        $this->featureManager = $featureManager;
     }
 }

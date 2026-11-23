@@ -44,10 +44,11 @@ class ContentColumnSettings extends AbstractContentRow
      * @param NodeFactory|null $nodeFactory
      * @param array|null $data
      */
-    public function __construct(NodeFactory $nodeFactory = null, array $data = null)
+    public function __construct(?NodeFactory $nodeFactory = null, ?array $data = null)
     {
+        // TYPO3 v12 passes the node factory and the data, v13 and later call setData() instead
         if ($nodeFactory !== null) {
-            parent::__construct($nodeFactory, $data);
+            parent::__construct($nodeFactory, $data ?? []);
         }
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }

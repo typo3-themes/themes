@@ -54,7 +54,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      */
     protected array $addedObjects = [];
 
-    public function __construct()
+    public function __construct(private readonly \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool)
     {
         // Hook to recognize themes, this is the magic point, why it's possible to support so many theme formats and types.
         if (!empty(
@@ -87,7 +87,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      */
     public function remove($object): never
     {
-        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented', 6091074089);
     }
 
     /**
@@ -100,7 +100,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      */
     public function replace(AbstractTheme $existingObject, AbstractTheme $newObject): never
     {
-        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented', 2922030709);
     }
 
     /**
@@ -112,7 +112,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      */
     public function update($modifiedObject): never
     {
-        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented', 9380942961);
     }
 
     /**
@@ -132,7 +132,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      */
     public function getRemovedObjects(): never
     {
-        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented', 3330052914);
     }
 
     /**
@@ -213,17 +213,17 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      */
     public function findByPageId(int $pid): ?Theme
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_template');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_template');
         $queryBuilder->select('*')
             ->from('sys_template')
             ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT))
             )
             ->setMaxResults(1);
         if (!empty($GLOBALS['TCA']['sys_template']['ctrl']['sortby'])) {
             $queryBuilder->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);
         }
-        $templateRow = $queryBuilder->execute()->fetch();
+        $templateRow = $queryBuilder->executeQuery()->fetchAssociative();
         if (!empty($templateRow)) {
             return $this->findByUid($templateRow['tx_themes_skin']);
         }
@@ -244,7 +244,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      */
     public function setDefaultOrderings(array $defaultOrderings): never
     {
-        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented', 1181864831);
     }
 
     /**
@@ -256,7 +256,7 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      */
     public function setDefaultQuerySettings(QuerySettingsInterface $defaultQuerySettings): never
     {
-        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented', 7963276976);
     }
 
     /**
@@ -267,6 +267,6 @@ class ThemeRepository implements RepositoryInterface, SingletonInterface
      */
     public function createQuery(): never
     {
-        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented');
+        throw new Exception('The method ' . __FUNCTION__ . ' is not implemented', 6397312826);
     }
 }

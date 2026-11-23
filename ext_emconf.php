@@ -36,7 +36,7 @@ $EM_CONF['themes'] = [
     'author_company' => 'private',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.4.0-12.4.99',
+            'typo3' => '12.4.0-14.9.99',
             'gridelements' => '9.2.1-11.99.99',
         ],
         'conflicts' => [
@@ -46,5 +46,4 @@ $EM_CONF['themes'] = [
         'suggests' => [
         ],
     ],
-    '_md5_values_when_last_written' => '',
 ];

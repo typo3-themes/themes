@@ -1,7 +1,9 @@
 /**
  * 
  */
-define(['jquery'], function (jQuery) {
+// ES module for TYPO3 v12 and later (RequireJS was removed in v13)
+import jQuery from 'jquery';
+
 
 	var ThemesEditor = {};
 	var categoriesFilterSearchField = '';
@@ -194,8 +196,6 @@ define(['jquery'], function (jQuery) {
 	/**
 	 * initialize function
 	 * */
-	return function () {
-		ThemesEditor.initialize();
-		return ThemesEditor;
-	}();
-});
+ThemesEditor.initialize();
+
+export default ThemesEditor;

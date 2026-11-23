@@ -30,14 +30,13 @@ namespace KayStrobach\Themes\DataProcessing;
  ***************************************************************/
 
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * DataProcessor for Fluid Styled Content.
@@ -46,6 +45,9 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class ThemesButtonDataProcessor implements DataProcessorInterface
 {
+    public function __construct(private readonly \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool)
+    {
+    }
     /**
      * Process data for the Themes icons.
      *
@@ -66,7 +68,7 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
         $uid = (int)($processedData['data']['uid'] ?? 0);
         if ($uid > 0) {
             /** @var ConnectionPool $connectionPool */
-            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $connectionPool = $this->connectionPool;
             /** @var QueryBuilder $queryBuilder */
             $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_themes_buttoncontent');
             $queryBuilder->select('*')
@@ -74,13 +76,13 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'tt_content',
-                        $queryBuilder->createNamedParameter((int)$processedData['data']['uid'], PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter((int)$processedData['data']['uid'], \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
                     )
                 )
                 ->orderBy('sorting');
-            /** @var Statement $statement */
-            $statement = $queryBuilder->execute();
-            while ($row = $statement->fetch()) {
+            /** @var Result $statement */
+            $statement = $queryBuilder->executeQuery();
+            while ($row = $statement->fetchAssociative()) {
                 $link = [];
                 $link['uid'] = $row['uid'];
                 $link['text'] = $row['linktext'];
@@ -91,7 +93,7 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
                 $link['title'] = $row['linktitle'];
                 $link['icon'] = '';
                 if ($row['icon'] != '') {
-                    $setup = $this->getFrontendController()->tmpl->setup;
+                    $setup = $cObj->getRequest()->getAttribute('frontend.typoscript')->getSetupArray();
                     $link['icon'] = $setup['lib.']['icons.']['cssMap.'][$row['icon']];
                 }
                 $processedData['themes']['buttons'][] = $link;
@@ -100,11 +102,4 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
         return $processedData;
     }
 
-    /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
-    }
 }

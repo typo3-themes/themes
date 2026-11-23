@@ -44,7 +44,7 @@ class ThemeEnabledCondition
      */
     public static function isThemeEnabled(string $theme = ''): bool
     {
-        $pageId = (int)GeneralUtility::_GET('id');
+        $pageId = (int)($GLOBALS['TYPO3_REQUEST']->getQueryParams()['id'] ?? null);
         /** @var ThemeRepository $themeRepository */
         $themeRepository = GeneralUtility::makeInstance(ThemeRepository::class);
         $themeOfPage = $themeRepository->findByPageOrRootline($pageId);

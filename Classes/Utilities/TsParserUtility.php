@@ -29,173 +29,141 @@ namespace KayStrobach\Themes\Utilities;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use RuntimeException;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
+use TYPO3\CMS\Core\TypoScript\AST\Visitor\AstConstantCommentVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeCommentAwareAstBuilderVisitor;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * Class TsParserUtility.
  *
- * Provides an API to the complex TSParser
+ * Reads and writes the editable constants ("# cat=…; type=…; label=…") of the first template of a page,
+ * like the constant editor of EXT:tstemplate. Uses the TypoScript parser of TYPO3 v12 and later,
+ * the ExtendedTemplateService of older versions is gone.
  */
 class TsParserUtility implements SingletonInterface
 {
     /**
-     * @var ExtendedTemplateService
+     * The first template record of the page, the constants are written into it.
      */
-    protected ExtendedTemplateService $tsParser;
-
     protected array $tsParserTplRow = [];
 
+    /**
+     * Editable constants by name, see AstConstantCommentVisitor::getConstants().
+     */
     protected array $tsParserConstants = [];
 
-    protected bool $tsParserInitialized = false;
+    protected ?int $initializedForPage = null;
 
-    /**
-     * @param $pid
-     */
     public function applyToPid($pid, array $constants, array $isSetConstants = [])
     {
-        $this->initializeTsParser($pid);
-        $this->setConstants($pid, $constants, $isSetConstants);
+        $this->initializeTsParser((int)$pid);
+        $this->setConstants((int)$pid, $constants, $isSetConstants);
         //@todo add hook to apply additional options
     }
 
-    /**
-     * @param $pageId
-     *
-     * @return bool
-     */
-    protected function initializeTsParser($pageId, int $templateUid = 0): bool
+    protected function initializeTsParser(int $pageId): bool
     {
-        if (!$this->tsParserInitialized) {
-            $this->tsParserInitialized = true;
-            $this->tsParser = GeneralUtility::makeInstance('TYPO3\\CMS\Core\\TypoScript\\ExtendedTemplateService');
-            // Do not log time-performance information
-            $this->tsParser->tt_track = 0;
-
-            $this->tsParser->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate');
-            $this->tsParser->ext_localWebGfxPrefix = PathUtility::stripPathSitePrefix(
-                ExtensionManagementUtility::extPath('tstemplate')
-            );
-
-            $this->tsParserTplRow = $this->tsParser->ext_getFirstTemplate($pageId, $templateUid);
-
-            if (!empty($this->tsParserTplRow)) {
-                $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId);
-                try {
-                    $rootLine = $rootlineUtility->get();
-                } catch (RuntimeException) {
-                    return false;
-                }
-                // This generates the constants/config + hierarchy info for the template.
-                $this->tsParser->runThroughTemplates($rootLine, $templateUid);
-                // The editable constants are returned in an array.
-                $this->tsParserConstants = $this->tsParser->generateConfig_constants();
-                // The returned constants are sorted in categories, that goes into the $tmpl->categories array
-                $this->tsParser->ext_categorizeEditableConstants($this->tsParserConstants);
-                $this->tsParser->ext_regObjectPositions($this->tsParserTplRow['constants']);
-                // This array will contain key=[expanded constantname], value=linenumber in template. (after edit_divider, if any)
-                return true;
-            }
+        if ($this->initializedForPage === $pageId) {
+            return $this->tsParserTplRow !== [];
+        }
+        $this->initializedForPage = $pageId;
+        $this->tsParserTplRow = $this->findFirstTemplateOnPage($pageId);
+        $this->tsParserConstants = [];
+        if ($this->tsParserTplRow === []) {
+            return false;
+        }
+        try {
+            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
+        } catch (\RuntimeException) {
             return false;
         }
 
+        $request = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface ? $GLOBALS['TYPO3_REQUEST'] : null;
+        $sysTemplateRows = GeneralUtility::makeInstance(SysTemplateRepository::class)
+            ->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, (int)$this->tsParserTplRow['uid']);
+        $tokenizer = GeneralUtility::makeInstance(LosslessTokenizer::class);
+        $constantIncludeTree = GeneralUtility::makeInstance(SysTemplateTreeBuilder::class)
+            ->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $tokenizer, $this->findSite($pageId));
+        $astBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
+        GeneralUtility::makeInstance(IncludeTreeTraverser::class)->traverse($constantIncludeTree, [$astBuilderVisitor]);
+        $commentVisitor = GeneralUtility::makeInstance(AstConstantCommentVisitor::class);
+        GeneralUtility::makeInstance(AstTraverser::class)->traverse($astBuilderVisitor->getAst(), [$commentVisitor]);
+        $this->tsParserConstants = $commentVisitor->getConstants();
         return true;
     }
 
     /**
-     * @param $pid
-     * @param $constants
-     *
      * @todo access check!
      */
-    protected function setConstants($pid, $constants, array $isSetConstants = [])
+    protected function setConstants(int $pid, array $constants, array $isSetConstants = [])
     {
-        $this->getConstants($pid);
-
-        $postData = [
-                'data' => $constants,
-                'check' => $isSetConstants,
-        ];
-
-        $this->tsParser->changed = 0;
-        //$this->tsParser->ext_dontCheckIssetValues = 1;
-        $this->tsParser->ext_procesInput($postData, $_FILES, $this->tsParserConstants, $this->tsParserTplRow);
-
-        if ($this->tsParser->changed) {
-            // Set the data to be saved
-            $saveId = $this->tsParserTplRow['uid'];
-            $recData = [];
-            $recData['sys_template'][$saveId]['constants'] = implode(chr(10), $this->tsParser->raw);
-            // Create new  tce-object
-            /**
-             * @var DataHandler $tce
-             */
-            $tce = GeneralUtility::makeInstance(DataHandler::class);
-
-            /*
-             * Save data and clear the cache
-             * (note: currently only admin-users can clear the cache)
-             */
-            $user = clone $GLOBALS['BE_USER'];
-            $user->user['admin'] = 1;
-            $tce->start($recData, [], $user);
-            $tce->admin = 1;
-            $tce->process_datamap();
-            $tce->clear_cacheCmd('pages');
-            unset($user);
+        if ($this->tsParserTplRow === []) {
+            return;
         }
+        $updatedConstants = $this->updateTemplateConstants($constants, $isSetConstants, (string)($this->tsParserTplRow['constants'] ?? ''));
+        if ($updatedConstants === null) {
+            return;
+        }
+        $saveId = empty($this->tsParserTplRow['_ORIG_uid']) ? $this->tsParserTplRow['uid'] : $this->tsParserTplRow['_ORIG_uid'];
+        $recData = [];
+        $recData['sys_template'][$saveId]['constants'] = implode(chr(10), $updatedConstants);
+        /** @var DataHandler $tce */
+        $tce = GeneralUtility::makeInstance(DataHandler::class);
+        // Save data and clear the cache (only admin users can clear the cache)
+        $user = clone $GLOBALS['BE_USER'];
+        $user->user['admin'] = 1;
+        $tce->start($recData, [], $user);
+        $tce->process_datamap();
+        $tce->clear_cacheCmd('pages');
+        unset($user);
+        // read the constants again next time
+        $this->initializedForPage = null;
     }
 
     /**
-     * @param $pid
-     *
      * @return array|void
      */
     public function getConstants($pid)
     {
-        $this->initializeTsParser($pid);
+        $this->initializeTsParser((int)$pid);
 
         $return = $this->tsParserConstants;
         if (!empty($return)) {
             foreach ($return as $key => $field) {
-                $return[$key]['isDefault'] = ($field['value'] === $field['default_value']);
+                $type = (string)($field['type'] ?? '');
+                $return[$key]['isDefault'] = ((string)($field['value'] ?? '') === (string)($field['default_value'] ?? ''));
 
-                if ($field['type'] === 'int+') {
+                if ($type === 'int+' || $type === 'int') {
                     $return[$key]['typeCleaned'] = 'Int';
-                } elseif (str_starts_with((string) $field['type'], 'int')) {
-                    $return[$key]['typeCleaned'] = 'Int';
-                    $return[$key]['range'] = substr((string) $field['type'], 3);
-                } elseif ($field['type'] === 'small') {
-                    $return[$key]['typeCleaned'] = 'Text';
-                } elseif ($field['type'] === 'color') {
-                    $return[$key]['typeCleaned'] = 'Color';
-                } elseif ($field['type'] === 'boolean') {
-                    $return[$key]['typeCleaned'] = 'Boolean';
-                } elseif ($field['type'] === 'string') {
-                    $return[$key]['typeCleaned'] = 'String';
-                } elseif (str_starts_with((string) $field['type'], 'file')) {
-                    $return[$key]['typeCleaned'] = 'File';
-                } elseif (str_starts_with((string) $field['type'], 'options')) {
-                    $return[$key]['typeCleaned'] = 'Options';
-                    $options = explode(',', substr((string) $field['type'], 8, -1));
-                    $return[$key]['options'] = [];
-                    foreach ($options as $option) {
-                        $t = explode('=', $option);
-                        if (count($t) === 2) {
-                            $return[$key]['options'][$t[1]] = $t[0];
-                        } else {
-                            $return[$key]['options'][$t[0]] = $t[0];
-                        }
+                    if (isset($field['typeIntMin']) || isset($field['typeIntMax'])) {
+                        $return[$key]['range'] = '[' . ($field['typeIntMin'] ?? '') . '-' . ($field['typeIntMax'] ?? '') . ']';
                     }
-                } elseif ($field['type'] === '') {
+                } elseif ($type === 'color') {
+                    $return[$key]['typeCleaned'] = 'Color';
+                } elseif ($type === 'boolean') {
+                    $return[$key]['typeCleaned'] = 'Boolean';
+                } elseif ($type === 'string' || $type === '') {
                     $return[$key]['typeCleaned'] = 'String';
+                } elseif ($type === 'options') {
+                    $return[$key]['typeCleaned'] = 'Options';
+                    $return[$key]['options'] = [];
+                    foreach ($field['labelValueArray'] ?? [] as $option) {
+                        $return[$key]['options'][$option['value']] = $option['label'];
+                    }
                 } else {
                     $return[$key]['typeCleaned'] = 'Fallback';
                 }
@@ -205,30 +173,18 @@ class TsParserUtility implements SingletonInterface
         }
     }
 
-    /**
-     * @param $pid
-     *
-     * @return array
-     */
     public function getCategories($pid, array $categoriesToShow = [], array $deniedFields = []): array
     {
         $categories = [];
 
-        $this->initializeTsParser($pid);
-        $constants = $this->tsParser->generateConfig_constants();
-
-        if (!empty($constants)) {
-            foreach ($constants as $constantName => $constantArray) {
-                if (!isset($constantArray['cat'])) {
-                    continue;
-                }
-                $assignedCategories = GeneralUtility::trimExplode(',', $constantArray['cat'], true);
-                foreach ($assignedCategories as $assignedCategory) {
-                    if (!isset($categories[$assignedCategory])) {
-                        $categories[$assignedCategory] = [];
-                    }
-                    $categories[$assignedCategory][$constantName] = $constantArray;
-                }
+        $this->initializeTsParser((int)$pid);
+        foreach ($this->tsParserConstants as $constantName => $constantArray) {
+            if (!isset($constantArray['cat'])) {
+                continue;
+            }
+            $assignedCategories = GeneralUtility::trimExplode(',', (string)$constantArray['cat'], true);
+            foreach ($assignedCategories as $assignedCategory) {
+                $categories[$assignedCategory][$constantName] = $constantArray;
             }
         }
 
@@ -248,14 +204,126 @@ class TsParserUtility implements SingletonInterface
     }
 
     /**
-     * @param $pid
-     *
-     * @return ExtendedTemplateService
+     * The first template record on the page (like the constant editor of the core without selection).
      */
-    protected function getTsParser($pid): ExtendedTemplateService
+    protected function findFirstTemplateOnPage(int $pageId): array
     {
-        $this->initializeTsParser($pid);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_template');
+        $row = $queryBuilder
+            ->select('*')
+            ->from('sys_template')
+            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))
+            ->orderBy('sorting')
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+        return $row === false ? [] : $row;
+    }
 
-        return $this->tsParser;
+    protected function findSite(int $pageId): ?SiteInterface
+    {
+        try {
+            return GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
+        } catch (SiteNotFoundException) {
+            return null;
+        }
+    }
+
+    /**
+     * Like the constant editor of the core: changes the lines of the template constants,
+     * "check[name] = checked" keeps a value in the template, without it the value is removed.
+     *
+     * @return list<string>|null the new lines, null if nothing changed
+     */
+    protected function updateTemplateConstants(array $data, array $check, string $rawTemplateConstants): ?array
+    {
+        $rawTemplateConstantsArray = explode(chr(10), $rawTemplateConstants);
+        $constantPositions = $this->calculateConstantPositions($rawTemplateConstantsArray);
+        $valuesHaveChanged = false;
+        foreach ($data as $key => $value) {
+            if (!isset($this->tsParserConstants[$key])) {
+                // Ignore if there is no constant definition for this constant key
+                continue;
+            }
+            if (!isset($check[$key]) || ($check[$key] !== 'checked' && isset($constantPositions[$key]))) {
+                // Remove value if the checkbox is not set, indicating "value to be dropped from template"
+                if (isset($constantPositions[$key])) {
+                    unset($rawTemplateConstantsArray[$constantPositions[$key]]);
+                    $valuesHaveChanged = true;
+                }
+                continue;
+            }
+            if ($check[$key] !== 'checked') {
+                continue;
+            }
+            $definition = $this->tsParserConstants[$key];
+            switch ($definition['type'] ?? '') {
+                case 'int':
+                    $value = (string)MathUtility::forceIntegerInRange((int)$value, (int)($definition['typeIntMin'] ?? PHP_INT_MIN), (int)($definition['typeIntMax'] ?? PHP_INT_MAX));
+                    break;
+                case 'int+':
+                    $value = (string)MathUtility::forceIntegerInRange((int)$value, (int)($definition['typeIntMin'] ?? 0), (int)($definition['typeIntMax'] ?? PHP_INT_MAX));
+                    break;
+                case 'boolean':
+                    if ($value) {
+                        $value = ($definition['trueValue'] ?? false) ?: '1';
+                    }
+                    break;
+            }
+            $value = is_array($value) ? implode(',', $value) : (string)$value;
+            if ((string)($definition['value'] ?? '') !== $value || !isset($constantPositions[$key])) {
+                $theValue = ' ' . trim($value);
+                if (isset($constantPositions[$key])) {
+                    $parts = explode('=', $rawTemplateConstantsArray[$constantPositions[$key]], 2);
+                    if (count($parts) === 2) {
+                        $parts[1] = $theValue;
+                    }
+                    $rawTemplateConstantsArray[$constantPositions[$key]] = implode('=', $parts);
+                } else {
+                    $rawTemplateConstantsArray[] = $key . ' =' . $theValue;
+                }
+                $valuesHaveChanged = true;
+            }
+        }
+        return $valuesHaveChanged ? array_values($rawTemplateConstantsArray) : null;
+    }
+
+    /**
+     * @return array<string, int> line of each constant assignment in the template constants
+     */
+    protected function calculateConstantPositions(
+        array $rawTemplateConstantsArray,
+        array &$constantPositions = [],
+        string $prefix = '',
+        int $braceLevel = 0,
+        int &$lineCounter = 0
+    ): array {
+        while (isset($rawTemplateConstantsArray[$lineCounter])) {
+            $line = ltrim($rawTemplateConstantsArray[$lineCounter]);
+            $lineCounter++;
+            if (!$line || $line[0] === '[') {
+                // Ignore empty lines and conditions
+                continue;
+            }
+            if (strcspn($line, '}#/') !== 0) {
+                $operatorPosition = strcspn($line, ' {=<');
+                $key = substr($line, 0, $operatorPosition);
+                $line = ltrim(substr($line, $operatorPosition));
+                if ($line !== '' && $line[0] === '=') {
+                    $constantPositions[$prefix . $key] = $lineCounter - 1;
+                } elseif ($line !== '' && $line[0] === '{') {
+                    $braceLevel++;
+                    $this->calculateConstantPositions($rawTemplateConstantsArray, $constantPositions, $prefix . $key . '.', $braceLevel, $lineCounter);
+                }
+            } elseif ($line[0] === '}') {
+                $braceLevel--;
+                if ($braceLevel < 0) {
+                    $braceLevel = 0;
+                } else {
+                    break;
+                }
+            }
+        }
+        return $constantPositions;
     }
 }

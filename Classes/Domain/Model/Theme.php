@@ -30,11 +30,10 @@ namespace KayStrobach\Themes\Domain\Model;
  ***************************************************************/
 
 use Exception;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Theme.
@@ -75,10 +74,10 @@ class Theme extends AbstractTheme
             }
             $yamlFile = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml';
             if (file_exists($yamlFile)) {
-                $yamlSource = GeneralUtility::makeInstance(YamlSource::class);
-                $this->metaInformation = $yamlSource->load([$yamlFile]);
+                // Symfony YAML of the core, the YamlSource of EXT:form is internal
+                $this->metaInformation = (array)Yaml::parseFile($yamlFile);
             } else {
-                throw new Exception('No Yaml meta information found!');
+                throw new Exception('No Yaml meta information found!', 3105398553);
             }
         }
     }

@@ -32,12 +32,8 @@ return [
             'exclude' => 1,
             'label'   => $l10n.'linktarget',
             'config'  => [
-                'renderType' => 'inputLink',
-                'eval'    => 'trim',
-                'max'     => 1024,
                 'size'    => 50,
-                'softref' => 'typolink',
-                'type'    => 'input',
+                'type'    => 'link',
             ],
         ],
         'linktitle' => [

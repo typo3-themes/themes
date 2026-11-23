@@ -29,11 +29,11 @@ namespace KayStrobach\Themes\TsConfig;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use KayStrobach\Themes\Domain\Repository\ThemeRepository;
 use PDO;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -56,6 +56,9 @@ final class Loader
      * @var array
      */
     protected array $themeFeatures = [];
+    public function __construct(private readonly \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool)
+    {
+    }
 
     public function __invoke(ModifyLoadedPageTsConfigEvent $event): void
     {
@@ -119,20 +122,20 @@ final class Loader
         $rootline = BackendUtility::BEgetRootLine($pageUid);
         foreach ($rootline as $page) {
             /** @var QueryBuilder $queryBuilder */
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            $queryBuilder = $this->connectionPool
                     ->getQueryBuilderForTable('sys_template');
             $queryBuilder->select('*')
                     ->from('sys_template')
                     ->where(
                             $queryBuilder->expr()->and($queryBuilder->expr()->eq(
                                     'pid',
-                                    $queryBuilder->createNamedParameter((int)$page['uid'], PDO::PARAM_INT)
+                                    $queryBuilder->createNamedParameter((int)$page['uid'], \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
                             ), $queryBuilder->expr()->eq('root', '1'))
                     );
-            /** @var Statement $statement */
-            $statement = $queryBuilder->execute();
+            /** @var Result $statement */
+            $statement = $queryBuilder->executeQuery();
             if ($statement->rowCount() > 0) {
-                $tRow = $statement->fetch();
+                $tRow = $statement->fetchAssociative();
                 $this->themeExtensions = GeneralUtility::trimExplode(',', $tRow['tx_themes_extensions'], true);
                 $this->themeFeatures = GeneralUtility::trimExplode(',', $tRow['tx_themes_features'], true);
                 break;

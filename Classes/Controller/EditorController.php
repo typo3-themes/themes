@@ -36,7 +36,6 @@ use KayStrobach\Themes\Utilities\FindParentPageWithThemeUtility;
 use KayStrobach\Themes\Utilities\TsParserUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
@@ -51,7 +50,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -107,11 +105,7 @@ class EditorController extends ActionController
      */
     protected Theme $selectedTheme;
 
-    public function __construct(private readonly ModuleTemplateFactory $moduleTemplateFactory, private readonly PageRenderer $pageRenderer)
-    {
-    }
-
-    public function injectThemeRepository(ThemeRepository $themeRepository)
+    public function __construct(private readonly ModuleTemplateFactory $moduleTemplateFactory, private readonly PageRenderer $pageRenderer, \KayStrobach\Themes\Domain\Repository\ThemeRepository $themeRepository)
     {
         $this->themeRepository = $themeRepository;
     }
@@ -228,7 +222,6 @@ class EditorController extends ActionController
      * save changed constants.
      *
      *
-     * @throws StopActionException
      */
     public function updateAction(array $data, array $check, int $pid)
     {
@@ -236,7 +229,7 @@ class EditorController extends ActionController
          * @todo check wether user has access to page BEFORE SAVE!
          */
         $this->tsParser->applyToPid($pid, $data, $check);
-        $this->redirect('index');
+        return $this->redirect('index');
 
         $this->themeRepository->findByUid(0)->getAllPreviewImages();
     }
@@ -281,7 +274,6 @@ class EditorController extends ActionController
      * activate a theme.
      *
      *
-     * @throws StopActionException
      */
     public function setThemeAction(string $theme = '')
     {
@@ -301,9 +293,9 @@ class EditorController extends ActionController
             $tce->process_datamap();
             $tce->clear_cacheCmd('pages');
         } else {
-            $this->addFlashMessage('Problem selecting theme', '', AbstractMessage::ERROR);
+            $this->addFlashMessage('Problem selecting theme', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
         }
-        $this->redirect('index');
+        return $this->redirect('index');
     }
 
     /**
@@ -354,13 +346,14 @@ class EditorController extends ActionController
      *
      * @param ViewInterface $view
      */
-    protected function initializeView(ViewInterface $view)
+    // no parameter type: TYPO3 v12 passes the view of Fluid, v13 and later the view of the core
+    protected function initializeView($view): void
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         if (!empty($moduleTemplate)) {
             $pageRenderer = $this->pageRenderer;
-            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/Colorpicker');
-            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Themes/ThemesBackendModule');
+            $pageRenderer->loadJavaScriptModule('@themes/colorpicker.js');
+            $pageRenderer->loadJavaScriptModule('@themes/themes-backend-module.js');
             $extRealPath = '../' . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('themes'));
             $pageRenderer->addCssFile($extRealPath . 'Resources/Public/Stylesheet/BackendModule.css');
             $pageRenderer->addCssFile($extRealPath . 'Resources/Public/Contrib/colorpicker/css/colorpicker.css');
@@ -384,7 +377,7 @@ class EditorController extends ActionController
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         /** @var UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uriBuilder = $this->uriBuilder;
         $uriBuilder->setRequest($this->request);
         $menu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('themes');
@@ -421,7 +414,7 @@ class EditorController extends ActionController
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uriBuilder = $this->uriBuilder;
         $uriBuilder->setRequest($this->request);
         $buttons = [];
         switch ($this->request->getControllerActionName()) {
@@ -433,13 +426,13 @@ class EditorController extends ActionController
                                 ->setName('save')
                                 ->setValue('1')
                                 ->setForm('saveableForm')
-                                ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                                ->setIcon($this->iconFactory->getIcon('actions-document-save', 'small'))
                                 ->setTitle('Save');
                     }
                     $buttons[] = $buttonBar->makeLinkButton()
                             ->setHref($uriBuilder->reset()->setRequest($this->request)->uriFor('showTheme', [], 'Editor'))
                             ->setTitle('Choose theme')
-                            ->setIcon($this->iconFactory->getIcon('actions-system-options-view', Icon::SIZE_SMALL));
+                            ->setIcon($this->iconFactory->getIcon('actions-system-options-view', 'small'));
                     break;
                 }
             case 'showTheme':
@@ -448,7 +441,7 @@ class EditorController extends ActionController
                     $buttons[] = $buttonBar->makeLinkButton()
                             ->setHref($uriBuilder->reset()->setRequest($this->request)->uriFor('index', [], 'Editor'))
                             ->setTitle('Go back')
-                            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', 'small'));
                     break;
                 }
         }
@@ -462,7 +455,7 @@ class EditorController extends ActionController
      */
     protected function initializeAction()
     {
-        $this->id = (int)GeneralUtility::_GET('id');
+        $this->id = (int)($this->request->getQueryParams()['id'] ?? null);
         $this->tsParser = new TsParserUtility();
         // Get extension configuration
         try {

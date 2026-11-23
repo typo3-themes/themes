@@ -32,7 +32,6 @@ namespace KayStrobach\Themes\DataProcessing;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * DataProcessor for Fluid Styled Content.
@@ -66,7 +65,7 @@ class ThemesVariantsDataProcessor implements DataProcessorInterface
         $processedData['themes']['variants']['css'] = [];
         $processedData['themes']['variants']['css2key'] = [];
         if (!empty($keys)) {
-            $setup = $this->getFrontendController()->tmpl->setup;
+            $setup = $cObj->getRequest()->getAttribute('frontend.typoscript')->getSetupArray();
             if (isset($setup['lib.']['content.']['cssMap.']['variants.']) && !empty($setup['lib.']['content.']['cssMap.']['variants.'])) {
                 foreach ($setup['lib.']['content.']['cssMap.']['variants.'] as $key => $cssClass) {
                     if (is_array($cssClass)) {
@@ -99,11 +98,4 @@ class ThemesVariantsDataProcessor implements DataProcessorInterface
         return $processedData;
     }
 
-    /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
-    }
 }

@@ -39,10 +39,9 @@ use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
-use TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
-use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 
 /**
  * Class ThemeController.
@@ -55,16 +54,6 @@ class ThemeController extends ActionController
     protected string $templateName = '';
 
     /**
-     * @var array
-     */
-    protected array $typoScriptSetup;
-
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
-
-    /**
      * @var ThemeRepository
      */
     protected ThemeRepository $themeRepository;
@@ -74,21 +63,20 @@ class ThemeController extends ActionController
      */
     protected PageRepository $pageRepository;
 
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    /**
+     * Without the settings of ActionController::injectConfigurationManager(): plugin.tx_themes.settings
+     * is no array in every theme, the action reads the framework configuration itself.
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
-        $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT;
-        $this->typoScriptSetup = $this->configurationManager->getConfiguration($configurationType);
+        // like the parent method
         $this->arguments = GeneralUtility::makeInstance(Arguments::class);
     }
 
-    public function injectThemeRepository(ThemeRepository $themeRepository)
+    public function __construct(ThemeRepository $themeRepository, PageRepository $pageRepository)
     {
         $this->themeRepository = $themeRepository;
-    }
-
-    public function injectPageRepository(PageRepository $pageRepository)
-    {
         $this->pageRepository = $pageRepository;
     }
 
@@ -106,15 +94,15 @@ class ThemeController extends ActionController
         }
         $this->view->assign('templateName', $this->templateName);
 
-        $frontendController = $this->getFrontendController();
-        $this->view->assign('theme', $this->themeRepository->findByPageOrRootline($frontendController->id));
+        $pageId = $this->getPageId();
+        $this->view->assign('theme', $this->themeRepository->findByPageOrRootline($pageId));
         // Get page data
-        $pageArray = $this->pageRepository->getPage($frontendController->id);
+        $pageArray = $this->pageRepository->getPage($pageId);
         $pageArray['icon'] = '';
         // Map page icon
         if (isset($pageArray['tx_themes_icon']) && $pageArray['tx_themes_icon'] != '') {
-            $setup = $frontendController->tmpl->setup;
-            $pageArray['icon'] = $setup['lib.']['icons.']['cssMap.'][$pageArray['tx_themes_icon']];
+            $setup = $this->getTypoScriptSetup();
+            $pageArray['icon'] = $setup['lib.']['icons.']['cssMap.'][$pageArray['tx_themes_icon']] ?? '';
         }
         // Get settings, because they aren't available
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
@@ -126,7 +114,8 @@ class ThemeController extends ActionController
         $this->view->assign('conf', $configuration);
         $this->view->assign('page', $pageArray);
         $this->view->assign('data', $pageArray);
-        $this->view->assign('TSFE', $frontendController);
+        // TYPO3 v14 has no TSFE any more
+        $this->view->assign('TSFE', $GLOBALS['TSFE'] ?? null);
         return $this->htmlResponse();
     }
 
@@ -139,21 +128,36 @@ class ThemeController extends ActionController
      */
     protected function evaluateTypoScript(string $path): string
     {
-        /** @var CObjectViewHelper $vh */
-        $vh = GeneralUtility::makeInstance(CObjectViewHelper::class);
-        $vh->setRenderChildrenClosure(fn() => '');
+        $setup = $this->getTypoScriptSetup();
+        $pathSegments = GeneralUtility::trimExplode('.', $path, true);
+        $objectName = (string)array_pop($pathSegments);
+        foreach ($pathSegments as $segment) {
+            $setup = $setup[$segment . '.'] ?? [];
+        }
+        $contentObject = $this->request->getAttribute('currentContentObject');
+        if (!$contentObject instanceof ContentObjectRenderer) {
+            $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            $contentObject->setRequest($this->request);
+        }
+        return (string)$contentObject->cObjGetSingle((string)($setup[$objectName] ?? ''), $setup[$objectName . '.'] ?? []);
+    }
 
-        $vh->setArguments([
-            'typoscriptObjectPath' => $path,
-            'currentValueKey' => 0,
-            'table' => ''
-        ]);
+    /**
+     * @return array<string, mixed> the TypoScript setup of the current page
+     */
+    protected function getTypoScriptSetup(): array
+    {
+        $frontendTypoScript = $this->request->getAttribute('frontend.typoscript');
+        return $frontendTypoScript !== null ? $frontendTypoScript->getSetupArray() : [];
+    }
 
-        /** @var AbstractTemplateView $view*/
-        $view = $this->view;
-        $renderingContext = $view->getRenderingContext();
-        $vh->setRenderingContext($renderingContext);
-        return $vh->render();
+    protected function getPageId(): int
+    {
+        $routing = $this->request->getAttribute('routing');
+        if ($routing instanceof PageArguments) {
+            return $routing->getPageId();
+        }
+        return (int)($GLOBALS['TSFE']->id ?? 0);
     }
 
     /**
@@ -185,7 +189,7 @@ class ThemeController extends ActionController
     protected function getTsArrayByPath($typoscriptObjectPath): array
     {
         $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
-        $setup = $this->typoScriptSetup;
+        $setup = $this->getTypoScriptSetup();
         foreach ($pathSegments as $segment) {
             if (!array_key_exists(($segment . '.'), $setup)) {
                 throw new Exception(
@@ -197,13 +201,5 @@ class ThemeController extends ActionController
         }
 
         return $setup;
-    }
-
-    /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
     }
 }

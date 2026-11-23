@@ -32,7 +32,6 @@ namespace KayStrobach\Themes\DataProcessing;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * DataProcessor for Fluid Styled Content.
@@ -62,7 +61,7 @@ class ThemesResponsiveColumnDataProcessor implements DataProcessorInterface
         array $processorConfiguration,
         array $processedData
     ): array {
-        $this->setup = $this->getFrontendController()->tmpl->setup;
+        $this->setup = $cObj->getRequest()->getAttribute('frontend.typoscript')->getSetupArray();
         trigger_error('Using grid columns using flexform settings is deprecated and will be removed in TYPO3 12', E_USER_DEPRECATED);
         $processedData = $this->getColumnClasses($processedData);
         $processedData = $this->getColumnClasses($processedData, 'flexform_column_widths_sm');
@@ -71,13 +70,6 @@ class ThemesResponsiveColumnDataProcessor implements DataProcessorInterface
         return $this->getColumnClasses($processedData, 'flexform_column_widths_xl');
     }
 
-    /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
-    }
 
     protected function getColumnClasses(array $processedData = [], $index = 'flexform_column_widths_md'): array
     {

@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace KayStrobach\Themes\ViewHelpers;
 
-use Closure;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ConstantViewHelper
  */
 class ConstantViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var bool
      */
@@ -36,16 +33,22 @@ class ConstantViewHelper extends AbstractViewHelper
     /**
      * @return string
      */
-    public static function renderStatic(
-        array $arguments,
-        Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ): string {
-        $constant = trim((string) $arguments['constant']);
-        if (($GLOBALS['TSFE']->tmpl->flatSetup === null) || (!is_array($GLOBALS['TSFE']->tmpl->flatSetup)) || (count($GLOBALS['TSFE']->tmpl->flatSetup) === 0)) {
-            $GLOBALS['TSFE']->tmpl->generateConfig();
+    public function render(): string
+    {
+        $constant = trim((string) $this->arguments['constant']);
+        // TYPO3 v12 and later: the constants of the page are in the request attribute "frontend.typoscript"
+        // the request is an attribute of the rendering context since TYPO3 v13, v12 has getRequest()
+        $request = null;
+        if (method_exists($this->renderingContext, 'hasAttribute') && $this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
+        } elseif (method_exists($this->renderingContext, 'getRequest')) {
+            $request = $this->renderingContext->getRequest();
         }
-
-        return $GLOBALS['TSFE']->tmpl->flatSetup[$constant] ?? '';
+        $request = $request ?? ($GLOBALS['TYPO3_REQUEST'] ?? null);
+        $frontendTypoScript = $request instanceof ServerRequestInterface ? $request->getAttribute('frontend.typoscript') : null;
+        if ($frontendTypoScript === null) {
+            return '';
+        }
+        return (string)($frontendTypoScript->getFlatSettings()[$constant] ?? '');
     }
 }

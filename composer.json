@@ -6,8 +6,8 @@
   "license": ["GPL-2.0+"],
   "keywords": ["TYPO3 CMS", "TYPO3 THEMES", "THEMES", "THEMES", "FLUID", "CUSTOMIZE"],
   "require": {
-    "typo3/cms-core": "^12.4",
-    "typo3/cms-form": "^12.4",
+    "typo3/cms-core": "^12.4 || ^13.4 || ^14.0",
+    "typo3/cms-form": "^12.4 || ^13.4 || ^14.0",
     "gridelementsteam/gridelements": ">=12.0.0 || dev-master || dev-ea_12-0 || dev-bugfix-fix-gridelements-plugin",
     "ext-json": "*",
     "ext-pdo": "*"

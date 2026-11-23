@@ -5,10 +5,8 @@ if (!defined('TYPO3')) {
 }
 
 /*
- * Add page typoscript for new content element wizard
+ * Page TSconfig for the new content element wizard: Configuration/page.tsconfig, loaded by TYPO3 v12 and later
  */
-$tsconfig = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:themes/Configuration/PageTS/tsconfig.typoscript">';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig($tsconfig);
 
 /*
  * Register hook to inject themes
@@ -23,7 +21,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\KayStrobach\Themes\Domain\Repository\
     'Themes',
     'Theme',
     [\KayStrobach\Themes\Controller\ThemeController::class => 'index'],
-    []
+    [],
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 

@@ -32,7 +32,6 @@ namespace KayStrobach\Themes\DataProcessing;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * DataProcessor for Fluid Styled Content.
@@ -71,7 +70,7 @@ class ThemesResponsiveDataProcessor implements DataProcessorInterface
         $processedData['themes']['responsive']['keys'] = $keys;
         $processedData['themes']['responsive']['css'] = [];
         if (!empty($keys)) {
-            $setup = $this->getFrontendController()->tmpl->setup;
+            $setup = $cObj->getRequest()->getAttribute('frontend.typoscript')->getSetupArray();
             foreach ($keys as $key) {
                 if (isset($setup['lib.']['content.']['cssMap.']['responsive.'][$key])) {
                     // Special handling for column width
@@ -116,11 +115,4 @@ class ThemesResponsiveDataProcessor implements DataProcessorInterface
         return $processedData;
     }
 
-    /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
-    }
 }

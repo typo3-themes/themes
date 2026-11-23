@@ -4,7 +4,9 @@
  *
  * Dual licensed under the MIT and GPL licenses
  */
-define(['jquery'], function ($) {
+// ES module for TYPO3 v12 and later (RequireJS was removed in v13)
+import $ from 'jquery';
+
 
 	var ColorPicker = function () {
 		var
@@ -500,8 +502,6 @@ define(['jquery'], function ($) {
 	/**
 	 * initialize function
 	 * */
-	return function () {
-		ColorPicker.initialize();
-		return ColorPicker;
-	}();
-});
+ColorPicker.initialize();
+
+export default ColorPicker;

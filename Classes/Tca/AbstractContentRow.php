@@ -29,7 +29,7 @@ namespace KayStrobach\Themes\Tca;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use PDO;
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityCore;
@@ -100,7 +100,7 @@ abstract class AbstractContentRow extends AbstractFormElement
                 if (isset($this->ctypeProperties['properties'][$size])) {
                     //
                     // Throw an exception in order to eliminate mis-configurations
-                    throw new \Exception('Node "themes.content.responsive.gridelements_pi1.' . $size . '" is not allowed - please use it nested in grid-layout like "themes.content.responsive.gridelements_pi1.2ColumnGrid.' . $size . '"');
+                    throw new \Exception('Node "themes.content.responsive.gridelements_pi1.' . $size . '" is not allowed - please use it nested in grid-layout like "themes.content.responsive.gridelements_pi1.2ColumnGrid.' . $size . '"', 9307815070);
                 }
             }
             if (isset($this->ctypeProperties['properties'][$cType . '.'])) {
@@ -139,13 +139,13 @@ abstract class AbstractContentRow extends AbstractFormElement
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter(-((int)$pid), PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(-((int)$pid), \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
                 )
             );
-        /** @var Statement $statement */
-        $statement = $queryBuilder->execute();
+        /** @var Result $statement */
+        $statement = $queryBuilder->executeQuery();
         if ($statement->rowCount() > 0) {
-            $row = $statement->fetch();
+            $row = $statement->fetchAssociative();
             $parentPid = $row['pid'];
         }
         return $parentPid;

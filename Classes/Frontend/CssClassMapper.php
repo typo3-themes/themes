@@ -48,7 +48,7 @@ class CssClassMapper
             foreach ($conf as $checkConfKey => $checkConfValue) {
                 if (empty($conf[$checkConfValue]) && $checkConfValue && str_starts_with((string) $checkConfValue, '<')) {
                     $checkConfArray = explode('.', ltrim((string) $checkConfValue, '< '));
-                    $conf[$checkConfKey] = $GLOBALS['TSFE']->tmpl->setup[array_shift($checkConfArray) . '.'];
+                    $conf[$checkConfKey] = ($GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')?->getSetupArray() ?? [])[array_shift($checkConfArray) . '.'] ?? [];
                     foreach ($checkConfArray as $checkConfArrayKey) {
                         $conf[$checkConfKey] = $conf[$checkConfKey][$checkConfArrayKey . '.'];
                     }

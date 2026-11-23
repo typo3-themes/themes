@@ -31,7 +31,6 @@ namespace KayStrobach\Themes\Domain\Model;
 
 use KayStrobach\Themes\Utilities\ApplicationContext;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

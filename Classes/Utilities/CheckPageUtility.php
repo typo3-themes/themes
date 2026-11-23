@@ -29,7 +29,7 @@ namespace KayStrobach\Themes\Utilities;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -59,7 +59,7 @@ class CheckPageUtility
                 ->where(
                     $queryBuilder->expr()->eq(
                         'pid',
-                        $queryBuilder->createNamedParameter((int)$pid, PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter((int)$pid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
                     )
                 );
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
@@ -77,12 +77,12 @@ class CheckPageUtility
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     'root',
-                    $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(1, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
                 )
             );
         }
-        /** @var Statement $statement */
-        $statement = $queryBuilder->execute();
+        /** @var Result $statement */
+        $statement = $queryBuilder->executeQuery();
         if ($statement->rowCount() > 0) {
             $themeable = true;
         }
@@ -105,19 +105,19 @@ class CheckPageUtility
                 ->andWhere(
                     $queryBuilder->expr()->eq(
                         'pid',
-                        $queryBuilder->createNamedParameter((int)$pid, PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter((int)$pid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         'root',
-                        $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(1, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->neq(
                         'tx_themes_skin',
                         $queryBuilder->createNamedParameter('')
                     )
                 );
-        /** @var Statement $statement */
-        $statement = $queryBuilder->execute();
+        /** @var Result $statement */
+        $statement = $queryBuilder->executeQuery();
         if ($statement->rowCount() > 0) {
             $hasTheme = true;
         }
@@ -140,17 +140,17 @@ class CheckPageUtility
                 ->andWhere(
                     $queryBuilder->expr()->eq(
                         'pid',
-                        $queryBuilder->createNamedParameter((int)$pid, PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter((int)$pid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         'root',
-                        $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter(1, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
                     )
                 );
-        /** @var Statement $statement */
-        $statement = $queryBuilder->execute();
+        /** @var Result $statement */
+        $statement = $queryBuilder->executeQuery();
         if ($statement->rowCount() > 0) {
-            $row = $statement->fetch();
+            $row = $statement->fetchAssociative();
             $themeable = $row['uid'];
         }
         return $themeable;
