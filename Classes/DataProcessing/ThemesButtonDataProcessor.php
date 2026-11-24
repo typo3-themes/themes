@@ -101,5 +101,4 @@ class ThemesButtonDataProcessor implements DataProcessorInterface
         }
         return $processedData;
     }
-
 }
