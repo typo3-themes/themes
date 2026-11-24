@@ -6,6 +6,8 @@ namespace KayStrobach\Themes\Tests\Functional;
 
 use KayStrobach\Themes\Domain\Model\Theme;
 use KayStrobach\Themes\EventListener\AfterTemplatesHaveBeenDeterminedEventListener;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\AfterTemplatesHaveBeenDeterminedEvent;
 
 class ThemeTest extends AbstractThemesTestCase
@@ -44,5 +46,30 @@ class ThemeTest extends AbstractThemesTestCase
         self::assertStringEndsWith('page = PAGE', $templateRow['config'], 'the template comes after the theme');
         self::assertStringContainsString('fixture.constants = txt', $templateRow['constants']);
         self::assertStringEndsWith('own.constant = 1', $templateRow['constants']);
+    }
+
+    public function testLanguageConstantsAreGeneratedForEveryLanguageOfTheSite(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/constants_editor.csv');
+        $site = new Site('school', 1, [
+            'base' => 'https://example.com/school/',
+            'languages' => [
+                ['languageId' => 0, 'title' => 'Deutsch', 'navigationTitle' => 'Deutsch', 'locale' => 'de_DE.UTF-8', 'flag' => 'de', 'base' => '/'],
+                ['languageId' => 1, 'title' => 'English', 'navigationTitle' => 'English', 'locale' => 'en_GB.UTF-8', 'flag' => 'gb', 'base' => '/en/'],
+            ],
+        ]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://example.com/school/'))->withAttribute('site', $site);
+        try {
+            $theme = new Theme('themes_fixture_txt');
+            $theme->buildTypoScript(['uid' => 1, 'pid' => 1]);
+            $constants = $theme->getConstants();
+        } finally {
+            unset($GLOBALS['TYPO3_REQUEST']);
+        }
+        // the prefix was overwritten by the loop variable: "0.current {", "1.available ="
+        self::assertStringContainsString("themes.languages.available = 0,1\n", $constants);
+        self::assertStringContainsString("[siteLanguage(\"languageId\") == 1]\nthemes.languages.current {\n uid = 1\n label = English\n", $constants);
+        self::assertStringContainsString(" isoCode = en_GB.UTF-8\n isoCodeShort = en\n isoCodeHtml = en-GB\n", $constants);
+        self::assertStringNotContainsString('0.current', $constants);
     }
 }

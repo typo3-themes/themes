@@ -31,7 +31,6 @@ namespace KayStrobach\Themes\Domain\Model;
 
 use KayStrobach\Themes\Utilities\ApplicationContext;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -261,48 +260,39 @@ class AbstractTheme extends AbstractEntity
         return $this->setup;
     }
 
+    /**
+     * Constants themes.languages.available and themes.languages.current.* (in a condition per language).
+     */
     protected function buildTypoScriptForLanguage(): void
     {
-        $key = 'themes.languages';
+        $prefix = 'themes.languages';
         /**
          * @todo fetch request object in another way!?
          */
         $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
         $site = $request ? $request->getAttribute('site') : null;
+        $languageUids = [];
         if ($site instanceof Site) {
-            $languages = ArrayUtility::getValueByPath($site->getConfiguration(), 'languages', '.');
-            if ((is_countable($languages) ? count($languages) : 0) > 0) {
-                $languageUids = [];
-                foreach ($languages as $key => $language) {
-                    $languageUid = (int)$language['languageId'];
-                    $languageUids[] = $languageUid;
-                    $this->constants .= '[siteLanguage("languageId") == ' . $languageUid . ']' . PHP_EOL;
-                    $this->constants .= $key . '.current {' . PHP_EOL;
-                    $this->constants .= ' uid = ' . $languageUid . PHP_EOL;
-                    $this->constants .= ' label = ' . $language['title'] . PHP_EOL;
-                    $this->constants .= ' labelLocalized = ' . $language['navigationTitle'] . PHP_EOL;
-                    $this->constants .= ' labelEnglish = ' . $language['navigationTitle'] . PHP_EOL;
-                    $this->constants .= ' flag = ' . $language['flag'] . PHP_EOL;
-                    $this->constants .= ' isoCode = ' . $language['locale'] . PHP_EOL;
-                    $this->constants .= ' isoCodeShort = ' . $language['iso-639-1'] . PHP_EOL;
-                    $this->constants .= ' isoCodeHtml = ' . $language['hreflang'] . PHP_EOL;
-                    $this->constants .= '} ' . PHP_EOL;
-                    $this->constants .= '[end]' . PHP_EOL;
-                }
-                $this->constants .= $key . '.available=' . implode(',', $languageUids) . PHP_EOL;
-            } else {
-                $this->constants .= $key . '.available=' . PHP_EOL;
-
-                /**
-                 * @todo in this method we need to fix the "0.available = 0" - what was the goal of this!?
-                 */
-
+            foreach ($site->getAllLanguages() as $siteLanguage) {
+                $languageUid = $siteLanguage->getLanguageId();
+                $languageUids[] = $languageUid;
+                $this->constants .= '[siteLanguage("languageId") == ' . $languageUid . ']' . PHP_EOL;
+                $this->constants .= $prefix . '.current {' . PHP_EOL;
+                $this->constants .= ' uid = ' . $languageUid . PHP_EOL;
+                $this->constants .= ' label = ' . $siteLanguage->getTitle() . PHP_EOL;
+                $this->constants .= ' labelLocalized = ' . $siteLanguage->getNavigationTitle() . PHP_EOL;
+                $this->constants .= ' labelEnglish = ' . $siteLanguage->getNavigationTitle() . PHP_EOL;
+                $this->constants .= ' flag = ' . $siteLanguage->getFlagIdentifier() . PHP_EOL;
+                $this->constants .= ' isoCode = ' . ($siteLanguage->toArray()['locale'] ?? (string)$siteLanguage->getLocale()) . PHP_EOL;
+                // "iso-639-1" of the site configuration is deprecated since TYPO3 v12, the locale knows it
+                $this->constants .= ' isoCodeShort = ' . $siteLanguage->getLocale()->getLanguageCode() . PHP_EOL;
+                $this->constants .= ' isoCodeHtml = ' . $siteLanguage->getHreflang() . PHP_EOL;
+                $this->constants .= '} ' . PHP_EOL;
+                $this->constants .= '[end]' . PHP_EOL;
             }
-        } else {
-            $this->constants .= $key . '.available=' . PHP_EOL;
         }
+        $this->constants .= $prefix . '.available = ' . implode(',', $languageUids) . PHP_EOL;
     }
-
 
     /**
      * @param array<mixed> $row
