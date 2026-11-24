@@ -68,6 +68,26 @@ Additionally you can install a ready made distribution which also adds a pagetre
 
 This will make your TYPO3 serving a dummy webpage within some seconds.
 
+TYPO3 v12 to v14
+----------------
+
+The branch ``typo3-12-13-14`` supports TYPO3 12.4, 13.4 and 14.
+
+* The TypoScript of the selected theme is added by an event listener (``AfterTemplatesHaveBeenDeterminedEvent``) to the
+  ``sys_template`` record that selects the theme. Themes are loaded from ``Configuration/TypoScript/setup.typoscript``
+  and ``constants.typoscript``, older themes with ``setup.txt`` / ``constants.txt`` work as well.
+* Constants referencing other constants (``siteTitle = {$themes.configuration.siteName}``) are resolved again
+  (``ModifyTypoScriptConstantsEvent``), the TypoScript parser of TYPO3 v12 substitutes constants only in the setup.
+* Paths like ``/typo3conf/ext/<extension>/Resources/Public/…`` in constants are rewritten to the public URL of the
+  resource (``/_assets/<hash>/…``) in composer mode, e.g. ``themes.configuration.font.icon.fontFilePath``.
+* The constants editor (backend module "Themes") uses the TypoScript parser of TYPO3 v12, saving changes only the
+  edited lines of the template record. ``editor.allowedConstants`` in ``Meta/theme.yaml`` restricts the editable
+  constants.
+* ``theme:widget.languageMenu`` of older themes renders nothing (Fluid widgets are gone), use the languages of the
+  site configuration.
+* Not yet migrated: ``<INCLUDE_TYPOSCRIPT>`` in themes is deprecated in TYPO3 v13 and ignored in v14, themes have to use
+  ``@import`` (only ``.typoscript`` files) for v14.
+
 Meta/theme.yaml
 -------------------------
 
