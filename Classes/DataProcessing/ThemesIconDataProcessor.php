@@ -61,5 +61,4 @@ class ThemesIconDataProcessor implements DataProcessorInterface
         }
         return $processedData;
     }
-
 }

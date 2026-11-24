@@ -9,7 +9,6 @@ final class Utility
     public function firstValue(array $content = [], array $conf = []): string
     {
         if (is_array($content)) {
-
             $content = implode('#', $content);
         }
         return (string)$content;

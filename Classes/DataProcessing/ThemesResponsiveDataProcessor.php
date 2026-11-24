@@ -63,8 +63,7 @@ class ThemesResponsiveDataProcessor implements DataProcessorInterface
     ): array {
         $keys = GeneralUtility::trimExplode(
             ',',
-            $processedData['data']['tx_themes_responsive'] ?? ''
-            ,
+            $processedData['data']['tx_themes_responsive'] ?? '',
             true
         );
         $processedData['themes']['responsive']['keys'] = $keys;
@@ -114,5 +113,4 @@ class ThemesResponsiveDataProcessor implements DataProcessorInterface
         }
         return $processedData;
     }
-
 }

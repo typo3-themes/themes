@@ -195,8 +195,6 @@ class ContentBehaviour extends AbstractContentRow
      */
     protected function createCheckbox(string $key, string $label, string $type)
     {
-
-
         $this->valuesAvailable[] = $key;
         $checkbox = '<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">' . PHP_EOL;
 
