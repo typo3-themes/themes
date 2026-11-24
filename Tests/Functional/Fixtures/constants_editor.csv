@@ -1,0 +1,17 @@
+"pages",,,,,,
+,"uid","pid","title","doktype","is_siteroot","deleted"
+,1,0,"Root",1,1,0
+"sys_template",,,,,,,,
+,"uid","pid","title","root","clear","constants","config","deleted"
+,1,1,"Template",1,3,"# cat=basic/color; type=color; label=Link color
+linkColor = #ff0000
+# cat=basic/enable; type=int+; label=Columns
+columns = 2
+# a comment of the editor
+plugin.tx_example {
+    # cat=basic; type=string; label=Title
+    title = Example
+}","page = PAGE",0
+"be_users",,,,,,
+,"uid","pid","username","admin","deleted"
+,1,0,"admin",1,0

@@ -32,7 +32,11 @@
   },
   "extra": {
     "typo3/cms": {
-      "extension-key": "themes"
+      "extension-key": "themes",
+      "version": "10.0.0",
+      "Package": {
+        "providesPackages": {}
+      }
     }
   }
 }

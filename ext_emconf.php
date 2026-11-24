@@ -37,7 +37,7 @@ $EM_CONF['themes'] = [
     'constraints' => [
         'depends' => [
             'typo3' => '12.4.0-14.9.99',
-            'gridelements' => '9.2.1-11.99.99',
+            'gridelements' => '12.0.0-13.99.99',
         ],
         'conflicts' => [
             'belayout_tsprovider' => '0.0.0-1.99.99',

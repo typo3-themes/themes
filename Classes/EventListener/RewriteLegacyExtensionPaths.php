@@ -34,18 +34,26 @@ final class RewriteLegacyExtensionPaths
         foreach ($node->getNextChild() as $child) {
             $value = $child->getValue();
             if ($value !== null && str_contains($value, 'typo3conf/ext/')) {
-                $child->setValue((string)preg_replace_callback(
-                    '#(?:\.\./)*/?typo3conf/ext/([a-z0-9_]+)/Resources/Public/#',
-                    static function (array $match): string {
-                        if (!ExtensionManagementUtility::isLoaded($match[1])) {
-                            return $match[0];
-                        }
-                        return '/' . trim(PathUtility::getPublicResourceWebPath('EXT:' . $match[1] . '/Resources/Public/'), '/') . '/';
-                    },
-                    $value
-                ));
+                $child->setValue($this->rewriteValue($value));
             }
             $this->rewrite($child);
         }
+    }
+
+    /**
+     * "/typo3conf/ext/<extension>/Resources/Public/…" (also relative, "../typo3conf/ext/…") to the public URL.
+     */
+    public function rewriteValue(string $value): string
+    {
+        return (string)preg_replace_callback(
+            '#(?:\.\./)*/?typo3conf/ext/([a-z0-9_]+)/Resources/Public/#',
+            static function (array $match): string {
+                if (!ExtensionManagementUtility::isLoaded($match[1])) {
+                    return $match[0];
+                }
+                return '/' . trim(PathUtility::getPublicResourceWebPath('EXT:' . $match[1] . '/Resources/Public/'), '/') . '/';
+            },
+            $value
+        );
     }
 }

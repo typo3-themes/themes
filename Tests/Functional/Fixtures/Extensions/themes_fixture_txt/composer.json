@@ -1,0 +1,8 @@
+{
+    "name": "typo3-themes/themes-fixture-txt",
+    "type": "typo3-cms-extension",
+    "description": "Test fixture of themes",
+    "license": "GPL-2.0-or-later",
+    "require": {"typo3-themes/themes": "*"},
+    "extra": {"typo3/cms": {"extension-key": "themes_fixture_txt", "version": "1.0.0", "Package": {"providesPackages": {}}}}
+}

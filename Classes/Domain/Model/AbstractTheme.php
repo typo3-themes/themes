@@ -322,7 +322,7 @@ class AbstractTheme extends AbstractEntity
             // Fetch selected feature
             $themeFeatures = GeneralUtility::trimExplode(
                 ',',
-                $row['tx_themes_features'],
+                (string)($row['tx_themes_features'] ?? ''),
                 true
             );
             foreach ($themeFeatures as $themeFeatureKey) {
@@ -332,7 +332,7 @@ class AbstractTheme extends AbstractEntity
             // Fetch selected extensions
             $themeExtensions = GeneralUtility::trimExplode(
                 ',',
-                $row['tx_themes_extensions'],
+                (string)($row['tx_themes_extensions'] ?? ''),
                 true
             );
             foreach ($themeExtensions as $themeExtensionKey) {

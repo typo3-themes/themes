@@ -470,7 +470,7 @@ class EditorController extends ActionController
     /**
      * Initializes the controller before invoking an action method.
      */
-    protected function initializeAction()
+    protected function initializeAction(): void
     {
         $this->id = (int)($this->request->getQueryParams()['id'] ?? null);
         $this->tsParser = new TsParserUtility();

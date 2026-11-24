@@ -107,17 +107,26 @@ class Theme extends AbstractTheme
      */
     protected function importExtEmConf(): void
     {
-        // @codingStandardsIgnoreStart
-        $EM_CONF = [];
-        $_EXTKEY = $this->extensionName;
-        include ExtensionManagementUtility::extPath($this->getExtensionName()) . 'ext_emconf.php';
-        // @codingStandardsIgnoreEnd
-        $this->title = $EM_CONF[$this->getExtensionName()]['title'];
-        $this->description = $EM_CONF[$this->getExtensionName()]['description'];
-        $this->version = $EM_CONF[$this->getExtensionName()]['version'];
-        $this->author['name'] = $EM_CONF[$this->getExtensionName()]['author'];
-        $this->author['email'] = $EM_CONF[$this->getExtensionName()]['author_email'];
-        $this->author['company'] = $EM_CONF[$this->getExtensionName()]['author_company'];
+        $extensionPath = ExtensionManagementUtility::extPath($this->getExtensionName());
+        $configuration = [];
+        // ext_emconf.php is optional since TYPO3 v14
+        if (is_file($extensionPath . 'ext_emconf.php')) {
+            // @codingStandardsIgnoreStart
+            $EM_CONF = [];
+            $_EXTKEY = $this->extensionName;
+            include $extensionPath . 'ext_emconf.php';
+            // @codingStandardsIgnoreEnd
+            $configuration = $EM_CONF[$this->getExtensionName()] ?? [];
+        }
+        $composer = is_file($extensionPath . 'composer.json')
+            ? (array)json_decode((string)file_get_contents($extensionPath . 'composer.json'), true)
+            : [];
+        $this->title = (string)($configuration['title'] ?? $this->metaInformation['title'] ?? $this->getExtensionName());
+        $this->description = (string)($configuration['description'] ?? $composer['description'] ?? '');
+        $this->version = (string)($configuration['version'] ?? $composer['extra']['typo3/cms']['version'] ?? '');
+        $this->author['name'] = (string)($configuration['author'] ?? $composer['authors'][0]['name'] ?? '');
+        $this->author['email'] = (string)($configuration['author_email'] ?? $composer['authors'][0]['email'] ?? '');
+        $this->author['company'] = (string)($configuration['author_company'] ?? '');
     }
 
     /**

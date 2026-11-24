@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+    Functional tests, run them with Build/Scripts/runTests.sh.
+    The bootstrap is passed on the command line, as its path depends on the TYPO3 version.
+-->
+<phpunit
+    colors="true"
+    cacheResult="false"
+    failOnRisky="true"
+    failOnWarning="true"
+>
+    <testsuites>
+        <testsuite name="Functional">
+            <directory>../../Tests/Functional/</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <ini name="display_errors" value="1"/>
+        <env name="TYPO3_CONTEXT" value="Testing"/>
+    </php>
+</phpunit>

@@ -88,6 +88,19 @@ The branch ``typo3-12-13-14`` supports TYPO3 12.4, 13.4 and 14.
 * Not yet migrated: ``<INCLUDE_TYPOSCRIPT>`` in themes is deprecated in TYPO3 v13 and ignored in v14, themes have to use
   ``@import`` (only ``.typoscript`` files) for v14.
 
+Tests
+-----
+
+Functional tests in docker against TYPO3 12 and 13 (gridelements has no release for TYPO3 14 yet)::
+
+    Build/Scripts/runTests.sh -t 12             # or 13
+    Build/Scripts/runTests.sh -a                # all supported versions
+    Build/Scripts/runTests.sh -t 13 -- --filter ConstantsEditorTest
+
+Covered: constants referencing constants, rewriting of typo3conf/ext paths, themes with setup.txt, broken meta data,
+TypoScript of the selected theme, the constants editor (reading, saving only the edited lines) and the language menu
+stub of older themes.
+
 Meta/theme.yaml
 -------------------------
 
