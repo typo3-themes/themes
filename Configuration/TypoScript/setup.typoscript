@@ -103,4 +103,4 @@ tt_content {
 	stdWrap.innerWrap >
 }
 
-<INCLUDE_TYPOSCRIPT: source="DIR:EXT:themes/Configuration/Elements/TypoScript" extensions="typoscript">
+@import 'EXT:themes/Configuration/Elements/TypoScript/*.typoscript'

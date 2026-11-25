@@ -54,7 +54,7 @@ class ThemeEnabledConditionViewHelper extends AbstractConditionViewHelper
     /**
      * Initializes the "theme" argument.
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('theme', 'string', 'The theme');
     }

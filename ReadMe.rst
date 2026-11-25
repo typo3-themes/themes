@@ -85,8 +85,24 @@ The branch ``typo3-12-13-14`` supports TYPO3 12.4, 13.4 and 14.
   constants.
 * ``theme:widget.languageMenu`` of older themes renders nothing (Fluid widgets are gone), use the languages of the
   site configuration.
-* Not yet migrated: ``<INCLUDE_TYPOSCRIPT>`` in themes is deprecated in TYPO3 v13 and ignored in v14, themes have to use
-  ``@import`` (only ``.typoscript`` files) for v14.
+* ``<INCLUDE_TYPOSCRIPT>`` is deprecated in TYPO3 v13 and silently ignored in v14. ``typo3 themes:convert-includes``
+  converts it to ``@import``:
+
+  .. code-block:: bash
+
+     vendor/bin/typo3 themes:convert-includes --dry-run           # theme_*, themes_* and skin_* extensions
+     vendor/bin/typo3 themes:convert-includes themes my_site      # given extensions
+
+  ``@import`` only loads ``.typoscript`` (TSconfig: also ``.tsconfig``), so included files are renamed:
+  ``*.setupts`` → ``*.setup.typoscript``, ``*.constantsts`` → ``*.constants.typoscript``, ``*.pagets`` → ``*.tsconfig``,
+  ``*.txt``/``*.ts`` → ``*.typoscript``, also the entry points ``setup.txt``, ``constants.txt`` and ``tsconfig.txt``
+  (static templates of TYPO3 v14 only read ``setup.typoscript`` and ``constants.typoscript``). ``condition="…"``
+  becomes a condition block, ``DIR:`` one wildcard import per directory if that loads the same files in the same order
+  as TYPO3 12, otherwise one import per file. References (``EXT:…``) to renamed files in TypoScript, PHP, YAML and HTML
+  of the converted extensions are updated.
+
+  The result only depends on the files, a second run changes nothing: run it again after updating a theme from
+  upstream. Includes it can not convert stay and are listed as warning, e.g. ``.txt`` files of other extensions.
 
 Tests
 -----

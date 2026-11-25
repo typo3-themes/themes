@@ -136,7 +136,7 @@ class ContentResponsive extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $this->valuesAvailable);
 
-        return ['html' => '<div class="contentResponsive row">' . $selectBoxes . $hiddenField . $missedField . '</div>'];
+        return $this->withAssets(['html' => '<div class="contentResponsive row">' . $selectBoxes . $hiddenField . $missedField . '</div>']);
     }
 
     /**

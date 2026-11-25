@@ -133,7 +133,7 @@ class ContentBehaviour extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $this->valuesAvailable);
 
-        return ['html' => '<div class="contentBehaviour row">' . $checkboxes . $hiddenField . $missedField . '</div>'];
+        return $this->withAssets(['html' => '<div class="contentBehaviour row">' . $checkboxes . $hiddenField . $missedField . '</div>']);
     }
 
     /**

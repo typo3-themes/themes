@@ -32,7 +32,6 @@ namespace KayStrobach\Themes\Domain\Model;
 use Exception;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -65,13 +64,9 @@ class Theme extends AbstractTheme
             if (is_file(
                 ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/Screenshots/screenshot.png'
             )) {
-                $this->previewImage = PathUtility::stripPathSitePrefix(
-                    ExtensionManagementUtility::extPath($this->getExtensionName())
-                ) . 'Meta/Screenshots/screenshot.png';
+                $this->previewImage = 'EXT:' . $this->getExtensionName() . '/Meta/Screenshots/screenshot.png';
             } else {
-                $this->previewImage = PathUtility::stripPathSitePrefix(
-                    ExtensionManagementUtility::extPath('themes')
-                ) . 'Resources/Public/Images/screenshot.gif';
+                $this->previewImage = 'EXT:themes/Resources/Public/Images/screenshot.gif';
             }
             $yamlFile = ExtensionManagementUtility::extPath($this->getExtensionName()) . 'Meta/theme.yaml';
             if (file_exists($yamlFile)) {
@@ -140,9 +135,7 @@ class Theme extends AbstractTheme
             foreach ($buffer as $key => $image) {
                 // We need to use a real image file path, because in case of using a file
                 // reference, a non admin backend user might not have access to the storage!
-                $previewImage = GeneralUtility::getFileAbsFileName($image['file']);
-                $previewImage = PathUtility::getAbsoluteWebPath($previewImage);
-                $buffer[$key]['file'] = $previewImage;
+                $buffer[$key]['file'] = $this->imageUrl((string)($image['file'] ?? ''));
             }
         }
         return $buffer ?? [];

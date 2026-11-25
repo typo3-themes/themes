@@ -134,10 +134,10 @@ final class Loader
                     );
             /** @var Result $statement */
             $statement = $queryBuilder->executeQuery();
-            if ($statement->rowCount() > 0) {
-                $tRow = $statement->fetchAssociative();
-                $this->themeExtensions = GeneralUtility::trimExplode(',', $tRow['tx_themes_extensions'], true);
-                $this->themeFeatures = GeneralUtility::trimExplode(',', $tRow['tx_themes_features'], true);
+            $tRow = $statement->fetchAssociative();
+            if ($tRow !== false) {
+                $this->themeExtensions = GeneralUtility::trimExplode(',', $tRow['tx_themes_extensions'] ?? '', true);
+                $this->themeFeatures = GeneralUtility::trimExplode(',', $tRow['tx_themes_features'] ?? '', true);
                 break;
             }
         }

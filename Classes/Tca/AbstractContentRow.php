@@ -30,6 +30,7 @@ namespace KayStrobach\Themes\Tca;
  ***************************************************************/
 
 use Doctrine\DBAL\Result;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use PDO;
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityCore;
@@ -144,8 +145,8 @@ abstract class AbstractContentRow extends AbstractFormElement
             );
         /** @var Result $statement */
         $statement = $queryBuilder->executeQuery();
-        if ($statement->rowCount() > 0) {
-            $row = $statement->fetchAssociative();
+        $row = $statement->fetchAssociative();
+        if ($row !== false) {
             $parentPid = $row['pid'];
         }
         return $parentPid;
@@ -187,5 +188,18 @@ abstract class AbstractContentRow extends AbstractFormElement
         $checkbox .= '<label class="form-check-label themes-checkbox-label" for="' . $id . '" title="' . $label . '">' . $label . '</label>' . PHP_EOL;
         $checkbox .= '</div>' . PHP_EOL;
         return $checkbox;
+    }
+
+    /**
+     * JavaScript and stylesheet of the fields of themes, loaded by FormEngine wherever such a field is shown.
+     *
+     * @param array{html: string} $result
+     */
+    protected function withAssets(array $result): array
+    {
+        $result = array_replace($this->initializeResultArray(), $result);
+        $result['javaScriptModules'][] = JavaScriptModuleInstruction::create('@themes/themes-backend-tca.js')->invoke('initialize');
+        $result['stylesheetFiles'][] = 'EXT:themes/Resources/Public/Stylesheet/ThemesBackendTca.css';
+        return $result;
     }
 }

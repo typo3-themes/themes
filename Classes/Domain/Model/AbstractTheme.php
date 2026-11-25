@@ -131,7 +131,36 @@ class AbstractTheme extends AbstractEntity
      */
     public function getPreviewImage(): string
     {
-        return $this->previewImage;
+        return $this->imageUrl($this->previewImage);
+    }
+
+    /**
+     * URL of an image of the theme for the backend: the public URL below Resources/Public, otherwise (e.g.
+     * Meta/Screenshots, not public in composer mode) a data URI.
+     */
+    public function imageUrl(string $path): string
+    {
+        if ($path === '' || preg_match('#^(https?:)?//|^data:#', $path)) {
+            return $path;
+        }
+        if (PathUtility::isExtensionPath($path) && str_contains($path, '/Resources/Public/')) {
+            try {
+                return PathUtility::getPublicResourceWebPath($path);
+            } catch (\Throwable) {
+            }
+        }
+        $file = GeneralUtility::getFileAbsFileName($path);
+        if ($file === '' || !is_file($file)) {
+            return $path;
+        }
+        $mimeType = match (strtolower(pathinfo($file, PATHINFO_EXTENSION))) {
+            'svg' => 'image/svg+xml',
+            'gif' => 'image/gif',
+            'jpg', 'jpeg' => 'image/jpeg',
+            'webp' => 'image/webp',
+            default => 'image/png',
+        };
+        return 'data:' . $mimeType . ';base64,' . base64_encode((string)file_get_contents($file));
     }
 
     /**

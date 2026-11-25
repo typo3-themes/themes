@@ -83,7 +83,7 @@ class CheckPageUtility
         }
         /** @var Result $statement */
         $statement = $queryBuilder->executeQuery();
-        if ($statement->rowCount() > 0) {
+        if ($statement->fetchAssociative() !== false) {
             $themeable = true;
         }
         return $themeable;
@@ -118,7 +118,7 @@ class CheckPageUtility
                 );
         /** @var Result $statement */
         $statement = $queryBuilder->executeQuery();
-        if ($statement->rowCount() > 0) {
+        if ($statement->fetchAssociative() !== false) {
             $hasTheme = true;
         }
         return $hasTheme;
@@ -149,7 +149,7 @@ class CheckPageUtility
                 );
         /** @var Result $statement */
         $statement = $queryBuilder->executeQuery();
-        if ($statement->rowCount() > 0) {
+        if ($statement->fetchAssociative() !== false) {
             $row = $statement->fetchAssociative();
             $themeable = $row['uid'];
         }

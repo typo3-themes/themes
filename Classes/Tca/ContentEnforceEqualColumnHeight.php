@@ -120,6 +120,6 @@ class ContentEnforceEqualColumnHeight extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $valuesAvailable);
 
-        return ['html' => '<div class="contentEnforceEqualColumnHeight">' . $checkboxes . $hiddenField . $missedField . '</div>'];
+        return $this->withAssets(['html' => '<div class="contentEnforceEqualColumnHeight">' . $checkboxes . $hiddenField . $missedField . '</div>']);
     }
 }

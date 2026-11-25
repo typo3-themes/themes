@@ -145,6 +145,6 @@ class ContentColumnSettings extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $valuesAvailable);
 
-        return ['html' => '<div class="contentColumnSettings row">' . $selectboxes . $hiddenField . $missedField . '</div>'];
+        return $this->withAssets(['html' => '<div class="contentColumnSettings row">' . $selectboxes . $hiddenField . $missedField . '</div>']);
     }
 }

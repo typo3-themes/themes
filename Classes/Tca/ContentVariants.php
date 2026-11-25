@@ -134,7 +134,7 @@ class ContentVariants extends AbstractContentRow
         // Missed classes
         $missedField = $this->getMissedFields($values, $this->valuesAvailable);
 
-        return ['html' => '<div class="contentVariant row">' . $checkboxes . $hiddenField . $missedField . '</div>'];
+        return $this->withAssets(['html' => '<div class="contentVariant row">' . $checkboxes . $hiddenField . $missedField . '</div>']);
     }
 
     /**

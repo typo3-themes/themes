@@ -1,1 +1,5 @@
 title: Fixture with .txt files
+screenshots:
+  -
+    file: EXT:themes_fixture_txt/Meta/Screenshots/screenshot.png
+    caption: Fixture screenshot

@@ -70,6 +70,8 @@ class ThemeController extends ActionController
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
+        // TYPO3 v14: the property has no default any more, resolveView() reads it
+        $this->settings = [];
         // like the parent method
         $this->arguments = GeneralUtility::makeInstance(Arguments::class);
     }
@@ -90,7 +92,9 @@ class ThemeController extends ActionController
         $this->templateName = $this->evaluateTypoScript('plugin.tx_themes.view.templateName');
         $templateFile = $this->getTemplateFile();
         if ($templateFile !== null) {
-            $this->view->setTemplatePathAndFilename($templateFile);
+            // the view of TYPO3 v13+ (FluidViewAdapter) has no setTemplatePathAndFilename(), the rendering context
+            // exists in TYPO3 v12 as well
+            $this->view->getRenderingContext()->getTemplatePaths()->setTemplatePathAndFilename($templateFile);
         }
         $this->view->assign('templateName', $this->templateName);
 

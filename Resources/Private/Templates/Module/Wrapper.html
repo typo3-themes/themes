@@ -1,0 +1,11 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:comment>
+    Frame of the backend module (doc header, flash messages of the core layout "Module"), the content is rendered
+    by the Extbase view of the action: ModuleTemplate::setContent() is gone since TYPO3 v13.
+</f:comment>
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <f:format.raw>{themesModuleContent}</f:format.raw>
+</f:section>
+</html>

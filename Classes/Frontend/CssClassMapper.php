@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace KayStrobach\Themes\Frontend;
 
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
+
 /***************************************************************
  *
  * Copyright notice
@@ -40,6 +42,7 @@ class CssClassMapper
      *
      * @return string
      */
+    #[AsAllowedCallable]
     public function mapGenericToFramework(string $content = '', array $conf = []): string
     {
         if ($content) {

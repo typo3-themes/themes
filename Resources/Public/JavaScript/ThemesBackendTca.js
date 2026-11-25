@@ -4,6 +4,11 @@ import jQuery from "jquery";
 class ThemesBackendTca {
 
     initialize() {
+        // every field of themes asks for it (FormEngine), the handlers must be bound once
+        if (this.initialized) {
+            return;
+        }
+        this.initialized = true;
         top.TYPO3.ThemesBackendTca = this;
         DocumentService.ready().then(() => {
             top.TYPO3.ThemesBackendTca.initSelectBoxValues();

@@ -48,9 +48,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3Fluid\Fluid\View\ViewInterface;
@@ -161,8 +159,7 @@ class EditorController extends ActionController
         $this->view->assign('pid', $this->id);
         $this->view->assign('nearestPageWithTheme', $nearestPageWithTheme);
         $this->view->assign('themeIsSelectable', CheckPageUtility::hasThemeableSysTemplateRecord($this->id));
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $this->moduleResponse($moduleTemplate);
     }
 
     /**
@@ -268,8 +265,7 @@ class EditorController extends ActionController
                     'pid' => $this->id,
             ]
         );
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $this->moduleResponse($moduleTemplate);
     }
 
     /**
@@ -284,8 +280,7 @@ class EditorController extends ActionController
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $themeObject = $this->themeRepository->findByIdentifier($theme);
         $this->view->assign('theme', $themeObject);
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $this->moduleResponse($moduleTemplate);
     }
 
     /**
@@ -372,9 +367,9 @@ class EditorController extends ActionController
             $pageRenderer = $this->pageRenderer;
             $pageRenderer->loadJavaScriptModule('@themes/colorpicker.js');
             $pageRenderer->loadJavaScriptModule('@themes/themes-backend-module.js');
-            $extRealPath = '../' . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('themes'));
-            $pageRenderer->addCssFile($extRealPath . 'Resources/Public/Stylesheet/BackendModule.css');
-            $pageRenderer->addCssFile($extRealPath . 'Resources/Public/Contrib/colorpicker/css/colorpicker.css');
+            // EXT: paths: the page renderer resolves them to the public URL (composer mode: /_assets/<hash>/)
+            $pageRenderer->addCssFile('EXT:themes/Resources/Public/Stylesheet/BackendModule.css');
+            $pageRenderer->addCssFile('EXT:themes/Resources/Public/Contrib/colorpicker/css/colorpicker.css');
             // Initialize icon factory
             $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             // Try to load the selected theme
@@ -443,13 +438,13 @@ class EditorController extends ActionController
                                 ->setName('save')
                                 ->setValue('1')
                                 ->setForm('saveableForm')
-                                ->setIcon($this->iconFactory->getIcon('actions-document-save', 'small'))
+                                ->setIcon($this->iconFactory->getIcon('actions-document-save', $this->smallIconSize()))
                                 ->setTitle('Save');
                     }
                     $buttons[] = $buttonBar->makeLinkButton()
                             ->setHref($uriBuilder->reset()->setRequest($this->request)->uriFor('showTheme', [], 'Editor'))
                             ->setTitle('Choose theme')
-                            ->setIcon($this->iconFactory->getIcon('actions-system-options-view', 'small'));
+                            ->setIcon($this->iconFactory->getIcon('actions-system-options-view', $this->smallIconSize()));
                     break;
                 }
             case 'showTheme':
@@ -458,7 +453,7 @@ class EditorController extends ActionController
                     $buttons[] = $buttonBar->makeLinkButton()
                             ->setHref($uriBuilder->reset()->setRequest($this->request)->uriFor('index', [], 'Editor'))
                             ->setTitle('Go back')
-                            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', 'small'));
+                            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', $this->smallIconSize()));
                     break;
                 }
         }
@@ -483,11 +478,11 @@ class EditorController extends ActionController
         // Initially, get configuration from extension manager!
         $extensionConfiguration['categoriesToShow'] = GeneralUtility::trimExplode(
             ',',
-            $extensionConfiguration['categoriesToShow']
+            (string)($extensionConfiguration['categoriesToShow'] ?? '')
         );
         $extensionConfiguration['constantsToHide'] = GeneralUtility::trimExplode(
             ',',
-            $extensionConfiguration['constantsToHide']
+            (string)($extensionConfiguration['constantsToHide'] ?? '')
         );
         // mod.tx_themes.constantCategoriesToShow.value
         // Get value from page/user typoscript
@@ -536,5 +531,22 @@ class EditorController extends ActionController
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * TYPO3 v13+ expects the enum IconSize (v14: only the enum), v12 the string "small"
+     */
+    private function smallIconSize(): mixed
+    {
+        return enum_exists(\TYPO3\CMS\Core\Imaging\IconSize::class) ? \TYPO3\CMS\Core\Imaging\IconSize::SMALL : 'small';
+    }
+
+    /**
+     * The content rendered by the Extbase view of the action inside the module frame (TYPO3 v12 to v14).
+     */
+    private function moduleResponse(ModuleTemplate $moduleTemplate): ResponseInterface
+    {
+        $moduleTemplate->assign('themesModuleContent', $this->view->render());
+        return $moduleTemplate->renderResponse('Module/Wrapper');
     }
 }

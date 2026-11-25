@@ -1,21 +1,17 @@
-<link rel="stylesheet" href="{f:uri.resource(extensionName:'t3skin', path:'Css/structure/element_message.css')}">
-<link rel="stylesheet" href="{f:uri.resource(extensionName:'t3skin', path:'Css/visual/element_message.css')}">
-
-<div class="typo3-message message-error">
-	<div class="message-body">
-		<f:if condition="{message}">
-			<p>
-				{message}
-			</p>
-		</f:if>
-		<f:if condition="{preparedMessage}">
-			<f:render partial="Errors/{preparedMessage}" />
-		</f:if>
-	</div>
-</div>
-
+<f:comment>
+    Messages of the module (infoboxes of the core). EXT:t3skin and top.jump() are gone since long, inline scripts are
+    blocked by the Content Security Policy of the backend since TYPO3 v13: a link to the page with a theme instead.
+</f:comment>
+<f:if condition="{message}">
+	<f:be.infobox state="2">{message}</f:be.infobox>
+</f:if>
+<f:if condition="{preparedMessage}">
+	<f:render partial="Errors/{preparedMessage}" />
+</f:if>
 <f:if condition="{redirectUid}">
-	<script type="text/javascript">
-		top.jump('', 'web_ThemesMod1', '', {redirectUid});
-	</script>
+	<p>
+		<a class="btn btn-default" href="{f:be.uri(route: 'themes', parameters: '{id: redirectUid}')}">
+			<core:icon identifier="module-themes" size="small" /> {f:translate(key: 'goToPageWithTheme', default: 'Go to the page with the theme')}
+		</a>
+	</p>
 </f:if>

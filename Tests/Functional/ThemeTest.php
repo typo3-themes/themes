@@ -72,4 +72,15 @@ class ThemeTest extends AbstractThemesTestCase
         self::assertStringContainsString(" isoCode = en_GB.UTF-8\n isoCodeShort = en\n isoCodeHtml = en-GB\n", $constants);
         self::assertStringNotContainsString('0.current', $constants);
     }
+
+    public function testPreviewImagesAreUsableInTheBackend(): void
+    {
+        // Meta/Screenshots is not public in composer mode: data URI
+        self::assertStringStartsWith('data:image/png;base64,', (new Theme('themes_fixture_txt'))->getPreviewImage());
+        // without screenshot: the default image of themes, below Resources/Public
+        $default = (new Theme('themes_fixture_typoscript'))->getPreviewImage();
+        self::assertStringEndsWith('Images/screenshot.gif', $default);
+        self::assertStringNotContainsString('typo3conf/ext/../', $default);
+        self::assertStringNotContainsString('EXT:', $default);
+    }
 }
