@@ -381,7 +381,6 @@ class EditorController extends ActionController
             $this->createMenu($moduleTemplate);
             $this->createButtons($moduleTemplate);
         }
-
     }
 
     /**

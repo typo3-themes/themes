@@ -18,7 +18,8 @@ final class ConversionPlan
         public readonly array $renames,
         public readonly array $contents,
         public readonly array $warnings,
-    ) {}
+    ) {
+    }
 
     public function isEmpty(): bool
     {

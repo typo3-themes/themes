@@ -372,11 +372,11 @@ class AbstractTheme extends AbstractEntity
             $relPath = $extensionPath . 'Resources/Private/Extensions/' . $keyParts[1] . '/TypoScript/';
         }
         $this->constants .= PHP_EOL . $this->getFileContent(
-                GeneralUtility::getFileAbsFileName($relPath . 'constants.typoscript')
-            );
+            GeneralUtility::getFileAbsFileName($relPath . 'constants.typoscript')
+        );
         $this->setup .= PHP_EOL . $this->getFileContent(
-                GeneralUtility::getFileAbsFileName($relPath . 'setup.typoscript')
-            );
+            GeneralUtility::getFileAbsFileName($relPath . 'setup.typoscript')
+        );
     }
 
     protected function getFileContent(string $file): string
