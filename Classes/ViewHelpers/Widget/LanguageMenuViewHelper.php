@@ -9,12 +9,13 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class LanguageMenuViewHelper extends AbstractViewHelper
 {
-
     protected $escapeOutput = false;
     protected $escapeChildren = false;
 
     // the old widget had arguments, the stub accepts and ignores all of them
-    public function validateAdditionalArguments(array $arguments): void {}
+    public function validateAdditionalArguments(array $arguments): void
+    {
+    }
 
     public function render(): string
     {

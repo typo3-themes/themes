@@ -105,7 +105,7 @@ abstract class AbstractContentRow extends AbstractFormElement
             }
             if (isset($this->ctypeProperties['properties'][$cType . '.'])) {
                 $this->ctypeProperties['properties'] = $this->ctypeProperties['properties'][$cType . '.'];
-            } else if (isset($this->ctypeProperties['properties'][$gridLayout . '.'])) {
+            } elseif (isset($this->ctypeProperties['properties'][$gridLayout . '.'])) {
                 $this->ctypeProperties['properties'] = $this->ctypeProperties['properties'][$gridLayout . '.'];
             } else {
                 $this->ctypeProperties['properties'] = [];

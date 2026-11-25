@@ -58,8 +58,7 @@ class ThemesVariantsDataProcessor implements DataProcessorInterface
     ): array {
         $keys = GeneralUtility::trimExplode(
             ',',
-            $processedData['data']['tx_themes_variants'] ?? ''
-            ,
+            $processedData['data']['tx_themes_variants'] ?? '',
             true
         );
         $processedData['themes']['variants']['css'] = [];
@@ -97,5 +96,4 @@ class ThemesVariantsDataProcessor implements DataProcessorInterface
         }
         return $processedData;
     }
-
 }
