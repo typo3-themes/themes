@@ -63,7 +63,7 @@ HELP);
         if ($extensions === []) {
             $extensions = array_values(array_filter(
                 array_keys($extensionPaths),
-                static fn(string $key): bool => (bool)preg_match(self::DEFAULT_PATTERN, $key)
+                static fn (string $key): bool => (bool)preg_match(self::DEFAULT_PATTERN, $key)
             ));
         }
         $unknown = array_diff($extensions, array_keys($extensionPaths));
@@ -75,11 +75,11 @@ HELP);
         $plan = $this->converter->plan($extensionPaths, $extensions, Environment::getPublicPath());
         $io->text('Extensions: ' . implode(', ', $extensions));
         $root = Environment::getProjectPath() . '/';
-        $short = static fn(string $file): string => str_starts_with($file, $root) ? substr($file, strlen($root)) : $file;
+        $short = static fn (string $file): string => str_starts_with($file, $root) ? substr($file, strlen($root)) : $file;
         if ($plan->renames !== []) {
             $io->section(sprintf('Rename (%d)', count($plan->renames)));
             $io->listing(array_map(
-                static fn(string $old, string $new): string => $short($old) . ' -> ' . basename($new),
+                static fn (string $old, string $new): string => $short($old) . ' -> ' . basename($new),
                 array_keys($plan->renames),
                 $plan->renames
             ));

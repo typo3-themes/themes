@@ -68,7 +68,7 @@ final class IncludeTypoScriptConverter
      */
     public function plan(array $extensionPaths, array $extensionsToConvert, string $publicPath = ''): ConversionPlan
     {
-        $this->extensionPaths = array_map(static fn(string $path): string => rtrim($path, '/') . '/', $extensionPaths);
+        $this->extensionPaths = array_map(static fn (string $path): string => rtrim($path, '/') . '/', $extensionPaths);
         $this->convertRoots = [];
         foreach ($extensionsToConvert as $key) {
             if (!isset($this->extensionPaths[$key])) {
@@ -250,7 +250,7 @@ final class IncludeTypoScriptConverter
                 }
             }
             $extensions = preg_match('/extensions\s*=\s*"([^"]*)"/', $attributes, $m)
-                ? array_values(array_filter(array_map('trim', explode(',', $m[1])), static fn(string $e): bool => $e !== ''))
+                ? array_values(array_filter(array_map('trim', explode(',', $m[1])), static fn (string $e): bool => $e !== ''))
                 : [];
             $include = [
                 'indent' => $match['indent'],
@@ -310,7 +310,7 @@ final class IncludeTypoScriptConverter
                 $subDirectories[] = $entry;
                 continue;
             }
-            if ($extensions === [] || array_filter($extensions, static fn(string $e): bool => str_ends_with($entry, $e)) !== []) {
+            if ($extensions === [] || array_filter($extensions, static fn (string $e): bool => str_ends_with($entry, $e)) !== []) {
                 $files[] = $directory . $entry;
             }
         }
@@ -361,7 +361,7 @@ final class IncludeTypoScriptConverter
             return null;
         }
         $indent = $include['indent'];
-        $lines = array_map(static fn(string $import): string => $indent . "@import '" . $import . "'", $imports);
+        $lines = array_map(static fn (string $import): string => $indent . "@import '" . $import . "'", $imports);
         if ($include['condition'] !== '') {
             $lines = [$indent . '[' . $include['condition'] . ']', ...$lines, $indent . '[END]'];
         }
@@ -398,7 +398,7 @@ final class IncludeTypoScriptConverter
      */
     private function directoryImports(array $include, string $includingFile): ?array
     {
-        $files = array_map(fn(string $target): string => $this->renames[$target] ?? $target, $include['targets'] ?? []);
+        $files = array_map(fn (string $target): string => $this->renames[$target] ?? $target, $include['targets'] ?? []);
         foreach ($files as $file) {
             if (!in_array($this->suffix($file), self::IMPORTABLE, true)) {
                 return null;
@@ -447,7 +447,7 @@ final class IncludeTypoScriptConverter
      */
     private function wildcardPattern(string $directory, array $files): ?string
     {
-        $suffixes = array_unique(array_map(fn(string $file): string => $this->longSuffix($file), $files));
+        $suffixes = array_unique(array_map(fn (string $file): string => $this->longSuffix($file), $files));
         if (count($suffixes) !== 1) {
             return null;
         }
@@ -461,7 +461,7 @@ final class IncludeTypoScriptConverter
             }
         }
         sort($names, SORT_STRING);
-        $matching = array_map(static fn(string $name): string => $directory . $name, $names);
+        $matching = array_map(static fn (string $name): string => $directory . $name, $names);
         return $matching === $files ? '*.' . $suffix : null;
     }
 
@@ -512,8 +512,8 @@ final class IncludeTypoScriptConverter
         }
         // EXT:x/setup.txt must not match EXT:x/setup.txt.dist
         return (string)preg_replace_callback(
-            '/(' . implode('|', array_map(static fn(string $r): string => preg_quote($r, '/'), array_keys($replacements))) . ')(?![\w.])/',
-            static fn(array $match): string => $replacements[$match[1]],
+            '/(' . implode('|', array_map(static fn (string $r): string => preg_quote($r, '/'), array_keys($replacements))) . ')(?![\w.])/',
+            static fn (array $match): string => $replacements[$match[1]],
             $content
         );
     }
